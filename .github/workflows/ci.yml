@@ -49,7 +49,9 @@ jobs:
           node-version: 22
           cache: pnpm
           cache-dependency-path: apps/web/pnpm-lock.yaml
+      - run: cmp apps/web/lib/samples.json supabase/seed/aurelle/contents.json  # web copy must match the seed
       - run: pnpm -C apps/web install --frozen-lockfile
+      - run: pnpm -C apps/web lint
       - run: pnpm -C apps/web typecheck
       - run: pnpm -C apps/web build
         env:
