@@ -1,7 +1,7 @@
 SECRETS ?= /Volumes/Plumbline/secrets.env
 CHECKER = services/checker
 
-.PHONY: env doctor test test-db db-push-test db-push lint dev-checker dev-web
+.PHONY: env doctor test test-db db-push-test db-push seed lint dev-checker dev-web
 
 # Copies secrets into the gitignored env files each app reads.
 env:
@@ -25,6 +25,9 @@ db-push-test:
 
 db-push:
 	cd $(CHECKER) && uv run --env-file .env sh -c 'cd ../.. && $(SUPABASE) db push --yes --db-url "$$DATABASE_URL"'
+
+seed:
+	cd $(CHECKER) && uv run --env-file .env python scripts/seed.py
 
 lint:
 	cd $(CHECKER) && uv run ruff check . && uv run ruff format --check .

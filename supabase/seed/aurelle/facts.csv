@@ -1,0 +1,41 @@
+id,statement,value,unit,product,market,population,duration,owner,valid_from,valid_until,confidentiality,embargo_until,verified,aliases
+FACT-001,Aurelle products are not tested on animals at any stage,,,,IN,,,Compliance,2025-01-01,,public,,true,cruelty-free|not tested on animals
+FACT-002,Aurelle Skin is made in India,,,,IN,,,Brand,2025-01-01,,public,,true,made in India
+FACT-003,Vitamin C Brightening Serum contains 10% ethyl ascorbic acid,10,%,Vitamin C Brightening Serum,IN,,,R&D,2025-06-01,,public,,true,10% vitamin C
+FACT-004,Vitamin C Brightening Serum is fragrance-free,,,Vitamin C Brightening Serum,IN,,,R&D,2025-06-01,,public,,true,fragrance-free
+FACT-005,"Vitamin C Brightening Serum is suitable for sensitive skin, dermatologically tested on 50 participants",50,participants,Vitamin C Brightening Serum,IN,adults with sensitive skin,,Compliance,2025-06-01,2027-06-30,public,,true,dermatologically tested
+FACT-006,Vitamin C Brightening Serum costs ₹899 for 30 ml,899,INR,Vitamin C Brightening Serum,IN,,,Brand,2026-01-01,2026-12-31,public,,true,₹899
+FACT-007,Vitamin C Brightening Serum is vegan,,,Vitamin C Brightening Serum,IN,,,R&D,2025-06-01,,public,,true,vegan
+FACT-008,Vitamin C Brightening Serum bottle uses 30% recycled glass,30,%,Vitamin C Brightening Serum,IN,,,Sustainability,2025-06-01,,public,,true,recycled glass
+FACT-009,Vitamin C Brightening Serum is made with 94% naturally derived ingredients (ISO 16128),94,%,Vitamin C Brightening Serum,IN,,,Compliance,2025-06-01,2027-12-31,public,,true,94% naturally derived|naturally derived ingredients
+FACT-010,"Hyaluronic Water Gel gives up to 72 hours of hydration (instrumental study, 30 participants)",72,hours,Hyaluronic Water Gel,IN,30 adults,72 hours,Compliance,2025-09-01,2027-09-30,public,,true,72-hour hydration|72 hours of hydration
+FACT-011,Hyaluronic Water Gel is oil-free and non-comedogenic,,,Hyaluronic Water Gel,IN,,,R&D,2025-09-01,,public,,true,non-comedogenic|oil-free
+FACT-012,Niacinamide 10% Clarifying Serum contains 10% niacinamide and 1% zinc,10,%,Niacinamide 10% Clarifying Serum,IN,,,R&D,2025-03-01,,public,,true,10% niacinamide
+FACT-013,"Niacinamide 10% Clarifying Serum reduced visible pores by 18% in 4 weeks (in-house study, 40 participants)",18,%,Niacinamide 10% Clarifying Serum,IN,40 adults,4 weeks,Compliance,2025-03-01,2026-12-31,public,,true,reduces pores
+FACT-014,"Vitamin C Brightening Serum gave a 32% reduction in visible dark spots over 8 weeks (in-house study, 48 participants)",32,%,Vitamin C Brightening Serum,IN,48 participants,8 weeks,Compliance,2026-01-15,2027-03-31,public,,true,fade dark spots|reduce dark spots|dark spots
+FACT-015,"Ceramide Barrier Cream improved skin barrier function in 2 weeks (TEWL study, 32 participants)",2,weeks,Ceramide Barrier Cream,IN,32 adults,2 weeks,Compliance,2025-11-01,2027-10-31,public,,true,strengthens skin barrier|barrier repair
+FACT-016,Ceramide Barrier Cream contains three essential ceramides,3,ceramides,Ceramide Barrier Cream,IN,,,R&D,2025-11-01,,public,,true,3 ceramides
+FACT-017,SPF 50 Daily Sunscreen is SPF 50 PA++++ (ISO 24444 and ISO 24442),50,SPF,SPF 50 Daily Sunscreen,IN,,,Compliance,2026-02-01,2028-01-31,public,,true,SPF 50|PA++++
+FACT-018,"SPF 50 Daily Sunscreen leaves no white cast on Indian skin tones (in-use test, 60 participants)",60,participants,SPF 50 Daily Sunscreen,IN,"60 adults, Fitzpatrick III–VI",,Compliance,2026-02-01,2027-12-31,public,,true,no white cast
+FACT-019,SPF 50 Daily Sunscreen is water-resistant for 40 minutes,40,minutes,SPF 50 Daily Sunscreen,IN,,40 minutes,Compliance,2026-02-01,2028-01-31,public,,true,water-resistant
+FACT-020,Gentle Rice Cleanser is soap-free with a pH of 5.5,5.5,pH,Gentle Rice Cleanser,IN,,,R&D,2025-04-01,,public,,true,pH 5.5|soap-free
+FACT-021,Gentle Rice Cleanser contains fermented rice water,,,Gentle Rice Cleanser,IN,,,R&D,2025-04-01,,public,,true,rice water
+FACT-022,Retinal Night Serum contains 0.1% retinal,0.1,%,Retinal Night Serum,IN,,,R&D,2026-11-15,,confidential,,false,0.1% retinal|retinal serum
+FACT-023,Retinal Night Serum launches in Q1 2027,,,Retinal Night Serum,IN,,,Brand,2026-06-01,,confidential,,true,Night Bloom|Project Saffron
+FACT-024,Kumkumadi Glow Oil blends 16 Ayurvedic herbs including saffron,16,herbs,Kumkumadi Glow Oil,IN,,,R&D,2025-08-01,,public,,true,16 herbs|kumkumadi
+FACT-025,"Kumkumadi Glow Oil costs ₹1,299 for 15 ml",1299,INR,Kumkumadi Glow Oil,IN,,,Brand,2026-01-01,2026-12-31,public,,true,"₹1,299"
+FACT-026,Tinted Lip Balm has SPF 15,15,SPF,Tinted Lip Balm,IN,,,Compliance,2025-10-01,2027-09-30,public,,true,SPF 15
+FACT-027,Tinted Lip Balm comes in 6 shades,6,shades,Tinted Lip Balm,IN,,,Brand,2025-10-01,,public,,true,6 shades
+FACT-028,"Aurelle has 120,000 customers in India",120000,customers,,IN,,,Brand,2026-04-01,2026-12-31,internal,,true,"120,000 customers"
+FACT-029,Aurelle won Glow Awards 2025 Best New Serum,,,Vitamin C Brightening Serum,IN,,,Brand,2025-09-01,2026-09-30,public,,true,award-winning|Best New Serum
+FACT-030,Aurelle ships free on orders over ₹999 in India,999,INR,,IN,,,Brand,2026-01-01,2026-12-31,public,,true,free shipping
+FACT-031,Aurelle opens its Mumbai flagship store,,,,IN,,,Brand,2026-08-01,,embargoed,2026-12-01,true,Mumbai flagship|flagship store
+FACT-032,Aurelle's Diwali gift set includes 3 full-size products,3,products,,IN,,,Brand,2026-09-15,2026-11-30,internal,,true,Diwali gift set
+FACT-033,Aurelle's Diwali sale gives 20% off sitewide,20,%,,IN,,,Brand,2026-10-15,2026-11-05,embargoed,2026-10-28,true,Diwali sale|20% off
+FACT-034,Niacinamide 10% Clarifying Serum preliminary study: 21% fewer breakouts in 6 weeks (12 participants),21,%,Niacinamide 10% Clarifying Serum,IN,12 adults,6 weeks,R&D,2026-09-01,,internal,,false,fewer breakouts
+FACT-035,Aurelle formulas are free from parabens and sulphates,,,,IN,,,R&D,2025-01-01,,public,,true,paraben-free|sulphate-free
+FACT-036,Aurelle supplier for ethyl ascorbic acid is Kanpur Chem Labs,,,Vitamin C Brightening Serum,IN,,,Supply,2025-06-01,,confidential,,true,Kanpur Chem
+FACT-037,Vitamin C Brightening Serum is suitable for daily morning use under sunscreen,,,Vitamin C Brightening Serum,IN,,,R&D,2025-06-01,,public,,true,morning use
+FACT-038,Hyaluronic Water Gel is 97% water-based gel,97,%,Hyaluronic Water Gel,IN,,,R&D,2025-09-01,,public,,false,97% water
+FACT-039,Aurelle tubes are made with 50% post-consumer recycled plastic,50,%,,IN,,,Sustainability,2026-03-01,,public,,true,recycled plastic|PCR
+FACT-040,Aurelle offers 30-day returns on unopened products,30,days,,IN,,,Brand,2025-01-01,,public,,true,30-day returns

@@ -2,6 +2,7 @@
 
 Plan: `docs/superpowers/plans/2026-10-22-plumbline-round2.md`. Spec: Round 1 plan v6 (cited as §n).
 **Update the scorecard in the plan at each milestone.**
+**After every task, evaluate it** in `docs/build-log.md`: check the result against the plan and spec (§n) with evidence from real runs (tests, live queries, measured numbers), not assumptions. When an assumption fails, find the alternative that works best, record it and why.
 
 ## Each session
 1. External drive connected; if `/Volumes/Plumbline` is missing: `hdiutil attach /Volumes/Untitled/plumbline.sparsebundle`

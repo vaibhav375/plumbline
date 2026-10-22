@@ -1,0 +1,7 @@
+[
+  {"key": "creator", "email": "asha@aurelle.example", "display_name": "Creator Asha", "role": "creator"},
+  {"key": "agency", "email": "sana@agency.example", "display_name": "Agency Sana", "role": "external_creator"},
+  {"key": "reviewer", "email": "meera@aurelle.example", "display_name": "Reviewer Meera", "role": "reviewer"},
+  {"key": "compliance", "email": "arjun@aurelle.example", "display_name": "Compliance Arjun", "role": "compliance"},
+  {"key": "brand_owner", "email": "kabir@aurelle.example", "display_name": "Brand owner Kabir", "role": "brand_owner"}
+]

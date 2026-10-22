@@ -128,12 +128,12 @@ plumbline/
 
 No code. The user does this. Claude verifies it with `make doctor` in Task 1.
 
-- [ ] Create a GitHub repo `plumbline` (public) **after 10:00 IST on 22 Oct**. Turn on secret scanning.
-- [ ] Supabase: new project `plumbline` (region: Mumbai, `ap-south-1`). Copy the URL, anon key, service-role key and JWT secret into a password manager.
-- [ ] Groq console: create an API key and note the exact IDs for Qwen3-32B and Llama-3.1-8B. Google AI Studio: create a Gemini API key and note the Flash model ID.
-- [ ] Render: connect GitHub. Vercel: connect GitHub.
-- [ ] Local: Node 20+, pnpm, Python 3.12, `uv`, Docker Desktop (for `supabase start`), Supabase CLI, `brew install tesseract`, Ollama with `ollama pull qwen3:8b`.
-- [ ] Choose the project folder on disk and move this session there (Claude asks when execution starts).
+- [x] Create a GitHub repo `plumbline` (public) **after 10:00 IST on 22 Oct**. Turn on secret scanning.
+- [x] Supabase: new project `plumbline` (region: Mumbai, `ap-south-1`). Copy the URL, anon key, service-role key and JWT secret into a password manager.
+- [x] Groq console: create an API key and note the exact IDs for Qwen3-32B and Llama-3.1-8B. Google AI Studio: create a Gemini API key and note the Flash model ID.
+- [x] Render: connect GitHub. Vercel: connect GitHub.
+- [x] Local: Node 20+, pnpm, Python 3.12, `uv`, Docker Desktop (for `supabase start`), Supabase CLI, `brew install tesseract`, Ollama with `ollama pull qwen3:8b`.
+- [x] Choose the project folder on disk and move this session there (Claude asks when execution starts).
 
 ### Task 1: Repo scaffold, CI, project memory, doctor
 
@@ -145,12 +145,12 @@ No code. The user does this. Claude verifies it with `make doctor` in Task 1.
 **Interfaces:**
 - Produces: `Settings` (pydantic-settings) with fields `supabase_url, supabase_anon_key, supabase_jwt_secret, groq_api_key, gemini_api_key, ollama_base_url, llm_chain: list[str]` (default `["groq","gemini"]`; `["ollama"]` locally), `max_upload_mb: int = 10`, `match_threshold: float = 0.72`.
 
-- [ ] **Step 1:** Write `tests/test_config.py::test_settings_defaults`: with only the required env vars set, `Settings().max_upload_mb == 10` and `Settings().llm_chain == ["groq","gemini"]`.
-- [ ] **Step 2:** `cd services/checker && uv run pytest -q`. Expected: FAIL (module missing).
-- [ ] **Step 3:** Implement `plumbline/config.py`. Write `CLAUDE.md` containing the Global Constraints, the commands, and the rule "update the scorecard at milestones".
-- [ ] **Step 4:** `scripts/doctor.py` makes one tiny real call to each provider in `llm_chain` and to Supabase `/rest/v1/`, and prints ✓/✗. Run `make doctor`. Expected: all ✓.
-- [ ] **Step 5:** CI runs `ruff check`, `pytest`, and `pnpm -C apps/web typecheck && pnpm -C apps/web build`. Push. Expected: green badge.
-- [ ] **Step 6:** Commit: `chore: scaffold repo, CI, doctor`.
+- [x] **Step 1:** Write `tests/test_config.py::test_settings_defaults`: with only the required env vars set, `Settings().max_upload_mb == 10` and `Settings().llm_chain == ["groq","gemini"]`.
+- [x] **Step 2:** `cd services/checker && uv run pytest -q`. Expected: FAIL (module missing).
+- [x] **Step 3:** Implement `plumbline/config.py`. Write `CLAUDE.md` containing the Global Constraints, the commands, and the rule "update the scorecard at milestones".
+- [x] **Step 4:** `scripts/doctor.py` makes one tiny real call to each provider in `llm_chain` and to Supabase `/rest/v1/`, and prints ✓/✗. Run `make doctor`. Expected: all ✓.
+- [x] **Step 5:** CI runs `ruff check`, `pytest`, and `pnpm -C apps/web typecheck && pnpm -C apps/web build`. Push. Expected: green badge.
+- [x] **Step 6:** Commit: `chore: scaffold repo, CI, doctor`.
 
 ### Task 2: Database schema, row-level security, hash-chained audit
 
@@ -182,17 +182,17 @@ No code. The user does this. Claude verifies it with `make doctor` in Task 1.
   - `facts` with confidentiality in `confidential | embargoed` are visible only to `reviewer | compliance | brand_owner | auditor`.
   - `audit_events` is insert-only: no UPDATE or DELETE grants.
 
-- [ ] **Step 1:** Write the failing tests:
+- [x] **Step 1:** Write the failing tests:
   - `test_rls.py::test_external_creator_cannot_read_embargoed_fact`: a select returns 0 rows.
   - `test_rls.py::test_private_version_hidden_from_reviewer`: a select returns 0 rows.
   - `test_rls.py::test_other_org_invisible`: an org B user sees 0 rows of org A.
   - `test_audit_chain.py::test_chain_links`: after 3 decisions, each `prev_hash` equals the previous row's `hash`.
   - `test_audit_chain.py::test_update_denied`: an `update audit_events ...` raises a permission error.
   - `test_audit_chain.py::test_same_actor_second_approval_rejected`: raises.
-- [ ] **Step 2:** `supabase start && supabase db reset && uv run pytest -m db -q`. Expected: FAIL.
-- [ ] **Step 3:** Write the three migrations to the interface above.
-- [ ] **Step 4:** Re-run. Expected: 6 passed.
-- [ ] **Step 5:** `supabase db push` to the cloud project. Commit: `feat(db): schema, RLS, hash-chained audit`.
+- [x] **Step 2:** `supabase start && supabase db reset && uv run pytest -m db -q`. Expected: FAIL.
+- [x] **Step 3:** Write the three migrations to the interface above.
+- [x] **Step 4:** Re-run. Expected: 6 passed.
+- [x] **Step 5:** `supabase db push` to the cloud project. Commit: `feat(db): schema, RLS, hash-chained audit`.
 
 ### Task 3: Aurelle seed data and demo users
 
@@ -221,14 +221,14 @@ No code. The user does this. Claude verifies it with `make doctor` in Task 1.
 **Interfaces:**
 - Consumes: Task 2 tables. Produces: `make seed` (idempotent upsert keyed on IDs).
 
-- [ ] **Step 1:** Write the failing tests:
+- [x] **Step 1:** Write the failing tests:
   - `test_seed_integrity.py::test_every_wording_references_existing_fact`
   - `::test_every_rule_has_valid_check_type`
   - `::test_worked_example_present`, which asserts the content `#1` text starts with "Meet the NEW Aurelle Vitamin-C serum!!!"
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Write the CSV and JSON files and `seed.py`.
-- [ ] **Step 4:** `make seed` twice. Expected: the second run reports 0 inserts and N unchanged. The tests pass.
-- [ ] **Step 5:** Commit: `feat(seed): Aurelle demo org`.
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Write the CSV and JSON files and `seed.py`.
+- [x] **Step 4:** `make seed` twice. Expected: the second run reports 0 inserts and N unchanged. The tests pass.
+- [x] **Step 5:** Commit: `feat(seed): Aurelle demo org`.
 
 ### Task 4: Document model, normalisation and parsers
 

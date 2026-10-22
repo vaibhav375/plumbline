@@ -1,0 +1,29 @@
+{
+  "synthetic": true,
+  "label": "Synthetic demo history: generated reviewer decisions, not real data.",
+  "start_date": "2026-08-01",
+  "authors": [
+    {"key": "emp1", "name": "Synthetic writer E1", "origin": "employee"},
+    {"key": "emp2", "name": "Synthetic writer E2", "origin": "employee"},
+    {"key": "emp3", "name": "Synthetic writer E3", "origin": "employee"},
+    {"key": "agy1", "name": "Synthetic agency writer A1", "origin": "agency"},
+    {"key": "agy2", "name": "Synthetic agency writer A2", "origin": "agency"},
+    {"key": "agy3", "name": "Synthetic agency writer A3", "origin": "agency"},
+    {"key": "ai1", "name": "Synthetic AI-tool user T1", "origin": "ai_tool"},
+    {"key": "ai2", "name": "Synthetic AI-tool user T2", "origin": "ai_tool"},
+    {"key": "ai3", "name": "Synthetic AI-tool user T3", "origin": "ai_tool"},
+    {"key": "fl1", "name": "Synthetic freelancer F1", "origin": "freelancer"},
+    {"key": "fl2", "name": "Synthetic freelancer F2", "origin": "freelancer"}
+  ],
+  "rules": {
+    "TN-02": {"sample": "Our new serum is finally here!!!", "quote": "!!!", "upheld": 34, "overruled": 1, "dismissed": 0, "why": "ready to block"},
+    "GM14": {"sample": "Made with 94 percent naturally derived ingredients.", "quote": "percent", "upheld": 40, "overruled": 0, "dismissed": 0, "why": "already graduated (maturity=blocking)"},
+    "CTA-02": {"sample": "Click here to shop the serum.", "quote": "Click here", "upheld": 18, "overruled": 2, "dismissed": 1, "why": "still advisory"},
+    "GM10": {"sample": "Loved by 12000 customers.", "quote": "12000", "upheld": 12, "overruled": 0, "dismissed": 0, "why": "still advisory: high agreement, too few decisions for the bound"},
+    "TN-03": {"sample": "Our SERUM is back in stock.", "quote": "SERUM", "upheld": 6, "overruled": 9, "dismissed": 5, "why": "low agreement: rule needs rewording"},
+    "TN-01": {"sample": "Hurry, last chance ever to fix your skin.", "quote": "last chance ever", "upheld": 9, "overruled": 6, "dismissed": 3, "why": "class B AI rule with mixed agreement"},
+    "GM07": {"sample": "Order from our Online store today.", "quote": "Online", "upheld": 4, "overruled": 1, "dismissed": 0, "why": "too few decisions (n < 10)"},
+    "CL-03": {"sample": "Our eco-friendly serum is kind to the planet.", "quote": "eco-friendly", "upheld": 22, "overruled": 0, "dismissed": 1, "why": "mandatory: blocks regardless"},
+    "A11Y-03": {"sample": "Morning routine done #vitamincbrightening", "quote": "#vitamincbrightening", "upheld": 7, "overruled": 3, "dismissed": 0, "why": "accessibility, still advisory"}
+  }
+}

@@ -56,3 +56,32 @@ def test_other_org_invisible(db):
     as_admin(db)
     as_user(db, user_a)
     assert count(db, sql, org_a) == 1
+
+
+def test_external_creator_sees_only_own_work(db):
+    """§4.5: an agency sees its own work, not the brand's other content."""
+    org = make_org(db)
+    agency = make_user(db, org, "external_creator")
+    creator = make_user(db, org, "creator")
+    own = make_version(db, org, agency)
+    other = make_version(db, org, creator)
+    as_user(db, agency)
+    assert count(db, "select count(*) from versions where id = %s", own) == 1
+    assert count(db, "select count(*) from versions where id = %s", other) == 0
+    assert count(db, "select count(*) from contents where created_by = %s", creator) == 0
+
+
+def test_audit_log_own_work_only_for_creators(db):
+    """§4.5: creators see the audit log for their own work; reviewer roles see all of it."""
+    org = make_org(db)
+    creator_a = make_user(db, org, "creator")
+    creator_b = make_user(db, org, "creator")
+    auditor = make_user(db, org, "auditor")
+    make_version(db, org, creator_a)
+    make_version(db, org, creator_b)
+    sql = "select count(*) from audit_events where org_id = %s"
+    as_user(db, creator_a)
+    assert count(db, sql, org) == 1
+    as_admin(db)
+    as_user(db, auditor)
+    assert count(db, sql, org) == 2
