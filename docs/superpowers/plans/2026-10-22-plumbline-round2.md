@@ -450,17 +450,17 @@ def support_check(findings: list[Finding], llm: LLM, rules, facts) -> tuple[list
 ```
 `validate_findings` sets `span` with `quote_in`. "Disagree" does not delete a finding: it moves it to the "Needs human eyes" group (`advisory=True`, category unchanged).
 
-- [ ] **Step 1:** Write the failing tests:
+- [x] **Step 1:** Write the failing tests:
   - `test_fabricated_rule_dropped`
   - `test_quote_not_in_text_dropped`
   - `test_schema_invalid_dropped`
   - `test_valid_kept_with_span`
   - `test_support_disagree_goes_to_needs_human` (FakeLLM)
   - `test_support_llm_unavailable_keeps_finding_marked_n_a`: support stays `n/a`, and the explanation suffix is "(support check unavailable)"
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Implement. Support checks are batched: one `support` call per ≤ 8 findings.
-- [ ] **Step 4:** Run. Expected: PASS.
-- [ ] **Step 5:** Commit: `feat(validate): citation and support validators`.
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Implement. Support checks are batched: one `support` call per ≤ 8 findings.
+- [x] **Step 4:** Run. Expected: PASS.
+- [x] **Step 5:** Commit: `feat(validate): citation and support validators`.
 
 ### Task 11: Claims: detect, extract, match, verify
 

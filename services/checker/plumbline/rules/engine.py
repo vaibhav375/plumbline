@@ -12,6 +12,14 @@ ALT_TEXT_PROMPT = (
 )
 
 
+def grade(rule: Rule) -> str:
+    """Mandatory or graduated rules block go-live; advisory ones never show as blocking.
+    Shared by code and AI findings so a model can never set its own severity."""
+    if rule.blocks:
+        return "blocking"
+    return "major" if rule.severity == "blocking" else rule.severity
+
+
 def _finding(
     rule: Rule,
     quote: str,
@@ -27,10 +35,7 @@ def _finding(
     return Finding(
         id=f"{rid}@{where}",
         category=rule.category,
-        # Mandatory or graduated rules block go-live; advisory ones never show as blocking.
-        severity="blocking"
-        if rule.blocks
-        else ("major" if rule.severity == "blocking" else rule.severity),
+        severity=grade(rule),
         advisory=not rule.blocks,
         rule_id=rid,
         fact_id=None,

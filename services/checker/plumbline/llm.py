@@ -151,6 +151,13 @@ class LLM:
         )
         return parsed, status, min(wait, MAX_BACKOFF_S)
 
+    def model_for(self, task: str) -> str | None:
+        """The model the first configured provider would use for a task."""
+        for p in self.chain:
+            if p.api_key and p.models.get(task):
+                return p.models[task]
+        return None
+
     def json[T: BaseModel](
         self, task: Task, system: str, user: str, schema: type[T]
     ) -> tuple[T, str]:
