@@ -1,0 +1,12 @@
+# Common Indian given names and surnames (across regions), used only to find people's names to
+# redact before any AI call. spaCy's small English model misses many of them (Task 9 baseline:
+# 70% name recall). One name per line; "#" starts a comment. Sections: [given] and [surname].
+[given]
+Aadhya Aakash Aarav Aarti Aarush Abhay Abhinav Abhishek Aditi Aditya Ajay Akash Akshay Alok Amit Amitabh Amrita Anand Ananya Anika Anil Anita Anjali Ankit Ankita Anupam Anushka Aparna Archana Arjun Arnav Arun Aruna Arvind Asha Ashish Ashok Ayaan Ayesha Ayush
+Bhavna Bhavya Chandan Chetan Chitra Deepa Deepak Deepika Dev Devika Dhruv Dinesh Divya Esha Farah Farhan Fatima Gaurav Gayatri Geeta Gita Gopal Gurpreet Harish Harpreet Harsh Hema Imran Isha Ishaan Ishita
+Jaya Jayant Jaspreet Jyoti Kabir Kajal Kalpana Kamal Karan Karthik Kartik Kavita Kavya Kiran Kishore Krishna Kunal Lakshmi Lalit Madhu Mahesh Manish Manoj Manpreet Meena Meenakshi Megha Mohan Mohit Mukesh
+Nandini Naveen Neeraj Neha Nidhi Nikhil Nisha Nitin Pallavi Pankaj Payal Pooja Prakash Pranav Prateek Preeti Priya Priyanka Radha Radhika Rahul Raj Rajesh Rajiv Rakesh Ramesh Ranveer Rashmi Ravi Rekha Ria Riya Rina Ritu Rohan Rohit Ruchi
+Sachin Sahil Sakshi Samir Sana Sandeep Sanjay Sanya Sapna Sarita Seema Shalini Shikha Shilpa Shiv Shreya Shruti Siddharth Simran Sneha Sonal Sonia Sudha Sumit Sunil Sunita Suresh Swati Tanvi Tanya Tara Tarun Usha Varun Vidya Vijay Vikas Vikram Vinay Vinod Vishal Yash Zoya
+[surname]
+Agarwal Aggarwal Ahmed Ali Ansari Arora Babu Bajaj Banerjee Bansal Basu Bhat Bhatia Bhatt Bose Chakraborty Chatterjee Chaudhary Chawla Chopra Choudhary Das Dasgupta Desai Deshmukh Deshpande Dixit Dutta Gandhi Ghosh Gill Gupta
+Hegde Iyer Iyengar Jain Joshi Kapoor Kaur Khan Khanna Kulkarni Kumar Lal Malhotra Mathew Mehta Menon Mishra Mukherjee Murthy Naidu Nair Narayanan Pandey Patel Patil Pillai Prasad Qureshi Rajan Rao Reddy Saha Sandhu Saxena Sen Shah Shaikh Sharma Shetty Siddiqui Singh Sinha Srinivasan Subramanian Thakur Tiwari Trivedi Varma Venkatesh Verma Yadav

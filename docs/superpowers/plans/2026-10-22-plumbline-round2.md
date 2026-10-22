@@ -426,15 +426,15 @@ def mask_confidential(text: str, facts: list[Fact]) -> tuple[str, list[tuple[Spa
 ```
 Presidio uses `en_core_web_sm` only, with entities `PERSON, PHONE_NUMBER, EMAIL_ADDRESS` plus custom regex recognisers `IN_AADHAAR` (`\b\d{4}\s?\d{4}\s?\d{4}\b`), `IN_PAN` (`\b[A-Z]{5}\d{4}[A-Z]\b`) and `IN_PHONE` (`(\+91[\s-]?)?[6-9]\d{9}`). Dates, places and numbers are not redacted.
 
-- [ ] **Step 1:** Write the failing tests:
+- [x] **Step 1:** Write the failing tests:
   - `test_aadhaar_pan_phone_redacted`
   - `test_brand_names_not_redacted`: "Aurelle" and "Meera" are kept when in `allow`
   - `test_numbers_dates_kept`: "32%" and "8 weeks" are untouched
   - `test_embargo_exact_and_paraphrase`: "Launching with our Mumbai flagship on 15 Nov" is masked, and so is "our first Mumbai store opens mid-November", via the aliases on `FACT-031`
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Implement.
-- [ ] **Step 4:** Run. Expected: PASS.
-- [ ] **Step 5:** Commit: `feat(privacy): redaction and confidential masking`.
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Implement.
+- [x] **Step 4:** Run. Expected: PASS.
+- [x] **Step 5:** Commit: `feat(privacy): redaction and confidential masking`.
 
 ### Task 10: Validators: evidence or silence
 

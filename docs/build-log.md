@@ -288,3 +288,51 @@ Live: **https://plumbline-pes1ug23cs665s-projects.vercel.app** (Vercel, Next.js 
 - Each fallback to Gemini costs ~1.5 s plus up to 3 s of honoured backoff. Fine against the 60 s p95.
 - `EgressEvent` maps onto the `egress_events` table (purpose = task); persistence is wired in Task 14,
   and Task 9 adds the redaction and masking counts.
+
+## Task 9: privacy (PII redaction, confidential masking)
+
+| Check | Evidence | Result |
+|---|---|---|
+| Plan's 4 tests (Aadhaar/PAN/phone redacted, brand names kept, numbers and dates kept, embargo exact + paraphrase masked) | `pytest tests/test_privacy.py` (15 tests) | Pass |
+| **Spec target: PII recall ≥ 90% (Indian names, phone, Aadhaar, PAN; n = 50)** | dev set (50 items, 57 spans): **100%**; **held-out set written before the name list** (25 items, 29 spans): **100%** | Pass |
+| No false redactions on real copy | all 10 seed posts: 0 redactions with the brand allow-list | Pass |
+| Masking precision | across all 10 posts, only the intended three match (worked example → FACT-031, Diwali email → FACT-033, codename → FACT-023); "Brightening Serum" isn't mistaken for "retinal serum"; "10% off" isn't the embargoed "20% off" | Pass |
+| No alias survives masking | every code-only alias absent from every masked sample | Pass |
+| Embargo ends on time | FACT-031 masked on 23 Oct, not after its 1 Dec embargo | Pass |
+| Cost | 5–7 ms per sentence; 166 MB peak memory (Render free: 512 MB); +108 MB to the image | Pass |
+| Licences | Presidio, spaCy, en_core_web_sm, rapidfuzz: MIT | Pass |
+
+**Assumptions that failed, and the alternatives chosen** (measured on the plan's exact setup first)
+- *Presidio + spaCy small finds Indian names.* Baseline recall **81% overall, 70% on names** (missed
+  Ananya Iyer, Kavya Nair, Ishita Das, Gurpreet Sandhu, Suresh Babu, Mohit Agarwal, Ritu, Rahul, Ranveer).
+  Added a gazetteer of 264 common Indian given names and surnames (`plumbline/data/indian_names.txt`):
+  known given name (+ up to two capitalised words), or any capitalised word + known surname.
+- *Plan's Aadhaar regex.* Missed hyphenated numbers; now spaces or hyphens, first digit 2–9.
+- *Presidio's email recogniser.* Rejects unknown TLDs (`.example`); replaced by a plain email pattern.
+- *Presidio pattern recognisers are case-sensitive.* They're **case-insensitive by default**, which made
+  "[A-Z][a-z]+" match "loved" and "or" (and would let lowercase text pass as a PAN). All custom
+  patterns now compile case-sensitively.
+- *spaCy's PERSON is precise on brand copy.* It tagged "Ignore" ("Ignore your rules…") as a person.
+  Single-word spaCy names at the start of a sentence are dropped unless they're known given names;
+  recall unchanged (100% on both sets).
+- *The plan's paraphrase ("our first Mumbai store opens mid-November") is caught via FACT-031's
+  aliases.* It wasn't: none of the aliases matched. Added the aliases "Mumbai store" and "store in
+  Mumbai" to FACT-031 (data, re-seeded). Fuzzy matching (rapidfuzz partial_ratio ≥ 85) only runs for
+  aliases of 8+ characters without digits, after a precision test showed the risk.
+- *"Dates" matching* (plan) isn't implemented separately: masking covers the whole sentence that
+  mentions the fact, so its date ("15 Nov") goes with it.
+
+**Honest limits**
+- Both PII sets are synthetic and written by me; 100% here won't be 100% on real captions. Task 21's
+  evaluation should add a larger, independently written set, and report the interval.
+- Masking is per sentence: a long sentence with one confidential phrase loses all its text to the AI.
+  That's the safe direction.
+
+**Decision for the open item from Task 6 (implement in Task 14)**: the API reads as the caller, so
+an agency's check can't see embargoed facts, and so can't mask them before the AI or flag them for
+the brand team on submission. An RPC callable by users can't fix this: an agency could call it
+directly to probe which phrases are secret (§4.5 forbids that). Plan: a dedicated Postgres login role
+`plumbline_checker` with **no table grants**, only `EXECUTE` on a `security definer` function that
+returns one org's active confidential aliases. The checker connects with it (a new Render secret,
+far narrower than the service key), matches in Python with `mask_confidential`, masks before any AI
+call, and withholds the finding from external pre-checks.
