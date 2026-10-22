@@ -78,3 +78,37 @@ chosen and why. Newest last.
   creators. Decide in Task 19 (insights page), where the view is used.
 - TN-02 in the plan covers "! max 1, plus all-caps words". Split into TN-02 (count `!`) and TN-03
   (all-caps pattern) because one `count` rule can't express both. Superset of the tests' IDs.
+
+## Task 4: document model, normalisation and parsers
+
+| Check | Evidence | Result |
+|---|---|---|
+| Plan's 9 tests (quote matching, DOCX alt text, PDF text, scanned, encrypted, empty, too large, PNG OCR) | `pytest tests/test_normalize.py tests/test_parsers.py` | Pass |
+| Review Focus 4: curly quotes, emoji, Hindi, NBSP, CRLF | offsets into normalised text slice back to the quote (`test_normalize_then_quote_offsets_land_on_the_right_characters`) | Pass |
+| Review Focus 5: specific errors | `empty`, `too_large`, `unsupported` (incl. a fake `.pdf` and `.docx`), `encrypted`, `no_text_layer`, each with a plain-words message | Pass |
+| OCR colours reproduce the spec | banner block fg `#B8B2A7`, bg `#FBF6EC` exactly → **1.96:1**, the §4.4 number | Pass |
+| Speed (§6.7 code findings < 5 s) | 4000×3000 JPEG parse + OCR: 0.9 s (downscaled to 2000 px) | Pass |
+| Licences | pdfplumber, pdfminer.six, python-docx MIT; pytesseract Apache-2.0; pypdf BSD (dev only); no AGPL | Pass |
+
+**Assumptions that failed, and the alternatives chosen**
+- *Tesseract's default layout reads text in any image.* It found **nothing** on a photo-like
+  background. Sparse mode (`--psm 11`) reads it but splits multi-line headlines and adds junk words.
+  Chosen: default mode first; if it finds no word at confidence ≥ 60, fall back to sparse mode and
+  keep only confident words containing a letter or digit. Tested both ways.
+- *OCR boxes give reliable colours everywhere.* On busy backgrounds the box spills onto the photo
+  (measured text colour `#5B2F41`, true `#222222`). Rather than report a made-up ratio, such blocks
+  are marked `busy_background`; Task 5's contrast check must skip them and the coverage statement
+  must list them as not checked (spec: "low confidence reported as not checked").
+- *pdfplumber raises pdfminer's password error.* It wraps it in its own `PdfminerException`; the
+  parser unwraps the cause to report `encrypted` rather than `unsupported`.
+- *ruff format keeps ` ` escapes.* The source ended up with invisible literal characters;
+  restored explicit escapes.
+
+**Notes for later tasks**
+- Offsets are Python code points. JavaScript strings are UTF-16, so emoji count as 2 there: the web
+  must convert offsets before highlighting (Task 15), or the Hinglish sample highlights one character off.
+- Images inside PDFs aren't extracted (alt text needs the tagged structure tree): coverage must say so.
+- `bold` is always false (Tesseract can't tell weight), and `px_height` is the word-box height, which
+  under-reads font size. Both err strict: more text is held to 4.5:1.
+- CI now installs Ubuntu's Tesseract; local is 5.5. If the OCR tests differ there, the Render image
+  (Debian) will too, so the CI result matters for Task 6.

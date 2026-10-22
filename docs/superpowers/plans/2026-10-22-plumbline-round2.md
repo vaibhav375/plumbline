@@ -249,7 +249,7 @@ def quote_in(text: str, quote: str) -> Span | None  # match ignoring case, white
 def parse_upload(filename: str, data: bytes, max_mb: int) -> Document
 ```
 
-- [ ] **Step 1:** Write the failing tests:
+- [x] **Step 1:** Write the failing tests:
   - `test_quote_in_curly_vs_straight`: `quote_in('He said “clinically proven”', '"clinically proven"')` returns a span covering `“clinically proven”`.
   - `test_quote_in_emoji_and_hindi`: for the text `"✨ नया Vitamin C serum ✨"`, `quote_in(text,"Vitamin C serum")` returns the span whose slice equals `"Vitamin C serum"`.
   - `test_parse_docx_alt_text`: the fixture image has `alt_text is None`.
@@ -259,13 +259,13 @@ def parse_upload(filename: str, data: bytes, max_mb: int) -> Document
   - `test_empty`: raises `"empty"`.
   - `test_too_large`: 11 MB of bytes raises `"too_large"`.
   - `test_png_ocr`: `parse_upload("banner_v1.png", ...)` yields an `OcrBlock` whose text contains `"GLOW IN 2 WEEKS"`, with `fg_hex` within ΔE 5 of `#B8B2A7` and `bg_hex` within ΔE 5 of `#FBF6EC`.
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Implement the module:
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Implement the module:
   - **OCR text colours:** inside each OCR box, binarise with Otsu; `fg` is the median colour of the minority pixels and `bg` the median of the majority.
   - **OCR text:** goes into `Document.text` as `ocr_text` blocks (separated by `\n\n`), so claim checks can read it in Round 3.
   - **Image size:** downscale images to a maximum of 2000 px before OCR.
-- [ ] **Step 4:** Run. Expected: PASS.
-- [ ] **Step 5:** Commit: `feat(parse): document model and parsers`.
+- [x] **Step 4:** Run. Expected: PASS.
+- [x] **Step 5:** Commit: `feat(parse): document model and parsers`.
 
 ### Task 5: Rule engine (class A), rule linter and CSV loader
 

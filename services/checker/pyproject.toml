@@ -4,13 +4,17 @@ version = "0.1.0"
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "httpx==0.28.1",
+    "pdfplumber==0.11.10",
     "pillow==13.0.0",
     "pydantic-settings==2.16.1",
+    "pytesseract==0.3.13",
+    "python-docx==1.2.0",
 ]
 
 [dependency-groups]
 dev = [
     "psycopg[binary]==3.3.6",
+    "pypdf==6.21.2",
     "pytest==9.1.1",
     "ruff==0.17.1",
 ]
