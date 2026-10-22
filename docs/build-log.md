@@ -216,3 +216,8 @@ chosen and why. Newest last.
   Fine for one service; don't add a second free Render service.
 - **Image checks are the slowest path** (4.8 s on Render's shared CPU, mostly OCR). Watch it against
   the < 5 s target in Task 14; the cheapest fix if needed is OCR at a smaller max side for large images.
+- **Bug caught by CI after deploy**: the JWKS cache started with "last fetched at 0.0", and
+  `time.monotonic()` counts from boot, so on a freshly booted machine (a CI runner, or a new Render
+  host) keys looked freshly fetched and were never loaded: every login would fail for up to a minute
+  after boot. Now "never fetched" forces a fetch. Regression test pins the clock at 5 s after boot;
+  verified it fails without the fix.

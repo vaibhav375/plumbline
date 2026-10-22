@@ -164,3 +164,20 @@ def test_jwks_fetch_uses_httpx_and_rejects_unknown_kid(monkeypatch):
     with pytest.raises(jwt.InvalidKeyError):
         jwks.get_signing_key_from_jwt(bad)
     assert len(calls) == 1  # no refetch within a minute
+
+
+def test_jwks_fetches_on_first_use_right_after_boot(monkeypatch):
+    """CI caught this: monotonic time starts near 0 on a freshly booted machine, so a 'last
+    fetched at 0.0' default looked recent and keys were never fetched."""
+    from jwt.algorithms import ECAlgorithm
+
+    jwk = json.loads(ECAlgorithm.to_jwk(KEY.public_key())) | {"kid": "test", "alg": "ES256"}
+    monkeypatch.setattr(auth.time, "monotonic", lambda: 5.0)  # 5 s after boot
+    monkeypatch.setattr(
+        auth.httpx,
+        "get",
+        lambda url, timeout: httpx.Response(
+            200, json={"keys": [jwk]}, request=httpx.Request("GET", url)
+        ),
+    )
+    assert auth.Jwks("https://test.supabase.co").get_signing_key_from_jwt(token()).key_id == "test"

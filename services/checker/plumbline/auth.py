@@ -35,7 +35,8 @@ class Jwks:
     def __init__(self, url: str):
         self.url = f"{url}/auth/v1/.well-known/jwks.json"
         self.keys: dict[str, jwt.PyJWK] = {}
-        self.fetched = 0.0
+        # None, not 0.0: monotonic time counts from boot, so right after a boot "0.0" looks recent.
+        self.fetched: float | None = None
 
     def _refresh(self) -> None:
         r = httpx.get(self.url, timeout=5)
@@ -45,8 +46,8 @@ class Jwks:
 
     def get_signing_key_from_jwt(self, token: str) -> jwt.PyJWK:
         kid = jwt.get_unverified_header(token).get("kid")
-        age = time.monotonic() - self.fetched
-        if age > 3600 or (kid not in self.keys and age > 60):
+        age = None if self.fetched is None else time.monotonic() - self.fetched
+        if age is None or age > 3600 or (kid not in self.keys and age > 60):
             self._refresh()
         if kid not in self.keys:
             raise jwt.InvalidKeyError("Unknown signing key")
