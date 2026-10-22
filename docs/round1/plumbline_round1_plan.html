@@ -1,0 +1,1033 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plumbline: Round 1 Plan (Team AtoZ)</title>
+<style>
+:root{
+  --ink:#141B2D; --muted:#5A6478; --line:#E2E5EE; --soft:#F5F6FA;
+  --accent:#4B3FD1; --accent-soft:#ECEAFD;
+  --block:#C2362B; --block-soft:#FCEBEA;
+  --major:#A86400; --major-soft:#FFF3E0;
+  --minor:#3D6FB6; --minor-soft:#EAF1FB;
+  --ok:#1E7F55; --ok-soft:#E7F5EE;
+  --cA:#0F8B8D; --cB:#4B3FD1; --cC:#D98E04;
+}
+@page{
+  size:A4; margin:12mm 14mm 14mm 14mm;
+  @bottom-left{content:"Plumbline · Team AtoZ · Round 1: The Plan"; font:8pt "Helvetica Neue",Arial,sans-serif; color:#8A92A3;}
+  @bottom-right{content:counter(page) " / " counter(pages); font:8pt "Helvetica Neue",Arial,sans-serif; color:#8A92A3;}
+}
+@page :first{ @bottom-left{content:none} @bottom-right{content:none} }
+*{box-sizing:border-box}
+html{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+body{margin:0; font:9.2pt/1.4 "Helvetica Neue",Helvetica,Arial,sans-serif; color:var(--ink); background:#fff}
+h1,h2,h3,h4{font-family:"Avenir Next","Helvetica Neue",Arial,sans-serif; margin:0; line-height:1.2}
+h2{font-size:15.5pt; font-weight:700; margin:0 0 2.5mm; letter-spacing:-.2px}
+h2 .num{color:var(--accent); margin-right:2mm}
+h3{font-size:11pt; font-weight:600; margin:3.8mm 0 1.6mm}
+h4{font-size:9.8pt; font-weight:600; margin:0 0 1mm}
+p{margin:0 0 1.8mm}
+ul,ol{margin:0 0 2.5mm; padding-left:5mm}
+li{margin:0 0 .7mm}
+a{color:var(--accent); text-decoration:none}
+small,.small{font-size:8.2pt; color:var(--muted)}
+.muted{color:var(--muted)}
+.section{break-before:page}
+.lead{font-size:10.2pt; color:#2B3347; margin-bottom:2.5mm}
+.kicker{font:600 7.8pt "Avenir Next",Arial,sans-serif; letter-spacing:1.2px; text-transform:uppercase; color:var(--accent)}
+.avoid{break-inside:avoid}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:3.5mm}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:3mm}
+.card{border:1px solid var(--line); border-radius:2.5mm; padding:2.4mm 3mm; break-inside:avoid; background:#fff}
+.card.soft{background:var(--soft); border-color:var(--soft)}
+.card.accent{background:var(--accent-soft); border-color:var(--accent-soft)}
+.callout{border-left:1.2mm solid var(--accent); background:var(--accent-soft); padding:2mm 3mm; border-radius:0 2mm 2mm 0; margin:2.4mm 0; break-inside:avoid}
+.callout.ok{border-color:var(--ok); background:var(--ok-soft)}
+.callout.warn{border-color:var(--major); background:var(--major-soft)}
+table{width:100%; border-collapse:collapse; font-size:8.2pt; line-height:1.35; margin:1.2mm 0 2.4mm}
+th{text-align:left; font:600 7.8pt "Avenir Next",Arial,sans-serif; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); border-bottom:1.5px solid var(--ink); padding:1.3mm 1.8mm}
+td{border-bottom:1px solid var(--line); padding:1.25mm 1.8mm; vertical-align:top}
+tr{break-inside:avoid}
+td.c,th.c{text-align:center}
+.tag{display:inline-block; font:600 7pt "Avenir Next",Arial,sans-serif; letter-spacing:.4px; text-transform:uppercase; padding:.4mm 1.6mm; border-radius:1mm; white-space:nowrap}
+.t-block{background:var(--block-soft); color:var(--block)}
+.t-major{background:var(--major-soft); color:var(--major)}
+.t-minor{background:var(--minor-soft); color:var(--minor)}
+.t-ok{background:var(--ok-soft); color:var(--ok)}
+.t-ai{background:var(--accent-soft); color:var(--accent)}
+.t-code{background:#E6F4F4; color:var(--cA)}
+.t-grey{background:var(--soft); color:var(--muted)}
+.mono{font-family:"SF Mono",Menlo,monospace; font-size:8pt}
+pre{font:7.2pt/1.42 "SF Mono",Menlo,monospace; background:#0F1525; color:#DDE3F3; padding:3mm 3.5mm; border-radius:2mm; margin:1.5mm 0 3mm; white-space:pre-wrap; break-inside:avoid}
+pre .k{color:#9DB4FF} pre .s{color:#A8E6C1} pre .c{color:#7F8AA6}
+sup.ref{font-size:6.5pt; color:var(--accent); font-weight:600}
+.stat{font:700 18pt "Avenir Next",Arial,sans-serif; color:var(--accent); line-height:1}
+.stat-l{font-size:8.3pt; color:#2B3347; margin-top:1mm}
+
+/* cover */
+.cover-top{display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1px solid var(--line); padding-bottom:3mm}
+.brandmark{display:flex; gap:3mm; align-items:center}
+.title{font:700 32pt "Avenir Next",Arial,sans-serif; letter-spacing:-1px; margin:6mm 0 1.5mm}
+.subtitle{font-size:11pt; line-height:1.42; color:#2B3347; max-width:170mm; margin-bottom:3.5mm}
+.fourlines td:first-child{width:30mm; font:600 8.5pt "Avenir Next",Arial,sans-serif; color:var(--accent); text-transform:uppercase; letter-spacing:.5px}
+.fourlines td{font-size:9pt; padding:1.5mm 2mm}
+.impr{counter-reset:i}
+.impr .card{position:relative; padding-left:11mm}
+.impr .card:before{counter-increment:i; content:counter(i); position:absolute; left:3mm; top:3mm; width:6mm; height:6mm; border-radius:50%; background:var(--accent); color:#fff; font:700 9pt/6mm "Avenir Next",Arial,sans-serif; text-align:center}
+.target{display:block; margin-top:1.2mm; font-size:8.2pt; color:var(--ok); font-weight:600}
+
+/* workflow */
+.flow{display:grid; grid-template-columns:repeat(7,1fr); gap:2mm; margin:2mm 0 0}
+.flow .step{background:var(--soft); border-radius:2mm; padding:2.4mm 2.2mm; position:relative; font-size:7.9pt; line-height:1.35}
+.flow .step b{display:block; font:700 9pt "Avenir Next",Arial,sans-serif; margin-bottom:.6mm}
+.flow .step .who{display:block; color:var(--accent); font:600 7pt "Avenir Next",Arial,sans-serif; text-transform:uppercase; letter-spacing:.4px; margin-bottom:1mm}
+.flow .step .n{position:absolute; right:2mm; top:1.8mm; font:700 12pt "Avenir Next",Arial,sans-serif; color:#C9CDE0}
+.loop{margin:1.5mm 0 3mm; border:1.5px dashed var(--accent); border-top:none; border-radius:0 0 3mm 3mm; height:5mm; position:relative}
+.loop span{position:absolute; left:50%; transform:translateX(-50%); bottom:-2.6mm; background:#fff; padding:0 2mm; font:600 7.8pt "Avenir Next",Arial,sans-serif; color:var(--accent); white-space:nowrap}
+
+/* mockup */
+.mock{border:1px solid #CBD0DE; border-radius:3mm; overflow:hidden; break-inside:avoid; font-size:8.2pt}
+.mock-bar{background:#F0F2F7; padding:1.8mm 3mm; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #DDE1EA}
+.mock-bar b{font:700 8.6pt "Avenir Next",Arial,sans-serif}
+.mock-body{display:grid; grid-template-columns:44% 56%}
+.mock-left{padding:3mm; border-right:1px solid #E3E6EE}
+.mock-right{padding:2.5mm; background:#FAFBFD}
+.draft{font-size:9pt; line-height:1.6}
+.hl{border-radius:.8mm; padding:0 .4mm}
+.hl.b{background:#F9D7D3} .hl.m{background:#FDE7C2} .hl.n{background:#D9E6F8}
+.hl sup{font:700 6pt "Avenir Next",Arial,sans-serif; color:var(--ink)}
+.intent{margin-top:3mm; background:#fff; border:1px solid var(--line); border-radius:2mm; padding:2mm 2.5mm; font-size:7.8pt}
+.intent b{font-family:"Avenir Next",Arial,sans-serif}
+.banner{margin-top:2.5mm; height:20mm; border-radius:1.5mm; background:#FBF6EC; border:1px solid #E8E0CF; position:relative; overflow:hidden}
+.banner .t{position:absolute; left:3mm; top:3mm; color:#B8B2A7; font:700 10pt "Avenir Next",Arial,sans-serif}
+.banner .p{position:absolute; right:0; top:0; bottom:0; width:16mm; background:#FF3EA5}
+.banner .logo{position:absolute; left:3mm; bottom:2.5mm; font:700 8pt "Avenir Next",Arial,sans-serif; color:#0F4C5C; transform:scaleX(1.12); transform-origin:left}
+.fc{background:#fff; border:1px solid var(--line); border-radius:2mm; padding:2mm 2.4mm; margin-bottom:1.8mm}
+.fc .hd{display:flex; gap:1.5mm; align-items:center; margin-bottom:1mm; flex-wrap:wrap}
+.fc .q{font-style:italic; color:#2B3347}
+.fc .src{font-size:7.5pt; color:var(--muted); margin-top:.8mm}
+.fc .fix{margin-top:1mm; background:var(--ok-soft); border-radius:1.2mm; padding:1mm 1.8mm; font-size:7.9pt}
+.fc .act{margin-top:1.2mm; display:flex; gap:1.5mm}
+.btn{font:600 7pt "Avenir Next",Arial,sans-serif; border:1px solid #CBD0DE; border-radius:1mm; padding:.4mm 1.8mm; color:#2B3347}
+.btn.p{background:var(--ink); color:#fff; border-color:var(--ink)}
+.mini{display:grid; grid-template-columns:auto 1fr; gap:.8mm 2mm; font-size:7.6pt; margin-top:1mm}
+.mock-foot{background:#F0F2F7; border-top:1px solid #DDE1EA; padding:1.8mm 3mm; display:flex; justify-content:space-between; font-size:7.8pt}
+
+/* architecture */
+.arch{display:grid; grid-template-columns:30mm 6mm 1fr 6mm 1fr 6mm 32mm; align-items:stretch; margin:2mm 0 3mm; font-size:7.8pt}
+.arch .col{display:flex; flex-direction:column; gap:2mm}
+.arch .box{border:1px solid #CBD0DE; border-radius:2mm; padding:2mm; background:#fff}
+.arch .box.dark{background:var(--ink); color:#fff; border-color:var(--ink)}
+.arch .box.ac{background:var(--accent-soft); border-color:#D3CEFA}
+.arch .box h4{font-size:8.4pt; margin-bottom:.8mm}
+.arch .arrow{display:flex; align-items:center; justify-content:center; color:var(--accent); font-size:13pt}
+.chips{display:flex; flex-wrap:wrap; gap:1mm; margin-top:1mm}
+.chip{background:var(--soft); border-radius:1mm; padding:.3mm 1.4mm; font-size:7.1pt; color:#2B3347}
+.box.dark .chip{background:#26304A; color:#E6E9F5}
+
+.matrix td.c{font-size:10pt}
+.dot-full{color:var(--ink)} .dot-half{color:#8A92A3} .dot-none{color:#C3C8D4}
+.legend{display:flex; gap:4mm; font-size:7.8pt; color:var(--muted); margin-top:-1mm}
+.sw{display:inline-block; width:3mm; height:3mm; border-radius:.6mm; vertical-align:-.4mm; margin-right:1mm}
+.refs li{font-size:7.9pt; margin-bottom:1.2mm; word-break:break-word}
+.two-col-list{columns:2; column-gap:6mm}
+.audit{font-size:6.5pt;line-height:1.25;margin:0}
+.audit td,.audit th{padding:.22mm .7mm}
+.audit th{font-size:6.4pt}
+.audit .mono{font-size:6pt}
+.refs.two-col-list li{font-size:7.4pt}
+</style>
+
+</head>
+<body>
+<!-- ============ COVER ============ -->
+<div class="cover-top">
+  <div class="brandmark">
+    <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><line x1="17" y1="2" x2="17" y2="19" stroke="#4B3FD1" stroke-width="1.6"/><path d="M17 19 L25 25 L17 33 L9 25 Z" fill="#4B3FD1"/><line x1="6" y1="2" x2="28" y2="2" stroke="#141B2D" stroke-width="2.4"/></svg>
+    <div><div class="kicker">Inkloom AI problem statement</div><div style="font:600 10pt 'Avenir Next',Arial,sans-serif">Brand governance before publication</div></div>
+  </div>
+  <div style="text-align:right"><div class="kicker">Round 1 · The Plan</div><div style="font:600 10pt 'Avenir Next',Arial,sans-serif">Team AtoZ · Vaibhav Handoo</div><div class="small">Solo participant</div><div class="small">October 2026</div></div>
+</div>
+
+<div class="title">Plumbline</div>
+<div class="subtitle">A pre-publication checkpoint that tests copy, claims and measurable visual rules against the organisation's own rules, facts and approved wording. It shows the evidence for each issue, says what it did not check, and learns which guidelines are unclear. People make every decision.</div>
+
+<table class="fourlines">
+  <tr><td>The problem</td><td>Content comes from employees, agencies, influencers and AI tools faster than a brand team can review it. Wrong claims, stale facts, off-brand tone and visuals, and accessibility gaps reach the public, and the same mistakes repeat because corrections never feed back.</td></tr>
+  <tr><td>Who has it</td><td>Small brand teams in mid-size organisations (first: Indian D2C personal care) who govern content from dozens of creators; compliance reviewers who sign off claims; and creators and agencies, who wait days for vague feedback.</td></tr>
+  <tr><td>How I solve it</td><td>Turn the brand book into <b>testable rules</b> and a <b>live fact ledger</b> with owners, expiry dates and <b>approved wording</b>. Code checks first, AI only for judgement. <b>Every finding cites its source, every report lists what was not checked, and claims are fixed only with approved wording.</b> Legal and accessibility rules block from day one; brand rules earn the right to block.</td></tr>
+  <tr><td>What I build, in order</td><td>① Rulebook, fact ledger and approved wording → ② text checks with cited findings → ③ fixes: approved-wording swaps and the intent lock → ④ review workflow and guideline health v1 <span class="tag t-ai">Round 2 · 40 h</span> → ⑤ integrations (Slack, link, publish gate) → ⑥ deeper visual checks → ⑦ claim recall and rule maturity → ⑧ evaluation and hardening <span class="tag t-ai">Round 3 · 78 h + buffer</span></td></tr>
+</table>
+
+<h3 style="margin-top:2.5mm">The three improvements I commit to deliver <span class="small" style="font-weight:400">(v1 by Round 2; measured by Round 3)</span></h3>
+<div class="grid3 impr">
+  <div class="card"><h4>Evidence or silence, and silence is never clearance</h4>Every finding cites a rule or fact, quotes the text and passes a second-model support check. Every report lists what was not checked.<span class="target">Target: ≥ 95% citation correctness (human-checked); recall ≥ 90% on seeded claims, ≥ 80% on public ASCI decisions</span></div>
+  <div class="card"><h4>Fixes that keep intent and never invent claims</h4>Claims are fixed only with approved wording from the ledger; other copy gets minimal rewrites that pass five intent checks.<span class="target">Target: 0 invented claims in a 200-fix audit; ≥ 70% of fixes accepted in user tests</span></div>
+  <div class="card"><h4>Guidelines get clearer; rules earn the right to block</h4>Override and disagreement rates per rule. Brand rules stay advisory until reviewers agree with them; unclear rules get a drafted rewrite.<span class="target">Target: top-5 "unclear rules" includes ≥ 2 of the 3 rules testers name as most confusing, before seeing it</span></div>
+</div>
+
+<h3 style="margin-top:3mm">Where each Round 1 requirement is answered</h3>
+<table>
+  <tr><th style="width:60%">Required item</th><th>Section</th><th>Judging criterion</th></tr>
+  <tr><td>Problem definition and evidence that the problem is real</td><td>1</td><td>Understanding (25)</td></tr>
+  <tr><td>Target users, their needs and the organisational setting</td><td>2</td><td>Understanding (25)</td></tr>
+  <tr><td>Research: desk research, an audit with a blind AI second rater, a labelled synthetic stress test, interview plan</td><td>3</td><td>Understanding · Originality</td></tr>
+  <tr><td>Proposed solution, value proposition and end-to-end workflow</td><td>4</td><td>Solution (25) · Originality (15)</td></tr>
+  <tr><td>Planned features, technology stack, integrations and data sources</td><td>5, 6</td><td>Technical plan (20)</td></tr>
+  <tr><td>Responsible design: privacy, security and human oversight</td><td>7</td><td>Solution · Technical plan</td></tr>
+  <tr><td>Development plan with buffered hours, role allocation and expected impact</td><td>8, 9, 10</td><td>Feasibility and scope (15)</td></tr>
+</table>
+
+<!-- ============ 1. PROBLEM ============ -->
+<div class="section">
+<div class="kicker">Understanding the problem</div>
+<h2><span class="num">1</span>The problem, and evidence that it is real</h2>
+<p class="lead">Brand governance used to be a design question, such as whether the logo sat on the right background. It is now a question of volume, accuracy and legal liability.</p>
+
+<h3>1.1 More content, from more hands, including machines</h3>
+<div class="grid3">
+  <div class="card soft"><div class="stat">71%</div><div class="stat-l">of 1,600+ marketers expect content demand to grow at least fivefold by 2027; 62% say it already grew 5× or more in the prior two years (Adobe, 2025). <sup class="ref">[1]</sup></div></div>
+  <div class="card soft"><div class="stat">&gt;70%</div><div class="stat-l">of 200+ CMOs surveyed by BCG (2024) were concerned about generative AI's impact on creativity and brand voice. In Gartner's survey of 418 marketers, 77% explore generative AI but only 44% report significant benefits. <sup class="ref">[2][3]</sup></div></div>
+  <div class="card soft"><div class="stat">77%</div><div class="stat-l">of professionals saw off-brand content produced at their company; only 31% said brand guidelines were enforced consistently (Lucidpress survey, n = 452, 2021, as reported by Contently; dated, but the most recent figure I found). <sup class="ref">[4]</sup></div></div>
+</div>
+
+<h3>1.2 Each failure in the problem statement shows up in public data</h3>
+<table>
+  <tr><th style="width:23%">Failure named in the brief</th><th>Evidence, with its limits</th></tr>
+  <tr><td><b>Incorrect and unsupported claims</b></td><td>India's Advertising Standards Council scrutinised 7,199 ads in FY2024-25 and found that <b>98% required modification</b>, as did 98% of the 1,015 influencer ads it investigated. <i>This is a targeted sample: ASCI selects ads through complaints and its own monitoring, and offshore betting made up 43% of cases.</i> <sup class="ref">[5]</sup> A 2020 EU screening of websites judged <b>42% of green claims</b> possibly exaggerated, false or deceptive, and in 59% the trader gave no easily accessible evidence. <i>Also targeted, not a base rate.</i> <sup class="ref">[6]</sup></td></tr>
+  <tr><td><b>Outdated or contradictory information</b></td><td>Illustrative case: in <i>Moffatt v. Air Canada</i> (2024 BCCRT 149) the airline was held liable after its website chatbot contradicted its own bereavement-fare policy page; the tribunal held the company responsible for all information on its site. <sup class="ref">[7]</sup></td></tr>
+  <tr><td><b>AI-generated errors</b></td><td>Illustrative case: Deloitte Australia agreed to partially refund a roughly A$440,000 government report found to contain fabricated references and a made-up court quote; the revised version disclosed its use of generative AI (October 2025). <sup class="ref">[8]</sup></td></tr>
+  <tr><td><b>Accessibility</b></td><td><b>95.9%</b> of the top one million home pages have detectable WCAG 2 failures; low-contrast text appears on 83.9% and missing alt text on 53.1% (WebAIM Million, 2026, automated testing only). <sup class="ref">[9]</sup></td></tr>
+  <tr><td><b>Slow, repetitive review</b></td><td>The average number of revisions before approval rose from three rounds in 2007 to five in 2025 (IPA, WFA and partners, <i>The BetterIdeas Project</i>). <sup class="ref">[10]</sup></td></tr>
+</table>
+
+<h3>1.3 Why now: in India, a wrong claim now costs the brand and the endorser</h3>
+<div class="grid2">
+  <div class="card"><h4>Misleading ads and endorsements</h4>The CCPA's guidelines, notified on 9 June 2022 under the Consumer Protection Act, 2019, set conditions for non-misleading ads and disclaimers and make endorsers do due diligence. Penalties reach ₹10 lakh, or ₹50 lakh for repeat violations, for manufacturers and endorsers. <sup class="ref">[26]</sup></div>
+  <div class="card"><h4>Greenwashing</h4>The CCPA's Guidelines for Prevention and Regulation of Greenwashing or Misleading Environmental Claims (15 October 2024) require terms such as "eco-friendly", "natural" and "sustainable" to be qualified and substantiated. <sup class="ref">[13]</sup></div>
+  <div class="card"><h4>Influencer disclosure</h4>ASCI's influencer guidelines (in force since 2021) require an upfront label from an approved list (Advertisement, Ad, Sponsored, Collaboration, Partnership, Employee, Free gift) whenever there is a material connection, superimposed on image-only posts. In FY2024-25, 98% of the 1,015 influencer ads ASCI investigated needed changes. <sup class="ref">[5][27]</sup></div>
+  <div class="card"><h4>Beyond India (roadmap regimes)</h4>The EU bans generic green claims from 27 September 2026 <sup class="ref">[11]</sup>; the UK CMA can fine up to 10% of global turnover since April 2025 <sup class="ref">[12]</sup>; the European Accessibility Act applies from 28 June 2025. <sup class="ref">[14]</sup></div>
+</div>
+
+<div class="avoid"><h3>1.4 Root causes (my analysis)</h3>
+<ol>
+  <li><b>Guidelines live in PDFs, not where content is made.</b> Agencies, influencers and AI tools never see them at the moment of writing.</li>
+  <li><b>Facts have no single owner, expiry date or approved wording.</b> Prices, study results and launch dates change; old copy keeps being reused, and nobody can find where an outdated claim is still live.</li>
+  <li><b>Review is manual, late and sequential.</b> Mechanical issues use up reviewer time that should go to judgement calls.</li>
+  <li><b>Checks look for what is wrong, not for what is missing.</b> Required disclaimers, risk warnings and paid-partnership labels are verified by memory.</li>
+  <li><b>Feedback does not build up, and many guidelines cannot be tested as written.</b> In the style guide I audited (§3.2), 15–20% of rules have no threshold or example, rising to more than half of its voice-and-tone rules.</li>
+</ol></div>
+<div class="callout"><b>Problem, in one sentence:</b> organisations cannot check, at the speed content is now produced, that what they publish is accurate, on-brand and accessible, and they cannot learn from the corrections they already make.</div>
+</div>
+
+<!-- ============ 2. USERS ============ -->
+<div style="margin-top:5mm">
+<div class="kicker">Understanding the problem</div>
+<h2><span class="num">2</span>Who has the problem, and where they work</h2>
+
+<h3>2.1 Organisational setting</h3>
+<p>Mid-size organisations, roughly 200 to 5,000 employees, where a small central brand or marketing-ops team governs content created by many others: regional and product marketers, sales and HR, external agencies and freelancers, influencers, and increasingly AI writing and image tools. The pain is sharpest where claims carry legal risk: consumer goods and D2C (beauty, food, wellness), fintech, health and education.</p>
+<div class="callout"><b>Beachhead for the build:</b> an Indian D2C personal-care brand, under one regime (ASCI and the CCPA; EU rules are on the roadmap). It makes many claims, relies on agencies and influencers, and publishes on Instagram (organic and influencer), Meta Ads, its Shopify store and email. The fictional brand <b>Aurelle Skin</b> is used throughout this plan and in the demo. Team sizes and workflows are working assumptions that the interviews in §3.5 will test.</div>
+
+<h3>2.2 Users, needs and what Plumbline gives each of them</h3>
+<table>
+  <tr><th style="width:14%">Role</th><th style="width:16%">Who</th><th style="width:23%">Pain today</th><th style="width:19%">What they need</th><th>What Plumbline gives them</th></tr>
+  <tr><td><b>Creator</b></td><td>Marketer, social executive, designer</td><td>Waits days for review; vague "off-brand" comments; checks mechanics by hand late at night</td><td>Fast, specific feedback; ship on time; keep their idea</td><td>A <b>private pre-check</b> in about a minute, each finding with the exact rule and a ready fix; results in Slack</td></tr>
+  <tr><td><b>External creator</b></td><td>Agency, freelancer, influencer</td><td>Works from an outdated PDF; one portal per client; fears blame</td><td>Current rules without logins or exposure</td><td>A <b>no-login check link</b> per brief; private pre-checks; the same insight views about its work that the client sees</td></tr>
+  <tr><td><b>Brand reviewer</b></td><td>Brand manager, design lead</td><td>Reviews commas, casing and logo spacing instead of decisions</td><td>Review less, decide better, stay consistent</td><td>Mechanical issues cleared before review; a risk-sorted queue; approved exceptions that stick</td></tr>
+  <tr><td><b>Compliance reviewer</b></td><td>Legal, regulatory or medical-claims reviewer</td><td>Claims buried in copy; evidence in email; edits after sign-off</td><td>Every claim substantiated; an audit trail; nothing invented</td><td>Claim-by-claim evidence; fixes only from approved wording; tamper-evident, exportable log</td></tr>
+  <tr><td><b>Brand owner</b></td><td>Head of brand (the admin)</td><td>Cannot tell whether people are careless or the guideline is unclear</td><td>Guidelines that are followed and understood</td><td>Guideline health, rule maturity, and recall tasks when a fact changes</td></tr>
+</table>
+
+<h3>2.3 Jobs to be done (my hypotheses, tested in §3.5)</h3>
+<ul style="margin-bottom:0">
+  <li><b>Creator:</b> when I finish a draft, I want to know what will be flagged before a reviewer sees it, so I don't lose a round. <i>Never:</i> a public scoreboard of drafts.</li>
+  <li><b>Compliance:</b> when a claim reaches me, I want its evidence beside it, so I can approve in minutes. <i>Never:</i> a tool that invents claim wording.</li>
+  <li><b>Brand owner:</b> when a mistake keeps recurring, I want to know whether people are careless or my guideline is unclear. <i>Never:</i> confidential facts leaking.</li>
+</ul>
+</div>
+</div>
+
+<!-- ============ 3. RESEARCH ============ -->
+<div class="section">
+<div class="kicker">Research and evidence</div>
+<h2><span class="num">3</span>Research and supporting evidence</h2>
+
+<h3>3.1 Desk research</h3>
+<p>I reviewed 27 sources: industry surveys (Adobe, Gartner, BCG, Lucidpress, IPA), regulators and enforcement data (ASCI, CCPA, European Commission, CMA, EU directives), a tribunal decision, accessibility data (WebAIM) and the public product material of ten existing tools (Appendix A). The search used AI assistance; every figure was cross-checked against its cited source or published coverage of it, and the limits of each figure are stated where it is used.</p>
+
+<h3>3.2 Original observation: how testable is a real style guide?</h3>
+<p><b>Method.</b> I took the Mailchimp Content Style Guide (public, CC BY-NC 4.0), a widely cited mature guide, and listed every directive rule in five sections: 114 rules. Each was given one class, and a second rater classified all 114 blind. Appendix B lists every rule and both ratings.</p>
+<div class="grid3" style="margin-bottom:2mm">
+  <div class="card"><span class="tag" style="background:#E6F4F4;color:var(--cA)">A · code-checkable</span><p style="margin-top:1mm">A pattern, word list, count or markup check decides it.<br><span class="small">e.g. "Use the % symbol instead of spelling out percent"</span></p></div>
+  <div class="card"><span class="tag t-ai">B · needs understanding</span><p style="margin-top:1mm">Needs language or visual understanding, but has a clear criterion.<br><span class="small">e.g. "Use positive language rather than negative language"</span></p></div>
+  <div class="card"><span class="tag" style="background:#FFF3E0;color:var(--cC)">C · ambiguous as written</span><p style="margin-top:1mm">No threshold or example; careful reviewers could disagree.<br><span class="small">e.g. "Use emoji infrequently and deliberately"</span></p></div>
+</div>
+<svg width="100%" viewBox="0 0 680 220" role="img" aria-label="Stacked bar chart of rule testability by section" style="display:block">
+  <style>.lb{font:600 10.5px "Avenir Next",Arial,sans-serif;fill:#141B2D}.sm{font:9.5px "Helvetica Neue",Arial,sans-serif;fill:#5A6478}.in{font:700 10px "Avenir Next",Arial,sans-serif;fill:#fff}</style>
+  <!-- bar area x=190..650 (460px) -->
+  <g>
+    <text class="lb" x="0" y="22">All rules</text><text class="sm" x="0" y="34">114 rules</text>
+    <rect x="190" y="12" width="209.8" height="24" fill="#0F8B8D"/><text class="in" x="198" y="28">A 46%</text>
+    <rect x="399.8" y="12" width="181.6" height="24" fill="#4B3FD1"/><text class="in" x="408" y="28">B 39%</text>
+    <rect x="581.4" y="12" width="68.6" height="24" fill="#D98E04"/><text class="in" x="589" y="28">C 15%</text>
+  </g>
+  <line x1="0" x2="650" y1="48" y2="48" stroke="#E2E5EE"/>
+  <g>
+    <text class="lb" x="0" y="70">Voice and tone</text><text class="sm" x="0" y="82">11 rules</text>
+    <rect x="190" y="60" width="209.1" height="22" fill="#4B3FD1"/><text class="in" x="198" y="75">B 5</text>
+    <rect x="399.1" y="60" width="250.9" height="22" fill="#D98E04"/><text class="in" x="407" y="75">C 6 · 55% ambiguous</text>
+  </g>
+  <g>
+    <text class="lb" x="0" y="102">Grammar and mechanics</text><text class="sm" x="0" y="114">61 rules</text>
+    <rect x="190" y="92" width="256.4" height="22" fill="#0F8B8D"/><text class="in" x="198" y="107">A 34</text>
+    <rect x="446.4" y="92" width="150.8" height="22" fill="#4B3FD1"/><text class="in" x="454" y="107">B 20</text>
+    <rect x="597.2" y="92" width="52.8" height="22" fill="#D98E04"/><text class="in" x="604" y="107">C 7</text>
+  </g>
+  <g>
+    <text class="lb" x="0" y="134">Writing about people</text><text class="sm" x="0" y="146">20 rules</text>
+    <rect x="190" y="124" width="207" height="22" fill="#0F8B8D"/><text class="in" x="198" y="139">A 9</text>
+    <rect x="397" y="124" width="253" height="22" fill="#4B3FD1"/><text class="in" x="405" y="139">B 11</text>
+  </g>
+  <g>
+    <text class="lb" x="0" y="166">Accessibility</text><text class="sm" x="0" y="178">13 rules</text>
+    <rect x="190" y="156" width="212.3" height="22" fill="#0F8B8D"/><text class="in" x="198" y="171">A 6</text>
+    <rect x="402.3" y="156" width="176.9" height="22" fill="#4B3FD1"/><text class="in" x="410" y="171">B 5</text>
+    <rect x="579.2" y="156" width="70.8" height="22" fill="#D98E04"/><text class="in" x="586" y="171">C 2</text>
+  </g>
+  <g>
+    <text class="lb" x="0" y="198">Social media</text><text class="sm" x="0" y="210">9 rules</text>
+    <rect x="190" y="188" width="153.3" height="22" fill="#0F8B8D"/><text class="in" x="198" y="203">A 3</text>
+    <rect x="343.3" y="188" width="204.5" height="22" fill="#4B3FD1"/><text class="in" x="351" y="203">B 4</text>
+    <rect x="547.8" y="188" width="102.2" height="22" fill="#D98E04"/><text class="in" x="555" y="203">C 2</text>
+  </g>
+</svg>
+<div class="legend"><span><span class="sw" style="background:#0F8B8D"></span>A code-checkable</span><span><span class="sw" style="background:#4B3FD1"></span>B needs understanding</span><span><span class="sw" style="background:#D98E04"></span>C ambiguous as written</span></div>
+<p style="margin-top:2mm"><b>An AI baseline, to be compared with human rating.</b> Both raters so far are AI-assisted (the author working with Claude, and Claude run blind). I use this AI rating deliberately as a baseline: in Round 2, human raters will classify the same rules blind, and I will report how closely AI and human judgement agree. That comparison matters to the product itself, because Plumbline relies on AI to sort rules into these classes. Until then, these figures show the scheme is applied consistently by AI, not that humans agree. The blind AI rater agreed with the first rater on 94 of 114 rules (82.5%, Cohen's κ = 0.72). It found more ambiguity, not less: 23 rules (20%) ambiguous overall and 9 of 11 voice-and-tone rules; only one rule left class C (the contrast rule, which WCAG makes measurable). <b>Notable details:</b> five separate rules say "sparingly" or "rarely" (emoji, exclamation points, ellipses, semicolons, hashtags) without a number, and the accessibility section says "aim for high contrast" without the WCAG 4.5:1 ratio.</p>
+<table>
+  <tr><th style="width:37%">Finding</th><th>Design decision it drives</th></tr>
+  <tr><td>In this guide, nearly half of the rules (46–48%) need no AI at all</td><td><b>Code first</b>, and a <b>code-only mode</b> for organisations that cannot send content to any AI provider</td></tr>
+  <tr><td>A third or more (32–39%) need judgement</td><td><b>AI with a cited rule, a quoted span and a support check</b>, or the finding is not shown</td></tr>
+  <tr><td>15–20% give no threshold or example, so reviewers can disagree</td><td>A <b>rule linter</b> flags them on import (Round 2); they do not run until the owner adds a threshold or examples</td></tr>
+  <tr><td>Brand voice is the least testable part (55% ambiguous)</td><td>Disagreement will cluster here, so this is where <b>guideline health</b> matters most</td></tr>
+</table>
+<p class="small"><b>Limitations:</b> one guide, which is grammar-heavy, so the shares will differ for claims-heavy brand books; in Round 2 I will add human raters, with a worked example of each class in their instructions, and repeat the audit on a D2C brand book and one more public guide.</p>
+</div>
+
+<div class="section">
+<h3 style="margin-top:0">3.3 Existing tools: what is already solved, and the gap</h3>
+<p><b>My wedge in one line: the claim discipline pharma and finance already pay for, at a mid-size price, for consumer brands whose content comes from agencies, influencers and AI.</b> Much of this space is served. Writing-governance tools (Markup AI, Writer, Grammarly Business) check style and flag claims; AI proofing and DAM agents check custom rules and logos; regulated industries already pay for <b>claims libraries with "where used" tracking</b> (pharma) and <b>AI compliance review</b> (finance). Plumbline's position is to bring that claim discipline to <b>mid-size consumer brands</b> whose content comes from agencies, influencers and AI tools, and to add three things I did not find advertised by any tool I reviewed: <b>rules that earn the right to block, reports that state what was not checked, and guidelines diagnosed by reviewer decisions.</b> It can sit in front of an existing proofing tool rather than replace it.</p>
+<table class="matrix">
+  <tr><th style="width:31%">Capability</th><th class="c">Writing governance<br><span style="text-transform:none;font-weight:400">Markup AI, Writer, Grammarly <sup class="ref">[16][20]</sup></span></th><th class="c">AI proofing / DAM<br><span style="text-transform:none;font-weight:400">Filestage, Bynder <sup class="ref">[21][22]</sup></span></th><th class="c">Regulated compliance<br><span style="text-transform:none;font-weight:400">Veeva, Saifr, Red Marker <sup class="ref">[23][24][25]</sup></span></th><th class="c">Generation suites<br><span style="text-transform:none;font-weight:400">Jasper, Adobe <sup class="ref">[17][18]</sup></span></th><th class="c" style="color:var(--accent)">Plumbline<br><span style="text-transform:none;font-weight:400">planned</span></th></tr>
+  <tr><td>Rule, tone and terminology checks on text</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c">●</td></tr>
+  <tr><td>Visual brand checks (logos, colours)</td><td class="c dot-none">–</td><td class="c">●</td><td class="c dot-half">◐</td><td class="c">●</td><td class="c">●</td></tr>
+  <tr><td>Flags claims that need substantiation</td><td class="c">●</td><td class="c dot-half">◐</td><td class="c">●</td><td class="c dot-none">–</td><td class="c">●</td></tr>
+  <tr><td>Checks that required content is present</td><td class="c dot-none">–</td><td class="c">●</td><td class="c">●</td><td class="c dot-none">–</td><td class="c">●</td></tr>
+  <tr><td>Claims library with "where used" tracking</td><td class="c dot-none">–</td><td class="c dot-none">–</td><td class="c">● <span class="small">pharma</span></td><td class="c dot-none">–</td><td class="c">●</td></tr>
+  <tr><td>Review and approval workflow</td><td class="c dot-half">◐</td><td class="c">●</td><td class="c">●</td><td class="c dot-half">◐</td><td class="c">●</td></tr>
+  <tr><td>Claim fixes restricted to approved wording</td><td class="c dot-none">–</td><td class="c dot-none">–</td><td class="c dot-half">◐</td><td class="c dot-none">–</td><td class="c">●</td></tr>
+  <tr><td>Report states what was not checked; no pass score</td><td class="c dot-none">–</td><td class="c dot-none">–</td><td class="c dot-none">–</td><td class="c dot-none">–</td><td class="c">●</td></tr>
+  <tr><td>Rules earn the right to block (shadow mode, per-rule agreement)</td><td class="c dot-none">–</td><td class="c dot-none">–</td><td class="c dot-none">–</td><td class="c dot-none">–</td><td class="c">●</td></tr>
+  <tr><td>Guideline health from reviewer decisions</td><td class="c dot-half">◐</td><td class="c dot-none">–</td><td class="c dot-none">–</td><td class="c dot-none">–</td><td class="c">●</td></tr>
+  <tr><td>Code-only mode with no external AI calls</td><td class="c dot-half">◐</td><td class="c dot-none">–</td><td class="c dot-none">–</td><td class="c dot-none">–</td><td class="c">●</td></tr>
+</table>
+<p class="small">From vendors' public product pages, help articles and press releases, October 2026. ● advertised by at least one listed product · ◐ partial (e.g. via custom rules; suggested wording that is model-generated; issue analytics per guideline; a rules engine without generative AI) · – not found in the public material I reviewed, which is not a claim that it does not exist. Plumbline's column is planned, not built.</p>
+
+<h3>3.4 Synthetic stress test (design critique, not user research)</h3>
+<p>Before real interviews, I stress-tested the concept with eight AI-simulated personas, one per role, who answered the interview guide before seeing the concept and then made a pilot decision. Each answered "yes, if…", and the conditions shaped several design choices (approved-wording swaps, the coverage statement, private pre-checks, the accessibility floor), and each is now hypothesis H6 for real interviews to confirm or overturn. Nothing from the panel is used as evidence of demand; details are in Appendix E.</p>
+
+<h3>3.5 Primary validation plan (before the window; results reported in Round 2)</h3>
+<p><b>Status:</b> not yet conducted at submission. <b>Plan:</b> before the window opens (rule 2 allows research), 6 to 8 interviews (brand managers, agency writers, at least one compliance reviewer) and a 10-question survey (target 30+ responses), using Appendix C; continued during the window if it is longer than a few days. Each hypothesis states what I would change if it is false.</p>
+<table>
+  <tr><th style="width:5%">#</th><th style="width:48%">Hypothesis</th><th>If false, I will…</th></tr>
+  <tr><td>H1</td><td>Reviewers spend most review time on mechanical issues.</td><td>Shift effort from code checks to judgement quality and routing.</td></tr>
+  <tr><td>H2</td><td>Creators prefer an editable suggested fix to a list of violations.</td><td>Make suggestions opt-in and lead with explanations.</td></tr>
+  <tr><td>H3</td><td>Brand owners can name at least three rules their teams interpret differently.</td><td>Give guideline health a lower priority than insights by source.</td></tr>
+  <tr><td>H4</td><td>Claim evidence lives in email and spreadsheets, not a system.</td><td>Integrate with their system instead of building ledger screens.</td></tr>
+  <tr><td>H5</td><td>Brand owners would pay per organisation from the marketing budget, not per seat.</td><td>Test per-seat or agency-paid pricing instead.</td></tr>
+  <tr><td>H6</td><td>The conditions raised by the synthetic panel (Appendix E) matter to real reviewers.</td><td>Drop the design choices real users do not confirm.</td></tr>
+</table>
+</div>
+
+<!-- ============ 4. SOLUTION ============ -->
+<div style="margin-top:6mm">
+<div class="kicker">The proposed solution</div>
+<h2><span class="num">4</span>Plumbline: the solution</h2>
+<div class="callout"><b>Value proposition.</b> Plumbline lets any creator (an employee, an agency, an influencer or an AI tool) publish content the brand team would approve. It checks content against the organisation's own rules, facts and approved wording, shows the evidence for every issue, says what it did not check, and fixes problems without inventing claims or losing what the creator meant.</div>
+
+<h3>4.1 Six principles that balance automation with human control</h3>
+<div class="grid3">
+  <div class="card"><h4>1 · Code first, AI second</h4>Plain code decides whatever code can decide (nearly half the rules in the guide I audited). A code-only mode makes no external calls.</div>
+  <div class="card"><h4>2 · Evidence or silence; silence is not clearance</h4>A finding without a valid citation and quote is never shown, and every report lists what was not checked. No pass badge or score.</div>
+  <div class="card"><h4>3 · Suggest, never silently change</h4>One-click fixes still need a click. Nothing is auto-published, and accessibility and claim fixes are never applied automatically.</div>
+  <div class="card"><h4>4 · Never invent a claim</h4>Regulated claims are fixed only with approved wording from the ledger. Other rewrites must pass five intent checks.</div>
+  <div class="card"><h4>5 · Two tiers of rules</h4>Legal and accessibility rules block from go-live, after a setup back-test. Brand rules start advisory and earn the right to block once reviewers reliably agree with them.</div>
+  <div class="card"><h4>6 · Confidential facts stay out of prompts</h4>Confidential facts never enter a prompt. Draft text that matches them is masked, with the catch rate measured; code-only mode closes the gap. Agencies never see a match.</div>
+</div>
+
+<div class="avoid"><h3>4.2 End-to-end workflow</h3>
+<div class="flow">
+  <div class="step"><span class="n">1</span><span class="who">Brand owner</span><b>Set up</b>Import rules, facts with approved wording, terms and assets. Back-test rules on past content.</div>
+  <div class="step"><span class="n">2</span><span class="who">Creator</span><b>Pre-check</b>Paste, upload, or (Round 3) Slack and a no-login link. Optional intent. Private until submitted.</div>
+  <div class="step"><span class="n">3</span><span class="who">System · seconds</span><b>Check</b>Code checks → AI judgement → citation and support check → findings plus a "not checked" list.</div>
+  <div class="step"><span class="n">4</span><span class="who">Creator</span><b>Fix</b>Approved-wording swaps for claims; minimal rewrites for the rest. Accept, edit or dismiss with a reason.</div>
+  <div class="step"><span class="n">5</span><span class="who">Reviewers</span><b>Review</b>Routed by risk: claims to compliance, visuals to design. Comment, request changes, decide.</div>
+  <div class="step"><span class="n">6</span><span class="who">System</span><b>Approval record</b>Bound to a version hash; records which facts each asset uses. Gates any CMS that can ask.</div>
+  <div class="step"><span class="n">7</span><span class="who">Brand owner</span><b>Learn</b>Fact changes raise recall tasks for every asset using them; guideline health drafts clearer rules.</div>
+</div>
+<div class="loop"><span>Loop: step 7 feeds step 1, so clearer rules and fresher facts give fewer false flags next time</span></div></div>
+
+<div class="avoid"><h3>4.3 The eight building blocks</h3>
+<table>
+  <tr><th style="width:21%">Block</th><th>What it does</th></tr>
+  <tr><td><b>A · Rulebook</b></td><td>Rules with ID, category, class (A, B or C), severity, threshold, examples, source page, owning function and <b>tier</b>. <b>Mandatory</b> rules (legal and accessibility, owned by compliance or accessibility) block from day one once the setup back-test shows they fire correctly. <b>Brand</b> rules: class A suggest and class B start advisory (shadow mode); either graduates to blocking when the lower bound of a 95% interval on reviewer agreement reaches 80% (e.g. 20 of 20, or 38 of 40). Class C rules are flagged by the rule linter on import and do not run until the owner adds a threshold or examples. Each class A rule names a <b>check type</b> (pattern, word list, count, contrast, presence) with parameters, imported from CSV; the <b>rule linter</b> flags rules whose text uses vague quantifiers ("sparingly", "where appropriate") without parameters. An AI compiler proposes rules from a PDF brand book (Round 3); a person approves each one.</td></tr>
+  <tr><td><b>B · Fact ledger</b></td><td>Facts as structured fields (value, unit, product, market, population, duration), with an owner, valid-from and valid-until dates, a confidentiality label, <b>approved wordings</b> per market and channel, and any <b>required disclaimer</b>. Imported from the team's existing sheet; code checks work from day one even with an empty ledger, and a new brand can approve its top 20 facts and 30 rules in about a day; at onboarding an AI drafts candidate facts from product pages and past approved content (Round 3). Every fact stays "unverified", and cannot back a claim or a fix, until its owner confirms it.</td></tr>
+  <tr><td><b>C · Check engine</b></td><td>Code checks, then AI judgement, then citation and support checks. It also checks for <b>required content</b> (disclaimers, risk warnings, paid-partnership labels) and produces a <b>coverage statement</b>. Tone rules are class B rules with good and bad examples from the brand book: the model compares each sentence with them, must cite the rule and quote the span, and starts advisory.</td></tr>
+  <tr><td><b>D · Explain and fix</b></td><td>A card per finding: the quote, the reason, the rule or fact with its source excerpt, how it was decided, and a fix. Claim fixes are <b>swaps from approved wording</b>; other fixes pass the five-part intent lock (§6.2).</td></tr>
+  <tr><td><b>E · Review workflow</b></td><td>Private pre-checks, statuses, risk routing, comments, decisions with reasons, version diffs and an exportable, hash-chained audit log (Round 2); a second approver and the publish-gate API (Round 3).</td></tr>
+  <tr><td><b>F · Visual and accessibility</b></td><td>Only measurable checks: logo variant and retired lockups, distortion, clear space, minimum size, contrast, palette on graphic elements (never inside photos), resolution, text inside images, alt-text presence, heading order and link text. Accessibility is a floor the dial cannot weaken.</td></tr>
+  <tr><td><b>G · Insights and guideline health</b></td><td>Recurring issues by rule, channel and origin; override and disagreement rates per rule; rule maturity; dormant and conflicting rules; reviewer feedback that contradicts the rulebook; recall tasks when facts expire.</td></tr>
+  <tr><td><b>H · Trust layer</b></td><td>Roles, confidentiality labels, code-only matching of confidential facts with matched draft spans masked before any AI call, PII redaction, an exportable <b>egress ledger</b> of every external call, and a plain disclosure of every AI service used.</td></tr>
+</table></div>
+</div>
+
+<div class="section">
+<h3 style="margin-top:0">4.4 A worked example: one post, start to finish</h3>
+<p>An agency drafts an Instagram post for India with an AI writing tool and submits it with a banner. Pinned intent: <i>clicks to the product page; key message "visible results on dark spots"; tone energetic.</i> This is the <b>brand reviewer's view</b>; the agency's own pre-check withholds the embargo finding (§4.5).</p>
+
+<div class="mock">
+  <div class="mock-bar"><b>Plumbline · Aurelle Skin · "Vitamin C launch post" · v1 · brand reviewer view</b><span class="small">Origin: Agency + AI tool · Instagram · India</span></div>
+  <div class="mock-body">
+    <div class="mock-left">
+      <div class="draft">Meet the <span class="hl n">NEW<sup>5</sup></span> Aurelle <span class="hl n">Vitamin-C serum<sup>6</sup></span>!!! <span class="hl b">100% natural, eco-friendly<sup>2</sup></span> and <span class="hl b">clinically proven to fade dark spots by 60% in just 2 weeks<sup>1</sup></span>. <span class="hl b">Dermatologist recommended<sup>3</sup></span>. <span class="hl b">Launching with our Mumbai flagship on 15 Nov<sup>4</sup></span>. <span class="hl n">Click here<sup>7</sup></span> to shop!</div>
+      <div class="banner"><span class="t">GLOW IN 2 WEEKS</span><span class="p"></span><span class="logo">AURELLE</span></div>
+      <table style="font-size:7.5pt;margin:1mm 0 0">
+        <tr><td style="padding:.7mm 1mm">8</td><td style="padding:.7mm 1mm"><span class="tag t-block">Blocking</span> Mandatory accessibility: banner text #B8B2A7 on #FBF6EC is 1.96:1, below even the 3:1 minimum for large text; brand Ink on Cream is 13.24:1</td></tr>
+        <tr><td style="padding:.7mm 1mm">9</td><td style="padding:.7mm 1mm"><span class="tag t-major">Major</span> Graphic block #FF3EA5 is ΔE<sub>00</sub> 42.7 from the nearest brand colour (tolerance 10); logo stretched 12% (VI-04)</td></tr>
+        <tr><td style="padding:.7mm 1mm">10</td><td style="padding:.7mm 1mm"><span class="tag t-block">Blocking</span> Mandatory accessibility: no alt text. Plumbline asks: "What must someone who can't see this image learn from it?" It writes no alt text itself.</td></tr>
+        <tr><td style="padding:.7mm 1mm">11</td><td style="padding:.7mm 1mm"><span class="tag t-block">Blocking</span> Banner text "GLOW IN 2 WEEKS" (read by OCR) contradicts FACT-014 (8 weeks). Approved wording AW-014c: "Visible results in 8 weeks*".</td></tr>
+      </table>
+      <div class="intent"><b>Intent lock on the suggested version</b>
+        <div class="mini"><span class="tag t-ok">pass</span><span>1 · Call to action and product link kept</span><span class="tag t-ok">pass</span><span>2 · Pinned phrase "dark spots" kept</span><span class="tag t-ok">pass</span><span>3 · No claim dropped silently: 3 swapped, 1 flagged</span><span class="tag t-ok">pass</span><span>4 · Within Instagram caption limits</span><span class="tag t-ok">pass</span><span>5 · Edits stay inside flagged sentences</span><span class="tag t-major">conflict</span><span>Not one of the five checks: pinned tone "energetic" conflicts with brand rule TN-02; shown to the creator, who chose TN-02</span></div>
+      </div>
+      
+    </div>
+    <div class="mock-right">
+      <div class="fc"><div class="hd"><span class="tag t-block">Blocking</span><span class="tag t-grey">Claim · contradicted</span><span class="tag t-ai">AI extract + code compare</span></div>
+        <div class="q">"clinically proven to fade dark spots by 60% in just 2 weeks"</div>
+        <div class="src">FACT-014: 32% reduction in visible dark spots, 8 weeks, in-house study, 48 participants · owner: Compliance · valid to Mar 2027</div>
+        <div class="fix"><b>Approved wording AW-014b:</b> "shown to visibly reduce dark spots by 32% in 8 weeks*" + required footnote DL-02</div>
+        <div class="act"><span class="btn p">Swap in</span><span class="btn">Other approved wording</span><span class="btn">Ask compliance</span></div></div>
+      <div class="fc"><div class="hd"><span class="tag t-block">Blocking</span><span class="tag t-grey">Claim · regulated phrase</span><span class="tag t-code">Mandatory rule · code</span></div>
+        <div class="q">"100% natural, eco-friendly"</div>
+        <div class="src">CL-03 "Environmental claims must be specific and substantiated" · mandatory tier, owned by Compliance · basis: CCPA greenwashing guidelines 2024</div>
+        <div class="fix"><b>Approved wording AW-009a:</b> "made with 94% naturally derived ingredients" (FACT-009, ISO 16128)</div></div>
+      <div class="fc"><div class="hd"><span class="tag t-block">Blocking</span><span class="tag t-grey">Confidential · embargo</span><span class="tag t-code">Code only · span masked before AI</span></div>
+        <div class="q">"Launching with our Mumbai flagship on 15 Nov"</div>
+        <div class="src">Matches FACT-031 (embargoed to 1 Dec 2026) · details for Brand and Compliance only; the agency sees "restricted information"</div>
+        <div class="fix"><b>Fix:</b> remove the sentence</div></div>
+      <table style="font-size:7.5pt;margin:0">
+        <tr><td style="padding:.7mm 1mm">3</td><td style="padding:.7mm 1mm"><span class="tag t-block">Blocking</span> "Dermatologist recommended": endorsement claim with no matching fact (Unsupported). No approved wording exists, so no fix is offered.</td></tr>
+        <tr><td style="padding:.7mm 1mm">5–7</td><td style="padding:.7mm 1mm"><span class="tag t-minor">Minor</span> TN-02 capitals and "!!!"; TM-007 product name is "Vitamin C Brightening Serum"; CTA-02 calls to action name the product, not "Click here"</td></tr>
+        
+        
+        
+      </table>
+    </div>
+  </div>
+  <div class="mock-foot" style="display:block"><b>7 blocking · 1 major · 3 minor</b> · code findings in 3 s, full report in 38 s · rulebook v1.3 · models logged · confidential spans masked before AI<br><b>Not checked:</b> claims implied by imagery, photography style, the screen-reader experience, and anything said in video or voice-over. These need a person.</div>
+</div>
+
+<div class="grid2" style="margin-top:2.5mm">
+  <div class="card soft"><h4>Suggested version (intent kept, no invented claims)</h4>Meet the new Aurelle Vitamin C Brightening Serum. Shown to visibly reduce dark spots by 32% in 8 weeks.* Made with 94% naturally derived ingredients. Shop the Vitamin C Brightening Serum.<br><span class="small">*In-house study, 48 participants, 2026 (required footnote DL-02). Claims use approved wordings AW-014b and AW-009a. Banner: "Visible results in 8 weeks*" with its footnote (AW-014c), in Ink on Cream, logo restored.</span></div>
+  <div class="card soft"><h4>What people still decide</h4>The agency accepts or edits each fix. Compliance chooses the claim wording and confirms the footnote. The design reviewer approves the corrected banner; the accessibility approver (in a small team, the brand owner) confirms the contrast fix and the creator's alt text. History: v1 submitted with 11 findings (the agency's pre-check showed 10); v2 accepted 8 fixes; v3 approved, hash 9f3c…e1. Any later edit re-opens the check.</div>
+</div>
+<p class="small" style="margin-top:1.5mm">Aurelle Skin and all its facts are fictional demo data. Contrast and colour distance were computed with the WCAG 2 formula and CIEDE2000; the timing and the 12% stretch are illustrative. Rule IDs belong to the fictional brand book. Contrast and alt-text checks (8, 10) ship in Round 2; palette, logo and text-inside-image checks (9, 11) in Round 3.</p>
+</div>
+
+<div class="section">
+<h3 style="margin-top:0">4.5 Review and approval workflow</h3>
+<p><b>Statuses:</b> <span class="tag t-grey">Private pre-check</span> → <span class="tag t-grey">Submitted</span> → <span class="tag t-minor">In review</span> ⇄ <span class="tag t-major">Changes requested</span> → <span class="tag t-ok">Approved</span> → <span class="tag t-ok">Published</span> (or <span class="tag t-grey">Withdrawn</span> / <span class="tag t-grey">Recalled</span>). Reviewers never see pre-checks. Every transition is written to the audit log with who, when and why. "Reviewer" includes the design and accessibility approvers, each deciding only its own category.</p>
+<table>
+  <tr><th style="width:33%">Action</th><th class="c">Creator</th><th class="c">External creator</th><th class="c">Reviewer</th><th class="c">Compliance</th><th class="c">Brand owner</th><th class="c">Auditor</th></tr>
+  <tr><td>Run private pre-checks; see own findings</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c">–</td></tr>
+  <tr><td>See confidential sources and evidence</td><td class="c">◐ by label</td><td class="c">–</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c">●</td></tr>
+  <tr><td>Dismiss a minor finding (reason required)</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c">–</td></tr>
+  <tr><td>Decide a major finding</td><td class="c">–</td><td class="c">–</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c">–</td></tr>
+  <tr><td>Decide a blocking claim or confidentiality finding</td><td class="c">–</td><td class="c">–</td><td class="c">–</td><td class="c">● + 2nd approver</td><td class="c">–</td><td class="c">–</td></tr>
+  <tr><td>Approve content</td><td class="c">–</td><td class="c">–</td><td class="c">●</td><td class="c">● claims</td><td class="c">●</td><td class="c">–</td></tr>
+  <tr><td>Edit rules (each function edits only its own)</td><td class="c">–</td><td class="c">–</td><td class="c">–</td><td class="c">● regulatory</td><td class="c">● brand</td><td class="c">–</td></tr>
+  <tr><td>View insights, guideline health and the audit log</td><td class="c">◐ own</td><td class="c">◐ own work</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c">●</td></tr>
+</table>
+<ul>
+  <li><b>Small teams:</b> the plan never needs more people than the team has. In a team of two or three, the brand owner can hold the compliance or accessibility role, but a second approval must always come from a different person than the first decision; the audit log records who held which.</li>
+  <li><b>Routing by risk:</b> any claim or confidentiality finding adds Compliance as a required approver; visual findings add the design reviewer; accessibility findings can only be decided by a named accessibility approver. Low-risk content with no open findings goes to one reviewer.</li>
+  <li><b>Confidentiality for agencies:</b> an external pre-check never reveals whether text matches a confidential fact, so it cannot be used to probe for secrets; the finding appears for the brand team on submission, and the agency's coverage statement says "confidential checks run on submission". No-login links (Round 3) are per brief, expire after 7 days and are rate-limited.</li>
+  <li><b>Not the regulatory record:</b> Plumbline's approval is the workflow record. Regulated firms export it, with the evidence and audit trail, to their own promotions register; it does not replace formal sign-off.</li>
+  <li><b>Change tracking:</b> every version is stored with a diff, comments carry across versions, and each decision is recorded with its reason. Any edit after approval re-opens the check.</li>
+</ul>
+
+<h3>4.6 Insights, guideline health and claim recall</h3>
+<div class="grid2">
+  <div class="card"><h4>Insights (team leads)</h4>
+    <ul style="margin:0">
+      <li>Recurring issues by rule, channel and <b>origin</b> (employee, agency, AI tool), from submitted content only</li>
+      <li>First-pass clean rate, review rounds, time to approval</li>
+      <li>Claim coverage, and facts expiring in the next 30 days</li>
+      <li><b>Claim recall:</b> when a fact changes or expires, every published or scheduled asset using it gets an update-or-withdraw task for its owner</li>
+    </ul></div>
+  <div class="card"><h4>Guideline health (brand owner)</h4>
+    <ul style="margin:0">
+      <li><b>Override rate</b> and <b>reviewer disagreement</b> per rule (v1 at Round 2)</li>
+      <li><b>Rule maturity:</b> brand rules graduate to blocking when the 95% lower bound of reviewer agreement reaches 80%. In Round 2 the decisions come from testers labelling a back-test of 60 past posts, so only frequent rules will graduate that early.</li>
+      <li>Dormant and conflicting rules; reviewer feedback that contradicts the rulebook ("moving goalposts")</li>
+      <li>A drafted clearer rule from real accepted and dismissed cases, for the owner to approve</li>
+    </ul></div>
+</div>
+<div class="callout ok"><b>Patterns, not people.</b> Pre-checks never feed insights. No breakdown is shown for groups smaller than three people, there are no individual leaderboards, and an agency sees the same views about its own work that the client sees, including how often the client's reviewers contradicted their own rulebook.</div>
+</div>
+
+<!-- ============ 5. FEATURES ============ -->
+<div class="section">
+<div class="kicker">Technical plan</div>
+<h2><span class="num">5</span>Planned features, formats and scope</h2>
+<table>
+  <tr><th style="width:47%">Feature</th><th style="width:12%">Priority</th><th style="width:12%">Milestone</th><th>Notes</th></tr>
+  <tr><td>Auth, organisations, roles, row-level security; demo data and golden set</td><td><span class="tag t-block">Must</span></td><td>M1</td><td>Foundation</td></tr>
+  <tr><td>Rule editor and import (Markdown, CSV); rule tiers; a rule linter that flags vague (class C) rules</td><td><span class="tag t-block">Must</span></td><td>M2</td><td>Improvement 3 groundwork</td></tr>
+  <tr><td>Fact ledger: structured facts, approved wordings, disclaimers, CSV import</td><td><span class="tag t-block">Must</span></td><td>M2</td><td>Improvements 1 and 2</td></tr>
+  <tr><td>Text checks (paste incl. reel scripts and captions, DOCX, PDF): rules, required content, claims, AI judgement</td><td><span class="tag t-block">Must</span></td><td>M2</td><td>Improvement 1</td></tr>
+  <tr><td>Citation and support checks; coverage statement; evaluation harness and baseline</td><td><span class="tag t-block">Must</span></td><td>M2</td><td>Improvement 1 evidence</td></tr>
+  <tr><td>Finding cards; approved-wording swaps; intent lock; accept / edit / dismiss; private pre-check</td><td><span class="tag t-block">Must</span></td><td>M3</td><td>Improvement 2</td></tr>
+  <tr><td>Accessibility floor on images: text contrast, alt-text presence</td><td><span class="tag t-block">Must</span></td><td>M3</td><td>Accessibility in Round 2</td></tr>
+  <tr><td>Review workflow: statuses, routing, comments, decisions, audit log and export; override and disagreement table</td><td><span class="tag t-block">Must</span></td><td>M4</td><td>Human control; Improvement 3 v1</td></tr>
+  <tr><td>Slack results; no-login check link; publish-gate API; second approver; DOCX redlines; HTML input</td><td><span class="tag t-major">Should</span></td><td>M5</td><td>Where creators work</td></tr>
+  <tr><td>Palette on graphics (photo regions separated), logo variant, retired assets, distortion, clear space; claims in image text (OCR, vision fallback; low confidence reported as not checked); heading order</td><td><span class="tag t-major">Should</span></td><td>M6</td><td>Deeper visual checks</td></tr>
+  <tr><td>Rule maturity automation; drafted clarifications; claim recall; AI fact drafting; Sheets sync; rulebook compiler</td><td><span class="tag t-major">Should</span></td><td>M7</td><td>Improvement 3 full</td></tr>
+  <tr><td>URL post-publication watch; reel audio transcripts; Hindi and Hinglish; EU regime</td><td><span class="tag t-minor">Could</span></td><td>Roadmap</td><td>Influencer and video content</td></tr>
+  <tr><td>Canva, Figma and Google Docs add-ons; self-hosted model option</td><td><span class="tag t-minor">Could</span></td><td>Roadmap</td><td>Meet creators inside their tools</td></tr>
+  <tr><td>Auto-publishing · AI-written claims or alt text · individual scores · training on customer content</td><td><span class="tag t-grey">Won't</span></td><td>Never</td><td>Deliberate anti-goals</td></tr>
+</table>
+<p><b>Formats, in build order:</b> <span class="tag t-grey">1 Plain text</span> → <span class="tag t-grey">2 DOCX</span> → <span class="tag t-grey">3 PDF</span> → <span class="tag t-grey">4 PNG / JPG (M3, M6)</span> → <span class="tag t-grey">5 HTML (M5)</span> → <span class="tag t-grey">roadmap: reel transcripts, PPTX</span>. Everything is parsed into one document model (text blocks with offsets, images with positions, links, headings, alt text), so every check works on every format. In Round 2, "Accept" produces a corrected text block and a change list; in Round 3, DOCX gets real tracked changes written as w:ins and w:del elements in the document XML (python-docx has no tracked-changes API).</p>
+<p><b>Scope guardrails:</b> one vertical and regime (Indian D2C personal care) and English (Indian, British and American varieties) for the build; one demo organisation with realistic data. For influencer reels, Plumbline checks scripts, captions and cover frames; spoken audio is not checked until transcripts arrive (roadmap), and the coverage statement says so.</p>
+</div>
+
+<!-- ============ 6. TECH ============ -->
+<div class="section">
+<div class="kicker">Technical plan</div>
+<h2><span class="num">6</span>Architecture, stack, integrations and data</h2>
+
+<h3 style="margin-top:1.5mm">6.1 Architecture</h3>
+<div class="arch">
+  <div class="col">
+    <div class="box"><h4>People</h4>Creators, reviewers, compliance, brand owner (browser, Slack, no-login link)</div>
+    <div class="box"><h4>Other systems</h4>CMS or scheduler (publish gate), Slack, promotions register (export)</div>
+  </div>
+  <div class="arrow">⇄</div>
+  <div class="col">
+    <div class="box dark"><h4>Web app · Next.js (TypeScript)</h4>Editor and findings, review queue, rulebook, fact ledger, insights, REST API and publish gate<div class="chips"><span class="chip">shadcn/ui (accessible)</span><span class="chip">Slack app (Round 3)</span></div></div>
+    <div class="box"><h4>Supabase</h4><div class="chips"><span class="chip">Auth</span><span class="chip">Postgres + row-level security</span><span class="chip">Full-text search</span><span class="chip">Private storage</span><span class="chip">Job table</span></div></div>
+  </div>
+  <div class="arrow">⇄</div>
+  <div class="col">
+    <div class="box ac"><h4>Check service · Python FastAPI worker</h4>
+      <div class="chips"><span class="chip">pdfplumber · python-docx</span><span class="chip">Presidio</span><span class="chip">spaCy · textstat</span><span class="chip">OpenCV · Tesseract</span><span class="chip">WCAG · CIEDE2000</span><span class="chip">Rule linter</span><span class="chip">Validators</span><span class="chip">Egress ledger</span></div></div>
+    <div class="box"><h4>Evaluation</h4>Unit tests per commit · golden set nightly</div>
+  </div>
+  <div class="arrow">→</div>
+  <div class="col">
+    <div class="box"><h4>Anthropic Claude API</h4>Only redacted spans, the relevant rules and public or internal facts<div class="chips"><span class="chip">Opus 5.5: judgement, rewrites</span><span class="chip">Haiku 5.5: extraction, support check</span></div></div>
+  </div>
+</div>
+
+<h3>6.2 The check pipeline</h3>
+<table>
+  <tr><th style="width:4%">#</th><th style="width:16%">Stage</th><th style="width:10%">Runs as</th><th>What happens</th></tr>
+  <tr><td>1</td><td>Ingest</td><td><span class="tag t-code">Code</span></td><td>Parse to the document model; extract images, OCR text and boxes, links, headings and alt text; separate photo regions from flat graphic regions by colour count per tile (a heuristic, used from M6).</td></tr>
+  <tr><td>2</td><td>Redact and gate</td><td><span class="tag t-code">Code</span></td><td>Presidio redacts people's names, contact details and ID numbers only, with an allow-list of brand and product names; dates, places and numbers stay because claims depend on them. Draft spans that match confidential or embargoed facts (exact, fuzzy, alias and date matching) are masked; those facts never enter a prompt. Paraphrases the matcher misses are the residual risk, so its catch rate is measured.</td></tr>
+  <tr><td>3</td><td>Rule engine</td><td><span class="tag t-code">Code</span></td><td>Class A rules: word and phrase lists, regulated-phrase lexicon, required content present, formatting, readability, link text, heading order, alt-text presence, contrast, palette, logo, embargo matching, numeric claim comparison.</td></tr>
+  <tr><td>4</td><td>Claims and retrieval</td><td><span class="tag t-code">Code</span> + <span class="tag t-ai">AI</span></td><td>Claims found by regex detectors (numbers, superlatives, regulated phrases) and by Haiku extraction. Each is matched to facts on structured fields (product, market, unit) and Postgres full-text search. A match below a relevance threshold becomes "needs human eyes", never a guess.</td></tr>
+  <tr><td>5</td><td>AI judgement</td><td><span class="tag t-ai">AI</span></td><td>Opus 5.5 with structured output judges class B rules, including tone against the brand book's examples, and whether claims are supported (public and internal facts only). Calls run per section, in parallel. The approved class B rulebook sits in a cached prompt prefix; facts are added per claim. Content is delimited and treated as data, never as instructions.</td></tr>
+  <tr><td>6</td><td>Validate</td><td><span class="tag t-code">Code</span> + <span class="tag t-ai">AI</span></td><td>Drop any finding whose rule or fact ID doesn't exist or whose quote isn't in the content. Then a second model call (Haiku) checks that the cited source actually supports the finding; disagreement becomes "needs human eyes". Dropped findings are logged and measured.</td></tr>
+  <tr><td>7</td><td>Fix and intent lock</td><td><span class="tag t-code">Code</span> + <span class="tag t-ai">AI</span></td><td>Claims: only approved wordings for that market and channel are offered. Other rewrites must pass five checks: <b>(1)</b> call to action kept; <b>(2)</b> pinned phrases kept in meaning; <b>(3)</b> no claim silently dropped; <b>(4)</b> channel limits met; <b>(5)</b> edits stay in the flagged sentence. Every fix is re-run through all rules and must add no new findings.</td></tr>
+  <tr><td>8</td><td>Report</td><td><span class="tag t-code">Code</span></td><td>Findings plus a <b>coverage statement</b> (rules run, rules in shadow mode, what is out of scope), saved with rulebook, model and prompt versions, inputs and outputs, Code findings appear within seconds; AI findings stream in as each section finishes. Runs are <b>traceable, not reproducible</b>: model outputs can vary between runs, so each run's record is kept.</td></tr>
+</table>
+
+<div class="grid2 avoid">
+<div>
+<h4>Finding record (simplified)</h4>
+<pre>{ <span class="k">"id"</span>: <span class="s">&quot;F-0193&quot;</span>, <span class="k">"category"</span>: <span class="s">&quot;claim&quot;</span>,
+  <span class="k">"severity"</span>: <span class="s">&quot;blocking&quot;</span>, <span class="k">"status"</span>: <span class="s">&quot;contradicted&quot;</span>,
+  <span class="k">"quote"</span>: <span class="s">&quot;clinically proven to fade…&quot;</span>,
+  <span class="k">"span"</span>: { <span class="k">"start"</span>: 84, <span class="k">"end"</span>: 139 },
+  <span class="k">"basis"</span>: { <span class="k">"type"</span>: <span class="s">&quot;fact&quot;</span>, <span class="k">"id"</span>: <span class="s">&quot;FACT-014&quot;</span>,
+             <span class="k">"excerpt"</span>: <span class="s">&quot;32% … after 8 weeks&quot;</span> },
+  <span class="k">"fix"</span>: { <span class="k">"type"</span>: <span class="s">&quot;approved_wording&quot;</span>,
+           <span class="k">"id"</span>: <span class="s">&quot;AW-014b&quot;</span>, <span class="k">"disclaimer"</span>: <span class="s">&quot;DL-02&quot;</span> },
+  <span class="k">"support_check"</span>: <span class="s">&quot;agree&quot;</span>,
+  <span class="k">"method"</span>: { <span class="k">"by"</span>: <span class="s">&quot;ai+code&quot;</span>,
+              <span class="k">"model"</span>: <span class="s">&quot;claude-haiku-5-5&quot;</span> },
+  <span class="k">"run"</span>: { <span class="k">"rulebook"</span>: <span class="s">&quot;v1.3&quot;</span>, <span class="k">"prompt"</span>: <span class="s">&quot;claims@7&quot;</span> } }</pre>
+</div>
+<div>
+<h4>Claim verification logic</h4>
+<pre><span class="c"># each claim: regex detectors + AI extraction</span>
+<span class="k">if</span> regulated_phrase(claim): flag(<span class="s">&quot;needs evidence&quot;</span>)
+fact, score = best_match(claim, ledger)
+<span class="k">if</span> fact <span class="k">is</span> None:
+    status = <span class="s">&quot;unsupported&quot;</span>
+<span class="k">elif</span> score &lt; MATCH_THRESHOLD <span class="k">or not</span> fact.verified:
+    status = <span class="s">&quot;needs human eyes&quot;</span>
+<span class="k">elif</span> fact.valid_until &lt; today:
+    status = <span class="s">&quot;outdated&quot;</span>          <span class="c"># expired source</span>
+<span class="k">elif</span> fact.code_only <span class="k">or</span> claim.has_number:
+    status = compare(claim, fact)     <span class="c"># code</span>
+<span class="k">else</span>:
+    status = ai_entails(claim, fact)  <span class="c"># AI</span>
+fixes = approved_wordings(fact, market, channel) <span class="k">if</span> fact <span class="k">else</span> []
+emit(status, basis=fact, quote=claim.span,
+     fix=fixes <span class="k">or</span> None)    <span class="c"># never generated</span></pre>
+</div>
+</div>
+</div>
+
+<div style="margin-top:4mm">
+<h3 style="margin-top:0">6.3 Technology stack, and why</h3>
+<table>
+  <tr><th style="width:13%">Layer</th><th style="width:50%">Choice</th><th>Why</th></tr>
+  <tr><td>Web app</td><td>Next.js (React, TypeScript), Tailwind CSS, shadcn/ui on Radix primitives; Slack app via Bolt</td><td>One codebase for UI, API routes and the Slack surface; accessible components</td></tr>
+  <tr><td>Data and auth</td><td>Supabase: Postgres with row-level security, Auth, Storage and full-text search (no vector store needed in Round 2)</td><td>Tenant isolation enforced in the database; one managed service for a solo builder</td></tr>
+  <tr><td>Check service</td><td>Python 3.12 + FastAPI worker, with jobs in a Postgres table</td><td>Best document, vision and language libraries; no extra queue to run</td></tr>
+  <tr><td>Check libraries</td><td>pdfplumber (MIT licence, chosen over AGPL-licensed PyMuPDF), python-docx (parsing); spaCy small model, textstat (language); OpenCV, Tesseract OCR, k-means palette + CIEDE2000, WCAG contrast (visual)</td><td>Deterministic and explainable; exact measurements for class A rules</td></tr>
+  <tr><td>AI models</td><td>Anthropic Claude: <b>Opus 5.5</b> for judgement and rewrites; <b>Haiku 5.5</b> for claim extraction and support checks; structured outputs and prompt caching. Sonnet 5.5 is the fallback if evaluation shows equal quality at lower cost.</td><td>Schema output feeds the validators; vision support; caching the rulebook cuts cost and delay</td></tr>
+  <tr><td>Privacy tooling</td><td>Microsoft Presidio (PII redaction, with an allow-list of brand and product names); local ONNX embeddings only if keyword matching proves too weak (Round 3)</td><td>Personal data removed before any external call, without redacting the brand's own names</td></tr>
+  <tr><td>Hosting and cost</td><td>Vercel free tier; Supabase Pro (US$25 a month) during judging so the demo never pauses; worker on a small paid instance with 2 GB RAM (about US$10–25 a month)</td><td>Worker footprint under 1.5 GB; ≈ US$0.10 per 1,000-word check including thinking tokens (§6.7); API budget ≈ US$190</td></tr>
+</table>
+
+<h3>6.4 Data model</h3>
+<p class="mono" style="line-height:1.5">Organisation · User · Membership(role, function) · GuidelineVersion · Rule(id, category, class, check_type, params, severity, examples, source_ref, owner_function, tier, maturity) · Fact(value, unit, product, market, population, duration, owner, valid_from, valid_until, confidentiality, status) · ApprovedWording(fact, market, channel, text, disclaimer) · Term · Asset · Content · Version(canonical_hash, origin, intent, private) · CheckRun(rulebook, model, prompt, input_hash, coverage) · Finding · Decision(kind, reason, actor) · Comment · Approval · FactUsage(version, fact) · EgressEvent · AuditEvent(prev_hash)</p>
+
+<div class="grid2 avoid">
+  <div><h3>6.5 Integrations, in build order</h3>
+  <ol>
+    <li><b>Exports</b> (M4): audit log and decisions as CSV for a promotions register.</li>
+    <li><b>Slack app and no-login check link</b> (M5) for creators and agencies.</li>
+    <li><b>REST API and publish gate</b> (M5): where a scheduler or CMS can call it, unapproved versions are blocked. Where nothing can call it (Meta Ads Manager, influencers' phones), the approval is the record, and post-publication watch (roadmap) compares what went live. The version hash is computed over a canonical form so any caller can recompute it.</li>
+    <li><b>Google Sheets fact sync</b> (M7).</li>
+  </ol></div>
+  <div><h3>6.6 Data sources</h3>
+  <ul>
+    <li><b>From the organisation:</b> brand book, fact sheet with approved wordings and disclaimers, terminology, asset kit, past approved content.</li>
+    <li><b>Public references:</b> WCAG 2.2 <sup class="ref">[19]</sup>; a regulated-phrase list compiled from the CCPA guidelines, the ASCI code and influencer guidelines, the Drugs and Magic Remedies (Objectionable Advertisements) Act, 1954 and the Cosmetics Rules, 2020, and (roadmap) EU 2024/825 and the CMA Green Claims Code.</li>
+    <li><b>Evaluation:</b> the fictional Aurelle Skin brand with 150 seeded items and 60 past posts for the back-test (disclosed as synthetic); 60 public ASCI decisions (complaints upheld and not upheld) as an independently labelled set.</li>
+  </ul></div>
+</div>
+
+<h3>6.7 Reliability, evaluation and cost</h3>
+<p>The evaluation harness is a Must in M2. Deterministic unit tests run on every commit at no API cost; a 40-item smoke set runs nightly and the full set at each milestone, both through the Message Batches API at half price. The builder writes 100 synthetic development items with AI assistance; the <b>50 held-out items (about 120 seeded issues) are written and labelled by two recruited marketing practitioners</b> (agreement reported as κ), named with consent in the Round 2 report, and are scored only at the Round 2 and Round 3 report points, so they stay unseen. Each target is a point estimate reported with its count and Wilson 95% interval, and compared with a <b>single-prompt baseline</b> (brand book and content in one Opus 5.5 call). Public ASCI decisions test claim detection and risk ranking, not substantiation: claims are transcribed from ASCI's published complaint decisions, the rulebook is my regulated-phrase list and generic claim rules, and the fact ledger is empty. A hit is flagging the challenged claim (span overlap). I report recall on upheld complaints and how well upheld claims are ranked above not-upheld ones (AUC); with no evidence ledger, precision would be meaningless, so it is not reported. The labellers also check the citation sample.</p>
+<div class="grid2" style="gap:3mm">
+<table>
+  <tr><th>Measure</th><th class="c">Round 2</th><th class="c">Round 3</th></tr>
+  <tr><td>Citation correctness (human-checked, n = 100)</td><td class="c">≥ 90 / 100</td><td class="c">≥ 95 / 100</td></tr>
+  <tr><td>Recall, seeded claim issues (held-out, n ≈ 120)</td><td class="c">≥ 80%</td><td class="c">≥ 90%</td></tr>
+  <tr><td>Recall / ranking (AUC), ASCI decisions (n = 60)</td><td class="c">≥ 70% / ≥ 0.65</td><td class="c">≥ 80% / ≥ 0.70</td></tr>
+  <tr><td>Precision per category, incl. tone (held-out)</td><td class="c">≥ 75%</td><td class="c">≥ 85%</td></tr>
+  <tr><td>Precision gain over single-prompt baseline</td><td class="c">measured</td><td class="c">≥ 10 pts</td></tr>
+  <tr><td>False alarms on clean items (n = 30)</td><td class="c">≤ 1 / item</td><td class="c">≤ 0.3 / item</td></tr>
+  <tr><td>True issues wrongly dropped by validators</td><td class="c">≤ 10%</td><td class="c">≤ 5%</td></tr>
+  <tr><td>Embargo matcher: paraphrases caught (n = 40)</td><td class="c">≥ 70%</td><td class="c">≥ 85%</td></tr>
+  <tr><td>Invented claims in a 200-fix audit</td><td class="c">0</td><td class="c">0</td></tr>
+  <tr><td>PII redaction recall: Indian names, phone, Aadhaar, PAN (n = 50)</td><td class="c">≥ 90%</td><td class="c">≥ 95%</td></tr>
+  <tr><td>Recall drop under injection ("ignore rules", hidden issues)</td><td class="c">≤ 10 pts</td><td class="c">≤ 5 pts</td></tr>
+  <tr><td>Code findings · full report p95 (1,000 words + 2 images)</td><td class="c">&lt; 5 s · &lt; 60 s</td><td class="c">&lt; 5 s · &lt; 40 s</td></tr>
+</table>
+<table>
+  <tr><th>Calls per 1,000-word check</th><th class="c">Tokens in / out</th><th class="c">US$</th></tr>
+  <tr><td>Claim extraction (Haiku 5.5)</td><td class="c">2,000 / 500</td><td class="c">0.0005</td></tr>
+  <tr><td>Judgement (Opus 5.5): cached rulebook</td><td class="c">6,000 cached</td><td class="c">0.0012</td></tr>
+  <tr><td>Judgement (Opus 5.5): content and facts</td><td class="c">3,000 / 1,500</td><td class="c">0.0420</td></tr>
+  <tr><td>Judgement thinking (effort medium, the default)</td><td class="c">~1,500 out</td><td class="c">0.0300</td></tr>
+  <tr><td>Support check (Haiku 5.5)</td><td class="c">3,000 / 300</td><td class="c">0.0005</td></tr>
+  <tr><td>Rewrites for non-claim findings (Opus 5.5, effort low)</td><td class="c">2,500 / 900 incl. thinking</td><td class="c">0.0280</td></tr>
+  <tr><td>Intent check on rewrites (Haiku 5.5)</td><td class="c">1,500 / 200</td><td class="c">0.0003</td></tr>
+  <tr><td><b>Total per check</b> (image checks are code only)</td><td class="c"></td><td class="c"><b>≈ 0.10</b></td></tr>
+  <tr><td colspan="3" class="small">List prices <sup class="ref">[28]</sup>: Opus 5.5 US$4 / US$20 per million input / output tokens (cache reads US$0.20); Haiku 5.5 US$0.10 / US$0.50; Haiku's own thinking adds under US$0.001 a check; a cold cache write (≈ US$0.03) occurs once per cache window. <b>Budget:</b> ~500 development checks ≈ US$50; 8 full runs of 210 items at batch price ≈ US$85; nightly smoke runs ≈ US$30; baseline runs ≈ US$20; total ≈ US$190.</td></tr>
+</table>
+</div>
+</div>
+
+<!-- ============ 7. RESPONSIBLE ============ -->
+<div class="section">
+<div class="kicker">Responsible design</div>
+<h2><span class="num">7</span>Privacy, security and human oversight</h2>
+<div class="grid2">
+  <div class="card"><h4>Privacy and confidentiality</h4><ul style="margin:0">
+    <li>Every fact and asset carries a label: Public, Internal, Confidential or Embargoed-until-date. <b>Confidential and embargoed facts are checked by code only</b> and never placed in a prompt; draft spans that match them are masked before any AI call, and I measure how often the matcher catches paraphrases. Paraphrases it misses could reach the AI, so sensitive launches can run in code-only mode.</li>
+    <li><b>Code-only mode:</b> organisations that cannot send content out run only the rule engine (nearly half the rules in the guide I audited) with zero external calls.</li>
+    <li>PII is redacted before any AI call; only the needed spans and rules are sent; embeddings are computed locally.</li>
+    <li>An exportable <b>egress ledger</b> records which text went to which model and region, and when.</li>
+    <li>Designed for India's Digital Personal Data Protection Act, 2023: personal data is minimised and redacted, processed under a data processing agreement, and deleted on request.</li>
+    <li>I use Anthropic's commercial API, whose terms exclude training on API inputs by default (re-confirmed at build time); data residency options are reviewed per customer.</li></ul></div>
+  <div class="card"><h4>Security</h4><ul style="margin:0">
+    <li>Row-level security on every table, with automated cross-tenant access tests. For each job the app issues the worker a short-lived token scoped to that job's organisation, so row-level security still applies; the worker holds no service key.</li>
+    <li>The audit log is insert-only (UPDATE and DELETE revoked) and hash-chained; the daily chain head is e-mailed (via a disclosed SMTP provider) to the brand owner and compliance as an external anchor, so later edits are detectable. It exports to CSV.</li>
+    <li>Private storage with short-lived signed links; file type and size checks; uploaded files are parsed in a sandboxed process with no database credentials; secrets outside the repository.</li>
+    <li><b>Prompt injection:</b> content is delimited data; the model has no tool that can change state; outputs are schema-validated and citation-checked; I test both "approve me" and "hide this issue" attacks; only people approve. Cache keys include rulebook, model and prompt versions.</li></ul></div>
+  <div class="card"><h4>Human oversight</h4><ul style="margin:0">
+    <li><b>Autonomy dial</b> per category: one-click fix (mechanical only, still needs a click), suggest, or require a person. Claims and accessibility can never be set to one-click.</li>
+    <li>Mandatory legal and accessibility rules block from day one; brand rules advise until they earn the right to block.</li>
+    <li>Creators cannot dismiss blocking findings; compliance decides claim findings with a second approver; each function owns its own rules.</li>
+    <li>Nothing publishes without a human approval bound to a version hash.</li></ul></div>
+  <div class="card"><h4>Transparency and explainability</h4><ul style="margin:0">
+    <li>Each finding shows its rule or fact ID, the source excerpt, the reason and how it was decided (rule engine, or AI with model name and support-check result). A confidence number appears only after calibration on held-out data.</li>
+    <li>Every report carries a <b>coverage statement</b> and never a pass badge, score or "compliant" label.</li>
+    <li>A "What leaves this system" page lists every external service, what data it receives and why.</li>
+    <li>Results are traceable: each run stores its rulebook, model and prompt versions, inputs and outputs.</li></ul></div>
+  <div class="card"><h4>Fairness, accessibility and people</h4><ul style="margin:0">
+    <li><b>Accessibility is a floor:</b> the brand owner cannot weaken it, contrast wins over palette, and only an accessibility approver can decide those findings.</li>
+    <li>Plumbline never writes alt text or claims; it asks the creator.</li>
+    <li>Tone rules must not penalise regional varieties of English; the evaluation set includes them.</li>
+    <li>"Patterns, not people": private pre-checks, no breakdown for groups under three, symmetric views for agencies. The interface targets WCAG 2.2 AA.</li></ul></div>
+  <div class="card"><h4>Limits I state up front</h4><ul style="margin:0">
+    <li>Automated accessibility checks cover only part of WCAG; reports say so.</li>
+    <li>AI judgement can be wrong. Citations, support checks and confidence make errors visible, and people decide.</li>
+    <li><b>Not legal advice</b> and not a regulatory sign-off; legal approval stays with qualified reviewers.</li>
+    <li>Photography mood, implied claims in imagery and video are out of scope until proven measurable.</li></ul></div>
+</div>
+</div>
+
+<!-- ============ 8. PLAN ============ -->
+<div class="section">
+<div class="kicker">Feasibility and scope</div>
+<h2><span class="num">8</span>Development plan</h2>
+<p>The schedule is sized in hours of solo work with AI coding assistance: <b>40 engineering hours for the Round 2 core</b>, 78 engineering hours in total, <b>plus 12 hours of research and user testing and a 15% buffer (12 hours), 102 hours overall</b>. Nothing is coded before the window opens (rules 1 and 4); research, design and recruiting testers happen before it (rule 2). Hours convert to dates once the window is announced.</p>
+<svg width="100%" viewBox="0 0 680 262" role="img" aria-label="Gantt chart of milestones in hours with buffers" style="display:block;margin:1.5mm 0 1mm">
+<style>.g{font:600 10px "Avenir Next",Arial,sans-serif;fill:#141B2D}.gs{font:9px "Helvetica Neue",Arial,sans-serif;fill:#5A6478}.gw{font:700 9px "Avenir Next",Arial,sans-serif;fill:#fff}</style>
+<line x1="230.0" y1="16" x2="230.0" y2="238" stroke="#E2E5EE"/><text class="gs" x="230.0" y="11" text-anchor="middle">0 h</text>
+<line x1="370.2" y1="16" x2="370.2" y2="238" stroke="#E2E5EE"/><text class="gs" x="370.2" y="11" text-anchor="middle">30 h</text>
+<line x1="510.4" y1="16" x2="510.4" y2="238" stroke="#E2E5EE"/><text class="gs" x="510.4" y="11" text-anchor="middle">60 h</text>
+<line x1="650.7" y1="16" x2="650.7" y2="238" stroke="#E2E5EE"/><text class="gs" x="650.7" y="11" text-anchor="middle">90 h</text>
+<text class="g" x="0" y="34">Research and testers · before window</text>
+<rect x="182.0" y="22" width="44" height="17" rx="3" fill="#C9CDE0"/><text class="gw" x="204.0" y="34" text-anchor="middle" style="fill:#141B2D">no code</text>
+<text class="g" x="0" y="58">M1 Foundations, demo data · 7 h</text>
+<rect x="230.0" y="46" width="32.7" height="17" rx="3" fill="#141B2D"/>
+<text class="g" x="0" y="82">M2 Check engine, eval · 18 h</text>
+<rect x="262.7" y="70" width="84.1" height="17" rx="3" fill="#4B3FD1"/>
+<text class="gw" x="266.7" y="82">Improvement 1</text>
+<text class="g" x="0" y="106">M3 Explain, fix, a11y floor · 8 h</text>
+<rect x="346.8" y="94" width="37.4" height="17" rx="3" fill="#4B3FD1"/>
+<text class="gw" x="350.8" y="106">Impr. 2</text>
+<text class="g" x="0" y="130">M4 Review, health v1 · 7 h</text>
+<rect x="384.2" y="118" width="32.7" height="17" rx="3" fill="#4B3FD1"/>
+<text class="gw" x="388.2" y="130">Imp. 3</text>
+<rect x="417.0" y="118" width="28.0" height="17" rx="3" fill="#E2E5EE" stroke="#A9B0C2" stroke-dasharray="3 2"/><text class="gs" x="431.0" y="130" text-anchor="middle">buffer</text>
+<text class="g" x="0" y="154">M5 Integrations · 10 h</text>
+<rect x="445.0" y="142" width="46.7" height="17" rx="3" fill="#0F8B8D"/>
+<text class="g" x="0" y="178">M6 Deeper visual checks · 8 h</text>
+<rect x="491.7" y="166" width="37.4" height="17" rx="3" fill="#0F8B8D"/>
+<text class="g" x="0" y="202">M7 Guideline health, recall · 8 h</text>
+<rect x="529.1" y="190" width="37.4" height="17" rx="3" fill="#0F8B8D"/>
+<text class="g" x="0" y="226">M8 Evaluate and harden · 12 h</text>
+<rect x="566.5" y="214" width="56.1" height="17" rx="3" fill="#0F8B8D"/>
+<rect x="622.6" y="214" width="28.0" height="17" rx="3" fill="#E2E5EE" stroke="#A9B0C2" stroke-dasharray="3 2"/><text class="gs" x="636.6" y="226" text-anchor="middle">buffer</text>
+<line x1="445.0" y1="16" x2="445.0" y2="240" stroke="#C2362B" stroke-width="1.5" stroke-dasharray="4 3"/><text class="g" x="445.0" y="254" text-anchor="middle" style="fill:#C2362B">Round 2 · 40 h + buffer</text>
+<line x1="650.7" y1="16" x2="650.7" y2="240" stroke="#C2362B" stroke-width="1.5" stroke-dasharray="4 3"/><text class="g" x="650.7" y="254" text-anchor="end" style="fill:#C2362B">Round 3 · 78 h + buffer</text>
+</svg>
+<table>
+  <tr><th style="width:23%">Milestone</th><th class="c" style="width:7%">Hours</th><th>Deliverable (each must be demonstrable, tested and committed)</th></tr>
+  <tr><td><b>M1</b> Foundations and demo data</td><td class="c">7</td><td>Repository, CI, schema with row-level security, auth and roles, upload; seeded Aurelle Skin organisation, rulebook, 40 facts, golden set.</td></tr>
+  <tr><td><b>M2</b> Check engine and eval harness</td><td class="c">18</td><td>Document model; rule engine with tiers, required-content checks and the rule linter; rule import; fact ledger with approved wordings; claim matching; AI judgement including tone; citation and support checks; coverage statement; evaluation harness and baseline.</td></tr>
+  <tr><td><b>M3</b> Explain, fix, accessibility floor</td><td class="c">8</td><td>Finding cards, approved-wording swaps, intent lock, accept / edit / dismiss, re-check, diffs, private pre-check; text contrast and alt-text presence on images.</td></tr>
+  <tr><td><b>M4</b> Review workflow, health v1</td><td class="c">7</td><td>Statuses, routing, comments, decisions, hash-chained audit log and export, override and disagreement table, back-test of 60 past posts.<br><b>Round 2 demo:</b> the full loop for text, DOCX and PDF with the accessibility floor on images; v1 of all three improvements; counterbalanced tests with 6 users.</td></tr>
+  <tr><td><b>M5</b> Integrations</td><td class="c">10</td><td>Slack results, no-login link (expiry, rate limits), publish-gate API with canonical hash, second approver, DOCX redlines, HTML input.</td></tr>
+  <tr><td><b>M6</b> Deeper visual checks</td><td class="c">8</td><td>Palette on graphics, logo variant, retired assets, distortion, clear space; claims in image text (OCR with vision fallback); heading order.</td></tr>
+  <tr><td><b>M7</b> Guideline health and recall</td><td class="c">8</td><td>Rule graduation automation, drafted clarifications, claim recall tasks, AI fact drafting, Sheets sync, rulebook compiler.</td></tr>
+  <tr><td><b>M8</b> Evaluate and harden</td><td class="c">12</td><td>Full evaluation with intervals, injection and tenancy tests, confidence calibration, performance, fixes from user tests, documentation, demo video. <b>Round 3.</b></td></tr>
+</table>
+<div class="callout warn"><b>Cut line.</b> If a checkpoint slips, items move to the roadmap in this order: rulebook compiler → Sheets sync → AI fact drafting → logo checks → drafted clarifications (the guideline-health metrics stay) → DOCX redlines. Inside the 40-hour core, a working end-to-end skeleton (paste text → rule engine → findings → approve) exists by hour 12. If the core itself slips, cut in this order: PDF input → AI tone rules → private pre-check → contrast on images. Never cut: claim checks with citations, the coverage statement, approved-wording swaps, the intent lock, one-reviewer approval with the audit log, alt-text presence, and the override table (fed by user-test decisions if the back-test is cut).</div>
+
+<div class="avoid"><h3>Scope for each possible window length</h3>
+<table>
+  <tr><th style="width:15%">If the window is</th><th style="width:37%">Round 2 ships</th><th style="width:28%">Round 3 adds</th><th>Moves to roadmap</th></tr>
+  <tr><td><b>48 hours</b> (~32 h of real work)</td><td>The core after the in-core cut order (~32 h): v1 of all three improvements and alt-text checks ship</td><td>Back-test; contrast on images; evaluation report</td><td>M5–M7</td></tr>
+  <tr><td><b>About 1 week</b> (~60 h)</td><td>M1–M4 (40 h) plus buffer (6 h)</td><td>M8 (12 h), total 58 h</td><td>M5–M7</td></tr>
+  <tr><td><b>2 weeks or more</b></td><td>M1–M4 plus user tests</td><td>M5–M8 in full</td><td>Add-ons, URL watch, transcripts</td></tr>
+</table></div>
+
+<h3>Risks and mitigations</h3>
+<table>
+  <tr><th style="width:28%">Risk</th><th class="c" style="width:9%">Likelihood</th><th class="c" style="width:8%">Impact</th><th>Mitigation</th></tr>
+  <tr><td>AI flags the wrong things</td><td class="c">Medium</td><td class="c">High</td><td>Code first; citation and support checks; shadow mode until rules earn trust; nightly evaluation</td></tr>
+  <tr><td>A solo builder runs out of time</td><td class="c">High</td><td class="c">High</td><td>40-hour core, 15% buffer, cut line and window table; daily commits; disclosed AI coding assistance</td></tr>
+  <tr><td>The fact ledger is empty or stale</td><td class="c">High</td><td class="c">Medium</td><td>Import from existing sheets; AI-drafted candidate facts; "unverified" until the owner confirms; owner nudges; sync from the source; freshness as a KPI</td></tr>
+  <tr><td>Confidential data exposure</td><td class="c">Medium</td><td class="c">High</td><td>Code-only matching; masking before AI with a measured catch rate; code-only mode for sensitive launches; no signal to agencies; egress ledger; tenancy tests</td></tr>
+  <tr><td>Too few real users for testing</td><td class="c">Medium</td><td class="c">Medium</td><td>Recruit 5 to 8 testers and the held-out labeller before the window; structured task-based sessions</td></tr>
+</table>
+</div>
+
+<!-- ============ 9-10 ROLES & IMPACT ============ -->
+<div style="margin-top:6mm">
+<div class="kicker">Feasibility and impact</div>
+<h2><span class="num">9</span>Role allocation</h2>
+<p>Team AtoZ has one member, who covers every role. Each role has a fixed share of the 102-hour budget, so every piece of work has an owner and a limit.</p>
+<table>
+  <tr><th style="width:26%">Role</th><th class="c" style="width:10%">Hours</th><th>Responsibilities</th></tr>
+  <tr><td><b>Product and research</b></td><td class="c">12</td><td>Interviews and survey before the window, user-test sessions, scope and cut-line decisions</td></tr>
+  <tr><td><b>Full-stack engineering</b></td><td class="c">32</td><td>Next.js app, Supabase schema and row-level security, review workflow, integrations</td></tr>
+  <tr><td><b>AI and checks engineering</b></td><td class="c">30</td><td>Rule engine, fact ledger, claim matching, prompts, validators, golden set and evaluation</td></tr>
+  <tr><td><b>Design, QA and documentation</b></td><td class="c">16</td><td>Interface and accessibility, demo data, test plans, README and architecture notes, demo video</td></tr>
+  <tr><td><b>Buffer</b></td><td class="c">12</td><td>15% of engineering hours, held back for slips</td></tr>
+</table>
+<div class="callout"><b>Disclosure (rule 7).</b> Claude (Anthropic) was used for research synthesis, drafting, the synthetic persona panel, the blind second rating, and AI reviewers that critiqued drafts of this plan. It will be used as a coding assistant during the build; all AI-generated code will be reviewed, tested and logged in <span class="mono">AI_USAGE.md</span>. No code exists yet. Starter templates (e.g. Next.js, shadcn/ui) will be declared in the README.</div>
+
+<div class="avoid"><h2 style="margin-top:5mm"><span class="num">10</span>Expected impact</h2>
+<div class="grid2">
+  <div class="card"><h4>For people</h4><ul style="margin:0">
+    <li><b>Creators and agencies</b> get specific, private feedback in seconds, and fewer rejected drafts.</li>
+    <li><b>Reviewers</b> see mechanical issues cleared first, and claims arrive with evidence and approved wording.</li>
+    <li><b>Brand owners</b> see guidelines improve with use, instead of a static PDF.</li></ul></div>
+  <div class="card"><h4>For the organisation</h4><ul style="margin:0">
+    <li>An evidence trail for every published claim, and recall when a fact changes, as CCPA penalties reach ₹10 lakh, or ₹50 lakh for repeats, for brands and endorsers.</li>
+    <li>Fewer accessibility failures, and a consistent brand across employees, agencies and AI tools.</li></ul></div>
+</div></div>
+<table>
+  <tr><th style="width:36%">Measured in the product from M4</th><th>Why it matters</th></tr>
+  <tr><td>First-pass clean rate; review rounds per asset; time to approval</td><td>The bottleneck that grew from three rounds to five <sup class="ref">[10]</sup></td></tr>
+  <tr><td>Claim coverage; live assets using expired facts</td><td>Evidence behind every claim; nothing outdated left live</td></tr>
+  <tr><td>Rule override rate; share of rules matured to blocking</td><td>Are the guidelines getting clearer? (improvement 3)</td></tr>
+  <tr><td>Repeat-issue rate over time, by group</td><td>Does feedback actually teach?</td></tr>
+</table>
+<p><b>Baseline test (Round 2):</b> two matched sets of 20 seeded posts (A and B); half the testers review A with the brand book PDF and B with Plumbline, the other half the reverse, so order and familiarity cancel out. Targets to test: ≥ 30% more seeded issues caught and ≥ 40% less time per post.</p>
+<div class="callout ok"><b>Illustrative estimate, to be validated.</b> If a brand team approves 200 assets a month and a review round takes 20 reviewer-minutes, removing one round per asset saves 200 × 20 min ≈ <b>67 reviewer-hours a month</b>, about 0.4 of a full-time reviewer. Interviews will replace these assumptions.</div>
+<p><b>Value case and price (hypotheses, tested by H5):</b> the head of brand or CMO buys, with compliance as co-sponsor. The value is avoided rework and withdrawn campaigns, an evidence trail for regulators, and reviewer time. Price per organisation, not per seat: a free code-only tier, then a first band to test of ₹40,000–75,000 a month, about 2–4 times the AI cost of 2,000 checks (≈ US$200, roughly ₹17,000). <b>Beyond the event:</b> creator-tool add-ons, Hindi and Hinglish, reel transcripts and post-publication watch, self-hosted models, SSO and SCIM.</p>
+</div>
+
+<!-- ============ APPENDICES ============ -->
+<div class="section">
+<div class="kicker">Appendices</div>
+<h2>Appendix A · Sources</h2>
+<ol class="refs two-col-list">
+  <li>Adobe (2025). <i>71% of marketers say content demand will grow 5x by 2027</i> (1,600+ marketers). business.adobe.com/blog/71-percent-of-marketers-say-content-demand-to-increase-5x</li>
+  <li>Gartner (17 Mar 2025). <i>Marketers must get better at training AI for on-brand content creation</i> (418 marketers). gartner.com/en/newsroom/press-releases/2025-03-17-marketers-must-get-better-at-training-ai-for-on-brand-content-creation</li>
+  <li>BCG (12 Jun 2024). <i>CMOs cite GenAI adoption as a top-five priority</i>. bcg.com/press/12june2024-cmos-cite-genai-adoption-top-five-priority-over-next-year</li>
+  <li>Lucidpress 2021 Content Effectiveness report (n = 452), via Contently, 1 Nov 2021. contently.com/2021/11/01/rising-demand-content-marketing/</li>
+  <li>ASCI (May 2025). <i>Annual Complaints Report 2024-25</i>, press release. ascionline.in/wp-content/uploads/2025/05/ASCI-Press-Release-Annual-Complaints-Report-2024-25-1.pdf</li>
+  <li>European Commission (28 Jan 2021). <i>Screening of websites for "greenwashing"</i>. ec.europa.eu/commission/presscorner/detail/en/ip_21_269</li>
+  <li><i>Moffatt v. Air Canada</i>, 2024 BCCRT 149; ABA Business Law Today summary (Feb 2024). americanbar.org/groups/business_law/resources/business-law-today/2024-february/bc-tribunal-confirms-companies-remain-liable-information-provided-ai-chatbot/</li>
+  <li>Associated Press (Oct 2025). <i>Deloitte to partially refund Australian government</i>. yahoo.com/news/articles/deloitte-partially-refund-australian-government-070855665.html</li>
+  <li>WebAIM (2026, February 2026 crawl). <i>The WebAIM Million</i>. webaim.org/projects/million/</li>
+  <li>Marketing Week (4 Mar 2025). <i>Only a third of agencies believe they receive constructive feedback</i> (IPA, WFA, BetterBriefs and Flood + Partners, <i>The BetterIdeas Project</i>). marketingweek.com/constructive-feedback-ipa/</li>
+  <li>Directive (EU) 2024/825. eur-lex.europa.eu/eli/dir/2024/825/oj</li>
+  <li>Pinsent Masons Out-Law. <i>DMCC Act overhauls UK consumer law enforcement</i>. pinsentmasons.com/en-gb/out-law/analysis/dmcc-act-overhauls-uk-consumer-law-enforcement</li>
+  <li>exchange4media (Oct 2024). <i>CCPA issues guidelines to curb misleading green claims</i>. exchange4media.com/advertising-news/ccpa-issues-guidelines-to-curb-misleading-green-claims-138020.html</li>
+  <li>Directive (EU) 2019/882 (European Accessibility Act). eur-lex.europa.eu/eli/dir/2019/882/oj</li>
+  <li>Mailchimp Content Style Guide, CC BY-NC 4.0. styleguide.mailchimp.com</li>
+  <li>Slator (Sep 2025). <i>Acrolinx rebrands as Markup AI</i>. tech.slator.com/acrolinx-rebrands-markup-ai-secures-usd-27m-financing/</li>
+  <li>Jasper. <i>Brand IQ</i> and <i>Visual Guidelines</i>. jasper.ai/brand-iq</li>
+  <li>Adobe Experience League. <i>GenStudio for Performance Marketing: brand validation</i>. experienceleague.adobe.com/en/docs/genstudio-for-performance-marketing/user-guide/guidelines/brand-validation</li>
+  <li>W3C. <i>WCAG 2.2</i>. w3.org/TR/WCAG22/</li>
+  <li>Writer Help Center. <i>Claim detection</i>. support.writer.com/article/207-claim-detection</li>
+  <li>Filestage. <i>Review Agents</i>. filestage.io/review-agents/</li>
+  <li>Bynder (16 Dec 2025). <i>Bynder expands AI Agent capabilities</i> (Compliance Agent). globenewswire.com/news-release/2025/12/16/3206286/</li>
+  <li>Veeva. <i>Vault PromoMats features brief</i> (claims library, "Where Used"). veeva.com/medtech/wp-content/uploads/2024/04/MedTech_PromoMats_Features-Brief.pdf</li>
+  <li>Business Wire (15 May 2023). <i>Saifr introduces risk interpretation and suggested language AI models</i>. businesswire.com/news/home/20230515005854/en/</li>
+  <li>iTWire (2024). <i>IntelligenceBank acquires AI-powered marketing compliance platform Red Marker</i>. itwire.com</li>
+  <li>Nishith Desai Associates (2022). <i>Guidelines on misleading advertisements and endorsements notified under the Consumer Protection Act 2019</i>. nishithdesai.com</li>
+  <li>Khaitan &amp; Co (2021). <i>ASCI releases influencer advertising guidelines for digital media</i>. khaitanco.com/thought-leaderships/ASCI-releases-influencer-advertising-guidelines-for-digital-media-Effective-14-June-21-onward</li>
+  <li>Anthropic. <i>Claude API pricing</i> (model prices as listed in October 2026). claude.com/pricing</li>
+</ol>
+</div>
+
+<div class="section">
+<h2>Appendix B · Style-guide audit: method and all 114 rules</h2>
+<p class="small"><b>Scope:</b> five sections of the Mailchimp Content Style Guide <sup class="ref">[15]</sup>, retrieved October 2026, paraphrased with credit under CC BY-NC 4.0. <b>Unit:</b> one directive statement; descriptive sentences excluded, duplicates counted once, mixed sentences split. <b>R1:</b> the author, with AI assistance. <b>R2:</b> an AI model given only the rule list and class definitions, blind to R1.</p>
+<p class="small" style="margin-top:-1mm">Shaded rows: the raters disagreed (20 of 114).</p><div class="grid2" style="gap:3mm"><table class="audit"><tr><th>ID</th><th class="c">R1</th><th class="c">R2</th><th>Rule (paraphrased)</th></tr>
+<tr><td class="mono">VT01</td><td class="c">C</td><td class="c">C</td><td>Be plainspoken; avoid fluffy metaphors and cheap emotional plays</td></tr>
+<tr><td class="mono">VT02</td><td class="c">C</td><td class="c">C</td><td>Be genuine: familiar warm and accessible</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">VT03</td><td class="c">B</td><td class="c">C</td><td>Demystify B2B-speak and educate</td></tr>
+<tr><td class="mono">VT04</td><td class="c">C</td><td class="c">C</td><td>Humour is dry and subtle; weird but not inappropriate</td></tr>
+<tr><td class="mono">VT05</td><td class="c">C</td><td class="c">C</td><td>Tone usually informal; clarity beats entertainment</td></tr>
+<tr><td class="mono">VT06</td><td class="c">C</td><td class="c">C</td><td>Adjust tone to the reader&#x27;s emotional state</td></tr>
+<tr><td class="mono">VT07</td><td class="c">C</td><td class="c">C</td><td>Be funny only when appropriate and natural</td></tr>
+<tr><td class="mono">VT08</td><td class="c">B</td><td class="c">B</td><td>Use active voice (exception when emphasising the action)</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">VT09</td><td class="c">B</td><td class="c">C</td><td>Avoid slang and jargon; write plain English</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">VT10</td><td class="c">B</td><td class="c">C</td><td>Write positively rather than negatively</td></tr>
+<tr><td class="mono">VT11</td><td class="c">B</td><td class="c">B</td><td>Do not write in the mascot&#x27;s voice</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">GM01</td><td class="c">B</td><td class="c">C</td><td>Group related ideas; use descriptive headers</td></tr>
+<tr><td class="mono">GM02</td><td class="c">B</td><td class="c">B</td><td>Lead with the main point</td></tr>
+<tr><td class="mono">GM03</td><td class="c">C</td><td class="c">C</td><td>Be concise: short words and sentences</td></tr>
+<tr><td class="mono">GM04</td><td class="c">C</td><td class="c">C</td><td>Be specific; avoid vague language</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">GM05</td><td class="c">B</td><td class="c">C</td><td>Spell out unfamiliar acronyms on first use</td></tr>
+<tr><td class="mono">GM06</td><td class="c">A</td><td class="c">A</td><td>Email addresses and URLs in lowercase</td></tr>
+<tr><td class="mono">GM07</td><td class="c">A</td><td class="c">A</td><td>Never capitalise website/internet/online/email mid-sentence</td></tr>
+<tr><td class="mono">GM08</td><td class="c">C</td><td class="c">C</td><td>Use emoji infrequently and deliberately</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">GM09</td><td class="c">B</td><td class="c">A</td><td>Numerals except at sentence start (idioms excepted)</td></tr>
+<tr><td class="mono">GM10</td><td class="c">A</td><td class="c">A</td><td>Numbers over three digits get commas</td></tr>
+<tr><td class="mono">GM11</td><td class="c">B</td><td class="c">B</td><td>Write big numbers in full unless space is tight</td></tr>
+<tr><td class="mono">GM12</td><td class="c">A</td><td class="c">A</td><td>Spell out day and month in dates</td></tr>
+<tr><td class="mono">GM13</td><td class="c">A</td><td class="c">A</td><td>Spell out fractions</td></tr>
+<tr><td class="mono">GM14</td><td class="c">A</td><td class="c">A</td><td>Use the % symbol not the word percent</td></tr>
+<tr><td class="mono">GM15</td><td class="c">A</td><td class="c">A</td><td>Use a hyphen for ranges</td></tr>
+<tr><td class="mono">GM16</td><td class="c">A</td><td class="c">A</td><td>Currency symbol before amount; cents only if non-zero</td></tr>
+<tr><td class="mono">GM17</td><td class="c">A</td><td class="c">A</td><td>Phone numbers with dashes and country code</td></tr>
+<tr><td class="mono">GM18</td><td class="c">A</td><td class="c">A</td><td>Temperature with degree symbol and F</td></tr>
+<tr><td class="mono">GM19</td><td class="c">A</td><td class="c">A</td><td>Time as numerals with am/pm; no :00</td></tr>
+<tr><td class="mono">GM20</td><td class="c">B</td><td class="c">B</td><td>Specify time zones for schedulable events</td></tr>
+<tr><td class="mono">GM21</td><td class="c">A</td><td class="c">A</td><td>US time zone abbreviations; international zones spelled out</td></tr>
+<tr><td class="mono">GM22</td><td class="c">A</td><td class="c">A</td><td>Abbreviate decades within the last 100 years</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">GM23</td><td class="c">A</td><td class="c">B</td><td>Possessive apostrophe rules</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">GM24</td><td class="c">B</td><td class="c">A</td><td>Use a colon to offset a list</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">GM25</td><td class="c">A</td><td class="c">B</td><td>Use the serial (Oxford) comma</td></tr>
+<tr><td class="mono">GM26</td><td class="c">C</td><td class="c">C</td><td>Other commas: use common sense</td></tr>
+<tr><td class="mono">GM27</td><td class="c">A</td><td class="c">A</td><td>Hyphen without spaces for compounds and ranges</td></tr>
+<tr><td class="mono">GM28</td><td class="c">A</td><td class="c">A</td><td>True em dash without spaces</td></tr>
+<tr><td class="mono">GM29</td><td class="c">C</td><td class="c">C</td><td>Ellipses sparingly; not for drama</td></tr>
+<tr><td class="mono">GM30</td><td class="c">A</td><td class="c">A</td><td>Periods inside quotes; parenthesis placement</td></tr>
+<tr><td class="mono">GM31</td><td class="c">A</td><td class="c">A</td><td>Single space between sentences</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">GM32</td><td class="c">A</td><td class="c">B</td><td>Question mark placement with quotes</td></tr>
+<tr><td class="mono">GM33</td><td class="c">C</td><td class="c">C</td><td>Exclamation points sparingly</td></tr>
+<tr><td class="mono">GM34</td><td class="c">A</td><td class="c">A</td><td>Never more than one exclamation point at a time</td></tr>
+<tr><td class="mono">GM35</td><td class="c">B</td><td class="c">B</td><td>No exclamation points in failure messages or alerts</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">GM36</td><td class="c">A</td><td class="c">B</td><td>Quotation mark usage for words titles and quotes</td></tr>
+<tr><td class="mono">GM37</td><td class="c">A</td><td class="c">A</td><td>Single quotes inside double quotes</td></tr>
+<tr><td class="mono">GM38</td><td class="c">C</td><td class="c">C</td><td>Go easy on semicolons</td></tr>
+<tr><td class="mono">GM39</td><td class="c">A</td><td class="c">A</td><td>No ampersands except in brand names</td></tr>
+<tr><td class="mono">GM40</td><td class="c">A</td><td class="c">A</td><td>File extensions uppercase; filenames lowercase</td></tr>
+<tr><td class="mono">GM41</td><td class="c">B</td><td class="c">B</td><td>Singular they when gender unknown; never one as pronoun</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">GM42</td><td class="c">B</td><td class="c">A</td><td>Quotes attributed in present tense</td></tr>
+<tr><td class="mono">GM43</td><td class="c">B</td><td class="c">B</td><td>Full name on first mention then first name</td></tr>
+<tr><td class="mono">GM44</td><td class="c">B</td><td class="c">B</td><td>Capitalise team names but not the word team</td></tr>
+<tr><td class="mono">GM45</td><td class="c">B</td><td class="c">B</td><td>Capitalise job titles only for a specific role</td></tr>
+<tr><td class="mono">GM46</td><td class="c">A</td><td class="c">A</td><td>Do not call people ninja rockstar or wizard</td></tr>
+</table><table class="audit"><tr><th>ID</th><th class="c">R1</th><th class="c">R2</th><th>Rule (paraphrased)</th></tr>
+<tr style="background:#FFF3E0"><td class="mono">GM47</td><td class="c">B</td><td class="c">A</td><td>School full name first then abbreviation</td></tr>
+<tr><td class="mono">GM48</td><td class="c">A</td><td class="c">A</td><td>Spell out city and state names; AP city list</td></tr>
+<tr><td class="mono">GM49</td><td class="c">A</td><td class="c">A</td><td>United States on first mention then US</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">GM50</td><td class="c">B</td><td class="c">A</td><td>Capitalise website names; no italics</td></tr>
+<tr><td class="mono">GM51</td><td class="c">A</td><td class="c">A</td><td>Avoid spelled-out URLs; drop http://www</td></tr>
+<tr><td class="mono">GM52</td><td class="c">B</td><td class="c">B</td><td>Legal entity name only in legal documents</td></tr>
+<tr><td class="mono">GM53</td><td class="c">A</td><td class="c">A</td><td>Exact brand-name capitalisation</td></tr>
+<tr><td class="mono">GM54</td><td class="c">B</td><td class="c">B</td><td>Refer to the company as we not it</td></tr>
+<tr><td class="mono">GM55</td><td class="c">A</td><td class="c">A</td><td>Capitalise branded terms and plan names only</td></tr>
+<tr><td class="mono">GM56</td><td class="c">A</td><td class="c">A</td><td>Honour other companies&#x27; own spellings</td></tr>
+<tr><td class="mono">GM57</td><td class="c">B</td><td class="c">B</td><td>Refer to other companies as it not they</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">GM58</td><td class="c">B</td><td class="c">C</td><td>Define technical terms when used</td></tr>
+<tr><td class="mono">GM59</td><td class="c">B</td><td class="c">B</td><td>Italics for long-work titles and UI labels</td></tr>
+<tr><td class="mono">GM60</td><td class="c">A</td><td class="c">A</td><td>No underline; no mixed bold/italic/caps</td></tr>
+<tr><td class="mono">GM61</td><td class="c">A</td><td class="c">A</td><td>Left-align text</td></tr>
+<tr><td class="mono">WP01</td><td class="c">A</td><td class="c">A</td><td>Do not capitalise audience mid-sentence</td></tr>
+<tr><td class="mono">WP02</td><td class="c">B</td><td class="c">B</td><td>Audiences and contacts are they not it</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">WP03</td><td class="c">A</td><td class="c">B</td><td>Always use the lookalike qualifier for that feature</td></tr>
+<tr><td class="mono">WP04</td><td class="c">B</td><td class="c">B</td><td>Mention age only if relevant</td></tr>
+<tr><td class="mono">WP05</td><td class="c">A</td><td class="c">A</td><td>No age descriptors like young old elderly</td></tr>
+<tr><td class="mono">WP06</td><td class="c">A</td><td class="c">A</td><td>Avoid disability idioms</td></tr>
+<tr><td class="mono">WP07</td><td class="c">B</td><td class="c">B</td><td>Mention disability only if relevant</td></tr>
+<tr><td class="mono">WP08</td><td class="c">A</td><td class="c">A</td><td>Never suffer victim or handicapped</td></tr>
+<tr><td class="mono">WP09</td><td class="c">A</td><td class="c">A</td><td>Do not call groups guys or women girls</td></tr>
+<tr><td class="mono">WP10</td><td class="c">A</td><td class="c">A</td><td>Prefer gender-neutral job terms</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">WP11</td><td class="c">B</td><td class="c">A</td><td>LGBT terms as modifiers not nouns</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">WP12</td><td class="c">B</td><td class="c">A</td><td>Avoid lifestyle/preference/homosexual for LGBT people</td></tr>
+<tr><td class="mono">WP13</td><td class="c">B</td><td class="c">B</td><td>Avoid same-sex marriage unless relevant</td></tr>
+<tr><td class="mono">WP14</td><td class="c">B</td><td class="c">B</td><td>Use a person&#x27;s communicated pronouns</td></tr>
+<tr><td class="mono">WP15</td><td class="c">B</td><td class="c">B</td><td>Deaf and hard of hearing usage</td></tr>
+<tr><td class="mono">WP16</td><td class="c">A</td><td class="c">A</td><td>No hyphen in dual heritage terms</td></tr>
+<tr><td class="mono">WP17</td><td class="c">B</td><td class="c">B</td><td>Mention medical condition only if relevant</td></tr>
+<tr><td class="mono">WP18</td><td class="c">B</td><td class="c">B</td><td>Never assume or label mental conditions</td></tr>
+<tr><td class="mono">WP19</td><td class="c">A</td><td class="c">A</td><td>Capitalise culture and ethnicity names</td></tr>
+<tr><td class="mono">WP20</td><td class="c">B</td><td class="c">B</td><td>Blind and low vision usage</td></tr>
+<tr><td class="mono">WA01</td><td class="c">B</td><td class="c">B</td><td>Avoid directional language</td></tr>
+<tr><td class="mono">WA02</td><td class="c">A</td><td class="c">A</td><td>Headings nested and consecutive</td></tr>
+<tr><td class="mono">WA03</td><td class="c">B</td><td class="c">B</td><td>Most important information first</td></tr>
+<tr><td class="mono">WA04</td><td class="c">A</td><td class="c">A</td><td>Use true lists not line breaks</td></tr>
+<tr><td class="mono">WA05</td><td class="c">A</td><td class="c">A</td><td>Label form inputs and required fields</td></tr>
+<tr><td class="mono">WA06</td><td class="c">C</td><td class="c">C</td><td>The shorter the form the better</td></tr>
+<tr><td class="mono">WA07</td><td class="c">A</td><td class="c">A</td><td>Descriptive links; avoid click here</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">WA08</td><td class="c">B</td><td class="c">C</td><td>Plain language and short sentences</td></tr>
+<tr><td class="mono">WA09</td><td class="c">A</td><td class="c">A</td><td>Alt text on all images</td></tr>
+<tr><td class="mono">WA10</td><td class="c">B</td><td class="c">B</td><td>Alt text content matches image purpose</td></tr>
+<tr><td class="mono">WA11</td><td class="c">A</td><td class="c">A</td><td>Captions or transcripts for all video</td></tr>
+<tr style="background:#FFF3E0"><td class="mono">WA12</td><td class="c">C</td><td class="c">A</td><td>Aim for high contrast between text and background</td></tr>
+<tr><td class="mono">WA13</td><td class="c">B</td><td class="c">B</td><td>Images are never the only carrier of meaning</td></tr>
+<tr><td class="mono">SM01</td><td class="c">A</td><td class="c">A</td><td>Platform length limits for social copy</td></tr>
+<tr><td class="mono">SM02</td><td class="c">A</td><td class="c">A</td><td>No 4 for for or u for you</td></tr>
+<tr><td class="mono">SM03</td><td class="c">C</td><td class="c">C</td><td>Avoid excessive exclamation points</td></tr>
+<tr><td class="mono">SM04</td><td class="c">B</td><td class="c">B</td><td>Do not publicly tag subjects with we-wrote-about-you</td></tr>
+<tr><td class="mono">SM05</td><td class="c">A</td><td class="c">A</td><td>Never ask for retweets or likes</td></tr>
+<tr><td class="mono">SM06</td><td class="c">C</td><td class="c">C</td><td>Hashtags rarely and deliberately</td></tr>
+<tr><td class="mono">SM07</td><td class="c">B</td><td class="c">B</td><td>No trending hashtags to promote the brand</td></tr>
+<tr><td class="mono">SM08</td><td class="c">B</td><td class="c">B</td><td>No comment on unrelated trending topics</td></tr>
+<tr><td class="mono">SM09</td><td class="c">B</td><td class="c">B</td><td>Pause scheduled posts during major breaking news</td></tr>
+</table></div>
+</div>
+
+<div class="section">
+<h2>Appendix C · Interview guide and survey</h2>
+<div class="grid2">
+<div class="card"><h4>Interview guide (30 minutes, semi-structured)</h4>
+<ol style="margin:0">
+  <li>Walk me through the last piece of content you approved or had sent back. What happened, step by step?</li>
+  <li>What did you have to check by hand? Which of those checks felt mechanical?</li>
+  <li>Tell me about a time something wrong or off-brand got published. How was it caught?</li>
+  <li>Where does the evidence for product claims live today? Who owns it?</li>
+  <li>Which brand rules do people interpret differently? Can you give an example?</li>
+  <li>How do agencies and AI tools fit into your content process today?</li>
+  <li>What would you never let software decide on its own?</li>
+  <li>What data could not leave your company for a tool like this?</li>
+</ol></div>
+<div class="card"><h4>Survey (10 questions, about 4 minutes)</h4>
+<ol style="margin:0">
+  <li>Your role, and the size of your organisation</li>
+  <li>How many people or agencies create content your team reviews?</li>
+  <li>Average review rounds before approval (1, 2, 3, 4, 5+)</li>
+  <li>Share of review time spent on mechanical issues (0–100%)</li>
+  <li>How often off-brand or incorrect content gets published</li>
+  <li>Where claim evidence is kept (system, spreadsheet, email, nowhere)</li>
+  <li>Do you use AI tools to draft content? Which?</li>
+  <li>Preferred feedback: a list of issues / a suggested fix / both</li>
+  <li>Rank: speed, accuracy, explanation, control, privacy</li>
+  <li>May I contact you for a 30-minute test session?</li>
+</ol></div>
+</div>
+
+<h2 style="margin-top:5mm">Appendix D · Disclosures and glossary</h2>
+<table>
+  <tr><th style="width:24%">Item</th><th>Disclosure</th></tr>
+  <tr><td>AI assistance</td><td>Claude (Anthropic) assisted with web research, synthesis and drafting; with the first-pass audit classification; as the blind second rater; as the eight simulated personas in §3.4; and as reviewers that critiqued drafts against the published rubric. All sources are listed in Appendix A so each figure can be verified.</td></tr>
+  <tr><td>Synthetic panel</td><td>The §3.4 personas are fictional and AI-simulated. Their transcripts are kept, labelled as such, and used only as design critique; no figure from them appears in this plan.</td></tr>
+  <tr><td>Planned external services</td><td>Anthropic Claude API (redacted spans, rules, public and internal facts); Supabase; an SMTP e-mail provider (notifications and the daily audit digest); Vercel and a worker host; Slack. Each will be listed in the product's "What leaves this system" page.</td></tr>
+  <tr><td>Testers and labellers</td><td>The held-out labeller and user testers are recruited before the window, credited by name with consent in the Round 2 report, and are not team members.</td></tr>
+  <tr><td>Data and reused material</td><td>All demo data is fictional. Open-source libraries named in §6.3 under their licences; the Mailchimp guide (CC BY-NC 4.0) for the audit only. No pre-existing code. "Plumbline" is a working name chosen for this event.</td></tr>
+</table>
+<table>
+  <tr><th style="width:24%">Term</th><th>Meaning in this plan</th></tr>
+  <tr><td>Class A / B / C rule</td><td>Code-checkable / needs language or visual understanding / ambiguous as written (§3.2); class C rules do not run until clarified</td></tr>
+  <tr><td>Mandatory and brand tiers</td><td>Legal and accessibility rules that block from day one / brand rules that start advisory</td></tr>
+  <tr><td>Shadow mode (advisory)</td><td>A brand rule's flags are shown as advice and logged, but cannot block, until the 95% lower bound of reviewer agreement reaches 80%</td></tr>
+  <tr><td>Approved wording</td><td>Pre-approved phrasings of a fact for a market and channel, with any required disclaimer; the only text Plumbline may offer as a claim fix</td></tr>
+  <tr><td>Coverage statement</td><td>The part of every report listing rules run, rules in shadow mode, and what was not checked</td></tr>
+  <tr><td>Intent lock</td><td>The five checks every non-claim rewrite must pass (§6.2, stage 7)</td></tr>
+  <tr><td>Claim recall</td><td>Update-or-withdraw tasks raised for every asset that uses a fact once it changes or expires</td></tr>
+  <tr><td>Egress ledger</td><td>An exportable log of which text went to which external model, where and when</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>Appendix E · Synthetic panel (AI-simulated design critique)</h2>
+<p>Eight fictional personas, simulated by Claude, each answered the interview guide (Appendix C) before reading a one-page concept brief, then reviewed the concept and made a pilot decision. Transcripts are kept and labelled AI-simulated. This was used only to find design gaps before real interviews: nothing from it is used as evidence of demand, and every design change it prompted is tested as H6 in §3.5.</p>
+<table>
+  <tr><th style="width:21%">Simulated persona</th><th style="width:39%">Their main condition</th><th>What I changed</th></tr>
+  <tr><td>Compliance manager, consumer health</td><td>"Silence is not clearance"; never invent claim wording; back-test before go-live</td><td>Coverage statement on every report; approved-wording swaps; shadow mode on past content</td></tr>
+  <tr><td>Content lead, regulated fintech</td><td>Check that required wording is present; Plumbline approval is not the regulatory sign-off</td><td>Required-content checks; record exports to the firm's promotions register; rules owned by function</td></tr>
+  <tr><td>Head of brand, D2C skincare</td><td>Influencer content skips the CMS; claims ad-libbed after approval</td><td>No-login check link; claim recall and post-publication watch (reel transcripts on the roadmap)</td></tr>
+  <tr><td>Security buyer, private bank</td><td>Confidential facts never reach an AI; a synced fact source, not a stale copy</td><td>Confidential facts checked by code only; egress ledger; fact sync from the source sheet</td></tr>
+  <tr><td>Agency creative director</td><td>A private pre-check; no one-sided "agency" dashboard</td><td>Pre-checks private; agencies see the same views as the client, including reviewers' "moving goalposts"</td></tr>
+  <tr><td>Brand design lead, retail</td><td>Measurable visual checks only; no font uploads; exceptions that stick</td><td>Visual scope narrowed; palette checked on graphics only, never inside photos; sticky exceptions</td></tr>
+  <tr><td>Accessibility consultant</td><td>No pass badge, no AI-written alt text, accessibility never weakened</td><td>Accessibility floor; alt-text adequacy asked as a question; "not checked" list</td></tr>
+  <tr><td>Junior social creator</td><td>Under a minute per post; works from Slack; not a scoreboard</td><td>Optional intent fields remembered per campaign; results in Slack; personal stats private</td></tr>
+</table>
+
+</div>
+
+</body>
+</html>

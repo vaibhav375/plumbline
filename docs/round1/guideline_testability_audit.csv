@@ -1,0 +1,115 @@
+id,section,rule_paraphrased,class,why
+VT01,Voice and tone,Be plainspoken; avoid fluffy metaphors and cheap emotional plays,C,No threshold or examples of what counts as fluffy
+VT02,Voice and tone,Be genuine: familiar warm and accessible,C,Subjective adjectives only
+VT03,Voice and tone,Demystify B2B-speak and educate,B,Jargon detection needs language understanding
+VT04,Voice and tone,Humour is dry and subtle; weird but not inappropriate,C,Boundary between weird and inappropriate undefined
+VT05,Voice and tone,Tone usually informal; clarity beats entertainment,C,No definition of informal
+VT06,Voice and tone,Adjust tone to the reader's emotional state,C,No mapping from reader state to tone
+VT07,Voice and tone,Be funny only when appropriate and natural,C,Appropriateness undefined
+VT08,Voice and tone,Use active voice (exception when emphasising the action),B,Passive detection is parseable but the exception needs judgement
+VT09,Voice and tone,Avoid slang and jargon; write plain English,B,Needs language understanding
+VT10,Voice and tone,Write positively rather than negatively,B,Needs language understanding
+VT11,Voice and tone,Do not write in the mascot's voice,B,Needs language understanding
+GM01,Grammar and mechanics,Group related ideas; use descriptive headers,B,Needs language understanding
+GM02,Grammar and mechanics,Lead with the main point,B,Needs language understanding
+GM03,Grammar and mechanics,Be concise: short words and sentences,C,No length threshold
+GM04,Grammar and mechanics,Be specific; avoid vague language,C,Vague is undefined
+GM05,Grammar and mechanics,Spell out unfamiliar acronyms on first use,B,Unfamiliar to whom needs judgement
+GM06,Grammar and mechanics,Email addresses and URLs in lowercase,A,Pattern match
+GM07,Grammar and mechanics,Never capitalise website/internet/online/email mid-sentence,A,Word list
+GM08,Grammar and mechanics,Use emoji infrequently and deliberately,C,No frequency threshold
+GM09,Grammar and mechanics,Numerals except at sentence start (idioms excepted),B,Core is a pattern; idiom exception needs judgement
+GM10,Grammar and mechanics,Numbers over three digits get commas,A,Pattern match
+GM11,Grammar and mechanics,Write big numbers in full unless space is tight,B,Space constraint needs channel context
+GM12,Grammar and mechanics,Spell out day and month in dates,A,Pattern match
+GM13,Grammar and mechanics,Spell out fractions,A,Pattern match
+GM14,Grammar and mechanics,Use the % symbol not the word percent,A,Pattern match
+GM15,Grammar and mechanics,Use a hyphen for ranges,A,Pattern match
+GM16,Grammar and mechanics,Currency symbol before amount; cents only if non-zero,A,Pattern match
+GM17,Grammar and mechanics,Phone numbers with dashes and country code,A,Pattern match
+GM18,Grammar and mechanics,Temperature with degree symbol and F,A,Pattern match
+GM19,Grammar and mechanics,Time as numerals with am/pm; no :00,A,Pattern match
+GM20,Grammar and mechanics,Specify time zones for schedulable events,B,Needs to know the text describes an event
+GM21,Grammar and mechanics,US time zone abbreviations; international zones spelled out,A,Word list
+GM22,Grammar and mechanics,Abbreviate decades within the last 100 years,A,Pattern match
+GM23,Grammar and mechanics,Possessive apostrophe rules,A,Parser rule
+GM24,Grammar and mechanics,Use a colon to offset a list,B,Needs sentence structure understanding
+GM25,Grammar and mechanics,Use the serial (Oxford) comma,A,Parser rule
+GM26,Grammar and mechanics,Other commas: use common sense,C,Explicitly left to judgement
+GM27,Grammar and mechanics,Hyphen without spaces for compounds and ranges,A,Pattern match
+GM28,Grammar and mechanics,True em dash without spaces,A,Pattern match
+GM29,Grammar and mechanics,Ellipses sparingly; not for drama,C,No frequency threshold
+GM30,Grammar and mechanics,Periods inside quotes; parenthesis placement,A,Pattern match
+GM31,Grammar and mechanics,Single space between sentences,A,Pattern match
+GM32,Grammar and mechanics,Question mark placement with quotes,A,Parser rule
+GM33,Grammar and mechanics,Exclamation points sparingly,C,No frequency threshold
+GM34,Grammar and mechanics,Never more than one exclamation point at a time,A,Pattern match
+GM35,Grammar and mechanics,No exclamation points in failure messages or alerts,B,Needs to know the message type
+GM36,Grammar and mechanics,Quotation mark usage for words titles and quotes,A,Parser rule
+GM37,Grammar and mechanics,Single quotes inside double quotes,A,Pattern match
+GM38,Grammar and mechanics,Go easy on semicolons,C,No frequency threshold
+GM39,Grammar and mechanics,No ampersands except in brand names,A,Pattern match plus brand list
+GM40,Grammar and mechanics,File extensions uppercase; filenames lowercase,A,Pattern match
+GM41,Grammar and mechanics,Singular they when gender unknown; never one as pronoun,B,Needs coreference
+GM42,Grammar and mechanics,Quotes attributed in present tense,B,Needs language understanding
+GM43,Grammar and mechanics,Full name on first mention then first name,B,Needs entity tracking
+GM44,Grammar and mechanics,Capitalise team names but not the word team,B,Needs entity recognition
+GM45,Grammar and mechanics,Capitalise job titles only for a specific role,B,Needs context
+GM46,Grammar and mechanics,Do not call people ninja rockstar or wizard,A,Word list
+GM47,Grammar and mechanics,School full name first then abbreviation,B,Needs entity tracking
+GM48,Grammar and mechanics,Spell out city and state names; AP city list,A,Gazetteer lookup
+GM49,Grammar and mechanics,United States on first mention then US,A,Pattern match
+GM50,Grammar and mechanics,Capitalise website names; no italics,B,Needs entity recognition
+GM51,Grammar and mechanics,Avoid spelled-out URLs; drop http://www,A,Pattern match
+GM52,Grammar and mechanics,Legal entity name only in legal documents,B,Needs document type
+GM53,Grammar and mechanics,Exact brand-name capitalisation,A,Word list
+GM54,Grammar and mechanics,Refer to the company as we not it,B,Needs coreference
+GM55,Grammar and mechanics,Capitalise branded terms and plan names only,A,Word list
+GM56,Grammar and mechanics,Honour other companies' own spellings,A,Word list
+GM57,Grammar and mechanics,Refer to other companies as it not they,B,Needs coreference
+GM58,Grammar and mechanics,Define technical terms when used,B,Needs language understanding
+GM59,Grammar and mechanics,Italics for long-work titles and UI labels,B,Needs entity recognition
+GM60,Grammar and mechanics,No underline; no mixed bold/italic/caps,A,Formatting inspection
+GM61,Grammar and mechanics,Left-align text,A,Formatting inspection
+WP01,Writing about people,Do not capitalise audience mid-sentence,A,Pattern match
+WP02,Writing about people,Audiences and contacts are they not it,B,Needs coreference
+WP03,Writing about people,Always use the lookalike qualifier for that feature,A,Word list
+WP04,Writing about people,Mention age only if relevant,B,Relevance needs judgement
+WP05,Writing about people,No age descriptors like young old elderly,A,Word list
+WP06,Writing about people,Avoid disability idioms,A,Word list
+WP07,Writing about people,Mention disability only if relevant,B,Relevance needs judgement
+WP08,Writing about people,Never suffer victim or handicapped,A,Word list
+WP09,Writing about people,Do not call groups guys or women girls,A,Word list
+WP10,Writing about people,Prefer gender-neutral job terms,A,Word list
+WP11,Writing about people,LGBT terms as modifiers not nouns,B,Needs part-of-speech context
+WP12,Writing about people,Avoid lifestyle/preference/homosexual for LGBT people,B,Context dependent words
+WP13,Writing about people,Avoid same-sex marriage unless relevant,B,Relevance needs judgement
+WP14,Writing about people,Use a person's communicated pronouns,B,Needs external knowledge
+WP15,Writing about people,Deaf and hard of hearing usage,B,Needs context
+WP16,Writing about people,No hyphen in dual heritage terms,A,Pattern match
+WP17,Writing about people,Mention medical condition only if relevant,B,Relevance needs judgement
+WP18,Writing about people,Never assume or label mental conditions,B,Needs language understanding
+WP19,Writing about people,Capitalise culture and ethnicity names,A,Word list
+WP20,Writing about people,Blind and low vision usage,B,Needs context
+WA01,Writing for accessibility,Avoid directional language,B,Needs language understanding
+WA02,Writing for accessibility,Headings nested and consecutive,A,Markup inspection
+WA03,Writing for accessibility,Most important information first,B,Needs language understanding
+WA04,Writing for accessibility,Use true lists not line breaks,A,Markup inspection
+WA05,Writing for accessibility,Label form inputs and required fields,A,Markup inspection
+WA06,Writing for accessibility,The shorter the form the better,C,No threshold
+WA07,Writing for accessibility,Descriptive links; avoid click here,A,Word list
+WA08,Writing for accessibility,Plain language and short sentences,B,Needs language understanding
+WA09,Writing for accessibility,Alt text on all images,A,Markup inspection
+WA10,Writing for accessibility,Alt text content matches image purpose,B,Needs vision and language understanding
+WA11,Writing for accessibility,Captions or transcripts for all video,A,Asset inspection
+WA12,Writing for accessibility,Aim for high contrast between text and background,C,No contrast ratio stated
+WA13,Writing for accessibility,Images are never the only carrier of meaning,B,Needs vision and language understanding
+SM01,Writing for social media,Platform length limits for social copy,A,Character count
+SM02,Writing for social media,No 4 for for or u for you,A,Pattern match
+SM03,Writing for social media,Avoid excessive exclamation points,C,No threshold
+SM04,Writing for social media,Do not publicly tag subjects with we-wrote-about-you,B,Needs language understanding
+SM05,Writing for social media,Never ask for retweets or likes,A,Pattern match
+SM06,Writing for social media,Hashtags rarely and deliberately,C,No frequency threshold
+SM07,Writing for social media,No trending hashtags to promote the brand,B,Needs live trend data
+SM08,Writing for social media,No comment on unrelated trending topics,B,Needs news context
+SM09,Writing for social media,Pause scheduled posts during major breaking news,B,Needs news context

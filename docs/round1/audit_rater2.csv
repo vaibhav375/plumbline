@@ -1,0 +1,115 @@
+id,class,reason
+VT01,C,"""Fluffy"" and ""cheap"" are subjective; no examples or threshold"
+VT02,C,Warmth and genuineness are matters of degree
+VT03,C,No criterion for what counts as demystified B2B-speak
+VT04,C,Dry/subtle/inappropriate humour is a taste judgement
+VT05,C,"""Usually informal"" gives no threshold"
+VT06,C,No guidance on what tone fits which emotional state
+VT07,C,"""Appropriate and natural"" humour is subjective"
+VT08,B,Passive detection needs parsing; emphasis exception needs judgement
+VT09,C,Jargon is audience-relative; no word list given
+VT10,C,Unclear which negatives must be rephrased
+VT11,B,Clear criterion but must recognise mascot voice from meaning
+GM01,C,"""Related"" grouping and ""descriptive"" headers are subjective"
+GM02,B,Must understand which point is main; criterion clear
+GM03,C,No word or sentence length threshold
+GM04,C,"""Vague"" has no threshold"
+GM05,C,"Acronym detection is code, but ""unfamiliar"" is reader-dependent"
+GM06,A,Regex for emails/URLs containing uppercase letters
+GM07,A,Word list plus sentence-position check
+GM08,C,"""Infrequently"" gives no count threshold"
+GM09,A,Spelled-number word list off sentence start; idioms are minority exceptions
+GM10,A,Regex for 4+ digit numbers without commas (exclude years)
+GM11,B,"Abbreviation regex easy, but ""space tight"" needs document type"
+GM12,A,Regex for abbreviated days/months and numeric dates
+GM13,A,Regex for numeric fractions or fraction glyphs
+GM14,A,"Search for the word ""percent"""
+GM15,A,Regex for en dashes or 'to' between numbers
+GM16,A,Regex on currency amounts and .00 cents
+GM17,A,Phone-number regex checks dashes and country code
+GM18,A,Regex on temperature mentions for degree symbol and F
+GM19,A,Time regex for am/pm format and :00
+GM20,B,Must judge whether a time is a schedulable event
+GM21,A,Gazetteer of time-zone names and abbreviations
+GM22,A,Regex on decade years with date arithmetic
+GM23,B,Singular vs plural nouns ending in s needs understanding
+GM24,A,Markup list preceded by colon check; inline lists need parsing
+GM25,B,List boundaries in prose need syntactic parsing; regex misfires
+GM26,C,"""Common sense"" gives no criterion"
+GM27,A,Regex for spaced hyphens
+GM28,A,Regex for double hyphens or spaced em dashes
+GM29,C,"""Sparingly"" and ""drama"" have no threshold"
+GM30,A,Punctuation-order regex; full-sentence parenthetical heuristic mostly works
+GM31,A,Regex for double spaces after sentence punctuation
+GM32,B,Must know whether question belongs to the quote
+GM33,C,"""Sparingly"" gives no count threshold"
+GM34,A,Regex for consecutive exclamation points
+GM35,B,Must recognise a failure message or alert by meaning
+GM36,B,Must recognise word-as-word uses and short-work titles
+GM37,A,Regex for nested double quotes
+GM38,C,"""Go easy"" gives no threshold"
+GM39,A,Find ampersands; brand-name gazetteer for exceptions
+GM40,A,Regex for extension tokens and filename case
+GM41,B,Generic he/one-as-pronoun needs coreference or POS context
+GM42,A,Attribution-verb list adjacent to quotes detects past tense
+GM43,B,Needs person-entity tracking across mentions
+GM44,B,Must know which words name teams vs generic nouns
+GM45,B,Specific vs generic role reference needs understanding
+GM46,A,Word list: ninja rockstar wizard
+GM47,A,University gazetteer with abbreviations plus order check
+GM48,A,State-abbreviation list and AP city gazetteer
+GM49,A,String order check for United States vs US
+GM50,A,Website-name gazetteer plus italics markup check
+GM51,A,Regex for visible http:// or www
+GM52,B,Legal-name regex easy; must classify document as legal
+GM53,A,Brand-spelling word list
+GM54,B,Pronoun coreference to the company needed
+GM55,A,Branded-term and plan-name lists; common-word plan names need care
+GM56,A,Gazetteer of company spellings
+GM57,B,Pronoun coreference to other companies needed
+GM58,C,"""Technical term"" undefined; audience-dependent"
+GM59,B,Must recognise long-work titles and UI labels
+GM60,A,Markup inspection for underline and mixed styling
+GM61,A,CSS/markup alignment check
+WP01,A,Case check on 'audience' not at sentence start
+WP02,B,Pronoun coreference to audiences/contacts
+WP03,B,Must recognise text refers to the lookalike feature
+WP04,B,Relevance of age needs understanding
+WP05,A,Word list of age descriptors; some non-person false positives
+WP06,A,Idiom phrase list catches most cases
+WP07,B,Relevance of disability needs understanding
+WP08,A,"Phrase list; ""suffer"" needs minor context filter"
+WP09,A,"Word list for guys/girls; adult reference usually assumed"
+WP10,A,Gendered job-term word list
+WP11,A,Patterns for noun forms like 'gays' or 'a transgender'
+WP12,A,Phrase list: sexual preference / homosexual / gay lifestyle
+WP13,B,Phrase detection easy but relevance exception decides most cases
+WP14,B,Needs knowledge of the person's stated pronouns
+WP15,B,Correct term depends on the person's degree of hearing loss
+WP16,A,Regex for hyphenated nationality-American compounds
+WP17,B,Relevance of medical condition needs understanding
+WP18,B,Must judge whether text assumes or labels a condition
+WP19,A,Ethnicity/culture gazetteer case check; colour-word ambiguity minor
+WP20,B,Correct term depends on the person's degree of vision
+WA01,B,Left/right/above need sense disambiguation for layout references
+WA02,A,Heading-level markup inspection
+WA03,B,Must understand which information matters most
+WA04,A,Markup inspection for fake lists via line breaks
+WA05,A,Markup inspection of labels and required attributes
+WA06,C,No length threshold; relative judgement
+WA07,A,Generic link-text list catches most cases
+WA08,C,No threshold for plain or short
+WA09,A,Markup check for alt attribute
+WA10,B,Needs visual understanding of image purpose
+WA11,A,Markup check for captions track or transcript
+WA12,A,Contrast ratio computable; linked tool supplies WCAG threshold
+WA13,B,Needs visual understanding of image meaning
+SM01,A,Character count against platform limits
+SM02,A,Regex for textspeak substitutions
+SM03,C,"""Excessive"" has no threshold"
+SM04,B,Must understand the intent of a tagging post
+SM05,A,Phrase list: retweet/RT/like/share requests
+SM06,C,"""Rarely"" gives no threshold"
+SM07,B,Needs trending knowledge and promotional intent
+SM08,B,Relevance of trending topic needs understanding
+SM09,B,Needs world knowledge of breaking news; criterion clear

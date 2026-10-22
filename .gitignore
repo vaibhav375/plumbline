@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+secrets.env
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+node_modules/
+.next/
+out/
+.vercel/
+playwright-report/
+test-results/
+.DS_Store
