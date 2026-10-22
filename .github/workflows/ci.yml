@@ -33,7 +33,7 @@ jobs:
         run: |
           docker run --rm checker python -c "import pytesseract; print('tesseract', pytesseract.get_tesseract_version())"
           docker run --rm checker sh -c 'test ! -e /app/.env && test ! -d /app/tests'
-          docker run -d --name c -p 8000:8000 -e SUPABASE_URL=https://example.supabase.co -e SUPABASE_ANON_KEY=x checker
+          docker run -d --name checker-test -p 8000:8000 -e SUPABASE_URL=https://example.supabase.co -e SUPABASE_ANON_KEY=x checker
           for i in $(seq 1 30); do curl -sf localhost:8000/health && break; sleep 1; done
           curl -sf localhost:8000/health | grep -q '"status":"ok"'
 
