@@ -11,5 +11,5 @@ export default defineConfig({
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: process.env.BASE_URL
     ? undefined
-    : { command: "pnpm build && pnpm start", url: baseURL, reuseExistingServer: true, timeout: 600_000 },
+    : { command: "pnpm build && pnpm start", url: baseURL, reuseExistingServer: false, timeout: 600_000 },
 });
