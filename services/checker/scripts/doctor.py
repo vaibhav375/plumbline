@@ -9,10 +9,14 @@ import sys
 
 import httpx
 
-GROQ_MODELS = os.getenv("GROQ_MODELS", "qwen/qwen3.8-27b,openai/gpt-oss-20b").split(",")
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+from plumbline.llm import GEMINI_MODEL, GROQ_MODELS
+
 ENDPOINTS = {
-    "groq": ("https://api.groq.com/openai/v1/models", "GROQ_API_KEY", GROQ_MODELS),
+    "groq": (
+        "https://api.groq.com/openai/v1/models",
+        "GROQ_API_KEY",
+        sorted(set(GROQ_MODELS.values())),
+    ),
     "gemini": (
         "https://generativelanguage.googleapis.com/v1beta/openai/models",
         "GEMINI_API_KEY",

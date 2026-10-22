@@ -402,16 +402,16 @@ class EgressEvent(BaseModel): provider: str; model: str; region: str; task: str;
 - Raises `LLMUnavailable` when all providers fail.
 - Every attempt emits an `EgressEvent`.
 
-- [ ] **Step 1:** Write the failing tests (with `respx` mocking HTTP):
+- [x] **Step 1:** Write the failing tests (with `respx` mocking HTTP):
   - `test_strips_think_and_parses`
   - `test_invalid_json_then_valid_retries_same_provider`
   - `test_429_falls_back_to_gemini`: returns `"gemini/<model>"`
   - `test_all_fail_raises_unavailable`
   - `test_egress_event_per_attempt`: 3 attempts produce 3 events
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Implement with `httpx` (sync client; parallelism comes from the pipeline's thread pool).
-- [ ] **Step 4:** Run. Expected: PASS. Then `make doctor` against the real providers.
-- [ ] **Step 5:** Commit: `feat(llm): provider chain adapter`.
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Implement with `httpx` (sync client; parallelism comes from the pipeline's thread pool).
+- [x] **Step 4:** Run. Expected: PASS. Then `make doctor` against the real providers.
+- [x] **Step 5:** Commit: `feat(llm): provider chain adapter`.
 
 ### Task 9: Privacy: PII redaction and confidential masking
 

@@ -259,3 +259,32 @@ Live: **https://plumbline-pes1ug23cs665s-projects.vercel.app** (Vercel, Next.js 
 - The milestone's "Supabase row exists" needs persistence, which Task 14 adds (`versions`,
   `check_runs`, `findings`). Today a check returns a report but stores nothing.
 - Highlighting quotes inside the text (needs the UTF-16 offset conversion noted in Task 4) is Task 15.
+
+## Task 8: LLM adapter (provider chain, retries, JSON mode, egress events)
+
+| Check | Evidence | Result |
+|---|---|---|
+| Plan's 5 tests (strip `<think>`, invalid JSON retried on the same provider, 429 → Gemini, all fail → `LLMUnavailable`, one egress event per attempt) | `pytest tests/test_llm.py` (10 tests, HTTP mocked with respx, sleeps faked) | Pass |
+| Extra: retry-after honoured but capped at 3 s; auth errors don't retry; JSON mode, model params and routing in the request body; schema mismatch counts as invalid; no content field on egress events | same file | Pass |
+| **Live routing** | extract/support → `groq/openai/gpt-oss-20b`, judge/rewrite → `groq/qwen/qwen3.8-27b`; 0.2–0.7 s each | Pass |
+| **Live fallback** | Groq key wrong → `http_401`, no retry → `gemini/gemini-2.5-flash` in 1.6 s | Pass |
+| **Live rate limiting (Review Focus 1)** | 8 parallel ~1,200-token calls: Groq returned real `429`s; 7 served by Groq, 1 by Gemini, **0 failures**, 4.5 s total | Pass |
+| **Live outage** | both keys wrong → `LLMUnavailable("groq rejected the request, gemini rejected the request")`, plain words for the coverage note | Pass |
+| `make doctor` | ✓ groq, gemini, supabase, supabase-test, using the adapter's own model IDs | Pass |
+
+**Assumptions that failed or were refined (from real probe calls before writing code)**
+- *Qwen output contains `<think>` blocks.* Not on Groq: it hides reasoning, and gpt-oss returns it in a
+  separate field. Stripping stays (cheap, needed for Ollama), but isn't load-bearing.
+- *Requests per day are the free-tier constraint.* The binding limit is **8,000 tokens per minute per
+  model** (Groq headers). Hidden reasoning was eating it: gpt-oss used 215 of 263 output tokens
+  reasoning. Per-model `reasoning_effort` (gpt-oss `low`, Qwen and Gemini `none`) cut tokens by about
+  half (409 → 198 gpt-oss; 267 → 121 Gemini, 2.7 s → 1.4 s) with the same JSON output.
+- *Gemini Flash-Lite as a cheaper fallback.* "No longer available to new users" (404). Flash only.
+- Model IDs were defined twice (doctor and adapter); `doctor` now imports them from `llm.py`.
+
+**Notes for later tasks**
+- **Task 10 support check must use a different model from the one being checked.** Extraction and
+  support both route to gpt-oss, so claim support should go to Qwen (or Gemini) to stay independent.
+- Each fallback to Gemini costs ~1.5 s plus up to 3 s of honoured backoff. Fine against the 60 s p95.
+- `EgressEvent` maps onto the `egress_events` table (purpose = task); persistence is wired in Task 14,
+  and Task 9 adds the redaction and masking counts.
