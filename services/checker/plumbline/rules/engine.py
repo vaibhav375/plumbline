@@ -53,13 +53,20 @@ def _words_regex(words: list[str], case_sensitive: bool) -> re.Pattern:
     return re.compile(rf"(?<!\w)(?:{alts})(?!\w)", 0 if case_sensitive else re.IGNORECASE)
 
 
+def _scoped_text(rule: Rule, doc: Document) -> str:
+    """params.scope == "copy": text read from images by OCR is blanked with spaces, so the rule
+    sees only the copy and every offset still points into doc.text."""
+    if rule.params.get("scope") != "copy":
+        return doc.text
+    text = doc.text
+    for b in doc.blocks:
+        if b.kind == "ocr_text":
+            text = text[: b.start] + " " * (b.end - b.start) + text[b.end :]
+    return text
+
+
 def _matches(rule: Rule, doc: Document, rx: re.Pattern) -> list[re.Match]:
-    """Non-empty matches; params.scope == "copy" skips text read from images by OCR."""
-    found = [m for m in rx.finditer(doc.text) if m.group()]
-    if rule.params.get("scope") == "copy":
-        ocr = [(b.start, b.end) for b in doc.blocks if b.kind == "ocr_text"]
-        found = [m for m in found if not any(s <= m.start() < e for s, e in ocr)]
-    return found
+    return [m for m in rx.finditer(_scoped_text(rule, doc)) if m.group()]
 
 
 def _pattern(rule: Rule, doc: Document) -> list[Finding]:
@@ -112,8 +119,9 @@ def _count(rule: Rule, doc: Document) -> list[Finding]:
 
 
 def _required(rule: Rule, doc: Document) -> list[Finding]:
-    when = re.search(rule.params["when_regex"], doc.text)
-    if not when or re.search(rule.params["must_regex"], doc.text):
+    text = _scoped_text(rule, doc)
+    when = re.search(rule.params["when_regex"], text)
+    if not when or re.search(rule.params["must_regex"], text):
         return []
     explanation = rule.params.get("message") or rule.title
     return [_finding(rule, when.group(), _span(when), explanation)]

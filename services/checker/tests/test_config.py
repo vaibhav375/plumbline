@@ -3,7 +3,6 @@ from plumbline.config import Settings
 REQUIRED = {
     "SUPABASE_URL": "https://x.supabase.co",
     "SUPABASE_ANON_KEY": "anon",
-    "SUPABASE_JWT_SECRET": "secret",
 }
 
 

@@ -19,6 +19,24 @@ jobs:
       - run: uv run ruff format --check .
       - run: uv run pytest -q
 
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t checker services/checker
+      - name: Image under 1.2 GB
+        run: |
+          size=$(docker image inspect checker --format '{{.Size}}')
+          echo "image size: $((size / 1024 / 1024)) MB"
+          test "$size" -lt 1288490188
+      - name: Container boots, OCR works, no secrets inside
+        run: |
+          docker run --rm checker python -c "import pytesseract; print('tesseract', pytesseract.get_tesseract_version())"
+          docker run --rm checker sh -c 'test ! -e /app/.env && test ! -d /app/tests'
+          docker run -d --name c -p 8000:8000 -e SUPABASE_URL=https://example.supabase.co -e SUPABASE_ANON_KEY=x checker
+          for i in $(seq 1 30); do curl -sf localhost:8000/health && break; sleep 1; done
+          curl -sf localhost:8000/health | grep -q '"status":"ok"'
+
   web:
     runs-on: ubuntu-latest
     steps:

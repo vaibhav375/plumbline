@@ -1,0 +1,24 @@
+# Render Blueprint: the checker API. Secrets are entered in the Render dashboard (sync: false),
+# never committed. Only the anon key goes here: the API verifies users with Supabase's public
+# JWKS and reads data as the signed-in user, so no service-role key or JWT secret is needed.
+services:
+  - type: web
+    name: plumbline-checker
+    runtime: docker
+    plan: free
+    region: singapore  # nearest Render region to Supabase ap-south-1 (Mumbai)
+    rootDir: services/checker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: LLM_CHAIN
+        value: '["groq","gemini"]'

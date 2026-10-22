@@ -155,3 +155,15 @@ def test_missing_cta_quotes_the_opening_sentence(aurelle):
 
 def test_double_space_quote_is_just_the_spaces(aurelle):
     assert ("GM31", "  ") in _ids_and_quotes(aurelle, "One sentence.  Two sentences. Shop now.")
+
+
+def test_cta_rule_reads_copy_not_banner_text(aurelle):
+    """Found in the Task 6 live run: an image-only upload was told to add a call to action
+    because the banner headline counted as copy."""
+    from pathlib import Path
+
+    from plumbline.parsers import parse_upload
+
+    banner = Path(__file__).parents[1] / "fixtures" / "banner_v1.png"
+    doc = parse_upload("banner_v1.png", banner.read_bytes(), 10)
+    assert by_rule(run_rules(doc, aurelle.rules, aurelle.terms), "CTA-01") == []

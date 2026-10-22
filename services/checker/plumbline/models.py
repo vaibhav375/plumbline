@@ -52,7 +52,7 @@ class Document(BaseModel):
 ParseCode = Literal["empty", "too_large", "unsupported", "encrypted", "no_text_layer"]
 
 PARSE_MESSAGES: dict[str, str] = {
-    "empty": "This file is empty. Paste some text or upload a file with content.",
+    "empty": "The file is empty. Paste some text or upload a file with content.",
     "too_large": "This file is larger than {max_mb} MB. Upload a smaller file.",
     "unsupported": "This file type can't be checked. Use plain text, DOCX, PDF, PNG or JPG.",
     "encrypted": "This PDF is password-protected. Remove the password and upload it again.",
@@ -170,3 +170,34 @@ class Finding(BaseModel):
     model: str | None = None
     support: Literal["agree", "disagree", "n/a"] = "n/a"
     fix: Fix | None = None
+
+
+DEFAULT_NOT_CHECKED = (
+    "Claims implied by imagery, photography style, the screen-reader experience, and anything "
+    "said in video or voice-over. These need a person."
+)
+
+
+class Coverage(BaseModel):
+    rules_run: list[str]
+    rules_advisory: list[str]
+    rules_not_run: dict[str, str]
+    not_checked: list[str]
+    ai_status: Literal["ok", "partial", "unavailable"]
+    ai_note: str | None
+
+
+class CheckReport(BaseModel):
+    run_id: str
+    version_id: str | None
+    findings: list[Finding]
+    needs_human: list[Finding] = []
+    dropped_count: int = 0
+    coverage: Coverage
+    suggested_text: str | None = None
+    intent: dict | None = None  # becomes IntentResult in Task 13
+    models_used: list[str] = []
+    ms_code: int
+    ms_total: int
+    replay: bool = False
+    status_change: None = None  # a check never changes status (Review Focus 3)
