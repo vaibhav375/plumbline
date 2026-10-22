@@ -1,0 +1,15 @@
+name: keepalive
+# Render's free tier sleeps after ~15 idle minutes; /health also touches Supabase, which pauses
+# free projects after a week without activity. GitHub may delay scheduled runs, so the web app
+# also shows a "waking the checker" state rather than relying on this alone.
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: curl -fsS -m 120 https://plumbline-checker.onrender.com/health

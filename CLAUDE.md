@@ -9,6 +9,10 @@ Plan: `docs/superpowers/plans/2026-10-22-plumbline-round2.md`. Spec: Round 1 pla
 2. `source /Volumes/Plumbline/devenv.sh` (every cache and tool lives on the image; the internal disk is nearly full)
 3. Secrets live in `/Volumes/Plumbline/secrets.env`, outside the repo. `make env` copies them into the gitignored env files.
 
+## Deployments
+- Checker API: https://plumbline-checker.onrender.com (Render free, Docker, Singapore; auto-deploys `main`; sleeps when idle, ~25 s cold start, keep-alive every 10 min)
+- Render env holds only SUPABASE_URL, SUPABASE_ANON_KEY, GROQ_API_KEY, GEMINI_API_KEY, LLM_CHAIN. Never the service key.
+
 ## Commands
 - `make env`: write `services/checker/.env` and `apps/web/.env.local` from secrets
 - `make doctor`: one real call per provider and Supabase project, prints ✓/✗

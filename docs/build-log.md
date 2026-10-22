@@ -150,3 +150,69 @@ chosen and why. Newest last.
 
 **Expected gaps (later tasks)**: the 60% vs 32% contradiction (claims, Task 11) and the FACT-031 embargo
 (privacy, Task 9) are not class A code rules, so they don't appear here yet.
+
+## Task 6: checker API, auth, image
+
+| Check | Evidence | Result |
+|---|---|---|
+| Plan's 4 tests (health, 401, ≥ 3 findings incl. TN-02, empty file 422) | `pytest tests/test_api.py` (13 tests) | Pass |
+| Token attacks rejected | wrong signature, expired, wrong audience, wrong issuer, garbage, forged HS256 (algorithm confusion): all 401 | Pass |
+| Real end-to-end, local API + real Supabase | creator and agency tokens → 200; worked example: 8 rule IDs, `ms_code` 1–11 ms, ≈ 1–2 s wall (rulebook reads from Mumbai) | Pass |
+| Plain-words errors over HTTP | no login, encrypted PDF, 11 MB file: each its own `{"code","message"}` | Pass |
+| CORS | Vercel origin allowed; other origins get no `Access-Control-Allow-Origin` | Pass |
+| No privileged secrets in the API | runs with 4 env vars only (URL, anon key, Groq, Gemini); image contains no `.env` (CI check) | Pass |
+| Image ≤ 1.2 GB | CI: **475 MB**; boots; Tesseract 5.5.0 inside | Pass |
+
+**Assumptions that failed, and the alternatives chosen**
+- *Supabase tokens are HS256, verified with the JWT secret.* This project signs with **ES256**
+  (asymmetric) and publishes the public key as JWKS. HS256 verification would reject every real
+  login. Chosen: verify against JWKS, ES256/RS256 only (an HS256 token is refused even with a known
+  secret), plus audience, issuer and expiry. Bonus: the API no longer needs the JWT secret.
+- *PyJWT's JWKS client works out of the box.* Unit tests passed, but the **live** run returned 401 for
+  every real user: its `urllib` fetch failed certificate verification (uv's Python has no system CA
+  store). Keys are now fetched with `httpx` (bundled CA), cached for an hour, re-fetched for an unknown
+  key at most once a minute. Regression test added.
+- *`supabase-py` client.* Not needed: four REST reads with the caller's token via the existing `httpx`.
+  Smaller image, fewer dependencies.
+- *A local Docker build.* No Docker on this machine (and no disk for it). CI builds the image on
+  GitHub's runner instead, enforces the size limit, boots it and checks no secrets are inside.
+- *Empty-file message "The file is empty."* Kept as the opening sentence, followed by what to do.
+
+**Found in the live run**
+- An image-only upload was told to "add a call to action" because the banner headline counted as copy.
+  `scope: "copy"` now also applies to required-content rules (image text blanked with spaces, so
+  offsets don't move); CTA-01 is copy-scoped. Regression test added.
+
+**Open items**
+- **Confidential matching under RLS (affects Task 9/14).** The API reads as the caller, so an agency
+  user can't read FACT-031, and a check run with their token can't detect an embargo leak, even on
+  submission, where §4.5 says the brand team must see it. Plan: a `security definer` SQL function that
+  matches text against confidential facts and returns only what the caller's role may see (nothing for
+  an external pre-check; the finding for brand roles). Keeps the service key out of the API.
+- Each check makes 5 REST reads (≈ 1 s from here). Cache the org context per org + rulebook version
+  if latency becomes a problem.
+- `wrong org → 404` from the plan has nothing to apply to yet: there's no persistence until Task 14.
+
+### Task 6 deploy: https://plumbline-checker.onrender.com (Render free, Docker, Singapore)
+
+| Check | Evidence | Result |
+|---|---|---|
+| Deployed build is the pushed code | `/health` → `version 61333e7` = `main`; providers groq ✓ gemini ✓; db ✓ | Pass |
+| Real logins against the live API | creator and agency tokens → 200; garbage/no token → 401 with plain message | Pass |
+| Findings match local | worked example: same 8 rule IDs as locally; clean post 0; Hinglish 0; medical 4 rule IDs | Pass |
+| Every input type on Render | text, DOCX, PDF, PNG (OCR on Render: banner 1.96:1 found) | Pass |
+| Error paths live | scanned PDF `no_text_layer`, encrypted PDF `encrypted`, 11 MB `too_large`: each 422 with its message, 1–3 s | Pass |
+| Latency (§6.7 code findings < 5 s) | warm text checks 0.9–2.1 s wall (`ms_code` 1–6 ms); banner with OCR 4.8 s | Pass, tight for images |
+| **Cold start** | after 17 idle minutes: first `/health` **24.9 s**, then 0.3 s and 0.4 s | Known risk, mitigated |
+| CORS live | Vercel origin allowed; other origins refused | Pass |
+
+**Decisions from the measurements**
+- **Keep-alive**: `.github/workflows/keepalive.yml` pings `/health` every 10 minutes (also keeps the
+  free Supabase project from pausing). GitHub can delay scheduled runs, so this reduces cold starts
+  but can't guarantee none.
+- **Task 7 must cover a ~25 s cold start**: the client's 8 s timeout plus 3 retries with backoff must
+  add up to at least 35 s before giving up, and show the "Waking the checker" banner meanwhile.
+- **Free-tier budget**: one always-on service uses ~744 of Render's 750 free hours in a 31-day month.
+  Fine for one service; don't add a second free Render service.
+- **Image checks are the slowest path** (4.8 s on Render's shared CPU, mostly OCR). Watch it against
+  the < 5 s target in Task 14; the cheapest fix if needed is OCR at a smaller max side for large images.

@@ -340,15 +340,15 @@ def load_rules_csv(data: str) -> tuple[list[Rule], list[str]]   # (rules, row-le
 - `db.client_for(token) -> supabase.Client`: always the caller's token. **The service key is never loaded in the API process.**
 - Errors: `ParseError` → 422 `{"code","message"}` with plain-words messages. No token → 401. Wrong org → 404.
 
-- [ ] **Step 1:** Write the failing tests:
+- [x] **Step 1:** Write the failing tests:
   - `test_health_ok`
   - `test_checks_requires_auth`: 401
   - `test_checks_returns_findings_for_text`: a valid test JWT plus the worked-example text returns ≥ 3 findings, including `TN-02`
   - `test_empty_file_422_message`: the message equals "The file is empty."
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Implement. Dockerfile: `python:3.12-slim` plus `apt-get install tesseract-ocr`, then `uv sync --frozen`; the image must stay under 1.2 GB.
-- [ ] **Step 4:** Run. Expected: PASS. Deploy to Render (free web service, Docker). `curl https://<render>/health` returns ok.
-- [ ] **Step 5:** Commit: `feat(api): checker skeleton, JWT auth, deploy`.
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Implement. Dockerfile: `python:3.12-slim` plus `apt-get install tesseract-ocr`, then `uv sync --frozen`; the image must stay under 1.2 GB.
+- [x] **Step 4:** Run. Expected: PASS. Deploy to Render (free web service, Docker). `curl https://<render>/health` returns ok.
+- [x] **Step 5:** Commit: `feat(api): checker skeleton, JWT auth, deploy`.
 
 ### Task 7: Web walking skeleton: demo login, check page, deploy
 
