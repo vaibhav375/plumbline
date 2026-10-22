@@ -221,3 +221,39 @@ chosen and why. Newest last.
   host) keys looked freshly fetched and were never loaded: every login would fail for up to a minute
   after boot. Now "never fetched" forces a fetch. Regression test pins the clock at 5 s after boot;
   verified it fails without the fix.
+
+## Task 7: web walking skeleton, deployed — **milestone: walking skeleton live**
+
+Live: **https://plumbline-pes1ug23cs665s-projects.vercel.app** (Vercel, Next.js 15.5.28) → checker on Render → Supabase.
+
+| Check | Evidence | Result |
+|---|---|---|
+| Plan's e2e "creator checks sample post", **against the live site** | `BASE_URL=<live> playwright test`: sign in → load sample → Check → `TN-02` and "Not checked" visible | Pass |
+| Signed-out visitors can't reach the app | e2e: `/check` → `/login` | Pass |
+| All five demo roles sign in and out (live) | e2e: Creator, Agency, Reviewer, Compliance, Brand owner each show their name | Pass |
+| Waking banner + retry path | e2e blocks the first two `/health` probes: banner shows, third probe succeeds, findings appear, banner goes | Pass |
+| Demo password never in the browser | local build: 0 files; **live**: 5 scripts the login page loads, 0 contain the password, its variable name or a service-key prefix | Pass |
+| Never a pass badge | e2e asserts no "compliant / all clear / passed" text | Pass |
+| Dependencies | `pnpm audit --prod`: no known vulnerabilities | Pass |
+
+**Assumptions that failed, and the alternatives chosen**
+- *Retry the check itself on an 8 s timeout (plan).* That would abort genuine checks once AI runs
+  (p95 budget 60 s). Chosen: wake via `/health` (8 s timeout, 3 retries, banner), then send the check
+  with a 90 s timeout.
+- *Next.js 15.5.4 (pinned in Task 1) is fine to ship.* **Vercel refused to deploy it** (known
+  vulnerability). Upgraded to 15.5.28 and React 19.1.10 (same minor lines). `pnpm audit` then still
+  showed 7 advisories in Next's own pinned `postcss` and `sharp`; overridden to patched versions and the
+  unused image optimizer disabled. Audit clean; e2e green before and after.
+- *Vercel's default URLs are public.* The team's `*.vercel.app` URLs sit behind Vercel Authentication
+  (redirect to `vercel.com/sso`). Protection switched off: it's a public demo with fictional data.
+- *GitHub's scheduled keep-alive keeps Render awake.* It ran **once in ~4.5 hours** (scheduled
+  workflows are throttled), so judges would usually meet a ~25 s cold start. Replaced by Supabase
+  `pg_cron` + `pg_net` (migration 0005): the database calls the checker's `/health` every 10 minutes.
+  Verified a ping from the database returns 200. The GitHub workflow stays as a backup.
+- *Local e2e in dev mode.* Too slow on the USB drive (sign-in > 5 s). Runs against a production build.
+- A stale local server once made e2e fail with 400s on every script; e2e now always starts its own.
+
+**Not yet (by the plan's own task order)**
+- The milestone's "Supabase row exists" needs persistence, which Task 14 adds (`versions`,
+  `check_runs`, `findings`). Today a check returns a report but stores nothing.
+- Highlighting quotes inside the text (needs the UTF-16 offset conversion noted in Task 4) is Task 15.

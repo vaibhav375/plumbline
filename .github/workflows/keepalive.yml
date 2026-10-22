@@ -1,7 +1,8 @@
 name: keepalive
 # Render's free tier sleeps after ~15 idle minutes; /health also touches Supabase, which pauses
 # free projects after a week without activity. GitHub may delay scheduled runs, so the web app
-# also shows a "waking the checker" state rather than relying on this alone.
+# also shows a "waking the checker" state. Backup only: GitHub throttled this to one run in
+# ~4.5 hours; the main keep-alive is the Supabase pg_cron job (migration 0005).
 on:
   schedule:
     - cron: "*/10 * * * *"

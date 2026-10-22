@@ -59,6 +59,13 @@
 | Three planned improvements | 15 | 13 | They read as small or cosmetic | Each is a real capability, tied to Round 1's three named improvements (Task 24) |
 | Usability | 10 | 8 | Too much on screen; jargon | Role picker, a 4-step tour, one hero per screen, the 5-second test with a real person |
 
+**Scorecard status, 23 Oct (walking skeleton live, Tasks 0–7 done):**
+- Working core workflow: live end to end (login → check → findings → "Not checked"); cold start
+  mitigated by a database keep-alive plus a waking banner. Not yet: persistence, AI, fixes, review.
+- Technical depth: 70 checker unit tests + 9 DB tests + 4 live e2e; RLS and hash-chained audit verified
+  live; every task evaluated in `docs/build-log.md`, each failed assumption logged with its replacement.
+- Usability: role picker and one check screen; tour and visual pass still to come (Task 22).
+
 ## Schedule (IST; hour 0 = 22 Oct 10:00)
 
 | Hours | Milestone | Tasks | Exit check |
@@ -361,11 +368,11 @@ def load_rules_csv(data: str) -> tuple[list[Rule], list[str]]   # (rules, row-le
 - `api.check(form: FormData): Promise<CheckReport>`. It sends the Supabase access token. A 503 or a timeout over 8 s shows `WakingBanner`: "Waking the checker (free hosting sleeps when idle). About 30 seconds." It retries 3× with backoff.
 - **Login:** five buttons, "Try as Creator / Agency / Reviewer / Compliance / Brand owner", each signing in to a seeded demo user. The passwords live in Vercel env, never in the client bundle: a server action signs in.
 
-- [ ] **Step 1:** Write the failing e2e test `creator checks sample post`: log in as Creator → click "Load sample post" → "Check" → expect the text `TN-02` and the heading "Not checked" to be visible.
-- [ ] **Step 2:** `pnpm -C apps/web exec playwright test`. Expected: FAIL.
-- [ ] **Step 3:** Implement. Deploy to Vercel with env vars set.
-- [ ] **Step 4:** Run e2e against the deployed URL (`BASE_URL=... playwright test`). Expected: PASS. **The walking skeleton is now live; update the scorecard.**
-- [ ] **Step 5:** Commit: `feat(web): walking skeleton deployed`.
+- [x] **Step 1:** Write the failing e2e test `creator checks sample post`: log in as Creator → click "Load sample post" → "Check" → expect the text `TN-02` and the heading "Not checked" to be visible.
+- [x] **Step 2:** `pnpm -C apps/web exec playwright test`. Expected: FAIL.
+- [x] **Step 3:** Implement. Deploy to Vercel with env vars set.
+- [x] **Step 4:** Run e2e against the deployed URL (`BASE_URL=... playwright test`). Expected: PASS. **The walking skeleton is now live; update the scorecard.**
+- [x] **Step 5:** Commit: `feat(web): walking skeleton deployed`.
 
 ### Task 8: LLM adapter: provider chain, retries, JSON, egress
 
