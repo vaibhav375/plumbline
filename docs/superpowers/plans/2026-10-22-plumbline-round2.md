@@ -311,7 +311,7 @@ def load_rules_csv(data: str) -> tuple[list[Rule], list[str]]   # (rules, row-le
 - `explanation` is built from `title`; `basis_excerpt` is `source_ref`.
 - Terminology findings get `Fix(kind="replace_term")`.
 
-- [ ] **Step 1:** Write the failing tests on the worked example (`contents.json` #1 plus its banner):
+- [x] **Step 1:** Write the failing tests on the worked example (`contents.json` #1 plus its banner):
   - `test_exclamation_count`: `TN-02` fires once on `"!!!"`.
   - `test_term_variant`: `TM-007` fires on `"Vitamin-C serum"`, with a fix text of "Vitamin C Brightening Serum".
   - `test_cta_click_here`: `CTA-02` fires.
@@ -322,10 +322,10 @@ def load_rules_csv(data: str) -> tuple[list[Rule], list[str]]   # (rules, row-le
   - `test_class_c_never_runs`.
   - `test_linter_flags_sparingly`: `GM08` gets a warning containing `"sparingly"`.
   - `test_csv_bad_row_reported`: a row with `check_type=foo` returns an error message naming the row number.
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Implement. Contrast uses the WCAG 2 relative-luminance formula; round ratios to 2 decimals.
-- [ ] **Step 4:** Run. Expected: PASS. Spot-check: the banner ratio prints `1.96`.
-- [ ] **Step 5:** Commit: `feat(rules): class A engine, linter, CSV import`.
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Implement. Contrast uses the WCAG 2 relative-luminance formula; round ratios to 2 decimals.
+- [x] **Step 4:** Run. Expected: PASS. Spot-check: the banner ratio prints `1.96`.
+- [x] **Step 5:** Commit: `feat(rules): class A engine, linter, CSV import`.
 
 ### Task 6: Checker API skeleton, auth and deploy
 
