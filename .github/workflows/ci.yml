@@ -28,6 +28,8 @@ jobs:
         run: |
           size=$(docker image inspect checker --format '{{.Size}}')
           echo "image size: $((size / 1024 / 1024)) MB"
+          docker history checker --format '{{.Size}}\t{{.CreatedBy}}' | cut -c1-110 | head -12
+          docker run --rm checker sh -c 'du -sh /app/.venv /root/.cache /usr/share/tesseract-ocr 2>/dev/null; du -sm /app/.venv/lib/python3.12/site-packages/* | sort -rn | head -10'
           test "$size" -lt 1288490188
       - name: Container boots, OCR works, no secrets inside
         run: |
