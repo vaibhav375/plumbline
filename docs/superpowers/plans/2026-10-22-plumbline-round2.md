@@ -485,17 +485,17 @@ def verify_claim(claim, fact, score, today: date, llm: LLM, threshold: float) ->
 
 **Fix:** `approved_wordings(fact, market, channel)`, or `Fix(kind="none", note="No approved wording exists, so no fix is offered.")`. **Severity:** claims on `mandatory` claim rules are blocking.
 
-- [ ] **Step 1:** Write the failing tests on the worked example (with FakeLLM):
+- [x] **Step 1:** Write the failing tests on the worked example (with FakeLLM):
   - `test_60_percent_2_weeks_contradicted`: matches `FACT-014`; the explanation mentions both "32%" and "8 weeks"; the fix is `AW-014b` with disclaimer `DL-02`
   - `test_eco_friendly_regulated`: fires `CL-03`; the fix is `AW-009a`
   - `test_dermatologist_unsupported_no_fix`: rule `CL-05`, blocking, with fix `kind="none"` (an unsupported claim cites the claim rule for its kind: endorsement → `CL-05`, environmental → `CL-03`)
   - `test_expired_fact_outdated`: `valid_until=2026-01-01` gives `outdated`
   - `test_unverified_fact_needs_human`
   - `test_confidential_fact_never_sent_to_llm`: FakeLLM records no user prompt containing "Mumbai"
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Implement.
-- [ ] **Step 4:** Run. Expected: PASS.
-- [ ] **Step 5:** Commit: `feat(claims): detection, matching, verification`.
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Implement.
+- [x] **Step 4:** Run. Expected: PASS.
+- [x] **Step 5:** Commit: `feat(claims): detection, matching, verification`.
 
 ### Task 12: AI judgement for class B rules (tone and others)
 

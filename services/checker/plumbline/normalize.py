@@ -37,3 +37,13 @@ def quote_in(text: str, quote: str) -> Span | None:
         return None
     m = re.search(_pattern(quote), text, re.IGNORECASE)
     return Span(start=m.start(), end=m.end()) if m else None
+
+
+def sentences(text: str) -> list[Span]:
+    """Sentence spans (split after . ! ? or at line breaks), blank ones skipped."""
+    spans, start = [], 0
+    for m in re.finditer(r"(?<=[.!?])\s+|\n+", text):
+        spans.append(Span(start=start, end=m.start()))
+        start = m.end()
+    spans.append(Span(start=start, end=len(text)))
+    return [s for s in spans if text[s.start : s.end].strip()]

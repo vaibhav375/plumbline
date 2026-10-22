@@ -170,6 +170,11 @@ class Finding(BaseModel):
     model: str | None = None
     support: Literal["agree", "disagree", "n/a"] = "n/a"
     fix: Fix | None = None
+    # Claims only (§6.2 claim verification); None for rule findings.
+    claim_status: (
+        Literal["supported", "contradicted", "unsupported", "needs_human", "outdated", "restricted"]
+        | None
+    ) = None
 
 
 DEFAULT_NOT_CHECKED = (

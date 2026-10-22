@@ -366,3 +366,41 @@ call, and withholds the finding from external pre-checks.
 **Honest limits**: 10 live cases is a small sample; Task 21's evaluation should measure support-check
 agreement with an interval. Quotes in AI findings will contain redaction placeholders (`⟦PERSON_1⟧`);
 Task 14 must map them back before `validate_findings` checks the quote against the original text.
+
+## Task 11: claims (detect, extract, match, verify)
+
+| Check | Evidence | Result |
+|---|---|---|
+| Plan's 6 tests (60%/2 weeks contradicted with AW-014b + DL-02; eco-friendly → CL-03 + AW-009a; Dermatologist → CL-05 unsupported, no fix; expired → outdated; unverified → needs human; "Mumbai" never sent) | `pytest tests/test_claims.py` (20 tests) | Pass |
+| Spec §6.2 pseudocode order | unsupported → needs human (weak match or unverified) → outdated → code compare (numbers / confidential) → AI entailment | Pass |
+| Review Focus 1 | extraction unavailable: code detectors still find and verify contradicted, unsupported and restricted claims | Pass |
+| Privacy | extraction and entailment only see masked + redacted text (tested with an embargoed sentence, a name and a phone number) | Pass |
+| **Fact matching chosen on data** | 20 labelled claims from the samples: plan's `token_set_ratio` 11 right / 0 wrong / 2 missed (incl. the plan's own eco-friendly case); normalised + unit bonus **20/20, 0 wrong** at threshold 0.72 | Pass (tuned on these 20) |
+| **Live, all 10 posts, real models** | worked example matches §4.4 (restricted FACT-031; 100% natural → AW-009a; 60%/2 wk → AW-014b; Dermatologist → CL-05); codename and Diwali sale restricted; recycled glass/plastic, 72 h hydration, SPF wording supported; 13 s for 10 posts, slowest 4.8 s; two unreadable JSON replies recovered by the adapter's retry | Pass |
+
+**Problems the live runs caught (three rounds: run, fix, re-run), and fixes**
+- *The spec contradicts itself on weak matches.* Pseudocode: below threshold → "needs human eyes";
+  worked example: "Dermatologist recommended" (best match 0.65 to "dermatologically tested") →
+  "Unsupported". Data settles it: unrelated claims scored 0.42–0.65, real matches ≥ 0.77, the one
+  plausible-but-weak case 0.71. So: < 0.66 no match (unsupported), 0.66–0.72 needs human, ≥ 0.72 match.
+- *Embargo detection depended on claim detection.* "Launching with our Mumbai flagship on 15 Nov" has no
+  claim words, so it was missed. Restricted findings now come straight from the masking step.
+- *Non-claims became blocking findings* ("Meet the new … Serum", "Shop the … Serum"). Two causes: the
+  extraction prompt never said what isn't a claim (now it does, with an example), and my efficacy
+  detector matched "Brightening" in the product's own name (brand and product names are now blanked
+  before detection, offsets unchanged). Footnotes ("*In-use test, 60 participants") are evidence, not claims.
+- *Misleading evidence.* When the AI said the closest fact is unrelated, the finding still cited it
+  (e.g. "fairer skin" citing the 16-herbs fact). Now it's unsupported with no fact cited.
+- *Approved wording rejected.* "SPF 50 PA++++ broad-spectrum protection" is approved wording AW-017a, yet
+  the AI called it unrelated. Claims matching an approved wording are supported in code.
+- Lint: E501 turned off; the formatter wraps code at 100 but never splits strings (prompts).
+
+**Honest limits**
+- The matching threshold was tuned on the same 20 claims it's scored on; Task 21 needs fresh claims.
+  "The best Ayurvedic oil…" sits at 0.71, right at the edge.
+- AI extraction varies between runs (one run flagged "a little calmer every morning", the next didn't).
+  Runs are traceable, not reproducible, as the spec says; the report records the models used.
+- Judgement call left as is: an influencer's "my skin looks so fresh" is flagged as an unsupported claim.
+- Interface change: `verify_claim` also takes the org context, market and channel (it needs the
+  rulebook for the claim rule and the wordings for the fix); `Finding.claim_status` added.
+- Banner claims (the §4.4 OCR "GLOW IN 2 WEEKS" contradiction) stay Round 3, as the spec says.

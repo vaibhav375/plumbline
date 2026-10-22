@@ -16,6 +16,7 @@ from pathlib import Path
 from rapidfuzz import fuzz
 
 from plumbline.models import Fact, Span
+from plumbline.normalize import sentences
 
 ENTITIES = ["PERSON", "PHONE_NUMBER", "EMAIL_ADDRESS", "IN_AADHAAR", "IN_PAN", "IN_PHONE", "EMAIL"]
 LABEL = {"PHONE_NUMBER": "PHONE", "IN_PHONE": "PHONE", "EMAIL_ADDRESS": "EMAIL"}
@@ -146,15 +147,6 @@ def _active(f: Fact, today: date) -> bool:
     return f.confidentiality == "embargoed" and (f.embargo_until is None or today < f.embargo_until)
 
 
-def _sentences(text: str) -> list[Span]:
-    spans, start = [], 0
-    for m in re.finditer(r"(?<=[.!?])\s+|\n+", text):
-        spans.append(Span(start=start, end=m.start()))
-        start = m.end()
-    spans.append(Span(start=start, end=len(text)))
-    return [s for s in spans if text[s.start : s.end].strip()]
-
-
 def _mentions(alias: str, sentence: str) -> bool:
     a, s = alias.lower(), sentence.lower()
     if re.search(rf"(?<!\w){re.escape(a)}(?!\w)", s):
@@ -173,7 +165,7 @@ def mask_confidential(
     today = today or date.today()
     active = [f for f in facts if _active(f, today)]
     hits: list[tuple[Span, str]] = []
-    for sentence in _sentences(text):
+    for sentence in sentences(text):
         chunk = text[sentence.start : sentence.end]
         for f in active:
             if any(_mentions(a, chunk) for a in f.aliases):
