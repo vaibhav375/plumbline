@@ -299,7 +299,8 @@ Live: **https://plumbline-pes1ug23cs665s-projects.vercel.app** (Vercel, Next.js 
 | Masking precision | across all 10 posts, only the intended three match (worked example → FACT-031, Diwali email → FACT-033, codename → FACT-023); "Brightening Serum" isn't mistaken for "retinal serum"; "10% off" isn't the embargoed "20% off" | Pass |
 | No alias survives masking | every code-only alias absent from every masked sample | Pass |
 | Embargo ends on time | FACT-031 masked on 23 Oct, not after its 1 Dec embargo | Pass |
-| Cost | 5–7 ms per sentence; 166 MB peak memory (Render free: 512 MB); +108 MB to the image | Pass |
+| Cost | 5–7 ms per sentence; 166 MB peak memory (Render free: 512 MB) | Pass |
+| Image size (caught by CI) | Presidio pushed the image to **1,111 MB** (limit 1.2 GB). Cause: uv's download cache baked into the layer. `UV_NO_CACHE=1` → **720 MB**; venv 487 MB (spaCy 129, numpy 70, phonenumbers 46). CI now prints layer sizes and runs a real redaction inside the image | Pass |
 | Licences | Presidio, spaCy, en_core_web_sm, rapidfuzz: MIT | Pass |
 
 **Assumptions that failed, and the alternatives chosen** (measured on the plan's exact setup first)
