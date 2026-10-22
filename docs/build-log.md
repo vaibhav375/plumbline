@@ -249,7 +249,9 @@ Live: **https://plumbline-pes1ug23cs665s-projects.vercel.app** (Vercel, Next.js 
 - *GitHub's scheduled keep-alive keeps Render awake.* It ran **once in ~4.5 hours** (scheduled
   workflows are throttled), so judges would usually meet a ~25 s cold start. Replaced by Supabase
   `pg_cron` + `pg_net` (migration 0005): the database calls the checker's `/health` every 10 minutes.
-  Verified a ping from the database returns 200. The GitHub workflow stays as a backup.
+  Verified: a manual ping from the database returns 200, and the **scheduled** job fired on its own on
+  both projects at the next 10-minute mark (`cron.job_run_details`: succeeded; checker answered 200).
+  The GitHub workflow stays as a backup.
 - *Local e2e in dev mode.* Too slow on the USB drive (sign-in > 5 s). Runs against a production build.
 - A stale local server once made e2e fail with 400s on every script; e2e now always starts its own.
 
