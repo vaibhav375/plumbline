@@ -772,11 +772,11 @@ def required_stages(findings: list[Finding]) -> list[Literal["first","compliance
 - **Status:** a `/status` page with checker health, provider availability (from `/health`) and the last eval date. The footer links to it.
 - **Test:** the 5-second test with one person who has never seen the app. Fix the top 3 hesitations.
 
-- [ ] **Step 1:** Write the failing e2e test `first visit tour`: a fresh context shows tour step 1; "Skip" hides it; a reload doesn't show it again.
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Implement.
+- [x] **Step 1:** Write the failing e2e test `first visit tour`: a fresh context shows tour step 1; "Skip" hides it; a reload doesn't show it again.
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Implement.
 - [ ] **Step 4:** Run the e2e test. Expected: PASS. Take screenshots at 1280, 1440 and 390 px. Then do the stranger test: they finish the core flow in under 3 minutes without help.
-- [ ] **Step 5:** Commit: `feat(ux): landing, tour, demo-safe sample, status`.
+- [x] **Step 5:** Commit: `feat(ux): landing, tour, demo-safe sample, status`.
 
 ### Task 23: Reliability operations
 

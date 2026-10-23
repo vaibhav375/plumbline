@@ -824,3 +824,42 @@ Plumbline run) and counted as finding nothing. That is why the published run has
   Round 3, as the page says.
 - The dev set is text only; images are covered by e2e scenario 4, not by these metrics.
 - "Time per post" is measured from this machine to Groq, not through Render.
+
+## Task 22: usability pass (role landing, tour, demo-safe sample, visual system)
+
+| Check | Evidence | Result |
+|---|---|---|
+| Plan's e2e "first visit tour" | failed before the change (no dialog); now: a fresh context shows "Step 1 of 4", "Skip tour" hides it, a reload doesn't show it again | Pass |
+| Login hero and 5 role cards | e2e: the plan's sentence is the h1; 5 cards, each with a "Try as" button and one line on what the role can do | Pass |
+| Role landing | e2e: Creator and Agency land on Check, Reviewer and Compliance on the review queue, Brand owner on guideline health | Pass |
+| Demo-safe sample | "Open the sample post" shows a stored report of a real live run (23 Oct 2026, 19.5 s live, AI ok, 11 findings) within 5 s, labelled "Replay of a real check run on 23 Oct 2026"; record, version and content ids stripped, so fixes and submit are off; "Run it live" checks it for real | Pass |
+| Status page | public `/status`: checker Up/Down, version and response time, Groq, Gemini and database from `/health`, last eval date from `latest.json`; footer link on every page (e2e) | Pass |
+| Visual system | brand tokens in `globals.css` (ink, accent, blocking, major, minor, ok); text-sm is 15 px; tags are coloured and labelled. Contrast computed: every colour ≥ 4.68:1 on white | Pass |
+| All e2e tests on the live site | 17/17 (3.1 min) | Pass |
+| Screenshots at 1280, 1440, 390 px | login, check (tour + replay), status: no horizontal overflow at any width; reviewed by eye | Pass |
+| Stranger test (plan Step 4) | needs a person who has never seen the app | **Not done yet** |
+
+**Assumptions that didn't hold, and what replaced them**
+- *Tags can use a light tint of each colour.* On an 8% tint, major (4.24:1) and ok (4.48:1) drop
+  below 4.5:1. Tags are white with a coloured border, dot and text; draft highlights keep ink text on
+  the tint (ink stays ~15:1).
+- *The e2e tests still prove a live check ran.* The replay shows the same findings instantly, so
+  "wait for TN-02" passed before the live result arrived (the waking-banner test caught it). Tests now
+  wait for the replay note to disappear, which happens only when a live report replaces it.
+- *The tour's wording is harmless.* "nothing is silently passed" tripped the guard that the app never
+  says "passed"; reworded. The guard is right, so the wording changed, not the test.
+- *A click on "Open the sample post" is visibly answered.* On a phone the results land below the fold,
+  so nothing seemed to happen. Results now scroll into view after the sample opens or a check returns
+  (live: the replay note lands 16 px from the top at 375 px).
+- *The sticky action bar overlapped finding 1* in the full-page 1280 px screenshot; at a real viewport
+  it sits at the bottom as intended (screenshot artefact).
+
+**Deferred items closed from earlier tasks**
+- File picker styled like the other buttons (Task 15).
+- Review cards show "✓ Upheld" / "✓ Overruled" once decided (Task 16).
+- Audit table's "What" column keeps a minimum width on phones (Task 17).
+
+**Open**
+- The stranger test and the 5-second test (one person who has never seen the app; core flow in under
+  3 minutes without help; fix the top 3 hesitations). My own pass found one hesitation (fixed above);
+  that is not a substitute.
