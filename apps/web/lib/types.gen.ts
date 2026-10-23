@@ -38,10 +38,84 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/contents/{content_id}/submit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Submit Content
+         * @description Submit the latest version: re-run as a non-private submission (confidential checks included).
+         */
+        post: operations["submit_content_v1_contents__content_id__submit_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/versions/{version_id}/apply": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Apply Accepted
+         * @description Apply the writer's accepted fixes and edits (record ids), record those decisions, and re-check
+         *     the result as the next version. Offsets are applied here, in the same units the checker used.
+         */
+        post: operations["apply_accepted_v1_versions__version_id__apply_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/findings/{record_id}/decisions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Decide
+         * @description A writer's dismissal (reason required). Blocking findings can't be dismissed: they need a fix,
+         *     an edit, or a reviewer's decision.
+         */
+        post: operations["decide_v1_findings__record_id__decisions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** Body_apply_accepted_v1_versions__version_id__apply_post */
+        Body_apply_accepted_v1_versions__version_id__apply_post: {
+            /**
+             * Accepted
+             * @default []
+             */
+            accepted: string[];
+            /** Edits */
+            edits?: {
+                [key: string]: string;
+            };
+        };
         /** Body_create_check_v1_checks_post */
         Body_create_check_v1_checks_post: {
             /** Channel */
@@ -62,12 +136,25 @@ export interface components {
              */
             submit: boolean;
         };
+        /** Body_decide_v1_findings__record_id__decisions_post */
+        Body_decide_v1_findings__record_id__decisions_post: {
+            /** Action */
+            action: string;
+            /** Reason */
+            reason?: string | null;
+        };
         /** CheckReport */
         CheckReport: {
             /** Run Id */
             run_id: string;
             /** Version Id */
             version_id: string | null;
+            /** Content Id */
+            content_id?: string | null;
+            /** Previous Text */
+            previous_text?: string | null;
+            /** Checked Text */
+            checked_text?: string | null;
             /** Findings */
             findings: components["schemas"]["Finding"][];
             /**
@@ -83,10 +170,7 @@ export interface components {
             coverage: components["schemas"]["Coverage"];
             /** Suggested Text */
             suggested_text?: string | null;
-            /** Intent */
-            intent?: {
-                [key: string]: unknown;
-            } | null;
+            intent?: components["schemas"]["IntentResult"] | null;
             /**
              * Models Used
              * @default []
@@ -161,6 +245,10 @@ export interface components {
              */
             support: "agree" | "disagree" | "n/a";
             fix?: components["schemas"]["Fix"] | null;
+            /** Record Id */
+            record_id?: string | null;
+            /** Claim Status */
+            claim_status?: ("supported" | "contradicted" | "unsupported" | "needs_human" | "outdated" | "restricted") | null;
         };
         /** Fix */
         Fix: {
@@ -175,11 +263,26 @@ export interface components {
             ref_id?: string | null;
             /** Note */
             note?: string | null;
+            /** Footnote */
+            footnote?: string | null;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
+        };
+        /** IntentResult */
+        IntentResult: {
+            /** Cta Kept */
+            cta_kept: boolean;
+            /** Pinned Phrases Kept */
+            pinned_phrases_kept: boolean;
+            /** No Claim Dropped */
+            no_claim_dropped: boolean;
+            /** Channel Limits Ok */
+            channel_limits_ok: boolean;
+            /** Edits In Flagged Sentences */
+            edits_in_flagged_sentences: boolean;
         };
         /** Span */
         Span: {
@@ -252,6 +355,109 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CheckReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    submit_content_v1_contents__content_id__submit_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                content_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CheckReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    apply_accepted_v1_versions__version_id__apply_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                version_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Body_apply_accepted_v1_versions__version_id__apply_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CheckReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    decide_v1_findings__record_id__decisions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                record_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Body_decide_v1_findings__record_id__decisions_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
                 };
             };
             /** @description Validation Error */
