@@ -167,3 +167,9 @@ def test_cta_rule_reads_copy_not_banner_text(aurelle):
     banner = Path(__file__).parents[1] / "fixtures" / "banner_v1.png"
     doc = parse_upload("banner_v1.png", banner.read_bytes(), 10)
     assert by_rule(run_rules(doc, aurelle.rules, aurelle.terms), "CTA-01") == []
+
+
+def test_standard_identifiers_are_not_numbers_needing_commas(aurelle):
+    """Task 13: the approved footnote "Calculated per ISO 16128." was flagged by GM10."""
+    assert ("GM10", "16128") not in _ids_and_quotes(aurelle, "Calculated per ISO 16128. Shop now.")
+    assert ("GM10", "120000") in _ids_and_quotes(aurelle, "Over 120000 customers. Shop now.")

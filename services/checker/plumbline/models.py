@@ -152,6 +152,7 @@ class Fix(BaseModel):
     text: str | None = None
     ref_id: str | None = None
     note: str | None = None
+    footnote: str | None = None  # required disclaimer that must travel with the wording
 
 
 class Finding(BaseModel):

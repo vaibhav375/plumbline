@@ -436,3 +436,39 @@ Task 14 must map them back before `validate_findings` checks the quote against t
   doesn't show twice.
 - TN-06 ("lead with the main point") is a whole-post rule; the judge sometimes quotes a later sentence.
 - `scripts/eval_judge.py` reruns this evaluation (spends real model calls).
+
+## Task 13: fixes (approved-wording swaps, rewrites, intent lock)
+
+| Check | Evidence | Result |
+|---|---|---|
+| Plan's 4 tests (suggested version matches the spec, claims never rewritten, a rewrite that drops the CTA is rejected, right-to-left offsets) | `pytest tests/test_fixes.py` (19 tests) | Pass |
+| Worked example vs §4.4 | "Meet the new Aurelle Vitamin C Brightening Serum. Made with 94% naturally derived ingredients. Shown to visibly reduce dark spots by 32% in 8 weeks.\* Shop … / \*In-house study, 48 participants, 2026." All five intent checks true | Pass |
+| "Never invent a claim" | claims fixed only with approved wording; rewrites rejected if they add a number or a new kind of claim (tested) | Pass |
+| No new findings | rules re-run on every suggested version; rewrites that add a finding are reverted | Pass |
+| Each intent check fails for the right reason | CTA gone, pinned phrase gone, over the channel limit, a claim dropped silently, an edit outside flagged sentences | Pass |
+| **Live, all 10 posts with real rewrites** | intent lock **10/10**; no rewrite invented a number or claim; leftover code findings are only ones a person must fix (fairness wording, `#ad`) | Pass after fixes |
+
+**Problems the live runs caught, and fixes** (the unit tests all passed before these were found)
+- *Removing an unsupported claim clause can leave a fragment*: "Ceramide Barrier Cream is the.",
+  "With Aurelle Kumkumadi Glow Oil." Now, if what's left starts with a preposition or ends on a function
+  word, the whole sentence goes.
+- *Dangling conjunctions*: "…(fragrance-free!) and." Tidy-up now removes "and/or/with" before an end mark.
+- *A sentence whose claims were all kept was still rebuilt*, losing its footnote star ("skin tones\*").
+  Sentences are only rebuilt when a claim is swapped or removed.
+- *Paragraph breaks and footnote lines were lost* (sentences re-joined with spaces). The original
+  separators are kept, and a dropped sentence's paragraph break carries over to the next one.
+- *The rewrite was offered every product name* and wrote "click Aurelle" in a Ceramide cream post. It now
+  gets only the products this post mentions ("Find out more: Ceramide Barrier Cream.").
+- *"No new findings" compared quotes*, which change whenever their sentence is fixed (false "new" CTA-01).
+  Compared by rule count instead.
+- *The intent diff filtered footnotes on one side only*, so an untouched footnote looked deleted.
+- *A rule fired on approved wording's own footnote*: GM10 flagged "ISO 16128". Standard identifiers are
+  exempt (rule data, regression test).
+- Data: TN-02 and TN-03 gained deterministic `fix` settings ("." and lowercase); `Fix.footnote` carries
+  the required disclaimer with the wording.
+
+**Honest limits**
+- Rewrites of judgement findings can change emphasis (the teaser "Something new is coming…" became
+  "Aurelle is coming…"). The writer accepts or edits each fix; nothing is applied without them.
+- Required-content fixes (adding `#ad`, adding a call to action) aren't generated; they stay as findings.
+- `scripts/eval_fixes.py` reruns this evaluation (spends real model calls).

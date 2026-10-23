@@ -242,6 +242,7 @@ def _fix(fact: Fact | None, ctx: OrgContext, market: str, channel: str) -> Fix:
                 text=w.text,
                 ref_id=w.id,
                 note=f"Required footnote: {w.disclaimer}" if w.disclaimer else None,
+                footnote=w.disclaimer,
             )
     return Fix(kind="none", note=NO_FIX)
 

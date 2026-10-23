@@ -547,15 +547,15 @@ def suggested_version(doc, findings, intent, llm, rules, terms) -> tuple[str, In
 - `no_claim_dropped`: every claim from before is either still present, swapped to an approved wording, or flagged.
 - A rewrite that fails any check is discarded, and the finding keeps its explanation with no fix.
 
-- [ ] **Step 1:** Write the failing tests:
+- [x] **Step 1:** Write the failing tests:
   - `test_suggested_version_matches_spec`: on the worked example with intent `{key_phrases:["dark spots"], cta:"Shop", channel:"instagram"}` and every fix accepted, the result contains "Shown to visibly reduce dark spots by 32% in 8 weeks.*" and "made with 94% naturally derived ingredients" (case-insensitive), has no "!!!", and every `IntentResult` field is True
   - `test_claim_fix_never_generated`: claim findings never call `propose_rewrite`
   - `test_rewrite_that_drops_cta_rejected`
   - `test_apply_right_to_left_offsets`
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Implement.
-- [ ] **Step 4:** Run. Expected: PASS.
-- [ ] **Step 5:** Commit: `feat(fixes): approved swaps, rewrites, intent lock`.
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Implement.
+- [x] **Step 4:** Run. Expected: PASS.
+- [x] **Step 5:** Commit: `feat(fixes): approved swaps, rewrites, intent lock`.
 
 ### Task 14: Coverage statement, pipeline, persistence, caching
 
