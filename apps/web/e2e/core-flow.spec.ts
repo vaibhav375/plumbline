@@ -122,7 +122,9 @@ test("compliance approves", async ({ page }) => {
     await uphold.first().click();
     await page.getByLabel(/Reason for upholding/).fill("Agreed: publish only with the approved wording.");
     await page.getByRole("button", { name: "Uphold with reason" }).click();
-    await expect(uphold).toHaveCount(before - 1, { timeout: 60_000 });
+    // The card's buttons hide as soon as the form opens; the form closes only once the decision is saved.
+    await expect(page.getByLabel(/Reason for upholding/)).toHaveCount(0, { timeout: 60_000 });
+    await expect(uphold).toHaveCount(before - 1);
   }
   await page.getByRole("button", { name: "Approve", exact: true }).click();
   await expect(page.getByTestId("version-status")).toContainText("approved", { timeout: 60_000 });

@@ -35,6 +35,7 @@ function DecisionCard({
 }) {
   const [pending, setPending] = useState<"uphold" | "overrule" | null>(null);
   const [reason, setReason] = useState("");
+  const [sending, setSending] = useState(false);
   const history = detail.decisions.filter((d) => d.finding_id === f.record_id);
   const canDecide = Boolean(f.record_id && detail.can_decide.includes(f.record_id)) && detail.version.status !== "approved";
   return (
@@ -69,15 +70,22 @@ function DecisionCard({
         <form className="mt-3 flex flex-wrap items-end gap-2 text-sm"
           onSubmit={async (e) => {
             e.preventDefault();
-            await onDecide(pending, reason);
-            setPending(null);
-            setReason("");
+            setSending(true);
+            try {
+              await onDecide(pending, reason);
+              setPending(null);
+              setReason("");
+            } finally {
+              setSending(false);
+            }
           }}>
           <label className="grow">
             Reason for {pending === "uphold" ? "upholding" : "overruling"} (required, goes in the audit log)
             <input className="mt-1 w-full rounded border px-2 py-1" value={reason} onChange={(e) => setReason(e.target.value)} />
           </label>
-          <Button size="sm" type="submit" disabled={!reason.trim()}>{pending === "uphold" ? "Uphold" : "Overrule"} with reason</Button>
+          <Button size="sm" type="submit" disabled={sending || !reason.trim()}>
+            {sending ? "Saving…" : `${pending === "uphold" ? "Uphold" : "Overrule"} with reason`}
+          </Button>
           <Button size="sm" type="button" variant="ghost" onClick={() => setPending(null)}>Cancel</Button>
         </form>
       )}
