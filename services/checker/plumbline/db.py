@@ -269,12 +269,21 @@ def load_version(s: Settings, token: str, version_id: str) -> dict | None:
             "/check_runs",
             params={
                 "version_id": f"eq.{version_id}",
-                "select": "report_json",
+                "select": "id,report_json",
                 "order": "created_at.desc",
                 "limit": "1",
             },
         )
         runs.raise_for_status()
+        saved = []
+        if runs.json():
+            # The stored report predates its finding rows, so their record ids are re-attached here.
+            f = c.get(
+                "/findings",
+                params={"run_id": f"eq.{runs.json()[0]['id']}", "select": "id,payload_json"},
+            )
+            f.raise_for_status()
+            saved = f.json()
     v = rows[0]
     doc = (
         Document.model_validate(v["doc_json"])
@@ -282,6 +291,10 @@ def load_version(s: Settings, token: str, version_id: str) -> dict | None:
         else Document(format="text", text=v["text"], blocks=[], images=[])
     )
     report = runs.json()[0]["report_json"] if runs.json() else None
+    if report:
+        ids = {(r["payload_json"].get("group"), r["payload_json"].get("id")): r["id"] for r in saved}
+        for group in ("findings", "needs_human"):
+            report[group] = [f | {"record_id": ids.get((group, f["id"]))} for f in report[group]]
     return {
         "id": v["id"],
         "content_id": v["content_id"],
