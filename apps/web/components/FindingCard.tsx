@@ -56,10 +56,19 @@ export function FindingCard({
       <p className="mt-1">{f.explanation}</p>
       <p className="mt-1 text-xs text-muted-foreground">Source: {f.basis_excerpt}</p>
       {(fix || f.fix?.note) && (
-        <div className="mt-3 rounded-md border bg-muted/40 p-3 text-sm">
+        <div className={`mt-3 rounded-lg border p-3 text-sm transition-colors duration-300 ${state.accepted ? "border-ok/50 bg-ok/5" : "bg-muted/40"}`}>
           {fix?.kind === "approved_wording" && <p className="text-xs text-muted-foreground">Approved wording {fix.ref_id}</p>}
           {fix?.kind === "remove" ? <p>Remove this sentence.</p> : fix?.text && <p className="font-medium">{fix.text}</p>}
           {f.fix?.note && <p className="mt-1 text-xs text-muted-foreground">{f.fix.note}</p>}
+          {state.accepted && fix && (
+            <p className="change-in mt-2 border-t border-ok/30 pt-2 text-sm" role="status">
+              <span className="font-label text-xs font-semibold uppercase tracking-wide text-ok">Ready to apply · </span>
+              <del className="text-ink/50 decoration-blocking decoration-2">{f.quote}</del>
+              {" → "}
+              {fix.kind === "remove" ? <b className="text-ok">sentence removed</b> : <b className="text-ok">{fix.text}</b>}
+              <span className="mt-1 block text-xs text-muted-foreground">It&apos;s shown in your draft now. Apply your fixes to update the post and check it again.</span>
+            </p>
+          )}
         </div>
       )}
       {state.dismissed ? (

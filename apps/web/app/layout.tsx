@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, JetBrains_Mono, Public_Sans } from "next/font/google";
+import { Barlow_Condensed, JetBrains_Mono, Jost } from "next/font/google";
 import "./globals.css";
 
-// Display: characterful, for page titles only. Body: plain and civic. Mono: the evidence (IDs, quotes, hashes).
-const display = Bricolage_Grotesque({ variable: "--nf-display", subsets: ["latin"], weight: ["500", "700"] });
-const body = Public_Sans({ variable: "--nf-body", subsets: ["latin"] });
+// Jost: a geometric sans in the Futura tradition, set bold and uppercase for statements, plain for text.
+// Barlow Condensed: small uppercase labels, like a surveyor's notes. Mono: the evidence (IDs, quotes, hashes).
+const display = Jost({ variable: "--nf-display", subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
+const body = Barlow_Condensed({ variable: "--nf-body", subsets: ["latin"], weight: ["500", "600", "700"] });
 const mono = JetBrains_Mono({ variable: "--nf-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {

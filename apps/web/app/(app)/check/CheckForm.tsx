@@ -116,9 +116,17 @@ export function CheckForm() {
   const boxes: Box[] = rows
     .filter((r) => r.f.bbox && !state(r.f).dismissed)
     .map((r) => ({ n: r.n, bbox: r.f.bbox as Box["bbox"], group: r.group }));
+  // An accepted fix or an edit shows in the draft straight away, before it is applied.
+  const replacementOf = (r: Row): string | undefined => {
+    const st = state(r.f);
+    if (st.edit !== null) return st.edit;
+    if (st.accepted && r.f.fix) return r.f.fix.kind === "remove" ? "" : (r.f.fix.text ?? undefined);
+    return undefined;
+  };
   const marks: Mark[] = rows
     .filter((r) => r.f.span && !state(r.f).dismissed)
-    .map((r) => ({ n: r.n, start: r.f.span!.start, end: r.f.span!.end, group: r.group }));
+    .map((r) => ({ n: r.n, start: r.f.span!.start, end: r.f.span!.end, group: r.group, replacement: replacementOf(r) }));
+  const pendingFixes = accepted.length + Object.keys(edits).length;
 
   return (
     <div className="space-y-6">
@@ -243,9 +251,13 @@ export function CheckForm() {
               );
             })}
             <div className="sticky bottom-0 flex flex-wrap gap-3 border-t bg-background py-3">
-              <Button variant="outline" disabled={busy || !report.version_id || (!accepted.length && !Object.keys(edits).length)}
+              <Button variant={pendingFixes ? "default" : "outline"} disabled={busy || !report.version_id || !pendingFixes}
+                className={pendingFixes ? "change-in" : undefined}
                 onClick={() => run(() => applyFixes(report.version_id!, accepted, edits, setWaking))}>
                 Apply my fixes and check again
+                {pendingFixes > 0 && (
+                  <span className="ml-1 rounded-full bg-white px-2 text-xs font-bold text-accent-brand" aria-label={`${pendingFixes} ready`}>{pendingFixes}</span>
+                )}
               </Button>
               <Button disabled={busy || openBlocking > 0 || !report.content_id}
                 title={openBlocking > 0 ? "Fix the blocking issues, or ask a reviewer about each one." : undefined}

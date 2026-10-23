@@ -58,16 +58,17 @@ function Nav({ profile, onNavigate }: { profile: Profile; onNavigate?: () => voi
         if (!items.length) return null;
         return (
           <div key={g.name} className="space-y-1">
-            <p className="px-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/45">{g.name}</p>
+            <p className="px-3 font-label text-xs font-semibold uppercase tracking-[0.2em] text-white/40">{g.name}</p>
             {items.map(({ href, label, hint, icon: Icon }) => {
               const active = path === href || path.startsWith(href + "/");
               return (
                 <Link key={href} href={href} onClick={onNavigate} aria-current={active ? "page" : undefined}
-                  className={`group flex items-start gap-3 rounded-lg px-3 py-2 transition-colors ${active ? "bg-white/10 text-white" : "text-white/75 hover:bg-white/5 hover:text-white"}`}>
+                  className={`group relative flex items-start gap-3 rounded-lg px-3 py-2 transition-all duration-300 ${active ? "bg-white/10 text-white" : "text-white/70 hover:translate-x-0.5 hover:bg-white/5 hover:text-white"}`}>
+                  {active && <span aria-hidden className="absolute inset-y-2 left-0 w-1 rounded-full bg-accent-brand" />}
                   <Icon aria-hidden className={`mt-0.5 size-4 shrink-0 ${active ? "text-[#A9A2F7]" : "text-white/50 group-hover:text-white/80"}`} />
                   <span className="min-w-0">
-                    <span className="block text-sm font-medium">{label}</span>
-                    <span className="block text-xs text-white/50">{hint}</span>
+                    <span className="block font-display text-sm font-semibold uppercase tracking-wide">{label}</span>
+                    <span className="block text-xs text-white/45">{hint}</span>
                   </span>
                 </Link>
               );
@@ -99,7 +100,7 @@ export function Sidebar({ profile }: { profile: Profile }) {
   const brand = (
     <Link href={profile ? "/check" : "/login"} className="flex items-center gap-2.5 text-white">
       <Brandmark className="size-7 text-white/80" />
-      <span className="font-display text-lg font-bold tracking-tight">Plumbline</span>
+      <span className="font-display text-lg font-extrabold uppercase tracking-tight">Plumbline</span>
     </Link>
   );
   return (
