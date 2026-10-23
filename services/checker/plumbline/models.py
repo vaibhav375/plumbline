@@ -227,6 +227,7 @@ class CheckReport(BaseModel):
     version_id: str | None
     content_id: str | None = None
     previous_text: str | None = None  # the text before accepted fixes, for the diff view
+    checked_text: str | None = None  # exactly the text the offsets point into
     findings: list[Finding]
     needs_human: list[Finding] = []
     dropped_count: int = 0

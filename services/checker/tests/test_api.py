@@ -361,3 +361,12 @@ def test_dismiss_needs_a_reason_and_is_recorded(client, monkeypatch):
     assert (
         r.status_code == 200 and calls[0]["action"] == "dismiss" and calls[0]["finding_id"] == "f-1"
     )
+
+
+def test_report_returns_the_exact_text_it_checked(client):
+    r = client.post(
+        "/v1/checks",
+        headers=bearer(token()),
+        data={"text": "Shop\r\nnow\u00a0please.", "channel": "x", "region": "IN"},
+    )
+    assert r.json()["checked_text"] == "Shop\nnow please."

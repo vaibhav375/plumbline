@@ -171,6 +171,7 @@ def _check_and_save(
     return report.model_copy(
         update={
             "version_id": version_id,
+            "checked_text": doc.text,
             "content_id": content_id,
             "findings": findings,
             "needs_human": needs_human,
