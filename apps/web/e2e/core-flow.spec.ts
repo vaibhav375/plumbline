@@ -343,6 +343,7 @@ test("checker down shows message", async ({ page }) => {
   await page.getByRole("button", { name: "Check", exact: true }).click();
   await expect(page.getByRole("status").filter({ hasText: "Waking the checker" })).toBeVisible();
   await expect(page.getByTestId("blocking-count")).toBeVisible({ timeout: 120_000 });
-  await expect(page.getByRole("alert")).toHaveCount(0);
+  // No error message (Next's empty route announcer also has role="alert", so match text).
+  await expect(page.getByRole("alert").filter({ hasText: /\S/ })).toHaveCount(0);
   expect(calls).toBe(2);
 });

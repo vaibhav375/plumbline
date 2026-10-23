@@ -863,3 +863,51 @@ Plumbline run) and counted as finding nothing. That is why the published run has
 - The stranger test and the 5-second test (one person who has never seen the app; core flow in under
   3 minutes without help; fix the top 3 hesitations). My own pass found one hesitation (fixed above);
   that is not a substitute.
+
+## Task 23: reliability operations
+
+| Check | Evidence | Result |
+|---|---|---|
+| Plan's `test_request_id_header_present` | every response has `X-Request-ID`; a safe incoming id is echoed, an unsafe one replaced | Pass |
+| Plan's e2e "checker down shows message" | failed on the old build; now an HTML 503 from the proxy on the first check → "Waking the checker" banner → one retry → findings, no error message, exactly 2 calls | Pass |
+| Errors carry a reference | `request_id` in every error body (live: `{"code":"unauthorized",…,"request_id":"40c7430380a94e81"}`); an unexpected error is a plain 500 that names the reference and hides internals (`test_unexpected_error_is_a_plain_500_with_a_reference`) | Pass |
+| Upload size limit | requests over 10 MB (+64 KB form overhead) refused with 413 before the body is read (test; live: 11 MB → 413) | Pass |
+| Structured logs | one JSON line per request: id, method, path, status, ms, phase timings; never the text (`test_one_structured_log_line_per_request_without_content`) | Pass |
+| Phase timings readable from outside | `Server-Timing` on every response, exposed through CORS (live headers checked) | Pass |
+| Web error states | `app/error.tsx` and `app/not-found.tsx` in plain words, with the status page linked | Pass |
+| Keep-alive (plan Step 4) | the pg_cron job ran 144 times in the last 24 h, all succeeded, largest gap 10 min 0.1 s; pg_net kept 36 responses (6 h), all 200. The checker has not been allowed to sleep. I can't read Render's logs, so the "first request after 20 minutes idle" was not observed there | Pass, with that caveat |
+| All e2e tests on the live site | `BASE_URL=<vercel> playwright test` | 18/18 (2.7 min) |
+| Unit suite | `make test` 240 passed | Pass |
+
+**Latency, measured with the new `Server-Timing` (medians on Render, 5 text and 3 image checks)**
+
+| | Before (fde8284) | After caches (a5e73d6) | After warm-up (aa5729d) |
+|---|---|---|---|
+| Text check, wall | 3.96 s | 2.50 s | 3.41 s (1.8–3.6 s; AI time varies) |
+| Image check, wall | 8.24 s | 6.35 s | 6.15 s |
+| First check after a deploy (check phase) | 19.4 s | 18.4 s | **1.6 s** (4.6 s wall, cold caches) |
+| Rulebook / confidential facts, warm | 704 / 572 ms | 0 / 0 ms | 0 / 0 ms |
+| OCR (image parse) | 4.0 s | 4.2 s | 3.8 s |
+
+**What changed, and why (each from a measurement, not a guess)**
+- *The ~2 s outside the pipeline (Task 20 note) was the rulebook (4 reads, ~0.7 s) and a new Postgres
+  connection for confidential facts (~0.57 s) on every check.* Both are cached for 60 s: the rulebook
+  per (org, role), which is exactly what RLS varies on, and cleared by a rule import; confidential
+  facts per org. A per-process cache: Render runs one instance (`ponytail` note in `ops.py`).
+- *The 20-second outliers were "slow AI calls" (Task 20).* They weren't: the first check in a fresh
+  process lazily loaded the privacy NLP model (2.45 s locally, ~18 s on Render's shared CPU). Every
+  wake-up or deploy made someone wait. The model now loads in a background thread at startup.
+- *Retrying a rate-limited model after waiting up to 3 s (Task 8) is the safe default.* Since Task 12
+  added a second Groq model with its own limit, waiting only adds delay; a 429 or a timeout now
+  moves straight to the next model (a timeout used to cost 20 s twice).
+- *The plan's keep-alive workflow keeps the checker awake.* GitHub throttled it (Task 13); the pg_cron
+  job does the work, and its run history above is the evidence.
+- *Any `role="alert"` on the page means an error.* Next.js's empty route announcer has that role; the
+  test now looks for alerts with text.
+
+**Not done / limits**
+- Image checks stay above 5 s: OCR alone is ~3.8 s on Render's free CPU (0.3 s locally). A paid
+  instance or a smaller OCR model would be the fix; not changed for the demo.
+- Saving a check is still 6 sequential inserts (~0.6–1 s). One database function could do it in one
+  round trip; left alone this close to submission because it touches RLS and the audit triggers.
+- Render's own logs weren't inspected (no access from here); the structured log line is tested locally.

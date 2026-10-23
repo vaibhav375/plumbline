@@ -784,11 +784,11 @@ def required_stages(findings: list[Finding]) -> list[Literal["first","compliance
 - Create: `.github/workflows/keepalive.yml` (cron `*/10 * * * *`: GET the checker `/health` and Supabase REST)
 - Modify: `api.py` (request IDs, structured logs, upload size limit), `apps/web` (error boundary with plain-words messages)
 
-- [ ] **Step 1:** Write the failing test `test_request_id_header_present`, and e2e `checker down shows message`: route-intercept a 503 → expect the "Waking the checker…" banner, then a retry.
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Implement.
-- [ ] **Step 4:** Run. Expected: PASS. The first cold request after 20 minutes idle responds in under 10 s thanks to keep-alive (check the Render logs).
-- [ ] **Step 5:** Commit: `chore(ops): keep-alive, request ids, error states`.
+- [x] **Step 1:** Write the failing test `test_request_id_header_present`, and e2e `checker down shows message`: route-intercept a 503 → expect the "Waking the checker…" banner, then a retry.
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Implement.
+- [x] **Step 4:** Run. Expected: PASS. The first cold request after 20 minutes idle responds in under 10 s thanks to keep-alive (check the Render logs).
+- [x] **Step 5:** Commit: `chore(ops): keep-alive, request ids, error states`.
 
 ### Task 24: Submission package and pre-submission audit (hours 60–68)
 
