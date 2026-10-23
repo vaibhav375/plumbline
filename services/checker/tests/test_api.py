@@ -508,7 +508,7 @@ def test_claim_needs_compliance_and_decisions_before_approval(client, review_db)
     timeline = client.get("/v1/review/v1", headers=h).json()["timeline"]
     assert [e["what"] for e in timeline] == [
         "submitted for review",
-        "upheld CL-01",
+        "upheld FACT-014",
         "approved the first stage",
         "approved the compliance stage",
     ]

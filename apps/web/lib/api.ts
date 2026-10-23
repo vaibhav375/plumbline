@@ -109,3 +109,58 @@ export function dismissFinding(recordId: string, reason: string) {
 export function submitForReview(contentId: string, onWaking: (waking: boolean) => void = () => {}) {
   return request<CheckReport>(`/v1/contents/${contentId}/submit`, { method: "POST" }, onWaking);
 }
+
+/** The writer passes a blocking finding they can't fix to a reviewer. */
+export function escalateFinding(recordId: string, reason: string) {
+  return request<{ ok: boolean }>(
+    `/v1/findings/${recordId}/decisions`,
+    { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "escalate", reason }) },
+    () => {},
+  );
+}
+
+export type QueueRow = {
+  version_id: string;
+  content_id: string;
+  n: number;
+  title: string | null;
+  channel: string | null;
+  origin: string | null;
+  status: string;
+  submitted_at: string;
+  author: string;
+  blocking: number;
+  claims: number;
+  required: string[];
+  approved: string[];
+  pending: string[];
+};
+
+export type ReviewDetail = {
+  version: { id: string; content_id: string; n: number; text: string; status: string; created_at: string };
+  content: { id: string; title: string | null; channel: string | null; origin: string | null };
+  report: CheckReport;
+  state: { required: string[]; approved: string[]; pending: string[]; undecided_blocking: string[]; overruled: string[] };
+  decisions: { finding_id: string; action: string; reason: string | null; at: string; who: string }[];
+  comments: { body: string; created_at: string; who: string }[];
+  timeline: { at: string; who: string; what: string; reason?: string | null }[];
+  can_decide: string[];
+  can_approve: string[];
+};
+
+const json = (body: unknown): RequestInit => ({
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(body),
+});
+
+export const review = {
+  queue: (onWaking: (w: boolean) => void = () => {}) => request<QueueRow[]>("/v1/review/queue", {}, onWaking),
+  get: (versionId: string, onWaking: (w: boolean) => void = () => {}) =>
+    request<ReviewDetail>(`/v1/review/${versionId}`, {}, onWaking),
+  decide: (versionId: string, recordId: string, action: "uphold" | "overrule", reason: string) =>
+    request<ReviewDetail>(`/v1/review/${versionId}/decisions`, json({ record_id: recordId, action, reason }), () => {}),
+  approve: (versionId: string, stage: string, outcome: "approve" | "request_changes", reason?: string) =>
+    request<ReviewDetail>(`/v1/versions/${versionId}/approve`, json({ stage, outcome, reason }), () => {}),
+  comment: (versionId: string, body: string) => request<ReviewDetail>(`/v1/review/${versionId}/comments`, json({ body }), () => {}),
+};

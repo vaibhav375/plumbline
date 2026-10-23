@@ -9,7 +9,7 @@ import type { Finding } from "@/lib/api";
 const METHOD: Record<string, string> = { code: "Rule engine", ai: "AI", "ai+code": "AI + rule check" };
 const NOT_DISMISSIBLE = "Blocking findings can't be dismissed. Fix or edit the text, or submit it for a reviewer.";
 
-export type CardState = { accepted: boolean; edit: string | null; dismissed: boolean };
+export type CardState = { accepted: boolean; edit: string | null; dismissed: boolean; escalated?: boolean };
 
 export function FindingCard({
   n,
@@ -18,6 +18,7 @@ export function FindingCard({
   state,
   onChange,
   onDismiss,
+  onEscalate,
 }: {
   n: number;
   f: Finding;
@@ -25,8 +26,10 @@ export function FindingCard({
   state: CardState;
   onChange: (s: CardState) => void;
   onDismiss: (reason: string) => Promise<void>;
+  onEscalate?: (reason: string) => Promise<void>;
 }) {
   const [reason, setReason] = useState<string | null>(null);
+  const [ask, setAsk] = useState<string | null>(null);
   const fix = f.fix && f.fix.kind !== "none" ? f.fix : null;
   const canChange = Boolean(f.record_id) && !state.dismissed;
   const blocking = f.severity === "blocking" && !f.advisory;
@@ -73,7 +76,31 @@ export function FindingCard({
             </Button>
           </span>
           {blocking && <span className="sr-only">{NOT_DISMISSIBLE}</span>}
+          {blocking && onEscalate && (
+            state.escalated ? (
+              <span className="self-center text-sm text-muted-foreground">Sent to a reviewer</span>
+            ) : (
+              <Button size="sm" variant="outline" disabled={!canChange} onClick={() => setAsk("")}>
+                Ask a reviewer
+              </Button>
+            )
+          )}
         </div>
+      )}
+      {ask !== null && onEscalate && (
+        <form className="mt-3 flex flex-wrap items-end gap-2 text-sm"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await onEscalate(ask);
+            setAsk(null);
+          }}>
+          <label className="grow">
+            What should the reviewer know? (required)
+            <input className="mt-1 w-full rounded border px-2 py-1" value={ask} onChange={(e) => setAsk(e.target.value)} />
+          </label>
+          <Button size="sm" type="submit" disabled={!ask.trim()}>Send to a reviewer</Button>
+          <Button size="sm" type="button" variant="ghost" onClick={() => setAsk(null)}>Cancel</Button>
+        </form>
       )}
       {state.edit !== null && !state.dismissed && (
         <label className="mt-3 block text-sm">

@@ -88,3 +88,45 @@ test("highlights land on the right words after an emoji", async ({ page }) => {
   await signInAndCheck(page, "Got my PR package from Aurelle today ✨ The vit C serum smells like nothing. Shop now.");
   await expect(page.locator("mark").filter({ hasText: /^vit C serum/ }).first()).toBeVisible();
 });
+
+// Scenario 3 (plan Task 16): a creator submits with blocking findings sent to a reviewer;
+// Compliance decides them and approves; the status and timeline show every step.
+test("compliance approves", async ({ page }) => {
+  test.setTimeout(300_000);
+  await signInAndCheck(page);
+  const asks = page.getByRole("button", { name: "Ask a reviewer" });
+  while ((await asks.count()) > 0) {
+    await asks.first().click();
+    await page.getByLabel("What should the reviewer know? (required)").fill("No approved wording I can use here.");
+    await page.getByRole("button", { name: "Send to a reviewer" }).click();
+  }
+  await page.getByRole("button", { name: "Submit for review", exact: true }).click();
+  const done = page.getByRole("status").filter({ hasText: "Submitted for review" });
+  await expect(done).toBeVisible({ timeout: 120_000 });
+  const versionId = await done.getAttribute("data-version-id");
+  expect(versionId).toBeTruthy();
+  await page.getByRole("button", { name: "Sign out" }).click();
+
+  await page.getByRole("button", { name: "Try as Compliance" }).click();
+  await expect(page).toHaveURL(/\/check/, { timeout: 30_000 });
+  await page.getByRole("link", { name: "Review queue" }).click();
+  await page.locator(`a[href="/review/${versionId}"]`).click();
+  await expect(page.getByText("still to decide")).toBeVisible({ timeout: 120_000 });
+  const fact014 = page.getByRole("article").filter({ hasText: "FACT-014" });
+  await expect(fact014.getByText("asked a reviewer")).toBeVisible(); // the writer's note carried over
+  const uphold = page.getByRole("button", { name: "Uphold", exact: true });
+  while ((await uphold.count()) > 0) {
+    const before = await uphold.count();
+    await uphold.first().click();
+    await page.getByLabel(/Reason for upholding/).fill("Agreed: publish only with the approved wording.");
+    await page.getByRole("button", { name: "Uphold with reason" }).click();
+    await expect(uphold).toHaveCount(before - 1, { timeout: 60_000 });
+  }
+  await page.getByRole("button", { name: "Approve", exact: true }).click();
+  await expect(page.getByTestId("version-status")).toContainText("approved", { timeout: 60_000 });
+  const timeline = page.getByRole("region", { name: "Timeline" });
+  for (const step of ["submitted for review", "asked a reviewer about", "upheld FACT-014", "approved the first stage",
+    "approved the compliance stage"]) {
+    await expect(timeline.getByText(step).first()).toBeVisible();
+  }
+});

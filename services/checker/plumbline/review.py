@@ -103,7 +103,9 @@ def timeline(
     ]
     for d in decisions:
         f = by_record.get(d["finding_id"])
-        label = (f.rule_id or f.fact_id) if f else "a finding"
+        label = (
+            (f.fact_id or f.rule_id) if f else "a finding"
+        )  # for claims, the fact is what a reviewer recognises
         events.append(
             {
                 "at": d["at"],

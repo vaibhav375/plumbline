@@ -18,6 +18,7 @@ import {
   CheckError,
   type CheckReport,
   dismissFinding,
+  escalateFinding,
   type Finding,
   submitForReview,
 } from "@/lib/api";
@@ -81,7 +82,9 @@ export function CheckForm() {
   }, [report]);
 
   const state = (f: Finding) => cards[f.id] ?? FRESH;
-  const openBlocking = rows.filter((r) => r.group === "Blocking" && !state(r.f).dismissed).length;
+  // Blocking findings stay open until fixed by a re-check or sent to a reviewer.
+  const openBlocking = rows.filter((r) => r.group === "Blocking" && !state(r.f).dismissed && !state(r.f).escalated).length;
+  const blockingTotal = rows.filter((r) => r.group === "Blocking").length;
   const count = (g: string) => rows.filter((r) => r.group === g && !state(r.f).dismissed).length;
   const accepted = rows.filter((r) => state(r.f).accepted && r.f.record_id).map((r) => r.f.record_id!);
   const edits = Object.fromEntries(
@@ -122,7 +125,8 @@ export function CheckForm() {
       {waking && <WakingBanner />}
       {error && <p role="alert" className="rounded-md border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-900">{error}</p>}
       {submitted && (
-        <p role="status" className="rounded-md border border-green-300 bg-green-50 px-4 py-3 text-sm text-green-900">
+        <p role="status" data-version-id={report?.version_id ?? ""}
+          className="rounded-md border border-green-300 bg-green-50 px-4 py-3 text-sm text-green-900">
           Submitted for review. Reviewers can now see this version.
         </p>
       )}
@@ -145,8 +149,10 @@ export function CheckForm() {
 
           <div className="min-w-0 space-y-4">
             <p className="text-lg">
-              <strong data-testid="blocking-count" data-count={openBlocking}>
-                {openBlocking === 0 ? "Nothing blocks publishing in the checks that ran" : `${openBlocking} ${openBlocking === 1 ? "issue blocks" : "issues block"} publishing`}
+              <strong data-testid="blocking-count" data-count={blockingTotal}>
+                {blockingTotal === 0
+                  ? "Nothing blocks publishing in the checks that ran"
+                  : `${blockingTotal} ${blockingTotal === 1 ? "issue blocks" : "issues block"} publishing`}
               </strong>{" "}
               · {count("Major")} major · {count("Minor")} minor · {count("Needs human eyes")} {count("Needs human eyes") === 1 ? "needs" : "need"} human eyes · {count("Advisory")} advisory
             </p>
@@ -159,6 +165,14 @@ export function CheckForm() {
                   {items.map((r) => (
                     <FindingCard key={r.f.id} n={r.n} f={r.f} group={r.group} state={state(r.f)}
                       onChange={(s) => setCards((c) => ({ ...c, [r.f.id]: s }))}
+                      onEscalate={async (reason) => {
+                        try {
+                          await escalateFinding(r.f.record_id!, reason);
+                          setCards((c) => ({ ...c, [r.f.id]: { ...state(r.f), escalated: true } }));
+                        } catch (err) {
+                          setError(err instanceof CheckError ? err.message : "Couldn't send it. Try again.");
+                        }
+                      }}
                       onDismiss={async (reason) => {
                         try {
                           await dismissFinding(r.f.record_id!, reason);
@@ -177,7 +191,7 @@ export function CheckForm() {
                 Apply accepted fixes &amp; re-check
               </Button>
               <Button disabled={busy || openBlocking > 0 || !report.content_id}
-                title={openBlocking > 0 ? "Fix, edit or remove the blocking issues first." : undefined}
+                title={openBlocking > 0 ? "Fix the blocking issues, or ask a reviewer about each one." : undefined}
                 onClick={async () => {
                   const r = await run(() => submitForReview(report.content_id!, setWaking));
                   if (r) setSubmitted(true);
