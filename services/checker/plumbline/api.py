@@ -3,7 +3,9 @@
 import json
 import logging
 import os
+import threading
 import time
+from contextlib import asynccontextmanager
 from datetime import datetime
 from typing import Annotated
 from zoneinfo import ZoneInfo
@@ -38,7 +40,23 @@ def cfg() -> Settings:
     return settings
 
 
-app = FastAPI(title="Plumbline checker", version=VERSION)
+def warm_up() -> None:
+    """Load the name gazetteer and the privacy NLP model (2.5 s locally, far longer on Render's
+    shared CPU) before the first check needs them, instead of during it."""
+    from plumbline import privacy
+
+    privacy._names()
+    privacy._analyzer()
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    # In the background: the port binds at once, so Render's wake-up and /health aren't delayed.
+    threading.Thread(target=lambda: warm_up(), daemon=True, name="warm-up").start()
+    yield
+
+
+app = FastAPI(title="Plumbline checker", version=VERSION, lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=os.environ.get("CORS_ORIGINS", "http://localhost:3000").split(","),

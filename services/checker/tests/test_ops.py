@@ -92,3 +92,12 @@ def test_rulebook_is_cached_per_org_and_role_and_cleared_by_import(monkeypatch, 
     ops.clear_cache()  # what a rule import does
     api.org_context(user("org-1", "creator"))
     assert len(calls) == 4
+
+
+def test_startup_warms_the_slow_models_in_the_background(monkeypatch):
+    import threading
+
+    warmed = threading.Event()
+    monkeypatch.setattr(api, "warm_up", warmed.set)
+    with TestClient(api.app):  # runs the lifespan, as uvicorn does on boot
+        assert warmed.wait(5)
