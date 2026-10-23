@@ -116,16 +116,19 @@ test("compliance approves", async ({ page }) => {
   await expect(page.getByText("still to decide")).toBeVisible({ timeout: 120_000 });
   const fact014 = page.getByRole("article").filter({ hasText: "FACT-014" });
   await expect(fact014.getByText("asked a reviewer")).toBeVisible(); // the writer's note carried over
-  const uphold = page.getByRole("button", { name: "Uphold", exact: true });
-  while ((await uphold.count()) > 0) {
-    const before = await uphold.count();
-    await uphold.first().click();
-    await page.getByLabel(/Reason for upholding/).fill("Agreed: publish only with the approved wording.");
-    await page.getByRole("button", { name: "Uphold with reason" }).click();
-    // The card's buttons hide as soon as the form opens; the form closes only once the decision is saved.
-    await expect(page.getByLabel(/Reason for upholding/)).toHaveCount(0, { timeout: 60_000 });
-    await expect(uphold).toHaveCount(before - 1);
+  // Only blocking findings need a decision before approval; decided cards keep their buttons (a reviewer
+  // can change their mind), so walk the blocking cards once each.
+  const blocking = page.getByRole("article").filter({ hasText: "Blocking" });
+  const n = await blocking.count();
+  expect(n).toBeGreaterThan(0);
+  for (let i = 0; i < n; i++) {
+    const card = blocking.nth(i);
+    await card.getByRole("button", { name: "Uphold", exact: true }).click();
+    await card.getByLabel(/Reason for upholding/).fill("Agreed: publish only with the approved wording.");
+    await card.getByRole("button", { name: "Uphold with reason" }).click();
+    await expect(card.getByLabel(/Reason for upholding/)).toHaveCount(0, { timeout: 60_000 });
   }
+  await expect(page.getByText(/· 0 still to decide/)).toBeVisible({ timeout: 60_000 });
   await page.getByRole("button", { name: "Approve", exact: true }).click();
   await expect(page.getByTestId("version-status")).toContainText("approved", { timeout: 60_000 });
   const timeline = page.getByRole("region", { name: "Timeline" });

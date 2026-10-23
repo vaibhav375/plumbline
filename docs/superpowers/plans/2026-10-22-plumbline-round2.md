@@ -643,15 +643,15 @@ def required_stages(findings: list[Finding]) -> list[Literal["first","compliance
 - `POST /v1/versions/{id}/approve {stage, outcome: "approve"|"request_changes", reason}` checks `required_stages` and the role. The database enforces the second-approver rule; a violation returns 409 "A second approval must come from a different person."
 - **Queue:** submitted versions sorted by risk (blocking count, then claims), showing which approvals are pending. Pre-checks are never listed.
 
-- [ ] **Step 1:** Write the failing tests:
+- [x] **Step 1:** Write the failing tests:
   - `test_claim_requires_compliance`
   - `test_overruled_blocking_requires_second`
   - `test_overruled_accessibility_requires_accessibility_stage`
   - e2e `compliance approves`: log in as Compliance → open the queue item → "Uphold" on `FACT-014` → Approve → the status becomes "Approved" and the timeline shows each step
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Implement.
-- [ ] **Step 4:** Run. Expected: PASS.
-- [ ] **Step 5:** Commit: `feat(review): routing, approvals, queue`.
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Implement.
+- [x] **Step 4:** Run. Expected: PASS.
+- [x] **Step 5:** Commit: `feat(review): routing, approvals, queue`.
 
 ### Task 17: Audit log page, verification and export
 

@@ -550,3 +550,41 @@ Task 14 must map them back before `validate_findings` checks the quote against t
 - Applying fixes re-checks as text: an uploaded image doesn't carry over to the next version.
 - AI rewrites aren't offered per finding; the whole suggested version is shown in the intent panel.
 - The browser's default file picker and visual polish are left for the usability pass (Task 22).
+
+## Task 16: review workflow and queue
+
+| Check | Evidence | Result |
+|---|---|---|
+| Routing rules (§4.5) | `test_first_stage_always`, `test_claim_requires_compliance`, `test_overruled_blocking_requires_second`, `test_overruled_accessibility_requires_accessibility_stage`, `test_who_may_decide_what`, `test_who_may_approve_which_stage` | 6/6 |
+| Approve endpoint checks stage, role and open decisions | `test_claim_needs_compliance_and_decisions_before_approval` (422 stage not needed, 403 wrong role, 409 undecided, 409 second before first), `test_request_changes_needs_a_reason_and_sets_the_status`, `test_creators_cannot_open_the_queue` | Pass |
+| Second approver must be a different person | DB trigger: `test_same_actor_second_approval_rejected`; API maps it to 409 "A second approval must come from a different person." (`test_overruled_blocking_needs_a_different_second_approver`); live: 0 versions where one person approved both first and second | Pass |
+| Plan's e2e "compliance approves" | live site: creator asks a reviewer about each blocking finding → submits → Compliance opens the queue item → upholds each blocking finding (incl. FACT-014) → Approve → status "approved"; timeline shows submitted, asked a reviewer, upheld FACT-014, first and compliance stages approved | Pass |
+| All e2e tests on the live site | `BASE_URL=<vercel> playwright test` | 7/7 (1.7 min) |
+| Pre-checks never listed | the queue reads `private=is.false` as the caller (RLS from 0004 also hides others' pre-checks: Task 2 DB tests) | Pass |
+| Decisions and approvals audited | live: 8 upholds, 1 first + 1 compliance approval; Aurelle's chain (546 events) recomputes in SQL with 0 bad hashes and 0 broken links | Pass |
+| Unit and DB suites | `make test` 197 passed; `make test-db` 14 passed | Pass |
+
+**Assumptions that didn't hold, and what replaced them**
+- *Writers submit only once nothing blocks* (Task 15) left no way to get a blocking claim to Compliance,
+  so the plan's scenario couldn't happen. **Alternative:** writers can "Ask a reviewer" about a blocking
+  finding (an `escalate` decision with a required note, migration 0009). Escalated findings no longer
+  block Submit, the note carries over to the submitted version, and a reviewer must still uphold or
+  overrule each one before approval. Dismissing a blocking finding is still refused (409).
+- *`required_stages(findings)`* as specified can't see overrules: they live in decisions, not findings.
+  It takes the overruled finding ids as a second argument.
+- *The queue would fail only on long `in.(…)` URLs* (first guess for a live 500). The real cause:
+  the 184 seeded history versions (guideline-health data) store `{"synthetic": true}` instead of a
+  report, and the queue read `report["findings"]`. Reports without findings are now skipped in the one
+  shared loader (queue and detail page), with a regression test (`test_synthetic_history_runs_are_skipped`).
+- *Counting buttons tracks progress.* The e2e raced twice: buttons hide while a form is open and come
+  back after a decision (a reviewer can change their mind). The tests now wait for each card's form
+  to close and for "0 still to decide"; the UI disables Send/Uphold while saving so a double click
+  can't record two decisions.
+- *Local `next build` for e2e.* The USB stick stalled (~0.25 MB/s, processes in disk wait) and the
+  build never finished. Web changes are verified by the Vercel build (which type-checks) and the
+  live e2e run instead.
+
+**Limits (for later tasks)**
+- The queue reads the 50 newest submitted versions; seeded history takes slots until real ones
+  outnumber it. Page the queue if it ever holds more than 50 live items.
+- A decided card shows only its history line, not a "decided" badge (usability pass, Task 22).
