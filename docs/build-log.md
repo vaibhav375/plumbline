@@ -954,3 +954,53 @@ Chrome as in Round 1).
 **Open for the user**
 - The stranger test (Task 22, Step 4).
 - Tag `round2-submission` and stop pushing before 25 Oct 08:00 IST.
+
+## Task 22 follow-up: the stranger test, and the redesign it led to
+
+**What the tester said (one person, first time on the app):** it looks plain and template-made (no colour,
+no motion, no charts); buttons seem not to respond, so they clicked 3–4 times; features are hard to find
+and sit "far out"; wording is too generic to know what to do; similar features aren't together.
+
+**What was measured before changing anything (live, 1280 px)**
+- Sign-in: nothing on screen for 4.4 s after "Try as …", content after 7.7 s.
+- Every navigation: the old page stayed up with no feedback until the new one was ready (1.3–2.8 s).
+- Cause: no loading or pending states anywhere, and the server code ran in Washington (`iad1`) while the
+  database is in Mumbai, so each page paid several round trips across the world before it showed.
+
+**What changed**
+- *Speed:* server code pinned to Mumbai (`vercel.json`, now `bom1::bom1`); a shared layout for signed-in
+  pages loads the profile once and keeps the sidebar mounted; an instant loading skeleton on every page;
+  "Signing in…" / "Signing out…" pending buttons that can't be clicked twice.
+- *Finding things:* a permanent sidebar (a Menu button on phones) grouping similar features (Write ·
+  Review · Brand rules · Proof), each with a one-line description; each role opens where its work is.
+- *Design:* the brand palette used with intent (an ink sidebar and hero, indigo actions, a cool chalk
+  background, white cards); Bricolage Grotesque for titles, Public Sans for text, JetBrains Mono for IDs
+  and evidence; one motion (the plumb bob settles to vertical on the sign-in page; reduced motion
+  respected); the sign-in hero shows a real finding from the sample post with its citation and the
+  approved wording.
+- *Charts:* guideline health draws each rule's agreement and its 95% range against the 80% "ready to
+  block" plumb line; the results page draws Plumbline against the baseline with intervals; check results
+  get one labelled tile per severity group. Palettes run through the dataviz validator: indigo vs teal
+  `#0C9A8F` passes every check (CVD ΔE 22.9); a single stacked severity bar was rejected because
+  blocking red vs major amber is ΔE 2.7 for deuteranopes, so each group is its own labelled tile.
+- *Wording:* page purposes rewritten in plain words ("Check a post", "Checked by rule", "Does the
+  suggested version keep your message?", "Apply my fixes and check again").
+
+**Measured after (preview, then production)**
+
+| | Before | After |
+|---|---|---|
+| Sign-in: first feedback | none for 4.4 s | "Signing in…" at 0.14 s |
+| Sign-in: on the role's page | 4.4 s | 1.8 s |
+| Navigation: first feedback | none until loaded (1.3–2.8 s) | skeleton in ~50 ms |
+| Check page ready / Rulebook ready | 1.36 s / 2.3 s | 0.86 s / 1.36 s |
+| e2e suite on the live site | 3.2 min | 2.3 min (preview) |
+
+- No horizontal overflow at 1280 px or on a phone profile for login, check, health and results (after
+  fixing two found in review: chart value labels pushed past the edge on phones, now a fixed value column;
+  the hero example inherited white text on a white card).
+- All 18 e2e tests pass on production. One failed during the switch-over (it ran against the old build's
+  button label while the alias moved) and passed on rerun.
+- Shipped through a branch preview first, then fast-forwarded to `main`.
+
+**Not yet done:** a second stranger test on the new design (the plan's "under 3 minutes without help").
