@@ -22,6 +22,12 @@ type Latest = {
   egress: { plumbline: Egress[]; baseline: Egress[] };
 };
 const data = latest as unknown as Latest;
+// India time, so a late-evening run isn't shown with the next day's (UTC) date.
+const RUN_AT = new Date(data.generated_at).toLocaleString("en-IN", {
+  dateStyle: "medium",
+  timeStyle: "short",
+  timeZone: "Asia/Kolkata",
+});
 
 const pct = (x: number) => `${Math.round(x * 100)}%`;
 const interval = ([lo, hi]: [number, number]) => `95% interval ${pct(lo)}–${pct(hi)}`;
@@ -135,7 +141,7 @@ export default function AboutPage() {
           {d.kinds.labelled} with {d.n_labels} labelled problems in all, {d.kinds.clean} clean controls and {d.kinds.injection}{" "}
           copies with prompt-injection text added. A finding counts only if it names the right rule or fact and points at the
           right words. The baseline is one model call per post with the whole brand book and no validators; like Plumbline,
-          it is never shown confidential facts. Run on {data.generated_at.slice(0, 10)} with rulebook{" "}
+          it is never shown confidential facts. Run on {RUN_AT} IST with rulebook{" "}
           <span className="font-mono">{data.rulebook_version}</span>; dates are judged as of {data.today}.
         </p>
         <div className="grid gap-4 md:grid-cols-2">
