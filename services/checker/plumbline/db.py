@@ -292,7 +292,9 @@ def load_version(s: Settings, token: str, version_id: str) -> dict | None:
     )
     report = runs.json()[0]["report_json"] if runs.json() else None
     if report:
-        ids = {(r["payload_json"].get("group"), r["payload_json"].get("id")): r["id"] for r in saved}
+        ids = {
+            (r["payload_json"].get("group"), r["payload_json"].get("id")): r["id"] for r in saved
+        }
         for group in ("findings", "needs_human"):
             report[group] = [f | {"record_id": ids.get((group, f["id"]))} for f in report[group]]
     return {
