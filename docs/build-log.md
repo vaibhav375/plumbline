@@ -518,3 +518,35 @@ Task 14 must map them back before `validate_findings` checks the quote against t
 - Overlapping findings on the same sentence (e.g. TN-01 hype and CL-01 on "guaranteed results") are
   deduplicated only when the rule is the same; grouping by sentence belongs in the results UI (Task 15).
 - Highlight offsets need the UTF-16 conversion noted in Task 4 (Task 15).
+
+## Task 15: check results UI
+
+| Check | Evidence | Result |
+|---|---|---|
+| Plan's e2e "creator fixes and submits" | live site: Accept AW-014b and TM-007 → apply → blocking count drops → the diff shows the swap ("Vitamin C Brightening Serum" inserted, 60% → 32%) → Submit disabled with "(N blocking left)"; Dismiss disabled on blocking findings, with the reason shown | Pass |
+| Highlights after an emoji (Task 4 note) | live: "…today ✨ The vit C serum…" highlights exactly "vit C serum" | Pass |
+| All 6 e2e tests on the live site | `BASE_URL=<vercel> playwright test` | 6/6 |
+| No overflow (plan Step 4) | measured `scrollWidth == clientWidth` at 1280×720 and 390 px; nothing extends past the viewport | Pass |
+| Decisions recorded and audited | live e2e runs wrote 6 accept decisions, each with an audit event; Aurelle's chain (410 events) still recomputes and links | Pass |
+| Rules the UI must follow | colour always with a word and a number; a count line, never a score; blocking can't be dismissed (enforced on the server too: 409) | Pass |
+
+**Problems found, and fixes**
+- **Fixes have to be applied on the server.** The checker counts characters; the browser counts UTF-16
+  units, so emoji would shift every offset. `POST /v1/versions/{id}/apply` applies them where the
+  offsets came from, records the decisions and re-checks; the browser converts offsets only to
+  highlight (`lib/offsets.ts`).
+- **Accept didn't work in the real system** ("Choose at least one fix…"), though the API unit test
+  passed: the stored report is written before its finding rows exist, so it had no record ids, and the
+  test faked the loader with ids already present. `load_version` re-attaches ids from the saved rows;
+  verified against the real database (5/5) before redeploying.
+- **The highlights need the exact checked text.** The report now returns `checked_text` (normalised
+  paste, or the text of an uploaded DOCX/PDF/image).
+- **The word diff was accurate but unreadable** ("Vitamin-C" → "Vitamin", "C", "Brightening Serum").
+  Changes separated only by spaces are grouped into one swap.
+- Applying an approved wording on its own now adds its required footnote.
+- A formatting-only CI failure (pushed a hand edit without the formatter); now `make lint` before every push.
+
+**Limits (for later tasks)**
+- Applying fixes re-checks as text: an uploaded image doesn't carry over to the next version.
+- AI rewrites aren't offered per finding; the whole suggested version is shown in the intent panel.
+- The browser's default file picker and visual polish are left for the usability pass (Task 22).

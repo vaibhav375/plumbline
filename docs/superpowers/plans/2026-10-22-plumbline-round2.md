@@ -623,11 +623,11 @@ def run_check(doc: Document, ctx: OrgContext, intent: Intent | None, viewer_role
 
 **Usability copy:** a page subtitle, "Paste a draft or upload a file. Plumbline checks it against Aurelle's rules and facts, and shows what it couldn't check." The intent fields are collapsed, with "(optional)".
 
-- [ ] **Step 1:** Write the failing e2e test `creator fixes and submits`: load the sample → Check → Accept on `AW-014b` → Accept on `TM-007` → "Apply accepted fixes & re-check" → the blocking count drops → the diff view shows the change → Submit stays disabled until the blocking count is 0 or the remaining blocking items carry decisions.
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Implement. Decisions are written through supabase-js to `decisions` (the audit trigger fires).
-- [ ] **Step 4:** Run. Expected: PASS. Take screenshots at 1280×720 and 390 px and check there's no overflow.
-- [ ] **Step 5:** Commit: `feat(web): check results, fixes, intent, diff`.
+- [x] **Step 1:** Write the failing e2e test `creator fixes and submits`: load the sample → Check → Accept on `AW-014b` → Accept on `TM-007` → "Apply accepted fixes & re-check" → the blocking count drops → the diff view shows the change → Submit stays disabled until the blocking count is 0 or the remaining blocking items carry decisions.
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Implement. Decisions are written through supabase-js to `decisions` (the audit trigger fires).
+- [x] **Step 4:** Run. Expected: PASS. Take screenshots at 1280×720 and 390 px and check there's no overflow.
+- [x] **Step 5:** Commit: `feat(web): check results, fixes, intent, diff`.
 
 ### Task 16: Review workflow and queue
 
