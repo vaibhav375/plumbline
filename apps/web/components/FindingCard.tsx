@@ -40,6 +40,11 @@ export function FindingCard({
       <div className="flex flex-wrap items-center gap-2 text-sm">
         <span className="font-semibold">{n}</span>
         <span className={`rounded border px-2 py-0.5 font-medium ${TONE[group]}`}>{group}</span>
+        {f.tier && (
+          <span className="rounded border px-2 py-0.5">
+            {f.tier === "mandatory" ? "Mandatory" : "Brand"} {f.category}
+          </span>
+        )}
         <span className="rounded border px-2 py-0.5 text-muted-foreground">
           {METHOD[f.method] ?? f.method}
           {f.model ? ` · ${f.model}` : ""}

@@ -127,3 +127,12 @@ def test_text_over_busy_background_is_still_read():
 
 def test_clean_banner_is_not_marked_busy():
     assert not any(b.busy_background for b in parse("banner_v1.png").images[0].ocr)
+
+
+def test_image_upload_carries_the_writers_alt_text():
+    data = (FIX / "banner_v1.png").read_bytes()
+    assert parse_upload("b.png", data, 10, alt_text=" Glow in 2 weeks ").images[0].alt_text == (
+        "Glow in 2 weeks"
+    )
+    assert parse_upload("b.png", data, 10, alt_text="   ").images[0].alt_text is None
+    assert parse_upload("b.png", data, 10, decorative=True).images[0].decorative

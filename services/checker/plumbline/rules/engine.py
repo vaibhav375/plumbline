@@ -28,10 +28,12 @@ def _finding(
     *,
     rule_id: str | None = None,
     image_id: str | None = None,
+    bbox: tuple[int, int, int, int] | None = None,
     fix: Fix | None = None,
 ) -> Finding:
     rid = rule_id or rule.id
-    where = image_id or (span.start if span else 0)
+    # Each low-contrast block on an image is its own finding, so its box is part of the id.
+    where = f"{image_id}:{bbox[0]},{bbox[1]}" if bbox else image_id or (span.start if span else 0)
     return Finding(
         id=f"{rid}@{where}",
         category=rule.category,
@@ -42,6 +44,7 @@ def _finding(
         quote=quote,
         span=span,
         image_id=image_id,
+        bbox=bbox,
         explanation=explanation,
         basis_excerpt=rule.source_ref,
         method="code",
@@ -177,6 +180,7 @@ def _contrast(rule: Rule, doc: Document) -> list[Finding]:
                     _ocr_span(doc, image.id, block.text),
                     explanation,
                     image_id=image.id,
+                    bbox=block.bbox,
                 )
             )
     return out

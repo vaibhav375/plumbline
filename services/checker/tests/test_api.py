@@ -626,3 +626,31 @@ def test_creators_see_their_own_events_but_cannot_verify_or_export(client, monke
     body = client.get("/v1/audit/verify", headers=bearer(token())).json()
     assert (body["scope"], body["valid"], len(body["recent"])) == ("mine", None, 3)
     assert client.get("/v1/audit/export.csv", headers=bearer(token())).status_code == 403
+
+
+BANNER = (Path(__file__).parent / "fixtures" / "banner_v1.png").read_bytes()
+
+
+def _check_banner(client, **form):
+    r = client.post(
+        "/v1/checks",
+        headers=bearer(token()),
+        data={"channel": "instagram", "region": "IN", **form},
+        files={"file": ("banner_v1.png", BANNER, "image/png")},
+    )
+    assert r.status_code == 200
+    return {f["rule_id"]: f for f in r.json()["findings"]}
+
+
+def test_image_upload_without_alt_text_asks_for_it(client):
+    found = _check_banner(client)
+    assert "can't see this image" in found["A11Y-ALT"]["explanation"]
+    contrast = found["A11Y-CONTRAST"]
+    assert "1.96:1" in contrast["explanation"]
+    assert contrast["tier"] == "mandatory" and contrast["category"] == "accessibility"
+    assert len(contrast["bbox"]) == 4
+
+
+def test_image_upload_with_alt_text_or_decorative_has_no_alt_finding(client):
+    assert "A11Y-ALT" not in _check_banner(client, alt_text="Glow in 2 weeks, Aurelle")
+    assert "A11Y-ALT" not in _check_banner(client, decorative="true")

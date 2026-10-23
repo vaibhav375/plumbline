@@ -6,6 +6,7 @@ import { CoverageStatement } from "@/components/CoverageStatement";
 import { DiffView } from "@/components/DiffView";
 import { type CardState, FindingCard } from "@/components/FindingCard";
 import { HighlightedText, type Mark } from "@/components/HighlightedText";
+import { type Box, ImageWithBoxes } from "@/components/ImageWithBoxes";
 import { IntentForm, type IntentValue } from "@/components/IntentForm";
 import { IntentPanel } from "@/components/IntentPanel";
 import { GROUPS, groupOf } from "@/components/severity";
@@ -40,6 +41,8 @@ export function CheckForm() {
   const [report, setReport] = useState<CheckReport | null>(null);
   const [cards, setCards] = useState<Record<string, CardState>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [altText, setAltText] = useState("");
+  const [decorative, setDecorative] = useState(false);
   const imageUrl = useMemo(() => (file && file.type.startsWith("image/") ? URL.createObjectURL(file) : null), [file]);
 
   async function run(job: () => Promise<CheckReport>) {
@@ -63,6 +66,10 @@ export function CheckForm() {
     const form = new FormData();
     if (file) form.set("file", file);
     else form.set("text", text);
+    if (imageUrl) {
+      form.set("alt_text", altText);
+      form.set("decorative", String(decorative));
+    }
     form.set("channel", intent.channel);
     form.set("region", "IN");
     const phrases = intent.key_phrases.split(",").map((p) => p.trim()).filter(Boolean);
@@ -90,6 +97,9 @@ export function CheckForm() {
   const edits = Object.fromEntries(
     rows.filter((r) => state(r.f).edit !== null && r.f.record_id).map((r) => [r.f.record_id!, state(r.f).edit!]),
   );
+  const boxes: Box[] = rows
+    .filter((r) => r.f.bbox && !state(r.f).dismissed)
+    .map((r) => ({ n: r.n, bbox: r.f.bbox as Box["bbox"], group: r.group }));
   const marks: Mark[] = rows
     .filter((r) => r.f.span && !state(r.f).dismissed)
     .map((r) => ({ n: r.n, start: r.f.span!.start, end: r.f.span!.end, group: r.group }));
@@ -101,6 +111,20 @@ export function CheckForm() {
         <Textarea id="draft" rows={5} value={text} placeholder="Paste your draft here"
           onChange={(e) => (setText(e.target.value), setFile(null))} />
         <IntentForm value={intent} onChange={setIntent} />
+        {imageUrl && (
+          <fieldset className="space-y-2 rounded-md border p-3">
+            <legend className="px-1 text-sm font-medium">Image description</legend>
+            <label htmlFor="alt-text" className="block text-sm">
+              Alt text: what must someone who can&apos;t see this image learn from it?
+            </label>
+            <Textarea id="alt-text" rows={2} value={altText} disabled={decorative} placeholder="Leave empty and the check will ask for it"
+              onChange={(e) => setAltText(e.target.value)} />
+            <label className="flex items-center gap-2 text-sm">
+              <input type="checkbox" checked={decorative} onChange={(e) => setDecorative(e.target.checked)} />
+              Decorative only: it carries no information, so screen readers skip it
+            </label>
+          </fieldset>
+        )}
         <div className="flex flex-wrap items-center gap-3">
           <Button type="button" variant="outline" onClick={() => {
             setText(SAMPLE.text);
@@ -116,7 +140,7 @@ export function CheckForm() {
           <label className="text-sm">
             <span className="sr-only">Upload a file</span>
             <input type="file" accept=".txt,.md,.docx,.pdf,.png,.jpg,.jpeg,.webp"
-              onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+              onChange={(e) => (setFile(e.target.files?.[0] ?? null), setAltText(""), setDecorative(false))} />
           </label>
           <Button type="submit" disabled={busy || (!text.trim() && !file)}>{busy ? "Checking…" : "Check"}</Button>
         </div>
@@ -139,8 +163,7 @@ export function CheckForm() {
             </section>
             {imageUrl && (
               <section aria-label="Image" className="rounded-lg border p-4">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={imageUrl} alt="The uploaded image (its findings are listed with the others)" className="max-h-64 w-auto" />
+                <ImageWithBoxes src={imageUrl} boxes={boxes} />
               </section>
             )}
             {report.previous_text && report.checked_text && <DiffView before={report.previous_text} after={report.checked_text} />}

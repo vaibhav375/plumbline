@@ -193,6 +193,8 @@ def run_check(
     # Deterministic fixes from rule data travel with the finding, so a writer can accept them one by one.
     code = [f if f.fix else f.model_copy(update={"fix": code_fix(f, rules)}) for f in code]
     findings = _dedupe(code, claim_problems) + judged
+    tiers = {r.id: r.tier for r in ctx.rules}
+    findings = [f.model_copy(update={"tier": tiers.get(f.rule_id or "")}) for f in findings]
     if withhold:
         # The agency never learns that its text matched something confidential (§4.5).
         findings = [f for f in findings if f.category != "confidential"]

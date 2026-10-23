@@ -194,6 +194,9 @@ def create_check(
     intent_json: Annotated[str | None, Form()] = None,
     content_id: Annotated[str | None, Form()] = None,
     submit: Annotated[bool, Form()] = False,
+    # For an image uploaded on its own: the writer's alt text, or a decorative flag (WCAG 1.1.1).
+    alt_text: Annotated[str | None, Form(max_length=1000)] = None,
+    decorative: Annotated[bool, Form()] = False,
 ) -> CheckReport:
     s = cfg()
     limit = s.max_upload_mb * 1024 * 1024
@@ -216,7 +219,7 @@ def create_check(
         ) from None
     if content_id and db.get_content(s, u.token, content_id) is None:
         raise NOT_FOUND
-    doc = parse_upload(name, data, s.max_upload_mb)
+    doc = parse_upload(name, data, s.max_upload_mb, alt_text=alt_text, decorative=decorative)
     title = next((line.strip() for line in doc.text.splitlines() if line.strip()), name)
     return _check_and_save(u, ctx, doc, intent, submit=submit, content_id=content_id, title=title)
 

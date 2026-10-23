@@ -165,6 +165,8 @@ class Finding(BaseModel):
     quote: str
     span: Span | None
     image_id: str | None
+    bbox: tuple[int, int, int, int] | None = None  # image findings: left, top, right, bottom px
+    tier: Literal["mandatory", "brand"] | None = None  # the rule's tier, for the card label
     explanation: str
     basis_excerpt: str
     method: Literal["code", "ai", "ai+code"]

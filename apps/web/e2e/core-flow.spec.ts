@@ -225,3 +225,27 @@ test("guideline health shows unclear rules and graduation status", async ({ page
   await page.getByRole("link", { name: "Audit log" }).click();
   await expect(page.getByTestId("chain-status")).toContainText("Events about your work", { timeout: 90_000 });
 });
+
+// Plan Task 20, scenario 4: the image accessibility floor, end to end.
+test("an image without alt text or enough contrast is caught", async ({ page }) => {
+  await signInAs(page, "Creator");
+  await page.getByLabel("Upload a file").setInputFiles(path.join(__dirname, "../../../supabase/seed/aurelle/banner_v1.png"));
+  await expect(page.getByLabel(/Alt text: what must someone who can.t see this image learn from it\?/)).toBeVisible();
+  await page.getByRole("button", { name: "Check", exact: true }).click();
+
+  const contrast = page.getByRole("article").filter({ hasText: "A11Y-CONTRAST" });
+  await expect(contrast).toContainText("Mandatory accessibility", { timeout: 90_000 });
+  await expect(contrast).toContainText("1.96:1");
+  const alt = page.getByRole("article").filter({ hasText: "A11Y-ALT" });
+  await expect(alt).toContainText("No alt text");
+  await expect(alt).toContainText("What must someone who can't see this image learn from it?");
+  // The contrast finding's box is drawn on the thumbnail with the finding's number.
+  const n = (await contrast.getAttribute("aria-label"))!.match(/Finding (\d+)/)![1];
+  await expect(page.getByTestId(`image-box-${n}`)).toBeVisible();
+
+  // Writing alt text clears that finding; the contrast problem stays.
+  await page.getByLabel(/Alt text:/).fill("Aurelle banner: Glow in 2 weeks");
+  await page.getByRole("button", { name: "Check", exact: true }).click();
+  await expect(page.getByRole("article").filter({ hasText: "A11Y-ALT" })).toHaveCount(0, { timeout: 90_000 });
+  await expect(page.getByRole("article").filter({ hasText: "A11Y-CONTRAST" })).toBeVisible();
+});

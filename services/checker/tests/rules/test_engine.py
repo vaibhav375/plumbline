@@ -43,6 +43,8 @@ def test_contrast_banner(aurelle, worked_example):
     assert "1.96:1" in f.explanation
     assert f.image_id == worked_example.images[0].id
     assert f.quote == "GLOW IN 2 WEEKS"
+    block = next(b for b in worked_example.images[0].ocr if b.text == "GLOW IN 2 WEEKS")
+    assert f.bbox == block.bbox  # original pixels, for the overlay on the thumbnail
 
 
 def _image_doc(**block) -> Document:

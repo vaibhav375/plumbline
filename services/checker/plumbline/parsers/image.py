@@ -93,7 +93,7 @@ def ocr_image(img: Image.Image) -> list[OcrBlock]:
     return blocks
 
 
-def parse_image(data: bytes, b) -> Document:
+def parse_image(data: bytes, b, alt_text: str | None = None, decorative: bool = False) -> Document:
     try:
         img = Image.open(io.BytesIO(data))
         img.load()
@@ -101,5 +101,5 @@ def parse_image(data: bytes, b) -> Document:
         raise ParseError("too_large") from None
     except (UnidentifiedImageError, OSError):
         raise ParseError("unsupported") from None
-    b.add_image(img, img.width, img.height, alt_text=None)
+    b.add_image(img, img.width, img.height, alt_text=alt_text, decorative=decorative)
     return b.build("image")

@@ -77,7 +77,14 @@ class DocBuilder:
         )
 
 
-def parse_upload(filename: str, data: bytes, max_mb: int) -> Document:
+def parse_upload(
+    filename: str,
+    data: bytes,
+    max_mb: int,
+    alt_text: str | None = None,
+    decorative: bool = False,
+) -> Document:
+    """`alt_text` and `decorative` apply to an image uploaded on its own (DOCX carries its own)."""
     if not data:
         raise ParseError("empty")
     if len(data) > max_mb * 1024 * 1024:
@@ -92,5 +99,7 @@ def parse_upload(filename: str, data: bytes, max_mb: int) -> Document:
     elif kind == "pdf":
         from plumbline.parsers.pdf import parse_pdf as parse
     else:
-        from plumbline.parsers.image import parse_image as parse
+        from plumbline.parsers.image import parse_image
+
+        return parse_image(data, DocBuilder(), alt_text, decorative)
     return parse(data, DocBuilder())
