@@ -194,6 +194,7 @@ test("fact ledger hides restricted facts from an agency writer", async ({ page }
   await expect(expired.getByText("Expired", { exact: true })).toBeVisible();
   await expect(page.getByRole("article", { name: "FACT-031" })).toHaveCount(0);
   await page.getByRole("button", { name: "Sign out" }).click();
+  await expect(page).toHaveURL(/\/login/);
 
   await signInAs(page, "Compliance");
   await page.getByRole("link", { name: "Facts" }).click();

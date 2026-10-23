@@ -684,13 +684,13 @@ def required_stages(findings: list[Finding]) -> list[Literal["first","compliance
 - **Fact ledger:** facts with confidentiality chips, valid-until dates (expired shown in red with the label "Expired"), approved wordings nested under each fact, and an "unverified" badge.
 - **External creators** get a "Some facts are restricted" note; RLS already hides those rows.
 
-- [ ] **Step 1:** Write the failing tests:
+- [x] **Step 1:** Write the failing tests:
   - `test_import_returns_lint_counts`: a CSV with GM08 returns `need_clarification == 1`
   - `test_import_forbidden_for_creator`: 403
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Implement.
-- [ ] **Step 4:** Run. Expected: PASS.
-- [ ] **Step 5:** Commit: `feat(rulebook): rules and facts pages, CSV import`.
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Implement.
+- [x] **Step 4:** Run. Expected: PASS.
+- [x] **Step 5:** Commit: `feat(rulebook): rules and facts pages, CSV import`.
 
 ### Task 19: Guideline health and insights (Improvement 3 v1)
 

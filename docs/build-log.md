@@ -626,3 +626,41 @@ Task 14 must map them back before `validate_findings` checks the quote against t
 - At phone width the "What" column is narrow (usability pass, Task 22).
 - Verification proves the chain is internally consistent; it can't detect a rewrite of the whole
   chain by someone with database-owner access. Publishing the latest hash elsewhere would anchor it.
+
+## Task 18: rulebook and fact ledger pages, with CSV import and linting
+
+| Check | Evidence | Result |
+|---|---|---|
+| Plan's tests | `test_import_returns_lint_counts` (CL-01 + GM08 → 2 imported, `need_clarification == 1`), `test_import_forbidden_for_creator` (403, nothing written) | Pass |
+| Import is safe to try | `test_dry_run_previews_without_writing`, `test_bad_rows_are_reported_and_skipped` ("Row 3 (CL-02)…", good rows still load), `test_import_rejects_a_non_csv`; the endpoint upserts by ID and never deletes | Pass |
+| Rules list carries the linter | `test_rules_list_shows_lint_warnings`; live: 32 rules, 4 flagged (GM08, GM29, GM33 "sparingly"; VT02 class C), all genuine judgement rules | Pass |
+| Fact ledger | `test_fact_ledger_nests_wordings_and_marks_expired` (expiry is `valid_until < today` in IST, the same test the claim checker uses) | Pass |
+| Import works as the user, under RLS | live: Brand owner re-imported the 32 seed rules → rulebook version unchanged (`rb-aa1768f252`); a Creator's write → 403 (42501) | Pass |
+| Restricted facts stay hidden | live: Agency and Creator see 35 facts, 0 confidential; Compliance sees 40 (5 confidential/embargoed). e2e: the Agency writer sees the "Some facts are restricted" note, FACT-029 marked Expired, no FACT-031; Compliance sees FACT-031 | Pass |
+| Wordings follow their fact (new) | `test_wordings_follow_their_facts_visibility` failed before migration 0010 (external creator saw 2 wordings, not 1), passes after; DB suite 15/15 | Pass |
+| All e2e tests on the live site | `BASE_URL=<vercel> playwright test`, including "brand owner previews and imports rules" and "fact ledger hides restricted facts" | 10/10 (2.2 min) |
+| Phone width | 375 px: `/rules` and `/facts` have `scrollWidth == clientWidth`; the rules table scrolls inside its box | Pass |
+| Unit suite | `make test` 213 passed | Pass |
+
+**Assumptions that didn't hold, and what replaced them**
+- *"RLS already hides those rows" covers the fact ledger.* It covered facts, not approved wordings:
+  every role could read every wording, and a wording restates its fact. No seed wording belongs to a
+  confidential fact today, so nothing leaked, but one added later would have reached agency writers
+  through the API (and as a suggested fix). **Alternative:** migration 0010 makes a wording visible
+  only when the caller can see its fact (the check runs under the caller's own facts policy), and
+  limits wording writes to the roles that own facts (a FOR ALL policy also grants reads, so
+  accessibility would otherwise still have read all wordings). Applied to the test and main projects.
+- *An import button can write straight away.* On a public demo, any judge trying Brand owner could
+  replace the live rulebook by accident. **Alternative:** Preview (a dry run with the same lint counts)
+  comes first; Import appears only after a preview, and rows are upserted, never deleted.
+- *Only the brand owner imports.* RLS lets brand owner, compliance and accessibility write rules, so the
+  endpoint and button follow RLS rather than a narrower UI rule.
+- *A restriction note only for external creators.* Internal creators can't see confidential facts
+  either, so the note shows for every role RLS restricts.
+- The e2e switched users before sign-out had finished; it now waits for the login page, as the
+  other tests do.
+
+**Limits (for later tasks)**
+- Facts and wordings have no CSV import yet (rules only, as planned); they still load through the seed.
+- An import changes the rulebook version, so cached reports are re-checked on their next run, as designed.
+- If a demo visitor imports bad rules, `make seed` restores the rulebook.
