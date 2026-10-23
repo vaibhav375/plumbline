@@ -596,17 +596,17 @@ def run_check(doc: Document, ctx: OrgContext, intent: Intent | None, viewer_role
 
 **Cut order if behind schedule** (Spec §8; never cut the items in Global Constraints): PDF input → AI tone rules → private pre-check → image contrast.
 
-- [ ] **Step 1:** Write the failing tests:
+- [x] **Step 1:** Write the failing tests:
   - `test_worked_example_round2_findings`: FakeLLM is scripted from `tests/fixtures/aurelle_llm.json`. Finding rule or fact IDs ⊇ `{FACT-014, CL-03, CL-05, FACT-031, TN-02, TM-007, CTA-02, A11Y-CONTRAST, A11Y-ALT}`; blocking count ≥ 6; the coverage `not_checked` includes the default text
   - `test_external_precheck_withholds_confidential`: no `FACT-031` finding, and the coverage includes "Confidential checks run on submission."
   - `test_ai_unavailable_partial_report`: code findings present; `ai_status=="unavailable"`
   - `test_cache_hit_skips_llm`: the second run makes 0 FakeLLM calls
   - `test_no_pass_language`: no field of the serialised report contains "compliant", "passed all" or "score"
   - the injection test from Task 12
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Implement and wire up the API.
-- [ ] **Step 4:** Run. Expected: PASS. Then run the worked example live against Groq through the deployed API and note `ms_code` and `ms_total` against the targets (< 5 s and < 60 s).
-- [ ] **Step 5:** Commit: `feat(pipeline): full check pipeline with coverage and caching`.
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Implement and wire up the API.
+- [x] **Step 4:** Run. Expected: PASS. Then run the worked example live against Groq through the deployed API and note `ms_code` and `ms_total` against the targets (< 5 s and < 60 s).
+- [x] **Step 5:** Commit: `feat(pipeline): full check pipeline with coverage and caching`.
 
 ### Task 15: Check results UI
 

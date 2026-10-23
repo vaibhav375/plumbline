@@ -472,3 +472,49 @@ Task 14 must map them back before `validate_findings` checks the quote against t
   "Aurelle is coming…"). The writer accepts or edits each fix; nothing is applied without them.
 - Required-content fixes (adding `#ad`, adding a call to action) aren't generated; they stay as findings.
 - `scripts/eval_fixes.py` reruns this evaluation (spends real model calls).
+
+## Task 14: coverage, pipeline, persistence, caching — full checks live
+
+| Check | Evidence | Result |
+|---|---|---|
+| Plan's tests: worked example ⊇ {FACT-014, CL-03, CL-05, FACT-031, TN-02, TM-007, CTA-02, A11Y-CONTRAST, A11Y-ALT}, ≥ 6 blocking; external pre-check withholds; AI unavailable → partial report; cache hit → 0 model calls; no pass language; **prompt injection (Task 12) changes nothing** | `pytest tests/test_pipeline.py` (11 tests, scripted from `tests/fixtures/aurelle_llm.json`) | Pass |
+| Restricted role (0006) | DB tests: one org's confidential facts only, no table access, users can't call the function. **Live** as `plumbline_checker`: 5 confidential facts via the function, direct table read refused | Pass |
+| **Live on Render** (real logins, models, DB) | creator: 11 findings, 6 blocking, FACT-031 restricted, intent lock passed; repeat check served from cache with no model calls; agency pre-check withholds FACT-031, shows "Confidential checks run on submission.", keeps the sentence in its suggestion; agency submission shows "Mentions restricted information." with no fact ID; unknown content 404 | Pass |
+| **§6.7 latency, live** | `ms_code` 158–416 ms (< 5 s); `ms_total` 1.9–2.3 s warm, 18.8–19.7 s on the first check after a deploy (spaCy load) (< 60 s) | Pass |
+| **Walking-skeleton milestone: "Supabase row exists"** | each check saves a version, a check run (with cache key), its findings, its egress events (4 model calls) and an audit event | Pass |
+| Render free tier memory (512 MB) | full pipeline incl. spaCy ran repeatedly with no restart | Pass |
+| Paraphrased embargo, live | "Big news: our first Mumbai store opens mid-November!" → FACT-031 restricted | Pass |
+
+**Problems found, and fixes**
+- **No user could create a version** (found only in the live run; the DB tests created versions as
+  admin). PostgREST inserts with `RETURNING`, and the returned row must pass the read policy, which
+  looked the row up again by id and can't see it inside the same statement. Migration 0008 writes the
+  read rule on the row's own columns. New DB test inserts as a user with `RETURNING`.
+- **The approved wording offered depended on row order** (the DB returned AW-014a first; the CSV had
+  AW-014b first). Now the wording phrased most like the writer's sentence is chosen (`fuzz.ratio`; ties
+  by ID). Tested with both orders.
+- **Without the restricted role, confidential protection silently disappears**: on Render before the
+  setting was added, the embargoed sentence wasn't masked and the AI treated it as an ordinary claim.
+  An unconfigured or failing role now adds "Confidential facts couldn't be loaded…" to the coverage for
+  roles that can't see them through RLS; with the setting in place the note disappears.
+- **Agencies saw the fact ID and embargo date on submission.** §4.4 says details are for Brand and
+  Compliance only: the agency now sees "Mentions restricted information." (an earlier test that
+  expected the fact ID was wrong and was corrected).
+- An agency pre-check's suggestion must not delete the embargoed sentence, or the deletion itself
+  would reveal the match: withheld findings are excluded from fixes too.
+- Duplicates: a code rule and the claims check flagging the same words under the same rule keep only
+  the claim finding (it carries the fact and the fix).
+- Save failures now log the database's own reason on the server (no content), instead of a bare 503.
+
+**Design notes**
+- Cache key covers the text and images, the whole org context (rules, facts, wordings, terms), the
+  model chain, a hash of the package's code and prompts, the viewer's scope, the intent and the date.
+  Lookups go through RLS, so a user can only reuse runs they could already see.
+- The date used for embargoes and expiry is India time (`Asia/Kolkata`), not the server's.
+- `scripts/eval_pipeline_live.py <api-url>` reruns the live check; `scripts/checker_role.py` rotates
+  the restricted role's password into `secrets.env` (then update Render).
+
+**Open items**
+- Overlapping findings on the same sentence (e.g. TN-01 hype and CL-01 on "guaranteed results") are
+  deduplicated only when the rule is the same; grouping by sentence belongs in the results UI (Task 15).
+- Highlight offsets need the UTF-16 conversion noted in Task 4 (Task 15).
