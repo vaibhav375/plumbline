@@ -750,14 +750,14 @@ def required_stages(findings: list[Finding]) -> list[Literal["first","compliance
 - the text "Dev set written by the builder; held-out human-labelled set arrives in Round 3"
 - "What leaves this system": egress events grouped by provider and model, plus the fictional-data notice
 
-- [ ] **Step 1:** Write the failing tests:
+- [x] **Step 1:** Write the failing tests:
   - `test_wilson_interval_known`: (8, 10) → (0.49, 0.94) ± 0.01
   - `test_score_requires_span_overlap`
   - `test_eval_result_counts`
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Implement, then run `make eval` live once on both modes, with Groq.
-- [ ] **Step 4:** Check the tests pass and that the page numbers equal the `latest.json` numbers (pre-submission audit item 1).
-- [ ] **Step 5:** Commit: `feat(eval): harness, baseline, results page`.
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Implement, then run `make eval` live once on both modes, with Groq.
+- [x] **Step 4:** Check the tests pass and that the page numbers equal the `latest.json` numbers (pre-submission audit item 1).
+- [x] **Step 5:** Commit: `feat(eval): harness, baseline, results page`.
 
 ### Task 22: Usability pass: role landing, tour, demo-safe sample, visual system
 

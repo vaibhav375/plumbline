@@ -757,3 +757,70 @@ Task 14 must map them back before `validate_findings` checks the quote against t
 - Overlays are drawn only for an image uploaded on its own; images inside DOCX are checked (alt text
   from the document) but there's no thumbnail of them.
 - "Apply fixes & re-check" re-checks text, so an uploaded image doesn't carry over (Task 15 limit).
+
+## Task 21: evaluation harness and "How I know it works" page
+
+| Check | Evidence | Result |
+|---|---|---|
+| Plan's tests | `test_wilson_interval_known` (8/10 → 0.49–0.94), `test_score_requires_span_overlap`, `test_eval_result_counts` (code-only run on 3 items: recall 2/3, precision 2/2, clean 0/1, injection delta, citations) plus fact-ID, document-level and duplicate scoring, and a label quote missing from its text raising | 5/5 |
+| Dev set (plan) | `data/golden/dev.jsonl`: 40 items = 25 labelled (43 labels incl. injection copies), 10 clean controls, 5 injection variants; every label quote asserted to be in its text | Pass |
+| `make eval` live on both modes, with Groq | run twice; second run (with a 90 s cooldown between modes) is the published one; written to `apps/web/public/eval/latest.json` and `eval_runs` | Pass |
+| Page numbers equal `latest.json` (pre-submission audit item 1) | the page imports the file at build time; e2e "the evaluation page matches latest.json and is public" compares every card for both modes | Pass |
+| All e2e tests on the live site | 13/13 (3.3 min) | Pass |
+| Phone width | 375 px, `scrollWidth == clientWidth` | Pass |
+| Unit suite | `make test` 231 passed | Pass |
+
+**Results (second run, published)**
+
+| Metric | Plumbline | Baseline (1 call, whole brand book, no validators) |
+|---|---|---|
+| Problems found (recall) | **31 / 33 = 94%** (95% CI 80–98%) | 18 / 33 = 55% (38–70%) |
+| Findings that were right (precision) | **31 / 39 = 79%** (64–89%) | 18 / 37 = 49% (33–64%) |
+| Clean posts with a false alarm | **1 / 10** | 4 / 10 |
+| Citations that check out | 52 / 52 | 54 / 54 |
+| Recall change under injection | +10 pts (noise, see below) | ±0 |
+| Time per post, p95 | 5.7 s | 5.3 s |
+| Characters sent to models | 243k (155 calls) | 634k (106 calls) |
+
+First run, for variance: Plumbline 30/33 recall, 30/36 precision, 2/10 clean alarms; baseline
+16/33, 16/33, 5/10, but 2 baseline items failed on every provider (Groq per-minute limit after the
+Plumbline run) and counted as finding nothing. That is why the published run has a cooldown.
+
+**What the numbers say, and don't**
+- Plumbline's misses: TN-04 ("honestly, what are you doing?") in L21 and its injection copy; and in
+  L01 one claim finding covered both "miracle" and "instant results" (scoring is one prediction per
+  label, so that's one hit and one miss).
+- Plumbline's 8 false alarms: most are judgement calls I didn't label but would defend (TN-01 on
+  "miracle… instant results", TN-06 on posts that don't lead with the product, CL-01 "packs 1500
+  orders a day" as an unsupported claim). Two are plain errors, both on clean control C05: the
+  approved fact FACT-018 ("no white cast") reported as unsupported, and TN-04 on a neutral sentence.
+  Labels were frozen before the AI runs, so these count against Plumbline as they stand.
+- The baseline's errors are mostly wrong IDs on real text (CTA-02 cited on ordinary calls to action,
+  TM-001 for a TM-007 variant). Its quotes and IDs all exist, so **citation validity can't separate
+  the two systems on this set**: precision does. 3 of its 15 misses are by design (it never sees
+  confidential facts).
+- Injection: +10 pts is span-merging noise on 10 labels (I01 got both CL-01 labels, L01 one); no
+  label was lost to an injection in either mode. Five variants can't show a small effect.
+- All of this is the builder's own dev set, which the page says in so many words.
+
+**Assumptions that didn't hold, and what replaced them**
+- *Labels written before any run are final.* The code-only dry run (no AI) showed three label
+  problems before any model call: two real unsupported claims I had missed (L05 "Get fairer skin in 7
+  days", L12 "Only 2 hours left…", added) and one accidental testing claim in the passive-voice item
+  L22 (the text was rewritten so it tests only passive voice). After that the labels were frozen.
+- *Running both modes back to back is a fair comparison.* The baseline sends the whole brand book
+  each call (2.6× the characters), so after the Plumbline run it hit Groq's per-minute limit and
+  lost 2 items. A 90 s cooldown between modes fixed it; per-item detail is now kept in `latest.json`.
+- *"Masks personal data before anything leaves" applies to both modes.* It applies to Plumbline only;
+  the page now says the baseline sends posts as they are.
+- *Signed-out visitors can't see anything.* The results page has to be readable by a judge before
+  signing in: `/about` is public (middleware), linked from the login page; the header shows "Sign in"
+  instead of the app's menu there.
+- *`injection_recall_delta` sign.* Defined as injected minus original, so negative means the
+  injection worked (stated on the card).
+
+**Limits (for later tasks)**
+- 40 items, one writer: intervals are wide (recall 80–98%). The held-out, human-labelled set is
+  Round 3, as the page says.
+- The dev set is text only; images are covered by e2e scenario 4, not by these metrics.
+- "Time per post" is measured from this machine to Groq, not through Render.
