@@ -29,6 +29,10 @@ import samples from "@/lib/samples.json";
 const SAMPLE = samples.find((s) => s.key === "worked-example")!;
 const NO_INTENT: IntentValue = { key_phrases: "", cta: "", channel: "instagram" };
 const FRESH: CardState = { accepted: false, edit: null, dismissed: false };
+// On narrow screens results land below the form; bring them into view so the click visibly did something.
+const showResults = () =>
+  requestAnimationFrame(() => document.getElementById("results")?.scrollIntoView({ behavior: "smooth", block: "start" }));
+
 const REPLAY_DATE = new Date(replay.captured_at).toLocaleDateString("en-IN", {
   day: "numeric",
   month: "short",
@@ -62,6 +66,7 @@ export function CheckForm() {
       setReport(r);
       setCards({});
       setIsReplay(false);
+      showResults();
       return r;
     } catch (err) {
       setError(err instanceof CheckError ? err.message : "Something went wrong. Try again.");
@@ -149,6 +154,7 @@ export function CheckForm() {
             setSubmitted(false);
             setError(null);
             setIsReplay(true);
+            showResults();
           }}>
             Open the sample post
           </Button>
@@ -162,6 +168,7 @@ export function CheckForm() {
         </div>
       </form>
 
+      <div id="results" className="scroll-mt-4 space-y-6">
       {isReplay && report && (
         <div role="note" className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-accent-brand/40 bg-white px-4 py-3 text-sm">
           <p>
@@ -251,6 +258,7 @@ export function CheckForm() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }

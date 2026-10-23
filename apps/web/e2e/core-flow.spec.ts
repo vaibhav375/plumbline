@@ -3,14 +3,20 @@ import path from "node:path";
 
 import { expect, type Page, test } from "@playwright/test";
 
+// The sample opens as a replay; a live run has finished once the replay note is gone.
+async function runSampleLive(page: Page) {
+  await page.getByRole("button", { name: "Open the sample post" }).click();
+  await page.getByRole("button", { name: "Run it live" }).click();
+  await expect(page.getByText(/Replay of a real check run/)).toHaveCount(0, { timeout: 120_000 });
+}
+
 // Scenario 1 (plan Task 7): the walking skeleton end to end, against the real checker.
 test("creator checks sample post", async ({ page }) => {
   await page.goto("/login");
   await page.getByRole("button", { name: "Try as Creator" }).click();
   await expect(page).toHaveURL(/\/check/, { timeout: 30_000 });
-  await page.getByRole("button", { name: "Open the sample post" }).click();
-  await page.getByRole("button", { name: "Run it live" }).click();
   // Generous timeout: a sleeping free-tier checker takes ~25 s to wake.
+  await runSampleLive(page);
   await expect(page.getByText("TN-02").first()).toBeVisible({ timeout: 90_000 });
   await expect(page.getByRole("heading", { name: "Not checked" })).toBeVisible();
   // Evidence or silence: never a pass badge or "compliant" label.
@@ -49,7 +55,8 @@ test("a sleeping checker shows the waking banner, then the check succeeds", asyn
   await page.getByRole("button", { name: "Open the sample post" }).click();
   await page.getByRole("button", { name: "Run it live" }).click();
   await expect(page.getByRole("status").filter({ hasText: "Waking the checker" })).toBeVisible();
-  await expect(page.getByText("TN-02").first()).toBeVisible({ timeout: 90_000 });
+  await expect(page.getByText(/Replay of a real check run/)).toHaveCount(0, { timeout: 120_000 });
+  await expect(page.getByText("TN-02").first()).toBeVisible();
   await expect(page.getByRole("status").filter({ hasText: "Waking the checker" })).toHaveCount(0);
   expect(probes).toBe(3);
 });
@@ -62,8 +69,7 @@ async function signInAndCheck(page: Page, text?: string) {
     await page.getByLabel("Paste a post, or upload a file").fill(text);
     await page.getByRole("button", { name: "Check", exact: true }).click();
   } else {
-    await page.getByRole("button", { name: "Open the sample post" }).click();
-    await page.getByRole("button", { name: "Run it live" }).click();
+    await runSampleLive(page);
   }
   await expect(page.getByTestId("blocking-count")).toBeVisible({ timeout: 120_000 });
 }
