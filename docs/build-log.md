@@ -588,3 +588,41 @@ Task 14 must map them back before `validate_findings` checks the quote against t
 - The queue reads the 50 newest submitted versions; seeded history takes slots until real ones
   outnumber it. Page the queue if it ever holds more than 50 live items.
 - A decided card shows only its history line, not a "decided" badge (usability pass, Task 22).
+
+## Task 17: audit log page, verification and export
+
+| Check | Evidence | Result |
+|---|---|---|
+| Python recomputes hashes exactly as the trigger does | `test_verify_valid_chain` uses the first 3 real events of Aurelle's live chain (fixture), not hashes Python made itself | Pass |
+| Tampering is detected where it happens | `test_verify_detects_tamper` (payload edited in row 2 → `broken_at == 2`), `test_verify_detects_a_removed_event`, `test_verify_empty_chain_is_valid` | Pass |
+| Export columns (plan) | `test_export_csv_header`, `test_audit_export_is_a_csv_download` (text/csv, attachment) | Pass |
+| Who can open it | `test_creators_cannot_open_the_audit_log` (403 on verify and export); reviewer roles and auditor allowed | Pass |
+| Whole live chain verifies through the API | `GET /v1/audit/verify` as Compliance: 576 → 607 events valid; paging forced to 100 rows/request gives the same rows and result | Pass |
+| The export can be verified by anyone | the live CSV (607 events) re-verified by a 15-line stdlib-only script with no Plumbline code; one extra space in event 300 → "broken at 300" | Pass |
+| The log can't be edited | live `PATCH /audit_events` as Compliance → 403 (42501); DB test `test_update_denied` | Pass |
+| Plan's page | live: "Chain verified ✓ (607 events)", its explanation, the newest 200 events in IST, Export CSV downloads the file | Pass |
+| All e2e tests on the live site | `BASE_URL=<vercel> playwright test`, including the new "audit log verifies and exports" | 8/8 (2.5 min) |
+| Phone width | 375 px: page `scrollWidth == clientWidth`; the table scrolls inside its own box | Pass |
+| Unit suite | `make test` 206 passed | Pass |
+
+**Assumptions that didn't hold, and what replaced them**
+- *Python can rebuild `payload::text` from the JSON.* It can't reliably: Postgres orders jsonb keys by
+  length, then bytes, and formats numbers its own way, so re-serialising parsed JSON would only
+  match by luck. **Alternative:** read the column with PostgREST's cast (`select=payload::text`),
+  which returns the exact text the trigger hashed. Checked on live rows before writing any code.
+- *One request returns the whole chain.* Supabase returns at most 1,000 rows per request by default,
+  so a growing chain would silently verify only its first 1,000 events and call it valid.
+  The reader pages until a short page.
+- *The plan's 7 export columns.* Without the payload, an export only lists hashes; nobody outside
+  could check them. A `payload` column (exact text) was added so the CSV is independently verifiable.
+- *A plain link can download the export.* The checker needs the bearer token, which a link can't
+  send; the page fetches the file with the token and saves it as a blob.
+
+**Limits (for later tasks)**
+- There's no demo auditor login; Reviewer, Compliance and Brand owner see the audit log. Add an
+  auditor demo account if the walkthrough needs one.
+- Verification reads the whole chain on every page load (~600 events today, well under a second).
+  Cache the result by the last hash if the chain grows to tens of thousands.
+- At phone width the "What" column is narrow (usability pass, Task 22).
+- Verification proves the chain is internally consistent; it can't detect a rewrite of the whole
+  chain by someone with database-owner access. Publishing the latest hash elsewhere would anchor it.

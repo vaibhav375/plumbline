@@ -664,14 +664,14 @@ def required_stages(findings: list[Finding]) -> list[Literal["first","compliance
 - `GET /v1/audit/verify`
 - `GET /v1/audit/export.csv`, with columns `at, actor, kind, entity, entity_id, prev_hash, hash`
 
-- [ ] **Step 1:** Write the failing tests:
+- [x] **Step 1:** Write the failing tests:
   - `test_verify_valid_chain`
   - `test_verify_detects_tamper`: a mutated payload in row 2 gives `broken_at == 2`
   - `test_export_csv_header`
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Implement. The page shows a "Chain verified ✓ (N events)" badge with its explanation, the event table and an export button.
-- [ ] **Step 4:** Run. Expected: PASS.
-- [ ] **Step 5:** Commit: `feat(audit): verify and export`.
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Implement. The page shows a "Chain verified ✓ (N events)" badge with its explanation, the event table and an export button.
+- [x] **Step 4:** Run. Expected: PASS.
+- [x] **Step 5:** Commit: `feat(audit): verify and export`.
 
 ### Task 18: Rulebook and fact ledger pages, with CSV import and linting
 
