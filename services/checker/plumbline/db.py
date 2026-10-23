@@ -3,6 +3,7 @@ so row-level security decides what this process can read. The service key is nev
 
 import hashlib
 import json
+from datetime import UTC, datetime
 
 import httpx
 
@@ -423,6 +424,27 @@ def _names(c: httpx.Client) -> dict[str, str]:
     return {
         p["user_id"]: p["display_name"] for p in _get(c, "profiles", select="user_id,display_name")
     }
+
+
+def upsert_rules(s: Settings, token: str, rows: list[dict]) -> None:
+    """Insert or update by (org, id) as the caller; RLS limits this to rule owners. Importing a
+    rule again reactivates it."""
+    now = datetime.now(UTC).isoformat()
+    with client_for(s, token) as c:
+        c.post(
+            "/rules",
+            params={"on_conflict": "org_id,id"},
+            json=[r | {"active": True, "updated_at": now} for r in rows],
+            headers={"Prefer": "resolution=merge-duplicates,return=minimal"},
+        ).raise_for_status()
+
+
+def list_facts(s: Settings, token: str) -> tuple[list[dict], list[dict]]:
+    with client_for(s, token) as c:
+        return (
+            _get(c, "facts", select="*", order="id"),
+            _get(c, "approved_wordings", select="*", order="id"),
+        )
 
 
 AUDIT_PAGE = 1000  # Supabase's default max rows per request

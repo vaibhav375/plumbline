@@ -19,8 +19,10 @@ export async function AppHeader({ title, subtitle }: { title: string; subtitle: 
   return (
     <header className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <nav aria-label="Main" className="flex gap-4 text-sm">
+        <nav aria-label="Main" className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
           <Link href="/check" className="underline-offset-4 hover:underline">Check content</Link>
+          <Link href="/rules" className="underline-offset-4 hover:underline">Rulebook</Link>
+          <Link href="/facts" className="underline-offset-4 hover:underline">Facts</Link>
           {profile && REVIEWERS.has(profile.role) && (
             <>
               <Link href="/review" className="underline-offset-4 hover:underline">Review queue</Link>

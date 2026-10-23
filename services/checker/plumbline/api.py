@@ -21,6 +21,8 @@ from plumbline.models import CheckReport, Document, Fix, Intent, OrgContext, Par
 from plumbline.parsers import parse_upload
 from plumbline.pipeline import run_check
 from plumbline.routing import can_approve, can_decide
+from plumbline.rules.linter import lint_rule
+from plumbline.rules.load import load_rules_csv
 
 VERSION = os.environ.get("RENDER_GIT_COMMIT", "dev")[:7]
 log = logging.getLogger("plumbline")
@@ -402,6 +404,75 @@ def audit_export(u: CurrentUser) -> Response:
         media_type="text/csv",
         headers={"Content-Disposition": 'attachment; filename="plumbline-audit.csv"'},
     )
+
+
+RULE_OWNERS = {
+    "brand_owner",
+    "compliance",
+    "accessibility",
+}  # may write rules (RLS, migration 0002)
+RULES_CSV_LIMIT = 1024 * 1024
+
+
+@app.get("/v1/rules")
+def list_rules(u: CurrentUser, ctx: Annotated[OrgContext, Depends(org_context)]) -> dict:
+    """The rulebook the checker runs, each rule with the linter's warnings."""
+    return {
+        "rulebook_version": ctx.rulebook_version,
+        "can_import": u.role in RULE_OWNERS,
+        "rules": [r.model_dump() | {"warnings": lint_rule(r)} for r in ctx.rules],
+    }
+
+
+@app.post("/v1/rules/import")
+def import_rules(
+    u: CurrentUser, file: Annotated[UploadFile, File()], dry_run: bool = False
+) -> dict:
+    """Upserts valid rows (never deletes). Rows that fail validation are skipped and listed; rules
+    the linter flags still load (class C is kept, never run) and count as needing clarification."""
+    if u.role not in RULE_OWNERS:
+        raise ApiError(403, "forbidden", "Only rule owners can import rules.")
+    data = file.file.read(RULES_CSV_LIMIT + 1)
+    if len(data) > RULES_CSV_LIMIT:
+        raise ApiError(413, "too_large", "The rules file is over 1 MB.")
+    try:
+        text = data.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        raise ApiError(422, "not_csv", "That file isn't a UTF-8 CSV.") from None
+    rules, rejected = load_rules_csv(text)
+    warnings = {r.id: w for r in rules if (w := lint_rule(r))}
+    if rules and not dry_run:
+        db.upsert_rules(cfg(), u.token, [r.model_dump(mode="json") for r in rules])
+    return {
+        "dry_run": dry_run,
+        "imported": len(rules),
+        "need_clarification": len(warnings),
+        "warnings": warnings,
+        "rejected": rejected,
+    }
+
+
+@app.get("/v1/facts")
+def list_facts(u: CurrentUser) -> dict:
+    """The fact ledger as RLS lets this role see it, with approved wordings under each fact."""
+    facts, wordings = db.list_facts(cfg(), u.token)
+    today = _today()
+    by_fact: dict[str, list[dict]] = {}
+    for w in wordings:
+        by_fact.setdefault(w["fact_id"], []).append(w)
+    return {
+        "today": today.isoformat(),
+        "restricted": u.role not in SEES_CONFIDENTIAL,
+        "facts": [
+            f
+            | {
+                "expired": bool(f.get("valid_until"))
+                and datetime.fromisoformat(f["valid_until"]).date() < today,
+                "wordings": by_fact.get(f["id"], []),
+            }
+            for f in facts
+        ],
+    }
 
 
 def _review(u: User, version_id: str) -> tuple[dict, CheckReport, dict]:

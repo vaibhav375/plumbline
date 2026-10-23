@@ -107,3 +107,29 @@ def test_users_can_create_their_own_versions_with_returning(db):
             (org, content, private, user),
         ).fetchone()
         assert row[1] is private
+
+
+def test_wordings_follow_their_facts_visibility(db):
+    org = make_org(db)
+    for fid, conf in (("FACT-PUB", "public"), ("FACT-SECRET", "confidential")):
+        db.execute(
+            "insert into facts (org_id, id, statement, market, owner, valid_from, confidentiality,"
+            " verified) values (%s, %s, 's', 'IN', 'brand', '2026-01-01', %s, true)",
+            (org, fid, conf),
+        )
+        db.execute(
+            "insert into approved_wordings (org_id, id, fact_id, market, channel, text)"
+            " values (%s, %s, %s, 'IN', 'any', 'w')",
+            (org, f"AW-{fid}", fid),
+        )
+    sql = "select count(*) from approved_wordings"
+    for role, expected in (
+        ("external_creator", 1),
+        ("creator", 1),
+        ("accessibility", 1),
+        ("compliance", 2),
+        ("brand_owner", 2),
+    ):
+        as_admin(db)
+        as_user(db, make_user(db, org, role))
+        assert count(db, sql) == expected, role

@@ -191,3 +191,51 @@ export const audit = {
     setTimeout(() => URL.revokeObjectURL(url), 1_000);
   },
 };
+
+export type RuleRow = {
+  id: string;
+  title: string;
+  category: string;
+  cls: "A" | "B" | "C";
+  check_type: string;
+  severity: string;
+  tier: "mandatory" | "brand";
+  maturity: "advisory" | "blocking";
+  source_ref: string;
+  owner_function: string;
+  warnings: string[];
+};
+export type RulesResponse = { rulebook_version: string; can_import: boolean; rules: RuleRow[] };
+export type ImportResult = {
+  dry_run: boolean;
+  imported: number;
+  need_clarification: number;
+  warnings: Record<string, string[]>;
+  rejected: string[];
+};
+export type Wording = { id: string; fact_id: string; market: string; channel: string; text: string; disclaimer: string | null };
+export type FactRow = {
+  id: string;
+  statement: string;
+  product: string | null;
+  market: string;
+  owner: string;
+  valid_from: string;
+  valid_until: string | null;
+  confidentiality: "public" | "internal" | "confidential" | "embargoed";
+  embargo_until: string | null;
+  verified: boolean;
+  expired: boolean;
+  wordings: Wording[];
+};
+export type FactsResponse = { today: string; restricted: boolean; facts: FactRow[] };
+
+export const rulebook = {
+  rules: (onWaking: (w: boolean) => void = () => {}) => request<RulesResponse>("/v1/rules", {}, onWaking),
+  importCsv: (file: File, dryRun: boolean) => {
+    const form = new FormData();
+    form.set("file", file);
+    return request<ImportResult>(`/v1/rules/import?dry_run=${dryRun}`, { method: "POST", body: form }, () => {});
+  },
+  facts: (onWaking: (w: boolean) => void = () => {}) => request<FactsResponse>("/v1/facts", {}, onWaking),
+};

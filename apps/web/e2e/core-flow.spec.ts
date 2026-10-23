@@ -1,3 +1,6 @@
+import fs from "node:fs";
+import path from "node:path";
+
 import { expect, type Page, test } from "@playwright/test";
 
 // Scenario 1 (plan Task 7): the walking skeleton end to end, against the real checker.
@@ -159,4 +162,41 @@ test("audit log verifies and exports", async ({ page }) => {
   // At least as many events as verified a moment ago (other runs may have added more since).
   const rows = csv.match(/^\d{4}-\d\d-\d\dT/gm) ?? [];
   expect(rows.length).toBeGreaterThanOrEqual(total);
+});
+
+async function signInAs(page: Page, label: string) {
+  await page.goto("/login");
+  await page.getByRole("button", { name: `Try as ${label}` }).click();
+  await expect(page).toHaveURL(/\/check/, { timeout: 30_000 });
+}
+
+// Plan Task 18: the rulebook shows linter warnings, and an import reports what needs clarification.
+test("brand owner previews and imports rules", async ({ page }) => {
+  await signInAs(page, "Brand owner");
+  await page.getByRole("link", { name: "Rulebook" }).click();
+  const gm08 = page.getByRole("row").filter({ hasText: "GM08" });
+  await expect(gm08.getByText(/Linter: .*sparingly/)).toBeVisible({ timeout: 90_000 });
+  // Two seed rules, unchanged, so the live rulebook stays the same.
+  const seed = fs.readFileSync(path.join(__dirname, "../../../supabase/seed/aurelle/rules.csv"), "utf8").split("\n");
+  const csv = [seed[0], ...seed.filter((l) => /^(CL-01|GM08),/.test(l))].join("\n");
+  await page.getByLabel("Rules CSV file").setInputFiles({ name: "rules.csv", mimeType: "text/csv", buffer: Buffer.from(csv) });
+  await page.getByRole("button", { name: "Preview" }).click();
+  await expect(page.getByTestId("import-result")).toHaveText("Preview: 2 would be imported, 1 need clarification");
+  await page.getByRole("button", { name: "Import 2 rules" }).click();
+  await expect(page.getByTestId("import-result")).toHaveText("2 imported, 1 need clarification");
+});
+
+test("fact ledger hides restricted facts from an agency writer", async ({ page }) => {
+  await signInAs(page, "Agency");
+  await page.getByRole("link", { name: "Facts" }).click();
+  await expect(page.getByText("Some facts are restricted")).toBeVisible({ timeout: 90_000 });
+  const expired = page.getByRole("article", { name: "FACT-029" });
+  await expect(expired.getByText("Expired", { exact: true })).toBeVisible();
+  await expect(page.getByRole("article", { name: "FACT-031" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Sign out" }).click();
+
+  await signInAs(page, "Compliance");
+  await page.getByRole("link", { name: "Facts" }).click();
+  await expect(page.getByRole("article", { name: "FACT-031" })).toBeVisible({ timeout: 90_000 });
+  await expect(page.getByText("Some facts are restricted")).toHaveCount(0);
 });
