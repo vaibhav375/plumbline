@@ -35,7 +35,7 @@ export function IntervalChart({
       )}
       <div className="relative">
         {threshold && (
-          <div className="pointer-events-none absolute inset-y-0 right-0 left-[34%] sm:left-[28%]" aria-hidden>
+          <div className="pointer-events-none absolute inset-y-0 right-14 left-[34%] sm:left-[28%]" aria-hidden>
             <div className="absolute inset-y-0 -translate-x-px border-l-2 border-ink" style={{ left: pct(threshold.value) }}>
               <span className="absolute -top-5 left-1 whitespace-nowrap text-[11px] font-semibold text-ink">{threshold.label}</span>
               <svg viewBox="0 0 10 12" className="absolute -bottom-3 -left-[6px] size-2.5"><path d="M5 0 L10 6 L5 12 L0 6 Z" fill="#141B2D" /></svg>
@@ -44,7 +44,7 @@ export function IntervalChart({
         )}
         <ul className="space-y-1 pt-5">
           {rows.map((r) => (
-            <li key={r.label} className="grid grid-cols-[34%_1fr] items-center gap-0 sm:grid-cols-[28%_1fr]">
+            <li key={r.label} className="grid grid-cols-[34%_1fr_3.5rem] items-center gap-0 sm:grid-cols-[28%_1fr_3.5rem]">
               <div className="pr-3 text-sm">
                 <span className="font-mono text-xs font-medium">{r.label}</span>
                 {r.sub && <span className="block truncate text-xs text-muted-foreground">{r.sub}</span>}
@@ -59,19 +59,20 @@ export function IntervalChart({
                         style={{ left: pct(p.lo), width: `calc(${pct(p.hi)} - ${pct(p.lo)})`, background: s.color }} />
                       <span className="absolute top-1/2 size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full ring-2 ring-white transition-transform group-hover:scale-125"
                         style={{ left: pct(p.value), background: s.color }} />
-                      <span className="absolute top-1/2 ml-2 -translate-y-1/2 text-[11px] font-medium tabular-nums text-ink" style={{ left: pct(p.hi) }}>
-                        {p.label}
-                      </span>
                     </div>
                   );
                 })}
               </div>
+              <div className="flex flex-col justify-center gap-0.5 pl-2 text-[11px] font-medium leading-tight tabular-nums text-ink">
+                {r.points.map((p, i) => <span key={series[i].name}>{p.label}</span>)}
+              </div>
             </li>
           ))}
         </ul>
-        <div className="grid grid-cols-[34%_1fr] pt-1 text-[11px] text-muted-foreground sm:grid-cols-[28%_1fr]" aria-hidden>
+        <div className="grid grid-cols-[34%_1fr_3.5rem] pt-1 text-[11px] text-muted-foreground sm:grid-cols-[28%_1fr_3.5rem]" aria-hidden>
           <span />
           <div className="flex justify-between"><span>0%</span><span>50%</span><span>100%</span></div>
+          <span />
         </div>
       </div>
       <figcaption className="text-xs text-muted-foreground">{caption}</figcaption>

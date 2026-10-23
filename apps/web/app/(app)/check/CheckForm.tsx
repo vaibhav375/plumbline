@@ -169,7 +169,7 @@ export function CheckForm() {
         </div>
       </form>
 
-      <div id="results" className="scroll-mt-4 space-y-6">
+      <div id="results" className="scroll-mt-20 space-y-6 lg:scroll-mt-4">
       {isReplay && report && (
         <div role="note" className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-accent-brand/40 bg-white px-4 py-3 text-sm">
           <p>

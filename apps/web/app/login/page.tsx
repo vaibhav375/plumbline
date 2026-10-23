@@ -22,7 +22,7 @@ const ERRORS: Record<string, string> = {
 /** What a check looks like, using a real line from the sample post. */
 function Example() {
   return (
-    <figure className="rise-in rounded-2xl bg-white p-5 shadow-[0_20px_50px_-24px_rgba(20,27,45,0.35)] ring-1 ring-ink/5">
+    <figure className="rise-in rounded-2xl bg-white p-5 text-ink shadow-[0_20px_50px_-24px_rgba(20,27,45,0.35)] ring-1 ring-ink/5">
       <p className="text-[15px] leading-relaxed">
         Meet the new Aurelle Vitamin C serum, now{" "}
         <mark className="rounded bg-blocking/10 px-0.5 text-ink ring-1 ring-blocking/60">clinically proven to fade dark spots by 60% in just 2 weeks</mark>.
