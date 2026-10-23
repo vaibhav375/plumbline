@@ -9,13 +9,13 @@ import sys
 
 import httpx
 
-from plumbline.llm import GEMINI_MODEL, GROQ_MODELS
+from plumbline.llm import GEMINI_MODEL, GROQ_MODELS, GROQ_SPILLOVER_MODEL
 
 ENDPOINTS = {
     "groq": (
         "https://api.groq.com/openai/v1/models",
         "GROQ_API_KEY",
-        sorted(set(GROQ_MODELS.values())),
+        sorted({*GROQ_MODELS.values(), GROQ_SPILLOVER_MODEL}),
     ),
     "gemini": (
         "https://generativelanguage.googleapis.com/v1beta/openai/models",

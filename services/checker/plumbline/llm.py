@@ -33,6 +33,11 @@ GROQ_PARAMS = {
     "openai/gpt-oss-20b": {"reasoning_effort": "low"},
     "qwen/qwen3.8-27b": {"reasoning_effort": "none"},
 }
+# Groq rate-limits each model separately (8k tokens/min each), so a second Groq model sits
+# between the primary and Gemini. Measured in Task 12: a burst of 34 judge calls left 4 of 10
+# posts with no AI checks when the chain was Qwen -> Gemini only.
+GROQ_SPILLOVER_MODEL = "openai/gpt-oss-120b"
+GROQ_SPILLOVER_PARAMS = {GROQ_SPILLOVER_MODEL: {"reasoning_effort": "low"}}
 GEMINI_MODEL = "gemini-2.5-flash"
 GEMINI_PARAMS = {GEMINI_MODEL: {"reasoning_effort": "none"}}
 
@@ -191,11 +196,13 @@ class FakeLLM(LLM):
         super().__init__([], egress_sink)
         self.responses = responses
         self.calls: list[tuple[str, str]] = []
+        self.systems: list[str] = []
 
     def json[T: BaseModel](
         self, task: Task, system: str, user: str, schema: type[T]
     ) -> tuple[T, str]:
         self.calls.append((task, user))
+        self.systems.append(system)
         for (t, needle), reply in self.responses.items():
             if t == task and needle in user:
                 if isinstance(reply, Exception):
@@ -214,6 +221,14 @@ def default_chain(s: Settings) -> list[ProviderCfg]:
             models=GROQ_MODELS,
             params=GROQ_PARAMS,
         ),
+        "groq_spillover": ProviderCfg(
+            name="groq",
+            base_url="https://api.groq.com/openai/v1",
+            api_key=s.groq_api_key or None,
+            region="us",
+            models=dict.fromkeys(GROQ_MODELS, GROQ_SPILLOVER_MODEL),
+            params=GROQ_SPILLOVER_PARAMS,
+        ),
         "gemini": ProviderCfg(
             name="gemini",
             base_url="https://generativelanguage.googleapis.com/v1beta/openai",
@@ -230,4 +245,10 @@ def default_chain(s: Settings) -> list[ProviderCfg]:
             models=dict.fromkeys(GROQ_MODELS, "qwen3:8b"),
         ),
     }
-    return [providers[name] for name in s.llm_chain if name in providers]
+    chain = []
+    for name in s.llm_chain:
+        if name in providers:
+            chain.append(providers[name])
+        if name == "groq":  # each Groq model has its own rate limit: spill over before leaving Groq
+            chain.append(providers["groq_spillover"])
+    return chain

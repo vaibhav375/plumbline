@@ -153,3 +153,22 @@ def test_fake_llm_scripted_by_task_and_substring():
         fake.json("judge", "sys", "so much hype", Claims)
     with pytest.raises(LLMUnavailable):
         fake.json("extract", "sys", "unscripted", Claims)
+
+
+def test_default_chain_spills_over_to_a_second_groq_model_before_gemini():
+    from plumbline.config import Settings
+    from plumbline.llm import GEMINI_MODEL, GROQ_SPILLOVER_MODEL, default_chain
+
+    s = Settings(
+        _env_file=None,
+        supabase_url="x",
+        supabase_anon_key="y",
+        groq_api_key="g",
+        gemini_api_key="m",
+    )
+    chain = default_chain(s)
+    assert [(p.name, p.models["judge"]) for p in chain] == [
+        ("groq", "qwen/qwen3.8-27b"),
+        ("groq", GROQ_SPILLOVER_MODEL),
+        ("gemini", GEMINI_MODEL),
+    ]
