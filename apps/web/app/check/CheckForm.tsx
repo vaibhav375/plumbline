@@ -23,11 +23,18 @@ import {
   type Finding,
   submitForReview,
 } from "@/lib/api";
+import replay from "@/lib/sample-replay.json";
 import samples from "@/lib/samples.json";
 
 const SAMPLE = samples.find((s) => s.key === "worked-example")!;
 const NO_INTENT: IntentValue = { key_phrases: "", cta: "", channel: "instagram" };
 const FRESH: CardState = { accepted: false, edit: null, dismissed: false };
+const REPLAY_DATE = new Date(replay.captured_at).toLocaleDateString("en-IN", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  timeZone: "Asia/Kolkata",
+});
 
 type Row = { n: number; f: Finding; group: (typeof GROUPS)[number] };
 
@@ -43,6 +50,8 @@ export function CheckForm() {
   const [submitted, setSubmitted] = useState(false);
   const [altText, setAltText] = useState("");
   const [decorative, setDecorative] = useState(false);
+  // The sample opens as a stored report of a real run: instant, and the same every time.
+  const [isReplay, setIsReplay] = useState(false);
   const imageUrl = useMemo(() => (file && file.type.startsWith("image/") ? URL.createObjectURL(file) : null), [file]);
 
   async function run(job: () => Promise<CheckReport>) {
@@ -52,6 +61,7 @@ export function CheckForm() {
       const r = await job();
       setReport(r);
       setCards({});
+      setIsReplay(false);
       return r;
     } catch (err) {
       setError(err instanceof CheckError ? err.message : "Something went wrong. Try again.");
@@ -61,8 +71,8 @@ export function CheckForm() {
     }
   }
 
-  function onCheck(e: React.FormEvent) {
-    e.preventDefault();
+  function onCheck(e?: React.FormEvent) {
+    e?.preventDefault();
     const form = new FormData();
     if (file) form.set("file", file);
     else form.set("text", text);
@@ -134,18 +144,33 @@ export function CheckForm() {
               cta: SAMPLE.intent?.cta ?? "",
               channel: "instagram",
             });
+            setReport(replay.report as unknown as CheckReport);
+            setCards({});
+            setSubmitted(false);
+            setError(null);
+            setIsReplay(true);
           }}>
-            Load sample post
+            Open the sample post
           </Button>
           <label className="text-sm">
             <span className="sr-only">Upload a file</span>
             <input type="file" accept=".txt,.md,.docx,.pdf,.png,.jpg,.jpeg,.webp"
+              className="text-sm file:mr-3 file:rounded-md file:border file:border-border file:bg-background file:px-3 file:py-1.5 file:text-sm file:font-medium hover:file:bg-muted"
               onChange={(e) => (setFile(e.target.files?.[0] ?? null), setAltText(""), setDecorative(false))} />
           </label>
           <Button type="submit" disabled={busy || (!text.trim() && !file)}>{busy ? "Checking…" : "Check"}</Button>
         </div>
       </form>
 
+      {isReplay && report && (
+        <div role="note" className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-accent-brand/40 bg-white px-4 py-3 text-sm">
+          <p>
+            <strong>Replay of a real check run on {REPLAY_DATE}</strong> (it took {Math.round(replay.report.ms_total / 1000)} s
+            live). Nothing here is saved, so fixes and submitting are off. Run it live to check the post now and act on it.
+          </p>
+          <Button type="button" disabled={busy} onClick={() => onCheck()}>{busy ? "Checking…" : "Run it live"}</Button>
+        </div>
+      )}
       {waking && <WakingBanner />}
       {error && <p role="alert" className="rounded-md border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-900">{error}</p>}
       {submitted && (

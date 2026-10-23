@@ -16,6 +16,15 @@ const DEMO_USERS = {
 
 export type DemoRole = keyof typeof DEMO_USERS;
 
+// Each role lands where its work is.
+const LANDING: Record<DemoRole, string> = {
+  creator: "/check",
+  agency: "/check",
+  reviewer: "/review",
+  compliance: "/review",
+  brand_owner: "/health",
+};
+
 export async function signInAs(role: DemoRole) {
   const email = DEMO_USERS[role];
   const password = process.env.DEMO_USER_PASSWORD;
@@ -23,7 +32,7 @@ export async function signInAs(role: DemoRole) {
   const supabase = await supabaseServer();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) redirect("/login?error=signin");
-  redirect("/check");
+  redirect(LANDING[role]);
 }
 
 export async function signOut() {

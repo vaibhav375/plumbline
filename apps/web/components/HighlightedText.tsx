@@ -1,4 +1,4 @@
-import { TONE, type Group } from "@/components/severity";
+import { MARK, type Group } from "@/components/severity";
 import { utf16Index } from "@/lib/offsets";
 
 export type Mark = { n: number; start: number; end: number; group: Group };
@@ -19,7 +19,7 @@ export function HighlightedText({ text, marks }: { text: string; marks: Mark[] }
     }
     if (m.s > pos) parts.push(text.slice(pos, m.s));
     parts.push(
-      <mark key={m.n} className={`rounded border px-0.5 ${TONE[m.group]}`} aria-label={`Finding ${m.n}: ${m.group}`}>
+      <mark key={m.n} className={`rounded border px-0.5 ${MARK[m.group]}`} aria-label={`Finding ${m.n}: ${m.group}`}>
         {text.slice(m.s, m.e)}
         <sup className="ml-0.5 font-semibold">{m.n}</sup>
       </mark>,

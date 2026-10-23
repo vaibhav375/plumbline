@@ -1,0 +1,428 @@
+{
+ "captured_at": "2026-10-23T18:21:44+00:00",
+ "text": "Meet the NEW Aurelle Vitamin-C serum!!! 100% natural, eco-friendly and clinically proven to fade dark spots by 60% in just 2 weeks. Dermatologist recommended. Launching with our Mumbai flagship on 15 Nov. Click here to shop!",
+ "report": {
+  "run_id": "0ed408b7-64b9-41bf-838a-6d9af9319719",
+  "version_id": null,
+  "content_id": null,
+  "previous_text": null,
+  "checked_text": "Meet the NEW Aurelle Vitamin-C serum!!! 100% natural, eco-friendly and clinically proven to fade dark spots by 60% in just 2 weeks. Dermatologist recommended. Launching with our Mumbai flagship on 15 Nov. Click here to shop!",
+  "findings": [
+   {
+    "id": "CTA-02@205",
+    "category": "style",
+    "severity": "minor",
+    "advisory": true,
+    "rule_id": "CTA-02",
+    "fact_id": null,
+    "quote": "Click here",
+    "span": {
+     "start": 205,
+     "end": 215
+    },
+    "image_id": null,
+    "bbox": null,
+    "tier": "brand",
+    "explanation": "Calls to action name the product, not \"click here\"",
+    "basis_excerpt": "Aurelle Brand Book v1.3 §5.1 Calls to action",
+    "method": "code",
+    "model": null,
+    "support": "n/a",
+    "fix": null,
+    "record_id": null,
+    "claim_status": null
+   },
+   {
+    "id": "DL-REQ@71",
+    "category": "required",
+    "severity": "blocking",
+    "advisory": false,
+    "rule_id": "DL-REQ",
+    "fact_id": null,
+    "quote": "clinically",
+    "span": {
+     "start": 71,
+     "end": 81
+    },
+    "image_id": null,
+    "bbox": null,
+    "tier": "mandatory",
+    "explanation": "Study and percentage claims need the footnote DL-02: \"*In-house study, 48 participants, 2026.\"",
+    "basis_excerpt": "Aurelle Brand Book v1.3 §7.2 Disclaimers (DL-02)",
+    "method": "code",
+    "model": null,
+    "support": "n/a",
+    "fix": null,
+    "record_id": null,
+    "claim_status": null
+   },
+   {
+    "id": "TM-007@21",
+    "category": "terminology",
+    "severity": "minor",
+    "advisory": true,
+    "rule_id": "TM-007",
+    "fact_id": null,
+    "quote": "Vitamin-C serum",
+    "span": {
+     "start": 21,
+     "end": 36
+    },
+    "image_id": null,
+    "bbox": null,
+    "tier": null,
+    "explanation": "Use \"Vitamin C Brightening Serum\", not \"Vitamin-C serum\".",
+    "basis_excerpt": "Aurelle Brand Book v1.3 §4 Product naming",
+    "method": "code",
+    "model": null,
+    "support": "n/a",
+    "fix": {
+     "kind": "replace_term",
+     "text": "Vitamin C Brightening Serum",
+     "ref_id": "TM-007",
+     "note": null,
+     "footnote": null
+    },
+    "record_id": null,
+    "claim_status": null
+   },
+   {
+    "id": "TN-02@36",
+    "category": "tone",
+    "severity": "minor",
+    "advisory": true,
+    "rule_id": "TN-02",
+    "fact_id": null,
+    "quote": "!!!",
+    "span": {
+     "start": 36,
+     "end": 39
+    },
+    "image_id": null,
+    "bbox": null,
+    "tier": "brand",
+    "explanation": "At most one exclamation mark: found 4, the limit is 1.",
+    "basis_excerpt": "Aurelle Brand Book v1.3 §3.2 Punctuation (GM34)",
+    "method": "code",
+    "model": null,
+    "support": "n/a",
+    "fix": {
+     "kind": "replace_term",
+     "text": ".",
+     "ref_id": null,
+     "note": null,
+     "footnote": null
+    },
+    "record_id": null,
+    "claim_status": null
+   },
+   {
+    "id": "TN-03@9",
+    "category": "tone",
+    "severity": "minor",
+    "advisory": true,
+    "rule_id": "TN-03",
+    "fact_id": null,
+    "quote": "NEW",
+    "span": {
+     "start": 9,
+     "end": 12
+    },
+    "image_id": null,
+    "bbox": null,
+    "tier": "brand",
+    "explanation": "Avoid all-caps words (brand name and standard acronyms excepted)",
+    "basis_excerpt": "Aurelle Brand Book v1.3 §3.2 Capitals",
+    "method": "code",
+    "model": null,
+    "support": "n/a",
+    "fix": {
+     "kind": "replace_term",
+     "text": "new",
+     "ref_id": null,
+     "note": null,
+     "footnote": null
+    },
+    "record_id": null,
+    "claim_status": null
+   },
+   {
+    "id": "FACT-031@159",
+    "category": "confidential",
+    "severity": "blocking",
+    "advisory": false,
+    "rule_id": null,
+    "fact_id": "FACT-031",
+    "quote": "Launching with our Mumbai flagship on 15 Nov.",
+    "span": {
+     "start": 159,
+     "end": 204
+    },
+    "image_id": null,
+    "bbox": null,
+    "tier": null,
+    "explanation": "Mentions restricted information (FACT-031, embargoed until 2026-12-01).",
+    "basis_excerpt": "FACT-031 is embargoed until 2026-12-01",
+    "method": "code",
+    "model": null,
+    "support": "n/a",
+    "fix": {
+     "kind": "remove",
+     "text": null,
+     "ref_id": null,
+     "note": "Remove the sentence: it mentions restricted information.",
+     "footnote": null
+    },
+    "record_id": null,
+    "claim_status": "restricted"
+   },
+   {
+    "id": "FACT-009@40",
+    "category": "claim",
+    "severity": "blocking",
+    "advisory": false,
+    "rule_id": "CL-03",
+    "fact_id": "FACT-009",
+    "quote": "100% natural",
+    "span": {
+     "start": 40,
+     "end": 52
+    },
+    "image_id": null,
+    "bbox": null,
+    "tier": "mandatory",
+    "explanation": "Claim says '100% natural': 100% is more than the 94% in the evidence. FACT-009 says Vitamin C Brightening Serum is made with 94% naturally derived ingredients (ISO 16128).",
+    "basis_excerpt": "Vitamin C Brightening Serum is made with 94% naturally derived ingredients (ISO 16128)",
+    "method": "code",
+    "model": null,
+    "support": "n/a",
+    "fix": {
+     "kind": "approved_wording",
+     "text": "made with 94% naturally derived ingredients",
+     "ref_id": "AW-009a",
+     "note": "Required footnote: Calculated per ISO 16128.",
+     "footnote": "Calculated per ISO 16128."
+    },
+    "record_id": null,
+    "claim_status": "contradicted"
+   },
+   {
+    "id": "CL-03@54",
+    "category": "claim",
+    "severity": "blocking",
+    "advisory": false,
+    "rule_id": "CL-03",
+    "fact_id": null,
+    "quote": "eco-friendly",
+    "span": {
+     "start": 54,
+     "end": 66
+    },
+    "image_id": null,
+    "bbox": null,
+    "tier": "mandatory",
+    "explanation": "No fact in the ledger supports this claim.",
+    "basis_excerpt": "CCPA greenwashing guidelines 2024",
+    "method": "code",
+    "model": null,
+    "support": "n/a",
+    "fix": {
+     "kind": "none",
+     "text": null,
+     "ref_id": null,
+     "note": "No approved wording exists, so no fix is offered.",
+     "footnote": null
+    },
+    "record_id": null,
+    "claim_status": "unsupported"
+   },
+   {
+    "id": "FACT-014@71",
+    "category": "claim",
+    "severity": "blocking",
+    "advisory": false,
+    "rule_id": "CL-01",
+    "fact_id": "FACT-014",
+    "quote": "clinically proven to fade dark spots by 60% in just 2 weeks",
+    "span": {
+     "start": 71,
+     "end": 130
+    },
+    "image_id": null,
+    "bbox": null,
+    "tier": "mandatory",
+    "explanation": "Claim says 'clinically proven to fade dark spots by 60% in just 2 weeks': 60% is more than the 32% in the evidence; 2 weeks is faster than the 8 weeks in the evidence. FACT-014 says Vitamin C Brightening Serum gave a 32% reduction in visible dark spots over 8 weeks (in-house study, 48 participants).",
+    "basis_excerpt": "Vitamin C Brightening Serum gave a 32% reduction in visible dark spots over 8 weeks (in-house study, 48 participants)",
+    "method": "code",
+    "model": null,
+    "support": "n/a",
+    "fix": {
+     "kind": "approved_wording",
+     "text": "shown to visibly reduce dark spots by 32% in 8 weeks*",
+     "ref_id": "AW-014b",
+     "note": "Required footnote: *In-house study, 48 participants, 2026.",
+     "footnote": "*In-house study, 48 participants, 2026."
+    },
+    "record_id": null,
+    "claim_status": "contradicted"
+   },
+   {
+    "id": "CL-05@132",
+    "category": "claim",
+    "severity": "blocking",
+    "advisory": false,
+    "rule_id": "CL-05",
+    "fact_id": null,
+    "quote": "Dermatologist recommended",
+    "span": {
+     "start": 132,
+     "end": 157
+    },
+    "image_id": null,
+    "bbox": null,
+    "tier": "mandatory",
+    "explanation": "No fact in the ledger supports this claim.",
+    "basis_excerpt": "ASCI Code, Chapter I.1 (substantiation of claims)",
+    "method": "code",
+    "model": null,
+    "support": "n/a",
+    "fix": {
+     "kind": "none",
+     "text": null,
+     "ref_id": null,
+     "note": "No approved wording exists, so no fix is offered.",
+     "footnote": null
+    },
+    "record_id": null,
+    "claim_status": "unsupported"
+   },
+   {
+    "id": "TN-01@0",
+    "category": "tone",
+    "severity": "minor",
+    "advisory": true,
+    "rule_id": "TN-01",
+    "fact_id": null,
+    "quote": "Meet the NEW Aurelle Vitamin-C serum!!!",
+    "span": {
+     "start": 0,
+     "end": 39
+    },
+    "image_id": null,
+    "bbox": null,
+    "tier": "brand",
+    "explanation": "The triple exclamation marks create a hype tone that violates the rule against shouting.",
+    "basis_excerpt": "Aurelle Brand Book v1.3 §3.1 Voice",
+    "method": "ai",
+    "model": "groq/qwen/qwen3.8-27b",
+    "support": "agree",
+    "fix": null,
+    "record_id": null,
+    "claim_status": null
+   }
+  ],
+  "needs_human": [
+   {
+    "id": "TN-01@205",
+    "category": "tone",
+    "severity": "minor",
+    "advisory": true,
+    "rule_id": "TN-01",
+    "fact_id": null,
+    "quote": "Click here to shop!",
+    "span": {
+     "start": 205,
+     "end": 224
+    },
+    "image_id": null,
+    "bbox": null,
+    "tier": null,
+    "explanation": "This is a direct call to action that creates pressure, which is not allowed under the warm and energetic tone rule. (second model disagreed: A direct call to action like \"Click here to shop!\" does not inherently create pressure and is acceptable under the warm and energetic tone.)",
+    "basis_excerpt": "Aurelle Brand Book v1.3 §3.1 Voice",
+    "method": "ai",
+    "model": "groq/qwen/qwen3.8-27b",
+    "support": "disagree",
+    "fix": null,
+    "record_id": null,
+    "claim_status": null
+   }
+  ],
+  "dropped_count": 0,
+  "coverage": {
+   "rules_run": [
+    "A11Y-03",
+    "A11Y-ALT",
+    "A11Y-CONTRAST",
+    "CF-01",
+    "CL-01",
+    "CL-02",
+    "CL-03",
+    "CL-04",
+    "CL-05",
+    "CL-07",
+    "CTA-01",
+    "CTA-02",
+    "DL-01",
+    "DL-REQ",
+    "GM06",
+    "GM07",
+    "GM10",
+    "GM14",
+    "GM28",
+    "GM31",
+    "RQ-01",
+    "TM-00",
+    "TN-01",
+    "TN-02",
+    "TN-03",
+    "TN-04",
+    "TN-05",
+    "TN-06"
+   ],
+   "rules_advisory": [
+    "A11Y-03",
+    "CTA-01",
+    "CTA-02",
+    "GM06",
+    "GM07",
+    "GM10",
+    "GM28",
+    "GM31",
+    "TM-00",
+    "TN-01",
+    "TN-02",
+    "TN-03",
+    "TN-04",
+    "TN-05",
+    "TN-06"
+   ],
+   "rules_not_run": {
+    "GM08": "Judgement only (class C): stays in the rulebook, never run.",
+    "GM29": "Judgement only (class C): stays in the rulebook, never run.",
+    "GM33": "Judgement only (class C): stays in the rulebook, never run.",
+    "VT02": "Judgement only (class C): stays in the rulebook, never run."
+   },
+   "not_checked": [
+    "Claims implied by imagery, photography style, the screen-reader experience, and anything said in video or voice-over. These need a person."
+   ],
+   "ai_status": "ok",
+   "ai_note": null
+  },
+  "suggested_text": "Meet the new Aurelle Vitamin C Brightening Serum. Made with 94% naturally derived ingredients. Shown to visibly reduce dark spots by 32% in 8 weeks.* Shop Aurelle!\nCalculated per ISO 16128.\n*In-house study, 48 participants, 2026.",
+  "intent": {
+   "cta_kept": true,
+   "pinned_phrases_kept": true,
+   "no_claim_dropped": true,
+   "channel_limits_ok": true,
+   "edits_in_flagged_sentences": true
+  },
+  "models_used": [
+   "groq/openai/gpt-oss-20b",
+   "groq/qwen/qwen3.8-27b"
+  ],
+  "ms_code": 155,
+  "ms_total": 19539,
+  "replay": true,
+  "status_change": null
+ }
+}

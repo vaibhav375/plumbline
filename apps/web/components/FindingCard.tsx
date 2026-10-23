@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { TONE, type Group } from "@/components/severity";
+import { TAG, type Group } from "@/components/severity";
 import { Button } from "@/components/ui/button";
 import type { Finding } from "@/lib/api";
 
@@ -39,7 +39,7 @@ export function FindingCard({
       className={`rounded-lg border p-4 ${state.dismissed ? "opacity-60" : ""}`}>
       <div className="flex flex-wrap items-center gap-2 text-sm">
         <span className="font-semibold">{n}</span>
-        <span className={`rounded border px-2 py-0.5 font-medium ${TONE[group]}`}>{group}</span>
+        <span className={`rounded border px-2 py-0.5 font-medium ${TAG[group]}`}>{group}</span>
         {f.tier && (
           <span className="rounded border px-2 py-0.5">
             {f.tier === "mandatory" ? "Mandatory" : "Brand"} {f.category}

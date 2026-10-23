@@ -8,8 +8,8 @@ test("creator checks sample post", async ({ page }) => {
   await page.goto("/login");
   await page.getByRole("button", { name: "Try as Creator" }).click();
   await expect(page).toHaveURL(/\/check/, { timeout: 30_000 });
-  await page.getByRole("button", { name: "Load sample post" }).click();
-  await page.getByRole("button", { name: "Check", exact: true }).click();
+  await page.getByRole("button", { name: "Open the sample post" }).click();
+  await page.getByRole("button", { name: "Run it live" }).click();
   // Generous timeout: a sleeping free-tier checker takes ~25 s to wake.
   await expect(page.getByText("TN-02").first()).toBeVisible({ timeout: 90_000 });
   await expect(page.getByRole("heading", { name: "Not checked" })).toBeVisible();
@@ -46,11 +46,11 @@ test("a sleeping checker shows the waking banner, then the check succeeds", asyn
   await page.goto("/login");
   await page.getByRole("button", { name: "Try as Creator" }).click();
   await expect(page).toHaveURL(/\/check/, { timeout: 30_000 });
-  await page.getByRole("button", { name: "Load sample post" }).click();
-  await page.getByRole("button", { name: "Check", exact: true }).click();
-  await expect(page.getByRole("status")).toContainText("Waking the checker");
+  await page.getByRole("button", { name: "Open the sample post" }).click();
+  await page.getByRole("button", { name: "Run it live" }).click();
+  await expect(page.getByRole("status").filter({ hasText: "Waking the checker" })).toBeVisible();
   await expect(page.getByText("TN-02").first()).toBeVisible({ timeout: 90_000 });
-  await expect(page.getByRole("status")).toHaveCount(0);
+  await expect(page.getByRole("status").filter({ hasText: "Waking the checker" })).toHaveCount(0);
   expect(probes).toBe(3);
 });
 
@@ -58,9 +58,13 @@ async function signInAndCheck(page: Page, text?: string) {
   await page.goto("/login");
   await page.getByRole("button", { name: "Try as Creator" }).click();
   await expect(page).toHaveURL(/\/check/, { timeout: 30_000 });
-  if (text) await page.getByLabel("Paste a post, or upload a file").fill(text);
-  else await page.getByRole("button", { name: "Load sample post" }).click();
-  await page.getByRole("button", { name: "Check", exact: true }).click();
+  if (text) {
+    await page.getByLabel("Paste a post, or upload a file").fill(text);
+    await page.getByRole("button", { name: "Check", exact: true }).click();
+  } else {
+    await page.getByRole("button", { name: "Open the sample post" }).click();
+    await page.getByRole("button", { name: "Run it live" }).click();
+  }
   await expect(page.getByTestId("blocking-count")).toBeVisible({ timeout: 120_000 });
 }
 
@@ -113,7 +117,7 @@ test("compliance approves", async ({ page }) => {
   await page.getByRole("button", { name: "Sign out" }).click();
 
   await page.getByRole("button", { name: "Try as Compliance" }).click();
-  await expect(page).toHaveURL(/\/check/, { timeout: 30_000 });
+  await expect(page).toHaveURL(/\/review/, { timeout: 30_000 });
   await page.getByRole("link", { name: "Review queue" }).click();
   await page.locator(`a[href="/review/${versionId}"]`).click();
   await expect(page.getByText("still to decide")).toBeVisible({ timeout: 120_000 });
@@ -145,7 +149,7 @@ test("compliance approves", async ({ page }) => {
 test("audit log verifies and exports", async ({ page }) => {
   await page.goto("/login");
   await page.getByRole("button", { name: "Try as Compliance" }).click();
-  await expect(page).toHaveURL(/\/check/, { timeout: 30_000 });
+  await expect(page).toHaveURL(/\/review/, { timeout: 30_000 });
   await page.getByRole("link", { name: "Audit log" }).click();
   const status = page.getByTestId("chain-status");
   await expect(status).toContainText(/Chain verified ✓ \(\d+ events\)/, { timeout: 90_000 });
@@ -164,10 +168,19 @@ test("audit log verifies and exports", async ({ page }) => {
   expect(rows.length).toBeGreaterThanOrEqual(total);
 });
 
+// Each role lands where its work is.
+const LANDING: Record<string, RegExp> = {
+  Creator: /\/check/,
+  Agency: /\/check/,
+  Reviewer: /\/review/,
+  Compliance: /\/review/,
+  "Brand owner": /\/health/,
+};
+
 async function signInAs(page: Page, label: string) {
   await page.goto("/login");
   await page.getByRole("button", { name: `Try as ${label}` }).click();
-  await expect(page).toHaveURL(/\/check/, { timeout: 30_000 });
+  await expect(page).toHaveURL(LANDING[label], { timeout: 30_000 });
 }
 
 // Plan Task 18: the rulebook shows linter warnings, and an import reports what needs clarification.
@@ -267,4 +280,46 @@ test("the evaluation page matches latest.json and is public", async ({ page }) =
   }
   await expect(page.getByText(`${latest.results.plumbline.counts.recall[0]} / ${latest.results.plumbline.counts.recall[1]}`).first()).toBeVisible();
   await expect(page.getByRole("heading", { name: "What leaves this system" })).toBeVisible();
+});
+
+// Plan Task 22.
+test("first visit tour", async ({ page }) => {
+  await signInAs(page, "Creator");
+  const tour = page.getByRole("dialog", { name: /Step 1 of 4/ });
+  await expect(tour).toBeVisible();
+  await tour.getByRole("button", { name: "Skip tour" }).click();
+  await expect(page.getByRole("dialog", { name: /Step \d of 4/ })).toHaveCount(0);
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "Check content" })).toBeVisible();
+  await expect(page.getByRole("dialog", { name: /Step \d of 4/ })).toHaveCount(0);
+});
+
+test("the sample opens instantly as a labelled replay of a real run", async ({ page }) => {
+  await signInAs(page, "Creator");
+  await page.getByRole("button", { name: "Open the sample post" }).click();
+  await expect(page.getByText(/Replay of a real check run on \d{1,2} \w+ \d{4}/)).toBeVisible({ timeout: 5_000 });
+  await expect(page.getByTestId("blocking-count")).toBeVisible({ timeout: 5_000 });
+  // A replay can't be changed: run it live first.
+  await expect(page.getByRole("button", { name: "Submit for review", exact: false })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Run it live" })).toBeEnabled();
+});
+
+test("each role lands where its work is, and the login page says what each can do", async ({ page }) => {
+  await page.goto("/login");
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.getByText("Check marketing content against your brand's own rules and facts, before it's published.")).toBeVisible();
+  await expect(page.getByRole("listitem").filter({ has: page.getByRole("button", { name: /^Try as / }) })).toHaveCount(5);
+  for (const label of ["Reviewer", "Brand owner"]) {
+    await signInAs(page, label);
+    await page.getByRole("button", { name: "Sign out" }).click();
+    await expect(page).toHaveURL(/\/login/);
+  }
+});
+
+test("status page is public and shows the checker's health", async ({ page }) => {
+  await page.goto("/login");
+  await page.getByRole("contentinfo").getByRole("link", { name: "Status" }).click();
+  await expect(page).toHaveURL(/\/status/);
+  await expect(page.getByTestId("checker-status")).toHaveText(/Up|Waking|Down/, { timeout: 60_000 });
+  await expect(page.getByText(/Last evaluation run/)).toBeVisible();
 });

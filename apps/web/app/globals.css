@@ -4,6 +4,19 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Plumbline's visual identity (the Round 1 PDF). Every text colour here is >= 4.5:1 on white. */
+@theme {
+  --color-ink: #141b2d;
+  --color-accent-brand: #4b3fd1;
+  --color-blocking: #c2362b;
+  --color-major: #a86400;
+  --color-minor: #3d6fb6;
+  --color-ok: #1e7f55;
+  /* Body text is at least 15 px: text-sm is 15 px; text-xs stays for labels and metadata. */
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.4rem;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -50,8 +63,8 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
+  --primary: #4b3fd1;
+  --primary-foreground: #ffffff;
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -61,7 +74,7 @@
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --ring: #4b3fd1;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -76,7 +89,7 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --foreground: #141b2d;
 }
 
 .dark {

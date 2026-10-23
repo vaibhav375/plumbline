@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+const PUBLIC = new Set(["/login", "/about", "/status"]);
+
 // Refreshes the session cookie on every request and keeps signed-out visitors out of the app.
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -22,7 +24,7 @@ export async function middleware(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const signedIn = Boolean(data?.claims?.sub);
   const path = request.nextUrl.pathname;
-  if (!signedIn && path !== "/login" && path !== "/about") {
+  if (!signedIn && !PUBLIC.has(path)) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
   if (signedIn && (path === "/login" || path === "/")) {

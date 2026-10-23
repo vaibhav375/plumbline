@@ -1,4 +1,5 @@
 import { AppHeader } from "@/components/AppHeader";
+import { Tour } from "@/components/Tour";
 
 import { CheckForm } from "./CheckForm";
 
@@ -9,6 +10,7 @@ export default function CheckPage() {
         title="Check content"
         subtitle="Paste a draft or upload a file. Plumbline checks it against Aurelle's rules and facts, and shows what it couldn't check."
       />
+      <Tour />
       <CheckForm />
     </main>
   );

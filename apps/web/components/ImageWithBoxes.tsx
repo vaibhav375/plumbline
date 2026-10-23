@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { TONE, type Group } from "@/components/severity";
+import { EDGE, type Group, TAG } from "@/components/severity";
 
 export type Box = { n: number; bbox: [number, number, number, number]; group: Group };
 
@@ -18,14 +18,14 @@ export function ImageWithBoxes({ src, boxes }: { src: string; boxes: Box[] }) {
           onLoad={(e) => setSize({ w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight })} />
         {size && boxes.map((b) => (
           <div key={b.n} aria-hidden data-testid={`image-box-${b.n}`}
-            className={`absolute border-2 ${TONE[b.group]} bg-transparent`}
+            className={`absolute border-2 ${EDGE[b.group]} bg-transparent`}
             style={{
               left: `${(b.bbox[0] / size.w) * 100}%`,
               top: `${(b.bbox[1] / size.h) * 100}%`,
               width: `${((b.bbox[2] - b.bbox[0]) / size.w) * 100}%`,
               height: `${((b.bbox[3] - b.bbox[1]) / size.h) * 100}%`,
             }}>
-            <span className={`absolute -left-0.5 -top-6 rounded border px-1.5 text-xs font-semibold ${TONE[b.group]}`}>{b.n}</span>
+            <span className={`absolute -left-0.5 -top-6 rounded border px-1.5 text-xs font-semibold ${TAG[b.group]}`}>{b.n}</span>
           </div>
         ))}
       </div>

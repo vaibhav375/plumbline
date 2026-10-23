@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ApprovalPanel } from "@/components/ApprovalPanel";
 import { CommentThread } from "@/components/CommentThread";
 import { HighlightedText, type Mark } from "@/components/HighlightedText";
-import { GROUPS, groupOf, TONE } from "@/components/severity";
+import { GROUPS, groupOf, TAG } from "@/components/severity";
 import { StatusTimeline } from "@/components/StatusTimeline";
 import { Button } from "@/components/ui/button";
 import { WakingBanner } from "@/components/WakingBanner";
@@ -37,12 +37,18 @@ function DecisionCard({
   const [reason, setReason] = useState("");
   const [sending, setSending] = useState(false);
   const history = detail.decisions.filter((d) => d.finding_id === f.record_id);
+  const decided = [...history].reverse().find((d) => d.action === "uphold" || d.action === "overrule");
   const canDecide = Boolean(f.record_id && detail.can_decide.includes(f.record_id)) && detail.version.status !== "approved";
   return (
     <article aria-label={`Finding ${n}: ${f.rule_id ?? f.fact_id ?? "finding"}`} className="rounded-lg border p-4">
       <div className="flex flex-wrap items-center gap-2 text-sm">
         <span className="font-semibold">{n}</span>
-        <span className={`rounded border px-2 py-0.5 font-medium ${TONE[group]}`}>{group}</span>
+        <span className={`rounded border px-2 py-0.5 font-medium ${TAG[group]}`}>{group}</span>
+        {decided && (
+          <span className="rounded border border-ok bg-white px-2 py-0.5 font-medium text-ok">
+            ✓ {decided.action === "uphold" ? "Upheld" : "Overruled"}
+          </span>
+        )}
         <span className="font-mono text-xs">{[f.rule_id, f.fact_id].filter(Boolean).join(" · ")}</span>
         {f.claim_status && <span className="text-muted-foreground">claim {f.claim_status.replace("_", " ")}</span>}
       </div>
