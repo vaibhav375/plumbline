@@ -1,0 +1,89 @@
+<!-- ============ ROUND 2 PROGRESS (added for Round 2; Round 1 content follows unchanged) ============ -->
+<div class="section">
+<div class="kicker">Round 2 · The Build</div>
+<h2><span class="num">R2</span>Round 2 progress</h2>
+<p class="lead">Plumbline is live and works end to end from a public link: paste or upload content, get cited findings and a "not checked" list, accept approved-wording fixes, pre-check privately, submit, review with routed approvals, and verify the audit trail. Round 1's plan follows unchanged after this section.</p>
+
+<div class="callout">
+<b>Live app:</b> <a href="https://plumbline-pes1ug23cs665s-projects.vercel.app">plumbline-pes1ug23cs665s-projects.vercel.app</a> (pick a role, no sign-up) ·
+<b>How I know it works:</b> <a href="https://plumbline-pes1ug23cs665s-projects.vercel.app/about">/about</a> ·
+<b>Repository:</b> <a href="https://github.com/vaibhav375/plumbline">github.com/vaibhav375/plumbline</a> ·
+<b>Status:</b> <a href="https://plumbline-pes1ug23cs665s-projects.vercel.app/status">/status</a>.
+Demo runs on free model tiers using fictional data only; production uses paid no-training tiers or self-hosted Qwen.
+</div>
+
+<h3>What was built (all live)</h3>
+<table>
+  <tr><th style="width:22%">Area</th><th>What works</th><th style="width:16%">Round 1</th></tr>
+  <tr><td><b>Checking</b></td><td>Paste, DOCX, PDF or image (OCR). 28 code rules run first; AI only for judgement and claims. A finding is shown only if its rule or fact exists and its quote is in the text; a second model checks AI findings. Every report lists what wasn't checked.</td><td>§4.1-2, §4.3, §6.2</td></tr>
+  <tr><td><b>Fixing</b></td><td>Claims fixed only with approved wording (with required footnotes); other rewrites pass five intent checks. Accept, edit, dismiss with a reason, or ask a reviewer; re-check with a diff.</td><td>§4.1-4, §6.2 stage 7</td></tr>
+  <tr><td><b>Privacy</b></td><td>Names and contacts masked before any model call; confidential and embargoed facts matched in code only; an egress log with no field for content; agencies never see confidential facts.</td><td>§4.5, §7</td></tr>
+  <tr><td><b>Review and audit</b></td><td>Private pre-checks; a risk-ordered queue; claims routed to compliance; a different second approver enforced in the database; an insert-only, hash-chained audit log that verifies in the app and exports a CSV anyone can re-check.</td><td>§4.5</td></tr>
+  <tr><td><b>Governance</b></td><td>Rulebook with a linter and preview-first CSV import (each function edits only its own rules); fact ledger with expiry and approved wording; guideline health with Wilson lower bounds ("ready to block", "may be unclear").</td><td>§4.3, §4.6</td></tr>
+  <tr><td><b>Accessibility floor</b></td><td>Image text contrast (4.5:1, 3:1 large) and missing alt text block; findings are boxed on the image; Plumbline never writes alt text.</td><td>§4.3, §5</td></tr>
+</table>
+
+<h3>How I know it works</h3>
+<div class="grid2">
+<div>
+<table>
+  <tr><th>Dev set, 40 posts</th><th class="c">Plumbline</th><th class="c">Baseline</th></tr>
+  <tr><td>Problems found (recall)</td><td class="c"><b>31 / 33 · 94%</b><br><span class="small">95% CI 80–98%</span></td><td class="c">18 / 33 · 55%<br><span class="small">38–70%</span></td></tr>
+  <tr><td>Findings that were right</td><td class="c"><b>31 / 39 · 79%</b><br><span class="small">64–89%</span></td><td class="c">18 / 37 · 49%<br><span class="small">33–64%</span></td></tr>
+  <tr><td>Clean posts with a false alarm</td><td class="c"><b>1 / 10</b></td><td class="c">4 / 10</td></tr>
+  <tr><td>Characters sent to models</td><td class="c">243k</td><td class="c">634k</td></tr>
+</table>
+<p class="small">25 labelled posts (33 problems), 10 clean controls, 5 prompt-injection copies; written for this project, labels frozen before any model run. A finding counts only with the right rule or fact and the right words. Baseline: one model call per post with the whole brand book, no validators.</p>
+</div>
+<div>
+<p><b>A negative result.</b> "Citations that check out" was 100% for both systems: the baseline cites real IDs and real quotes, just the wrong ones. Precision is what separates them. Two of Plumbline's 8 false alarms are plain errors.</p>
+<p><b>Tests.</b> 240 checker unit tests, 17 database tests (row-level security, audit chain, second approver), 18 end-to-end tests run against the live site.</p>
+<p><b>Speed on free tiers.</b> Text checks 1.8–3.6 s; image checks about 6 s, over the 5 s target because OCR alone takes ~3.8 s on the shared CPU. The first check after a restart fell from ~20 s to 4.6 s by loading the privacy model at startup.</p>
+<p><b>Build log.</b> Every one of the 24 tasks was evaluated against real runs, and each assumption that failed is recorded with what replaced it (<i>docs/build-log.md</i>).</p>
+</div>
+</div>
+
+<h3>Round 1 commitments for Round 2: met and not met</h3>
+<table>
+  <tr><th style="width:40%">Round 1 said</th><th>Round 2</th></tr>
+  <tr><td>v1 of all three improvements</td><td><span class="tag t-ok">Met</span> Evidence or silence; fixes from approved wording with the intent lock (10/10 live posts kept intent, 0 invented claims); guideline health v1</td></tr>
+  <tr><td>§6.7 recall ≥ 80% on seeded claim issues (held-out set)</td><td><span class="tag t-major">Partly</span> 13 / 14 claim and fact labels (93%) on the builder's dev set; no held-out set yet</td></tr>
+  <tr><td>§6.7 ≥ 90/100 citations correct, checked by a person</td><td><span class="tag t-major">Partly</span> 52 / 52 valid, checked automatically only</td></tr>
+  <tr><td>§3.5 interviews and survey; §3.2 human raters; §6.7 held-out labellers; §4.6 tester back-test; §8/§10 user tests with 6 people</td><td><span class="tag t-block">Not done</span> No work with other people was done in Round 2, and no AI-simulated persona stands in for it. Hypotheses H1–H6 were checked against published surveys instead (below). All of it moves to Round 3</td></tr>
+  <tr><td>Second approver and publish gate in Round 3</td><td><span class="tag t-ok">Ahead</span> The second approver shipped in Round 2, enforced in the database</td></tr>
+</table>
+
+<h3>Desk research in place of interviews (labelled as such)</h3>
+<table>
+  <tr><th style="width:34%">Hypothesis</th><th style="width:13%">Verdict</th><th>Strongest public evidence, and its limit</th></tr>
+  <tr><td>H1 Most review time goes on mechanical issues</td><td><span class="tag t-major">Partly</span></td><td>ASCI, Feb 2025: 69 of India's top 100 influencers broke disclosure rules (56.8% no label, 43.2% buried in hashtags), and 59 of 69 fixed it without contest. Doesn't measure reviewer time.</td></tr>
+  <tr><td>H2 Creators prefer an editable suggested fix</td><td><span class="tag t-grey">Weak</span></td><td>GitHub, May–Jul 2024: suggested fixes resolved code alerts in a median 28 min vs 1.5 h. Vendor data, another profession, speed not preference.</td></tr>
+  <tr><td>H3 Teams interpret some rules differently</td><td><span class="tag t-major">Partly</span></td><td>Lucidpress 2019: 81% of 200+ organisations deal with off-brand content; ASCI: 43.2% of violations had a disclosure, placed wrongly. Not the "name three rules" test.</td></tr>
+  <tr><td>H4 Claim evidence lives in email and spreadsheets</td><td><span class="tag t-grey">No evidence</span></td><td>None found; pharma uses dedicated claims libraries, so likely false there.</td></tr>
+  <tr><td>H5 Pay per organisation, not per seat</td><td><span class="tag t-grey">No evidence</span></td><td>Comparable tools price per user, flat or by usage; says nothing about buyer preference.</td></tr>
+  <tr><td>H6 The synthetic panel's conditions matter</td><td><span class="tag t-major">Partly</span></td><td>Salesforce: 41% of CMOs name data exposure their top AI concern; 31% of 1,000+ marketers rank accuracy first. Supports code-only confidential facts and evidence or silence.</td></tr>
+</table>
+
+<h3>Changes from Round 1</h3>
+<table>
+  <tr><th style="width:36%">Round 1 said</th><th style="width:34%">Round 2 does</th><th>Why</th></tr>
+  <tr><td>Anthropic Claude API (Haiku extracts, Opus judges)</td><td>Open-weight Qwen3.8-27B and GPT-OSS on Groq; Gemini Flash fallback</td><td>₹0 budget; open weights enable self-hosting</td></tr>
+  <tr><td>Paid model API with redacted brand data</td><td>Free tiers, fictional data only</td><td>Free tiers may use inputs</td></tr>
+  <tr><td>Supabase Pro; a paid 2 GB worker</td><td>Free tiers, kept awake by a database cron job every 10 min</td><td>₹0; images run slower on the free CPU</td></tr>
+  <tr><td>Audit chain head e-mailed daily</td><td>Chain verified in the app and exportable</td><td>External anchor moved to Round 3</td></tr>
+  <tr><td>Postgres full-text search for facts</td><td>In-memory fuzzy matching</td><td>40 facts; full-text search when the ledger grows</td></tr>
+  <tr><td>Back-test on reviewer decisions</td><td>Synthetic history, labelled in the app</td><td>No real decisions yet</td></tr>
+  <tr><td>Creators see org-wide insights; any owner edits any rule</td><td>Own work only; each function edits only its own rules (both enforced in the database)</td><td>Round 1's own permissions table (§4.5), caught during the build</td></tr>
+</table>
+
+<div class="avoid">
+<h3>Three improvements for Round 3</h3>
+<div class="grid3 impr">
+  <div class="card"><h4>Claim recall and live-post watch</h4>When a fact expires or changes, every published asset using it gets an update-or-withdraw task; published URLs are re-checked against the approved version; claims inside images are checked.<span class="target">Measured on the human-labelled held-out set and ASCI decisions</span></div>
+  <div class="card"><h4>Fixes where creators work</h4>Slack results, a no-login agency link with expiry and rate limits, a publish-gate API, and DOCX tracked changes.<span class="target">0 invented claims in a 200-fix audit; ≥ 70% of fixes accepted by real writers</span></div>
+  <div class="card"><h4>Self-learning guidelines and confidential mode</h4>Automated rule graduation with undo, AI-drafted clarifications from real decisions, and a self-hosted open-weight Qwen mode.<span class="target">Top-5 "may be unclear" includes ≥ 2 of testers' 3 most confusing rules</span></div>
+</div>
+</div>
+
+<p class="small" style="margin-top:2.5mm"><b>AI-use disclosure.</b> Built with Claude Code (Anthropic) as a coding assistant, under my direction: I chose the design and every trade-off, reviewed the changes, ran and judged the evaluations, and am the sole author of every commit. The dev set and the fictional Aurelle data were drafted with the assistant. At runtime Plumbline uses open-weight models on Groq with Gemini as a fallback, on fictional data only.</p>
+</div>

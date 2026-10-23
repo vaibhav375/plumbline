@@ -9,6 +9,7 @@ one-call AI baseline with the whole brand book found 18 (55%).
 - **How I know it works:** https://plumbline-pes1ug23cs665s-projects.vercel.app/about
 - **Status:** https://plumbline-pes1ug23cs665s-projects.vercel.app/status
 - **Checker API:** https://plumbline-checker.onrender.com/docs
+- **Round 2 PDF:** [docs/AtoZ_Plumbline_Round2.pdf](docs/AtoZ_Plumbline_Round2.pdf) (Round 2 progress, then the Round 1 plan unchanged)
 
 Demo runs on free model tiers using fictional data only; production uses paid no-training tiers or
 self-hosted Qwen. Aurelle Skin is a fictional brand.
