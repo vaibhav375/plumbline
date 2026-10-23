@@ -229,7 +229,7 @@ test("guideline health shows unclear rules and graduation status", async ({ page
 // Plan Task 20, scenario 4: the image accessibility floor, end to end.
 test("an image without alt text or enough contrast is caught", async ({ page }) => {
   await signInAs(page, "Creator");
-  await page.getByLabel("Upload a file").setInputFiles(path.join(__dirname, "../../../supabase/seed/aurelle/banner_v1.png"));
+  await page.getByLabel("Upload a file", { exact: true }).setInputFiles(path.join(__dirname, "../../../supabase/seed/aurelle/banner_v1.png"));
   await expect(page.getByLabel(/Alt text: what must someone who can.t see this image learn from it\?/)).toBeVisible();
   await page.getByRole("button", { name: "Check", exact: true }).click();
 

@@ -713,3 +713,47 @@ Task 14 must map them back before `validate_findings` checks the quote against t
   real decisions on submitted content, so they stay.
 - Thresholds (0.80, 0.25, n ≥ 10) are constants in `health.py`, not per-org settings.
 - Graduation is a status only; changing a rule's maturity is still a rulebook edit (import).
+
+## Task 20: image accessibility floor, end to end
+
+| Check | Evidence | Result |
+|---|---|---|
+| Plan's e2e scenario 4 | live: Creator uploads `banner_v1.png` with the alt-text box empty → a "Mandatory accessibility" A11Y-CONTRAST finding containing "1.96:1", and an A11Y-ALT finding: "No alt text… What must someone who can't see this image learn from it?" | Pass |
+| Alt text on upload (plan Step 3) | same e2e: typing alt text and re-checking removes A11Y-ALT, contrast stays; `test_image_upload_with_alt_text_or_decorative_has_no_alt_finding`; `test_image_upload_carries_the_writers_alt_text` (trimmed; blank counts as none) | Pass |
+| Box overlay | contrast findings carry the OCR box in original pixels (`test_contrast_banner`: `bbox == ocr block bbox`); the overlay places it as a percentage of the image's natural size. Live screenshot: box 1 sits on "GLOW IN 2 WEEKS" | Pass |
+| Tier on every finding | `test_image_upload_without_alt_text_asks_for_it` (`tier == "mandatory"`, category accessibility); set once in `run_check` from the rulebook, so AI and claim findings get it too | Pass |
+| Plumbline never writes alt text | A11Y-ALT keeps `fix.kind == "none"` (`test_alt_text_missing_blocking`); the input's placeholder says the check will ask | Pass |
+| Stale cache can't hide the change | the report cache key hashes the whole document (incl. each image's alt text and decorative flag) and the code version | Pass (by construction) |
+| All e2e tests on the live site | 12/12 (2.6 min) | Pass |
+| Suites | `make test` 226 passed; web `tsc` and ESLint clean | Pass |
+
+**Assumptions that didn't hold, and what replaced them**
+- *An alt-text box is enough.* A purely decorative image would then always carry a blocking
+  A11Y-ALT finding that can't be dismissed, so it could never be submitted without inventing alt
+  text. **Alternative:** a "Decorative only" checkbox (WCAG 1.1.1 allows empty alt for decoration);
+  the engine already skipped decorative images.
+- *Findings can be drawn on the image as they are.* Findings had an `image_id` but no box; contrast
+  findings now carry the OCR block's `bbox`.
+- *One contrast finding per image.* The id was `A11Y-CONTRAST@img1`, so two low-contrast blocks on
+  one image would have collided (and shared one decision). The box's position is now part of the id.
+- *`make types` gives the web the new fields.* It reads the deployed API, which didn't have them yet;
+  types are generated from the local app's schema instead (the file had also fallen behind Tasks 16-19).
+- *e2e selector `getByLabel("Upload a file")`.* It also matched the draft box ("Paste a post, or upload
+  a file"); now exact.
+
+**Latency (measured, not fixed here)**
+- Render, uncontended: banner check 6.2–6.8 s wall (pipeline 0.7–0.8 s); text check 3.5 s wall
+  (pipeline 1.3 s); `/health` round trip 0.28 s. One run took 28 s, of which 22 s was inside the
+  pipeline (a slow AI call), not image work.
+- Locally the whole OCR takes 0.30 s; on Render's shared CPU it is ~3.5 s (image minus text overhead).
+  Shrinking the image to 720 px saves nothing locally and garbles the text ("2 \WEEKS"), so it's not
+  the fix.
+- Task 6 measured 4.8 s for the banner; the growth is the ~2 s every check now spends outside the
+  pipeline (rulebook load, then saving version, findings and cache one after another), added by later
+  tasks. **For Task 23:** overlap the rulebook load with parsing/OCR and batch the saves; re-measure
+  against the < 5 s target.
+
+**Limits**
+- Overlays are drawn only for an image uploaded on its own; images inside DOCX are checked (alt text
+  from the document) but there's no thumbnail of them.
+- "Apply fixes & re-check" re-checks text, so an uploaded image doesn't carry over (Task 15 limit).

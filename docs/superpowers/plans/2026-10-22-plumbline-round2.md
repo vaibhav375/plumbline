@@ -724,11 +724,11 @@ def required_stages(findings: list[Finding]) -> list[Literal["first","compliance
 - Modify: `apps/web/app/check/page.tsx` (image upload and thumbnails, with each finding's bbox drawn as an overlay)
 - Test: e2e scenario 4
 
-- [ ] **Step 1:** Write the failing e2e test: upload `banner_v1.png` → expect a "Mandatory accessibility" finding containing "1.96:1", and a "No alt text" finding containing the question "What must someone who can't see this image learn from it?"
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Implement. For images uploaded on their own, provide an alt-text input on upload; leaving it empty creates the finding.
-- [ ] **Step 4:** Run. Expected: PASS.
-- [ ] **Step 5:** Commit: `feat(images): accessibility floor in UI`.
+- [x] **Step 1:** Write the failing e2e test: upload `banner_v1.png` → expect a "Mandatory accessibility" finding containing "1.96:1", and a "No alt text" finding containing the question "What must someone who can't see this image learn from it?"
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Implement. For images uploaded on their own, provide an alt-text input on upload; leaving it empty creates the finding.
+- [x] **Step 4:** Run. Expected: PASS.
+- [x] **Step 5:** Commit: `feat(images): accessibility floor in UI`.
 
 ### Task 21: Evaluation harness and "How I know it works" page
 
