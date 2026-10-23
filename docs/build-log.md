@@ -911,3 +911,46 @@ Plumbline run) and counted as finding nothing. That is why the published run has
 - Saving a check is still 6 sequential inserts (~0.6–1 s). One database function could do it in one
   round trip; left alone this close to submission because it touches RLS and the audit triggers.
 - Render's own logs weren't inspected (no access from here); the structured log line is tested locally.
+
+## Task 24: submission package and pre-submission audit
+
+**Package:** `README.md` (pitch with the headline number, problem with a cited fact, what it does, how
+it works with a diagram, results against the baseline with a negative result, limits, run it, AI-use
+disclosure); `docs/features.md`; `docs/changes-from-round1.md`; `docs/desk-research.md`;
+`docs/round3-improvements.md`; `docs/submission-form.md` (paste-ready answers); `docs/AtoZ_Plumbline_Round2.pdf`
+(24 pages: a 3-page Round 2 progress section, then the Round 1 plan unchanged; `make pdf`, headless
+Chrome as in Round 1).
+
+**Pre-submission audit (hackathon-coach, all 11 items)**
+
+| # | Item | Evidence | Result |
+|---|---|---|---|
+| 1 | Numbers on screen match their source | read live as Compliance, recomputed in raw SQL as admin: chain 998 events = 998, 0 broken; unclear rules TN-03, TN-01 = SQL with the database's own Wilson function; facts 40 / 1 expired / 3 unverified = SQL (IST date); recall 94% = 31/33 in `latest.json` | Pass |
+| 2 | Labels say what is counted | results cards name their base ("of labelled problems", "findings on labelled posts", "clean controls"); audit shows "latest 200 of N"; health says "all submitted content" or "your submitted drafts only" | Pass |
+| 3 | Small samples say so | health shows "Too few decisions (n < 10)"; every eval figure has its count and 95% interval; desk research verdicts are hedged with limits | Pass |
+| 4 | Times and dates | audit, facts, status and replay in IST. **Fixed:** the results page printed the eval date by slicing a UTC timestamp; the run was 23:43 IST, 17 minutes from showing the wrong day. Now formatted in IST with the time | Pass after fix |
+| 5 | Old data in the current format | `latest.json` and the replay sample were produced by the current formats. The eval ran at a7beb93, before Tasks 22–23 (UI, operations, and skipping rate-limited models at once); the check logic didn't change, so it was not re-run, and its time and commit are stated where it is cited | Pass, disclosed |
+| 6 | Health metrics honest | guideline health counts every decision on submitted content (e2e decisions included, they are real ones) and says it includes synthetic history; private pre-checks never count | Pass |
+| 7 | AI assistant answers follow the UI's rules | the product has no chat assistant | n/a |
+| 8 | Links and endpoints work, errors use proper codes | every page and doc link opened in fresh (private) contexts on a phone profile and at 1280 px: all load, expected content, no overflow, no console errors; checker 404s unknown routes; signed-out visitors to private pages go to login | Pass |
+| 9 | Docs, PDF and form use the live numbers | the 14 headline figures (31/33, 94%, 18/33, 55%, 31/39, 79%, 49%, 1/10, 4/10, CI 80–98%, 240/17/18 tests, 28 rules) appear identically in the README, PDF section and form answers | Pass |
+| 10 | Repo hygiene | none of the 16 secret values in `secrets.env` appear anywhere in git history (only public pooler hostnames); no Groq or Google keys, JWTs or DB URLs with passwords; `.env` files ignored; 51/51 commits by vaibhav375 with no AI trailers; no editor or agent config folders; largest file the 1.3 MB Round 1 PDF | Pass |
+| 11 | No pushes after the deadline | repo created 22 Oct 11:31 IST (inside the window); tag `round2-submission` and the push freeze are the last step, after the stranger test | Pending |
+
+**Assumptions that didn't hold, and what replaced them**
+- *The plan's secret scan (`grep "sk_|eyJ|gsk_|AIza"`) shows secrets.* It returned 32 hits, all false
+  positives (`risk_order`, `mask_confidential`). Replaced by searching history for each real secret value
+  and for key-shaped patterns.
+- *Round 1's Round 2 commitments were only the features.* Reading every "Round 2" mention in the Round 1
+  PDF found five commitments that needed other people (interviews and survey, human raters, held-out
+  labellers, a tester back-test, user tests). None were done. They are listed as not done, with
+  published-survey desk research for H1–H6 in place of the interviews, labelled as such; no AI persona
+  stands in for people (the user proposed agents; Round 1 itself had ruled them out as evidence).
+- *"No-training model tiers" and similar phrasings were Round 1's words.* Checked against the PDF: Round 1
+  planned the Claude API (Haiku, Opus), Supabase Pro and a paid 2 GB worker; the changes table quotes those.
+- *The dev set was "written by me".* It was drafted with the coding assistant; the README, PDF and form
+  say so, and that its labels were frozen before any model run.
+
+**Open for the user**
+- The stranger test (Task 22, Step 4).
+- Tag `round2-submission` and stop pushing before 25 Oct 08:00 IST.

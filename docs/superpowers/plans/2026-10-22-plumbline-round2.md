@@ -816,10 +816,10 @@ def required_stages(findings: list[Finding]) -> list[Literal["first","compliance
 2. **Fixes where creators work** (Fixes that keep intent): Slack results, a no-login agency link (expiry, rate limits), a publish-gate API, and DOCX tracked changes.
 3. **Self-learning guidelines and confidential mode** (Guidelines get clearer): automated rule graduation, AI-drafted rule clarifications from real decisions, and a self-hosted open-weight Qwen mode, so confidential launches never leave the customer's servers.
 
-- [ ] **Step 1:** Run the pre-submission audit (hackathon-coach `references/execution.md` § Pre-submission audit, all 11 items). Recompute 3 numbers on screen from the database or `latest.json`.
-- [ ] **Step 2:** Scan for secrets: `git log -p | grep -iE "sk_|eyJ|gsk_|AIza"` returns nothing. `.env` is ignored.
-- [ ] **Step 3:** Open every link in a private window on a phone and on a laptop.
-- [ ] **Step 4:** The submission form text uses the same numbers as the README, the PDF and the live product.
+- [x] **Step 1:** Run the pre-submission audit (hackathon-coach `references/execution.md` § Pre-submission audit, all 11 items). Recompute 3 numbers on screen from the database or `latest.json`.
+- [x] **Step 2:** Scan for secrets: `git log -p | grep -iE "sk_|eyJ|gsk_|AIza"` returns nothing. `.env` is ignored.
+- [x] **Step 3:** Open every link in a private window on a phone and on a laptop.
+- [x] **Step 4:** The submission form text uses the same numbers as the README, the PDF and the live product.
 - [ ] **Step 5:** Commit and tag `round2-submission` before 25 Oct 08:00 IST. Then stop pushing.
 
 ---
