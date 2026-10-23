@@ -20,6 +20,8 @@ export async function AppHeader({ title, subtitle }: { title: string; subtitle: 
     <header className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <nav aria-label="Main" className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
+          {profile && (
+            <>
           <Link href="/check" className="underline-offset-4 hover:underline">Check content</Link>
           <Link href="/rules" className="underline-offset-4 hover:underline">Rulebook</Link>
           <Link href="/facts" className="underline-offset-4 hover:underline">Facts</Link>
@@ -28,12 +30,19 @@ export async function AppHeader({ title, subtitle }: { title: string; subtitle: 
             <Link href="/review" className="underline-offset-4 hover:underline">Review queue</Link>
           )}
           <Link href="/audit" className="underline-offset-4 hover:underline">Audit log</Link>
+            </>
+          )}
+          <Link href="/about" className="underline-offset-4 hover:underline">How I know it works</Link>
         </nav>
         <div className="flex items-center gap-3">
           {profile && <RoleBadge name={profile.display_name} role={profile.role} />}
-          <form action={signOut}>
-            <Button type="submit" variant="ghost" size="sm">Sign out</Button>
-          </form>
+          {profile ? (
+            <form action={signOut}>
+              <Button type="submit" variant="ghost" size="sm">Sign out</Button>
+            </form>
+          ) : (
+            <Link href="/login" className="text-sm underline-offset-4 hover:underline">Sign in</Link>
+          )}
         </div>
       </div>
       <div>

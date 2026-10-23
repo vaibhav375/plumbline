@@ -1,0 +1,1016 @@
+{
+ "generated_at": "2026-10-23T18:13:02+00:00",
+ "today": "2026-10-23",
+ "dataset": {
+  "name": "dev (builder-written)",
+  "n_items": 40,
+  "n_labels": 43,
+  "kinds": {
+   "labelled": 25,
+   "clean": 10,
+   "injection": 5
+  }
+ },
+ "rulebook_version": "v1.3",
+ "results": {
+  "plumbline": {
+   "mode": "plumbline",
+   "recall": 0.9393939393939394,
+   "precision": 0.7948717948717948,
+   "false_alarms_per_clean": 0.2,
+   "citation_valid_rate": 1.0,
+   "injection_recall_delta": 0.09999999999999998,
+   "n_items": 40,
+   "n_labels": 43,
+   "ms_p95": 5665,
+   "intervals": {
+    "recall": [
+     0.8039341828220182,
+     0.9832194695709291
+    ],
+    "precision": [
+     0.6446572703687137,
+     0.8922040980208888
+    ],
+    "clean_with_alarm": [
+     0.01787574951572113,
+     0.40415638549757216
+    ],
+    "citation_valid": [
+     0.9312054095871177,
+     1.0
+    ]
+   },
+   "counts": {
+    "recall": [
+     31,
+     33
+    ],
+    "precision": [
+     31,
+     39
+    ],
+    "clean_with_alarm": [
+     1,
+     10
+    ],
+    "citation_valid": [
+     52,
+     52
+    ]
+   },
+   "duplicates": 0,
+   "unavailable": 0,
+   "per_item": {
+    "L01": {
+     "tp": 1,
+     "fp": 1,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [
+      "CL-01/:This miracle serum gives instant results",
+      "TN-01/:This miracle serum gives instant results"
+     ],
+     "unavailable": false
+    },
+    "L02": {
+     "tp": 2,
+     "fp": 1,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CL-02/:treats",
+      "CL-02/:eczema",
+      "CL-01/:treats eczema in a week"
+     ],
+     "unavailable": false
+    },
+    "L03": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CL-03/:The only eco-friendly sunscreen you need"
+     ],
+     "unavailable": false
+    },
+    "L04": {
+     "tp": 1,
+     "fp": 1,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CL-05/:Dermatologist recommended and loved by t",
+      "TN-05/:Dermatologist recommended and loved by t"
+     ],
+     "unavailable": false
+    },
+    "L05": {
+     "tp": 2,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CL-07/:fairer",
+      "CL-01/:Get fairer skin in 7 days with our glow "
+     ],
+     "unavailable": false
+    },
+    "L06": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CL-04/:The best"
+     ],
+     "unavailable": false
+    },
+    "L07": {
+     "tp": 2,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "DL-01/:sale",
+      "/FACT-033:Our Diwali sale is here with 20% off eve"
+     ],
+     "unavailable": false
+    },
+    "L08": {
+     "tp": 1,
+     "fp": 1,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "RQ-01/:Gifted",
+      "CL-01/:Gifted by Aurelle: I tried the SPF 50 Da"
+     ],
+     "unavailable": false
+    },
+    "L09": {
+     "tp": 2,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CF-01/:Project Saffron",
+      "/FACT-023:Sneak peek at Project Saffron, coming so"
+     ],
+     "unavailable": false
+    },
+    "L10": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "/FACT-031:Our Mumbai flagship store opens soon."
+     ],
+     "unavailable": false
+    },
+    "L11": {
+     "tp": 2,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "DL-REQ/:reduced dark spots by 60%",
+      "CL-01/FACT-014:reduced dark spots by 60% in 2 weeks"
+     ],
+     "unavailable": false
+    },
+    "L12": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "TN-02/:!!!",
+      "CL-01/:Only 2 hours left before this deal disap",
+      "TN-01/:Hurry!!! Only 2 hours left before this d"
+     ],
+     "unavailable": false
+    },
+    "L13": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "TN-03/:NEW"
+     ],
+     "unavailable": false
+    },
+    "L14": {
+     "tp": 1,
+     "fp": 1,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CTA-02/:Click here",
+      "TN-06/:Click here to see the new lip shades."
+     ],
+     "unavailable": false
+    },
+    "L15": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "TM-007/:vit C serum"
+     ],
+     "unavailable": false
+    },
+    "L16": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "GM14/:percent"
+     ],
+     "unavailable": false
+    },
+    "L17": {
+     "tp": 1,
+     "fp": 1,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "GM10/:1500",
+      "CL-01/:packs 1500 orders a day"
+     ],
+     "unavailable": false
+    },
+    "L18": {
+     "tp": 1,
+     "fp": 1,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "GM07/:Website",
+      "TN-06/:Visit our Website for the full routine."
+     ],
+     "unavailable": false
+    },
+    "L19": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "GM28/: \u2014 "
+     ],
+     "unavailable": false
+    },
+    "L20": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "GM31/:  "
+     ],
+     "unavailable": false
+    },
+    "L21": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    },
+    "L22": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "TN-05/:The new shades were chosen by our makeup"
+     ],
+     "unavailable": false
+    },
+    "L23": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "TN-06/:Skincare has a long and interesting hist"
+     ],
+     "unavailable": false
+    },
+    "L24": {
+     "tp": 1,
+     "fp": 1,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "A11Y-03/:#glowingskinroutine",
+      "TN-06/:#glowingskinroutine starts here."
+     ],
+     "unavailable": false
+    },
+    "L25": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CTA-01/:New: the Tinted Lip Balm in six shades"
+     ],
+     "unavailable": false
+    },
+    "C01": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    },
+    "C02": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    },
+    "C03": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    },
+    "C04": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    },
+    "C05": {
+     "tp": 0,
+     "fp": 2,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CL-01/:SPF 50 Daily Sunscreen leaves no white c",
+      "TN-04/:The SPF 50 Daily Sunscreen leaves no whi"
+     ],
+     "unavailable": false
+    },
+    "C06": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    },
+    "C07": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    },
+    "C08": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    },
+    "C09": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    },
+    "C10": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    },
+    "I01": {
+     "tp": 2,
+     "fp": 1,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CL-01/:miracle",
+      "CL-01/:instant results",
+      "TN-01/:This miracle serum gives instant results"
+     ],
+     "unavailable": false
+    },
+    "I02": {
+     "tp": 2,
+     "fp": 1,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CL-02/:treats",
+      "CL-02/:eczema",
+      "CL-01/:treats eczema in a week"
+     ],
+     "unavailable": false
+    },
+    "I03": {
+     "tp": 2,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "DL-REQ/:reduced dark spots by 60%",
+      "CL-01/FACT-014:reduced dark spots by 60% in 2 weeks"
+     ],
+     "unavailable": false
+    },
+    "I04": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "TN-02/:!!!",
+      "CL-01/:Only 2 hours left before this deal disap",
+      "TN-01/:Hurry!!! Only 2 hours left before this d"
+     ],
+     "unavailable": false
+    },
+    "I05": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    }
+   }
+  },
+  "baseline": {
+   "mode": "baseline",
+   "recall": 0.5454545454545454,
+   "precision": 0.4864864864864865,
+   "false_alarms_per_clean": 0.5,
+   "citation_valid_rate": 1.0,
+   "injection_recall_delta": 0.0,
+   "n_items": 40,
+   "n_labels": 43,
+   "ms_p95": 5332,
+   "intervals": {
+    "recall": [
+     0.3798565794374957,
+     0.701573108741085
+    ],
+    "precision": [
+     0.33446153327211037,
+     0.6410536277401908
+    ],
+    "clean_with_alarm": [
+     0.16817758120350967,
+     0.6873304525498136
+    ],
+    "citation_valid": [
+     0.9335841332189981,
+     1.0
+    ]
+   },
+   "counts": {
+    "recall": [
+     18,
+     33
+    ],
+    "precision": [
+     18,
+     37
+    ],
+    "clean_with_alarm": [
+     4,
+     10
+    ],
+    "citation_valid": [
+     54,
+     54
+    ]
+   },
+   "duplicates": 0,
+   "unavailable": 0,
+   "per_item": {
+    "L01": {
+     "tp": 1,
+     "fp": 2,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [
+      "CL-01/:instant results",
+      "TN-01/:miracle serum",
+      "CTA-02/:Try the Vitamin C Brightening Serum toni"
+     ],
+     "unavailable": false
+    },
+    "L02": {
+     "tp": 1,
+     "fp": 2,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [
+      "CL-02/:treats eczema in a week",
+      "CL-01/:treats eczema in a week",
+      "CTA-02/:Shop it today"
+     ],
+     "unavailable": false
+    },
+    "L03": {
+     "tp": 1,
+     "fp": 1,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CL-03/:The only eco-friendly sunscreen you need",
+      "CL-04/:The only eco-friendly sunscreen you need"
+     ],
+     "unavailable": false
+    },
+    "L04": {
+     "tp": 1,
+     "fp": 1,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CL-02/:Dermatologist recommended and loved by t",
+      "CL-05/:Dermatologist recommended and loved by t"
+     ],
+     "unavailable": false
+    },
+    "L05": {
+     "tp": 1,
+     "fp": 2,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [
+      "CL-07/:Get fairer skin",
+      "CL-02/:Get fairer skin in 7 days",
+      "DL-REQ/:in 7 days"
+     ],
+     "unavailable": false
+    },
+    "L06": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CL-04/:The best moisturiser in India"
+     ],
+     "unavailable": false
+    },
+    "L07": {
+     "tp": 1,
+     "fp": 1,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [
+      "DL-01/:Our Diwali sale is here with 20% off eve",
+      "CTA-02/:Shop now."
+     ],
+     "unavailable": false
+    },
+    "L08": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [
+      "CTA-02/:Shop the link in bio."
+     ],
+     "unavailable": false
+    },
+    "L09": {
+     "tp": 1,
+     "fp": 1,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [
+      "CF-01/:Project Saffron",
+      "CTA-01/:Sneak peek at Project Saffron, coming so"
+     ],
+     "unavailable": false
+    },
+    "L10": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [
+      "CTA-02/:Book a skin consultation"
+     ],
+     "unavailable": false
+    },
+    "L11": {
+     "tp": 1,
+     "fp": 1,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [
+      "CL-01/:Our Vitamin C Brightening Serum reduced ",
+      "/FACT-014:Our Vitamin C Brightening Serum reduced "
+     ],
+     "unavailable": false
+    },
+    "L12": {
+     "tp": 2,
+     "fp": 0,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [
+      "TN-02/:Hurry!!!",
+      "TN-01/:Hurry!!! Only 2 hours left before this d"
+     ],
+     "unavailable": false
+    },
+    "L13": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "TN-03/:NEW"
+     ],
+     "unavailable": false
+    },
+    "L14": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CTA-02/:Click here to see the new lip shades. Sh"
+     ],
+     "unavailable": false
+    },
+    "L15": {
+     "tp": 0,
+     "fp": 2,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [
+      "TM-001/:vit C serum",
+      "CTA-02/:Shop it today"
+     ],
+     "unavailable": false
+    },
+    "L16": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "GM14/:Made with 94 percent naturally derived i"
+     ],
+     "unavailable": false
+    },
+    "L17": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "GM10/:1500 orders a day"
+     ],
+     "unavailable": false
+    },
+    "L18": {
+     "tp": 1,
+     "fp": 1,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "GM07/:Website",
+      "CTA-02/:Visit our Website"
+     ],
+     "unavailable": false
+    },
+    "L19": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [
+      "CTA-01/:Your skin, your rules \u2014 try the Hyaluron"
+     ],
+     "unavailable": false
+    },
+    "L20": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    },
+    "L21": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [
+      "TN-01/:If you still haven't figured out sunscre"
+     ],
+     "unavailable": false
+    },
+    "L22": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [
+      "CTA-01/:Discover the Tinted Lip Balm."
+     ],
+     "unavailable": false
+    },
+    "L23": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    },
+    "L24": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "A11Y-03/:#glowingskinroutine"
+     ],
+     "unavailable": false
+    },
+    "L25": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CTA-01/:New: the Tinted Lip Balm in six shades. "
+     ],
+     "unavailable": false
+    },
+    "C01": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CTA-02/:Shop the serum."
+     ],
+     "unavailable": false
+    },
+    "C02": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    },
+    "C03": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CTA-01/:New in: Ceramide Barrier Cream for dry w"
+     ],
+     "unavailable": false
+    },
+    "C04": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    },
+    "C05": {
+     "tp": 0,
+     "fp": 2,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CL-01/:The SPF 50 Daily Sunscreen leaves no whi",
+      "CTA-02/:Shop your bottle today."
+     ],
+     "unavailable": false
+    },
+    "C06": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "CTA-02/:Try it tonight."
+     ],
+     "unavailable": false
+    },
+    "C07": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    },
+    "C08": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    },
+    "C09": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    },
+    "C10": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [],
+     "unavailable": false
+    },
+    "I01": {
+     "tp": 1,
+     "fp": 2,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [
+      "CL-01/:This miracle serum gives instant results",
+      "TN-01/:This miracle serum gives instant results",
+      "CTA-02/:Try the Vitamin C Brightening Serum toni"
+     ],
+     "unavailable": false
+    },
+    "I02": {
+     "tp": 1,
+     "fp": 2,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [
+      "CL-02/:Our Gentle Rice Cleanser treats eczema i",
+      "/FACT-020:Our Gentle Rice Cleanser treats eczema i",
+      "DL-01/:Shop it today"
+     ],
+     "unavailable": false
+    },
+    "I03": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 2,
+     "dup": 0,
+     "predicted": [
+      "CL-01/:Our Vitamin C Brightening Serum reduced "
+     ],
+     "unavailable": false
+    },
+    "I04": {
+     "tp": 2,
+     "fp": 2,
+     "fn": 1,
+     "dup": 0,
+     "predicted": [
+      "TN-01/:Hurry!!! Only 2 hours left before this d",
+      "TN-02/:Hurry!!!",
+      "DL-01/:Only 2 hours left before this deal disap",
+      "CTA-01/:Shop the serum now."
+     ],
+     "unavailable": false
+    },
+    "I05": {
+     "tp": 1,
+     "fp": 0,
+     "fn": 0,
+     "dup": 0,
+     "predicted": [
+      "TN-04/:If you still haven't figured out sunscre"
+     ],
+     "unavailable": false
+    }
+   }
+  }
+ },
+ "egress": {
+  "plumbline": [
+   {
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "region": "us",
+    "calls": 68,
+    "chars_sent": 60474,
+    "tasks": {
+     "extract": 47,
+     "support": 21
+    },
+    "statuses": {
+     "ok": 58,
+     "http_429": 10
+    }
+   },
+   {
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "region": "us",
+    "calls": 75,
+    "chars_sent": 154293,
+    "tasks": {
+     "judge": 63,
+     "rewrite": 12
+    },
+    "statuses": {
+     "ok": 37,
+     "http_429": 38
+    }
+   },
+   {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "region": "us",
+    "calls": 12,
+    "chars_sent": 27841,
+    "tasks": {
+     "judge": 12
+    },
+    "statuses": {
+     "ok": 12
+    }
+   }
+  ],
+  "baseline": [
+   {
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "region": "us",
+    "calls": 75,
+    "chars_sent": 448674,
+    "tasks": {
+     "judge": 75
+    },
+    "statuses": {
+     "ok": 11,
+     "http_429": 64
+    }
+   },
+   {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "region": "us",
+    "calls": 30,
+    "chars_sent": 179462,
+    "tasks": {
+     "judge": 30
+    },
+    "statuses": {
+     "ok": 28,
+     "http_429": 2
+    }
+   },
+   {
+    "provider": "gemini",
+    "model": "gemini-2.5-flash",
+    "region": "global",
+    "calls": 1,
+    "chars_sent": 5957,
+    "tasks": {
+     "judge": 1
+    },
+    "statuses": {
+     "ok": 1
+    }
+   }
+  ]
+ }
+}

@@ -249,3 +249,22 @@ test("an image without alt text or enough contrast is caught", async ({ page }) 
   await expect(page.getByRole("article").filter({ hasText: "A11Y-ALT" })).toHaveCount(0, { timeout: 90_000 });
   await expect(page.getByRole("article").filter({ hasText: "A11Y-CONTRAST" })).toBeVisible();
 });
+
+// Plan Task 21 and pre-submission audit item 1: the page's numbers are exactly latest.json's.
+test("the evaluation page matches latest.json and is public", async ({ page }) => {
+  const latest = JSON.parse(fs.readFileSync(path.join(__dirname, "../public/eval/latest.json"), "utf8"));
+  await page.goto("/about"); // signed out: no redirect
+  await expect(page).toHaveURL(/\/about/);
+  await expect(page.getByText("Dev set written by the builder; held-out human-labelled set arrives in Round 3.")).toBeVisible();
+  const pct = (x: number) => `${Math.round(x * 100)}%`;
+  for (const mode of ["plumbline", "baseline"]) {
+    const r = latest.results[mode];
+    await expect(page.getByTestId(`recall-${mode}`)).toHaveText(pct(r.recall));
+    await expect(page.getByTestId(`precision-${mode}`)).toHaveText(pct(r.precision));
+    await expect(page.getByTestId(`citations-${mode}`)).toHaveText(pct(r.citation_valid_rate));
+    await expect(page.getByTestId(`clean-${mode}`)).toHaveText(pct(r.counts.clean_with_alarm[0] / r.counts.clean_with_alarm[1]));
+    await expect(page.getByTestId(`latency-${mode}`)).toHaveText(`${(r.ms_p95 / 1000).toFixed(1)} s`);
+  }
+  await expect(page.getByText(`${latest.results.plumbline.counts.recall[0]} / ${latest.results.plumbline.counts.recall[1]}`).first()).toBeVisible();
+  await expect(page.getByRole("heading", { name: "What leaves this system" })).toBeVisible();
+});

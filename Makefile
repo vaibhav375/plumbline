@@ -2,7 +2,7 @@ SECRETS ?= /Volumes/Plumbline/secrets.env
 CHECKER = services/checker
 CHECKER_URL ?= https://plumbline-checker.onrender.com
 
-.PHONY: env types doctor test test-db db-push-test db-push seed lint dev-checker dev-web e2e
+.PHONY: env types doctor test test-db db-push-test db-push seed lint dev-checker dev-web e2e eval
 
 e2e:
 	pnpm -C apps/web exec playwright test
@@ -21,6 +21,10 @@ types:
 
 doctor:
 	cd $(CHECKER) && uv run --env-file .env python scripts/doctor.py
+
+# Spends real model calls: dev set through Plumbline and the baseline -> latest.json + eval_runs.
+eval:
+	cd $(CHECKER) && uv run --env-file .env python -m plumbline.evalkit.run
 
 test:
 	cd $(CHECKER) && uv run pytest -q

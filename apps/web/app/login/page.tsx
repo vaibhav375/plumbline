@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
 
 import { signInAs, type DemoRole } from "./actions";
@@ -26,6 +28,10 @@ export default async function LoginPage({
       <header className="space-y-2">
         <h1 className="text-3xl font-semibold">Plumbline</h1>
         <p>Checks brand content against your rulebook and fact ledger, cites every finding, and says what it didn&apos;t check.</p>
+        <p className="text-sm">
+          <Link href="/about" className="underline underline-offset-4">How I know it works</Link>: the evaluation, its
+          numbers with 95% intervals, and what leaves the system.
+        </p>
       </header>
       {error && (
         <p role="alert" className="rounded-md border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-900">

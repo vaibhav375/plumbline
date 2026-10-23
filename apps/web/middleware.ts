@@ -22,7 +22,7 @@ export async function middleware(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const signedIn = Boolean(data?.claims?.sub);
   const path = request.nextUrl.pathname;
-  if (!signedIn && path !== "/login") {
+  if (!signedIn && path !== "/login" && path !== "/about") {
     return NextResponse.redirect(new URL("/login", request.url));
   }
   if (signedIn && (path === "/login" || path === "/")) {
