@@ -177,7 +177,9 @@ class LLM:
                 if parsed is not None:
                     return parsed, f"{p.name}/{model}"
                 kind = _kind(status)
-                if kind == "rejected" or attempt == 2:  # auth/bad request won't fix itself on retry
+                # A rejected request won't fix itself; a rate-limited or slow model won't recover
+                # within seconds, and the next model has its own limit, so move on at once.
+                if kind in ("rejected", "rate_limited", "timeout") or attempt == 2:
                     failures.append(f"{p.name} {PLAIN.get(kind, kind)}")
                     break
                 self.sleep(wait)

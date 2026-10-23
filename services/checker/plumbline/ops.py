@@ -8,7 +8,7 @@ import re
 import sys
 import time
 import uuid
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 
 REQUEST_ID: contextvars.ContextVar[str] = contextvars.ContextVar("request_id", default="-")
@@ -64,3 +64,23 @@ def log_request(rid: str, method: str, path: str, status: int, ms: float, phases
             }
         )
     )
+
+
+CACHE_TTL_S = 60.0
+_cache: dict[tuple, tuple[float, object]] = {}
+
+
+def cached[T](key: tuple, load: Callable[[], T]) -> T:
+    """Keep `load()`'s result for a minute. Failures aren't cached.
+    ponytail: per-process cache, fine while Render runs one instance; a shared cache (or
+    invalidation via the database) is needed if the checker ever scales out."""
+    hit = _cache.get(key)
+    if hit and hit[0] > time.monotonic():
+        return hit[1]  # type: ignore[return-value]
+    value = load()
+    _cache[key] = (time.monotonic() + CACHE_TTL_S, value)
+    return value
+
+
+def clear_cache() -> None:
+    _cache.clear()

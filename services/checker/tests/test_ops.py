@@ -3,7 +3,7 @@ import logging
 
 from fastapi.testclient import TestClient
 
-from plumbline import api
+from plumbline import api, ops
 
 from .test_api import bearer, client, token  # noqa: F401  (client is a fixture)
 
@@ -77,3 +77,18 @@ def test_one_structured_log_line_per_request_without_content(client, caplog):  #
     assert (line["method"], line["path"], line["status"]) == ("POST", "/v1/checks", 200)
     assert line["ms"] >= 0 and "check" in line["phases"]
     assert "Secret launch copy" not in json.dumps(line)
+
+
+def test_rulebook_is_cached_per_org_and_role_and_cleared_by_import(monkeypatch, aurelle):
+    calls = []
+    monkeypatch.setattr(api.db, "load_org_context", lambda s, t, org: calls.append(org) or aurelle)
+    user = lambda org, role: api.User(id="u", org_id=org, role=role, token="t")  # noqa: E731
+    api.org_context(user("org-1", "creator"))
+    api.org_context(user("org-1", "creator"))
+    assert calls == ["org-1"]
+    api.org_context(user("org-1", "compliance"))  # facts visible differ by role
+    api.org_context(user("org-2", "creator"))
+    assert calls == ["org-1", "org-1", "org-2"]
+    ops.clear_cache()  # what a rule import does
+    api.org_context(user("org-1", "creator"))
+    assert len(calls) == 4

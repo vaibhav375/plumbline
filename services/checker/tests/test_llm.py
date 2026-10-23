@@ -73,14 +73,23 @@ def test_schema_mismatch_counts_as_invalid(llm):
 
 
 @respx.mock
-def test_429_falls_back_to_gemini(llm):
-    respx.post(f"{GROQ}/chat/completions").mock(
+def test_429_moves_straight_to_the_next_provider(llm):
+    # Each provider/model has its own rate limit, so waiting on a limited one only adds delay.
+    groq = respx.post(f"{GROQ}/chat/completions").mock(
         return_value=httpx.Response(429, headers={"retry-after": "10"})
     )
     respx.post(f"{GEMINI}/chat/completions").mock(return_value=ok('{"claims": ["y"]}'))
     parsed, used = llm.json("extract", "sys", "user", Claims)
     assert used == "gemini/flash"
-    assert llm.sleeps == [3.0]  # retry-after honoured, capped at 3 s
+    assert groq.call_count == 1 and llm.sleeps == []
+
+
+@respx.mock
+def test_timeout_moves_straight_to_the_next_provider(llm):
+    groq = respx.post(f"{GROQ}/chat/completions").mock(side_effect=httpx.ReadTimeout("slow"))
+    respx.post(f"{GEMINI}/chat/completions").mock(return_value=ok('{"claims": []}'))
+    _, used = llm.json("extract", "s", "u", Claims)
+    assert used == "gemini/flash" and groq.call_count == 1 and llm.sleeps == []
 
 
 @respx.mock

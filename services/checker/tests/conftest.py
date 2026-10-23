@@ -4,11 +4,17 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
+from plumbline import ops
 from plumbline.models import Document, OrgContext
 from plumbline.parsers import DocBuilder
 from plumbline.rules.load import load_seed_dir
 
 SEED = Path(__file__).resolve().parents[3] / "supabase" / "seed" / "aurelle"
+
+
+@pytest.fixture(autouse=True)
+def _fresh_cache():
+    ops.clear_cache()
 
 
 @pytest.fixture(scope="session")

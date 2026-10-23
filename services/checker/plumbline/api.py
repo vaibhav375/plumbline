@@ -132,8 +132,13 @@ CurrentUser = Annotated[User, Depends(user)]
 
 def org_context(u: CurrentUser) -> OrgContext:
     try:
+        # What a role can see of the rulebook depends only on its org and role (RLS), so that's
+        # the key. A rule import clears it; other edits show within a minute.
         with ops.phase("rulebook"):
-            return db.load_org_context(cfg(), u.token, u.org_id)
+            return ops.cached(
+                ("rulebook", u.org_id, u.role),
+                lambda: db.load_org_context(cfg(), u.token, u.org_id),
+            )
     except httpx.HTTPError:
         raise ApiError(
             503, "db_unavailable", "The database is not reachable. Try again shortly."
@@ -168,7 +173,9 @@ def _check_and_save(
     if s.checker_database_url:
         try:
             with ops.phase("confidential"):
-                secret = db.load_confidential_facts(s, u.org_id)
+                secret = ops.cached(
+                    ("confidential", u.org_id), lambda: db.load_confidential_facts(s, u.org_id)
+                )
         except Exception:  # the narrow role is unreachable: still check, but say so below
             secret = None
     known = {f.id for f in ctx.facts}
@@ -523,6 +530,7 @@ def import_rules(
     warnings = {r.id: w for r in rules if (w := lint_rule(r))}
     if rules and not dry_run:
         db.upsert_rules(cfg(), u.token, [r.model_dump(mode="json") for r in rules])
+        ops.clear_cache()  # the next check runs against the imported rules
     return {
         "dry_run": dry_run,
         "imported": len(rules),
