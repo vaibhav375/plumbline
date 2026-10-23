@@ -11,8 +11,8 @@ const CHECKS: [keyof NonNullable<CheckReport["intent"]>, string][] = [
 export function IntentPanel({ intent, suggested }: { intent: CheckReport["intent"]; suggested?: string | null }) {
   if (!intent) return null;
   return (
-    <section aria-labelledby="intent" className="rounded-lg border p-4">
-      <h2 id="intent" className="font-semibold">Intent lock on the suggested version</h2>
+    <section aria-labelledby="intent" className="rounded-xl bg-white shadow-sm ring-1 ring-ink/5 p-4">
+      <h2 id="intent" className="font-semibold">Does the suggested version keep your message?</h2>
       <ul className="mt-2 space-y-1 text-sm">
         {CHECKS.map(([key, label]) => (
           <li key={key}>

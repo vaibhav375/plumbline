@@ -6,7 +6,7 @@ import { TAG, type Group } from "@/components/severity";
 import { Button } from "@/components/ui/button";
 import type { Finding } from "@/lib/api";
 
-const METHOD: Record<string, string> = { code: "Rule engine", ai: "AI", "ai+code": "AI + rule check" };
+const METHOD: Record<string, string> = { code: "Checked by rule", ai: "Checked by AI", "ai+code": "AI, confirmed by rule" };
 const NOT_DISMISSIBLE = "Blocking findings can't be dismissed. Fix or edit the text, or submit it for a reviewer.";
 
 export type CardState = { accepted: boolean; edit: string | null; dismissed: boolean; escalated?: boolean };
@@ -36,7 +36,7 @@ export function FindingCard({
   const blocking = f.severity === "blocking" && !f.advisory;
   return (
     <article aria-label={`Finding ${n}: ${f.rule_id ?? f.fact_id ?? "finding"}`}
-      className={`rounded-lg border p-4 ${state.dismissed ? "opacity-60" : ""}`}>
+      className={`rounded-xl bg-white shadow-sm ring-1 ring-ink/5 p-4 ${state.dismissed ? "opacity-60" : ""}`}>
       <div className="flex flex-wrap items-center gap-2 text-sm">
         <span className="font-semibold">{n}</span>
         <span className={`rounded border px-2 py-0.5 font-medium ${TAG[group]}`}>{group}</span>

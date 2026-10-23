@@ -16,7 +16,7 @@ export default function PageError({ error, reset }: { error: Error & { digest?: 
       {error.digest && <p className="text-xs text-muted-foreground">Reference: {error.digest}</p>}
       <div className="flex gap-3">
         <Button onClick={reset}>Try again</Button>
-        <Button variant="outline" asChild><Link href="/check">Go to Check content</Link></Button>
+        <Button variant="outline" asChild><Link href="/check">Go to Check a post</Link></Button>
       </div>
     </main>
   );

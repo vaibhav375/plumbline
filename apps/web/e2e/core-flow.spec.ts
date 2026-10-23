@@ -83,7 +83,7 @@ test("creator fixes and submits", async ({ page }) => {
   expect(before).toBeGreaterThan(0);
   await page.getByRole("article").filter({ hasText: "AW-014b" }).getByRole("button", { name: "Accept fix" }).click();
   await page.getByRole("article").filter({ hasText: "TM-007" }).getByRole("button", { name: "Accept fix" }).click();
-  await page.getByRole("button", { name: "Apply accepted fixes & re-check" }).click();
+  await page.getByRole("button", { name: "Apply my fixes and check again" }).click();
   await expect.poll(() => blockingCount(page), { timeout: 120_000 }).toBeLessThan(before);
   const changes = page.getByRole("region", { name: "Changes" });
   await expect(changes.locator("ins").filter({ hasText: "Vitamin C Brightening Serum" }).first()).toBeVisible();
@@ -296,7 +296,7 @@ test("first visit tour", async ({ page }) => {
   await tour.getByRole("button", { name: "Skip tour" }).click();
   await expect(page.getByRole("dialog", { name: /Step \d of 4/ })).toHaveCount(0);
   await page.reload();
-  await expect(page.getByRole("heading", { name: "Check content" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Check a post" })).toBeVisible();
   await expect(page.getByRole("dialog", { name: /Step \d of 4/ })).toHaveCount(0);
 });
 

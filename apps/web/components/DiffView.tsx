@@ -2,7 +2,7 @@ import { wordDiff } from "@/lib/diff";
 
 export function DiffView({ before, after }: { before: string; after: string }) {
   return (
-    <section aria-label="Changes" className="rounded-lg border p-4">
+    <section aria-label="Changes" className="rounded-xl bg-white shadow-sm ring-1 ring-ink/5 p-4">
       <h2 className="font-semibold">Changes from the previous version</h2>
       <p className="mt-2 whitespace-pre-wrap leading-7">
         {wordDiff(before, after).map((p, i) =>

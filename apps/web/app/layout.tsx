@@ -1,39 +1,22 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bricolage_Grotesque, JetBrains_Mono, Public_Sans } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// Display: characterful, for page titles only. Body: plain and civic. Mono: the evidence (IDs, quotes, hashes).
+const display = Bricolage_Grotesque({ variable: "--nf-display", subsets: ["latin"], weight: ["500", "700"] });
+const body = Public_Sans({ variable: "--nf-body", subsets: ["latin"] });
+const mono = JetBrains_Mono({ variable: "--nf-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Plumbline",
-  description: "Evidence-or-silence content checks for brand and compliance teams.",
+  description: "Check marketing content against your brand's own rules and facts, before it's published.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${display.variable} ${body.variable} ${mono.variable} bg-chalk font-sans text-ink antialiased`}>
         {children}
-        <footer className="mx-auto flex max-w-6xl flex-wrap gap-x-4 gap-y-1 border-t px-4 py-4 text-sm text-muted-foreground sm:px-6">
-          <Link href="/status" className="underline-offset-4 hover:underline">Status</Link>
-          <Link href="/about" className="underline-offset-4 hover:underline">How I know it works</Link>
-          <span>Aurelle Skin is a fictional brand; no real data is used.</span>
-        </footer>
       </body>
     </html>
   );
