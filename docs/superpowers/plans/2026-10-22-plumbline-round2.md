@@ -708,15 +708,15 @@ def required_stages(findings: list[Finding]) -> list[Literal["first","compliance
 - **By-origin panel:** employee, agency or AI tool, hidden when a group has fewer than 3 people.
 - A banner reads "Includes synthetic demo history" while seeded history exists.
 
-- [ ] **Step 1:** Write the failing tests:
+- [x] **Step 1:** Write the failing tests:
   - `test_wilson_20_of_20_ready`: 0.839 ≥ 0.80, so True
   - `test_wilson_19_of_20_not_ready`
   - `test_wilson_38_of_40_ready`
   - `test_wilson_n0_returns_0`
-- [ ] **Step 2:** Run. Expected: FAIL.
-- [ ] **Step 3:** Implement; the page reads the `rule_health` view.
-- [ ] **Step 4:** Run. Expected: PASS. Check the values against a hand calculation for 2 rules.
-- [ ] **Step 5:** Commit: `feat(health): guideline health v1`.
+- [x] **Step 2:** Run. Expected: FAIL.
+- [x] **Step 3:** Implement; the page reads the `rule_health` view.
+- [x] **Step 4:** Run. Expected: PASS. Check the values against a hand calculation for 2 rules.
+- [x] **Step 5:** Commit: `feat(health): guideline health v1`.
 
 ### Task 20: Image accessibility floor, end to end
 

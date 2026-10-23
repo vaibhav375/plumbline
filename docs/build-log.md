@@ -664,3 +664,52 @@ Task 14 must map them back before `validate_findings` checks the quote against t
 - Facts and wordings have no CSV import yet (rules only, as planned); they still load through the seed.
 - An import changes the rulebook version, so cached reports are re-checked on their next run, as designed.
 - If a demo visitor imports bad rules, `make seed` restores the rulebook.
+
+## Task 19: guideline health and insights
+
+| Check | Evidence | Result |
+|---|---|---|
+| Plan's Wilson tests | `test_wilson_20_of_20_ready` (0.839), `test_wilson_19_of_20_not_ready`, `test_wilson_38_of_40_ready`, `test_wilson_n0_returns_0` | Pass |
+| Python and SQL agree | `test_wilson_matches_the_database_function` uses the same values as the SQL test (8/10 → 0.490, 95/100 → 0.888) | Pass |
+| Hand calculation for 2 rules (plan Step 4) | TN-02, 34/35: (0.97143 + 0.05488 − 1.96·√0.001577) / 1.10976 = **0.8547**; TN-03, 6/20: (0.3 + 0.09604 − 1.96·√0.012901) / 1.19208 = **0.1455**. Live view: 0.85467, 0.14548; Python: 0.8547, 0.1455 | Match |
+| Statuses match what the seed history was designed to show | live: TN-02 ready to block; GM14 blocks (graduated); CL-03 blocks (mandatory); GM10 still advisory (12/12 → 0.757 < 0.80); GM07 too few (n = 5); TN-03 and TN-01 may be unclear; CTA-02 and A11Y-03 advisory. Unit test `test_status_and_unclear` covers the same cases | Pass |
+| Hero | live: "2 rules may be unclear: reviewers overruled them often" | Pass |
+| Small groups hidden, no individual rankings | live by-origin: agency, AI tool, employee (≥ 3 people); freelancers (2) hidden; e2e asserts it | Pass |
+| Synthetic banner | shown on the org view while seeded history exists; not on a creator's own view (their work never includes it): `test_creators_get_their_own_work_without_group_breakdown` | Pass |
+| Creators see their own work only (spec §4.5) | DB test `test_rule_health_is_own_work_for_creators_and_org_wide_for_reviewers` failed before migration 0011 (creator saw 2 flags, org-wide), passes after; live: Brand owner 316 flags over 13 rules, Creator 99 over 9, Agency 33 over 9; by-origin empty for both creators | Pass |
+| All e2e tests on the live site | 11/11 (3.1 min), including "guideline health shows unclear rules and graduation status" | Pass |
+| Phone width | 375 px: `scrollWidth == clientWidth`; tables scroll inside their boxes | Pass |
+| Suites | `make test` 223 passed; `make test-db` 17 passed | Pass |
+
+**Definitions (so the numbers can be checked)**
+- Agreement = upheld ÷ (upheld + overruled + dismissed); accepted fixes and edits count as upheld,
+  escalations count as nothing. Private pre-checks never count.
+- Ready to block: a brand rule whose 95% Wilson lower bound of agreement is ≥ 0.80 (plan).
+- May be unclear: ≥ 10 decisions and a 95% Wilson lower bound of *disagreement* ≥ 0.25, so we are
+  95% sure reviewers disagree at least a quarter of the time. The plan named the hero but not the
+  test; this threshold picks exactly the two rules the seed history was written as unclear (TN-03
+  "needs rewording", TN-01 "mixed agreement") and not CTA-02 (3 of 21) or A11Y-03 (3 of 10).
+
+**Assumptions that didn't hold, and what replaced them**
+- *The views already give each role the right scope (Task 3 open item).* They inherited RLS, and
+  internal creators can read the org's findings, so a creator saw org-wide health and the by-origin
+  comparison. **Alternative:** migration 0011: `rule_health` is org-wide for the spec's full-access
+  roles and own-work for everyone else; `insights_by_origin` is empty for creators. Enforced in the
+  database, so a direct API read gives the same answer as the page.
+- *The synthetic banner can test "seeded history exists".* A creator can read the seeded contents,
+  but their own health never includes them; the banner follows the scope instead.
+- *The audit log is for reviewers only (Task 17).* The spec gives creators the audit log for their
+  own work. RLS already returned only those events, so the page now shows them, without verification
+  (a chain with gaps can't be verified, so `valid` is null, never a false "broken"), and export stays
+  with reviewers and auditors.
+- *Any rule owner may import any rule (Task 18).* The spec says each function edits only its own.
+  Migration 0012 enforces it in RLS (failing DB test first), and the import lists other functions'
+  rows as rejected ("CL-01: owned by compliance; only that function can edit it").
+- The module name `health` clashes with the `/health` endpoint function in `api.py`; imported as
+  `guideline`.
+
+**Limits (for later tasks)**
+- Live numbers include decisions from e2e runs (e.g. CL-03 went from 22 to 34 upheld); they are
+  real decisions on submitted content, so they stay.
+- Thresholds (0.80, 0.25, n ≥ 10) are constants in `health.py`, not per-org settings.
+- Graduation is a status only; changing a rule's maturity is still a rulebook edit (import).
