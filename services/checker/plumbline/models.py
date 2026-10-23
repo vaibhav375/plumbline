@@ -4,7 +4,7 @@ Document.text; the web converts them to UTF-16 before highlighting."""
 from datetime import date
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 
 class Span(BaseModel):
@@ -193,6 +193,34 @@ class Coverage(BaseModel):
     ai_note: str | None
 
 
+CHANNEL_LIMITS = {"instagram": 2200, "email": 10000, "web": 50000, "print": 5000, "other": 50000}
+
+
+class Intent(BaseModel):
+    goal: str | None = None
+    key_phrases: list[str] = []
+    cta: str | None = None
+    channel: Literal["instagram", "email", "web", "print", "other"] = "other"
+    region: str = "IN"
+
+    @field_validator("channel", mode="before")
+    @classmethod
+    def _known_channel(cls, v):
+        return v if v in CHANNEL_LIMITS else "other"
+
+
+class IntentResult(BaseModel):
+    cta_kept: bool
+    pinned_phrases_kept: bool
+    no_claim_dropped: bool
+    channel_limits_ok: bool
+    edits_in_flagged_sentences: bool
+
+    @property
+    def passed(self) -> bool:
+        return all(self.model_dump().values())
+
+
 class CheckReport(BaseModel):
     run_id: str
     version_id: str | None
@@ -201,7 +229,7 @@ class CheckReport(BaseModel):
     dropped_count: int = 0
     coverage: Coverage
     suggested_text: str | None = None
-    intent: dict | None = None  # becomes IntentResult in Task 13
+    intent: IntentResult | None = None
     models_used: list[str] = []
     ms_code: int
     ms_total: int

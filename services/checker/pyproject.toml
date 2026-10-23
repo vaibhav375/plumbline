@@ -9,6 +9,7 @@ dependencies = [
     "pdfplumber==0.11.10",
     "pillow==13.0.0",
     "presidio-analyzer==2.2.364",
+    "psycopg[binary]==3.3.6",
     "pydantic-settings==2.16.1",
     "pyjwt[crypto]==2.15.1",
     "pytesseract==0.3.13",
@@ -20,7 +21,6 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "psycopg[binary]==3.3.6",
     "pypdf==6.21.2",
     "pytest==9.1.1",
     "respx==0.23.1",

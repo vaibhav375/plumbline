@@ -48,7 +48,27 @@ def client(monkeypatch, aurelle):
         auth, "fetch_profile", lambda s, t, uid: {"org_id": "org-1", "role": "creator"}
     )
     api.app.dependency_overrides[api.org_context] = lambda: aurelle
-    yield TestClient(api.app)
+    saved: list[dict] = []
+
+    class MemoryCache(dict):
+        key = None
+
+        def __init__(self, *_):
+            super().__init__()
+
+        def __setitem__(self, k, v):
+            self.key = k
+
+    def save_check(s, token, **kw):
+        saved.append(kw)
+        return kw["content_id"] or "content-1", f"version-{len(saved)}"
+
+    monkeypatch.setattr(api.db, "ReportCache", MemoryCache)
+    monkeypatch.setattr(api.db, "save_check", save_check)
+    monkeypatch.setattr(api.db, "load_confidential_facts", lambda s, org: [])
+    c = TestClient(api.app)
+    c.saved = saved
+    yield c
     api.app.dependency_overrides.clear()
 
 
@@ -181,3 +201,74 @@ def test_jwks_fetches_on_first_use_right_after_boot(monkeypatch):
         ),
     )
     assert auth.Jwks("https://test.supabase.co").get_signing_key_from_jwt(token()).key_id == "test"
+
+
+def test_check_is_saved_as_a_private_precheck(client):
+    r = client.post(
+        "/v1/checks",
+        headers=bearer(token()),
+        data={"text": "Click here!!!", "channel": "instagram", "region": "IN"},
+    )
+    assert r.status_code == 200 and r.json()["version_id"] == "version-1"
+    saved = client.saved[0]
+    assert saved["private"] is True and saved["status"] == "precheck" and saved["cache_key"]
+    assert saved["user_id"] == USER_ID and saved["org_id"] == "org-1"
+
+
+def test_no_ai_keys_means_the_report_says_ai_did_not_run(client):
+    r = client.post(
+        "/v1/checks",
+        headers=bearer(token()),
+        data={"text": "Click here to shop!", "channel": "instagram", "region": "IN"},
+    )
+    cov = r.json()["coverage"]
+    assert cov["ai_status"] == "unavailable" and cov["ai_note"].startswith("AI checks did not run:")
+    assert {f["rule_id"] for f in r.json()["findings"]} >= {"CTA-02"}  # code checks still ran
+
+
+def test_content_you_cannot_see_is_404(client, monkeypatch):
+    monkeypatch.setattr(api.db, "get_content", lambda s, t, cid: None)
+    r = client.post(
+        "/v1/checks",
+        headers=bearer(token()),
+        data={"text": "Hi", "channel": "x", "region": "IN", "content_id": "someone-elses"},
+    )
+    assert r.status_code == 404 and r.json()["code"] == "not_found"
+    assert (
+        client.post("/v1/contents/someone-elses/submit", headers=bearer(token())).status_code == 404
+    )
+
+
+def test_submit_reruns_as_a_non_private_submission(client, monkeypatch):
+    monkeypatch.setattr(
+        api.db,
+        "get_content",
+        lambda s, t, cid: {"id": cid, "title": "Post", "channel": "instagram"},
+    )
+    monkeypatch.setattr(
+        api.db,
+        "latest_version",
+        lambda s, t, cid: {
+            "text": "Click here to shop!",
+            "doc_json": None,
+            "intent_json": {"channel": "instagram"},
+        },
+    )
+    r = client.post("/v1/contents/c-9/submit", headers=bearer(token()))
+    assert r.status_code == 200
+    saved = client.saved[-1]
+    assert (
+        saved["private"] is False
+        and saved["status"] == "submitted"
+        and saved["content_id"] == "c-9"
+    )
+
+
+def test_missing_confidential_role_is_reported_not_hidden(client):
+    """Without CHECKER_DATABASE_URL a creator's check can't see embargoed facts: say so."""
+    r = client.post(
+        "/v1/checks",
+        headers=bearer(token()),
+        data={"text": "Hello there.", "channel": "x", "region": "IN"},
+    )
+    assert api.CONFIDENTIAL_UNAVAILABLE in r.json()["coverage"]["not_checked"]

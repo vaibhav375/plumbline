@@ -10,50 +10,33 @@ import difflib
 import re
 from collections import Counter
 from pathlib import Path
-from typing import Literal
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel
 from rapidfuzz import fuzz
 
 from plumbline.claims import Claim, detect_claims
 from plumbline.llm import LLM, LLMUnavailable
-from plumbline.models import Document, Finding, Fix, Rule, Span, Term
+from plumbline.models import (
+    CHANNEL_LIMITS,
+    Document,
+    Finding,
+    Fix,
+    Intent,
+    IntentResult,
+    Rule,
+    Span,
+    Term,
+)
 from plumbline.normalize import quote_in, sentences
 from plumbline.privacy import redact
 from plumbline.rules.engine import run_rules
 
-CHANNEL_LIMITS = {"instagram": 2200, "email": 10000, "web": 50000, "print": 5000, "other": 50000}
 REWRITE_PROMPT = (Path(__file__).parent / "prompts" / "rewrite.txt").read_text(encoding="utf-8")
 FLAGGED = {"unsupported", "contradicted", "restricted", "needs_human", "outdated"}
 REMOVED = {
     "unsupported",
     "contradicted",
 }  # claims without approved wording leave the suggested version
-
-
-class Intent(BaseModel):
-    goal: str | None = None
-    key_phrases: list[str] = []
-    cta: str | None = None
-    channel: Literal["instagram", "email", "web", "print", "other"] = "other"
-    region: str = "IN"
-
-    @field_validator("channel", mode="before")
-    @classmethod
-    def _known_channel(cls, v):
-        return v if v in CHANNEL_LIMITS else "other"
-
-
-class IntentResult(BaseModel):
-    cta_kept: bool
-    pinned_phrases_kept: bool
-    no_claim_dropped: bool
-    channel_limits_ok: bool
-    edits_in_flagged_sentences: bool
-
-    @property
-    def passed(self) -> bool:
-        return all(self.model_dump().values())
 
 
 class _Rewrite(BaseModel):

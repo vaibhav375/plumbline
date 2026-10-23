@@ -1,0 +1,55 @@
+[
+ [
+  "extract",
+  "dark spots",
+  {
+   "claims": [
+    {
+     "text": "100% natural, eco-friendly",
+     "kind": "environmental"
+    },
+    {
+     "text": "clinically proven to fade dark spots by 60% in just 2 weeks",
+     "kind": "efficacy"
+    },
+    {
+     "text": "Dermatologist recommended",
+     "kind": "endorsement"
+    }
+   ]
+  }
+ ],
+ [
+  "judge",
+  "Meet the NEW",
+  {
+   "findings": [
+    {
+     "rule_id": "TN-01",
+     "quote": "Meet the NEW Aurelle Vitamin-C serum!!!",
+     "explanation": "Shouty hype."
+    }
+   ]
+  }
+ ],
+ [
+  "support",
+  "Finding TN-01",
+  {
+   "verdicts": [
+    {
+     "id": "TN-01@0",
+     "verdict": "agree",
+     "reason": "It is shouty."
+    }
+   ]
+  }
+ ],
+ [
+  "rewrite",
+  "Click here",
+  {
+   "sentence": "Shop the Vitamin C Brightening Serum."
+  }
+ ]
+]

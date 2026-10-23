@@ -1,11 +1,11 @@
-"""FastAPI app. Task 6 skeleton: the check runs code rules only; Task 14 replaces the stub
-with the full pipeline (AI, validators, persistence)."""
+"""FastAPI app: health, checks (full pipeline, persisted as the caller), and submission."""
 
 import json
+import logging
 import os
-import time
-import uuid
+from datetime import datetime
 from typing import Annotated
+from zoneinfo import ZoneInfo
 
 import httpx
 from fastapi import Depends, FastAPI, File, Form, Request, UploadFile
@@ -15,11 +15,13 @@ from fastapi.responses import JSONResponse
 from plumbline import auth, db
 from plumbline.auth import ApiError, User
 from plumbline.config import Settings
-from plumbline.models import DEFAULT_NOT_CHECKED, CheckReport, Coverage, OrgContext, ParseError
+from plumbline.llm import LLM, EgressEvent, default_chain
+from plumbline.models import CheckReport, Document, Intent, OrgContext, ParseError
 from plumbline.parsers import parse_upload
-from plumbline.rules.engine import run_rules
+from plumbline.pipeline import run_check
 
 VERSION = os.environ.get("RENDER_GIT_COMMIT", "dev")[:7]
+log = logging.getLogger("plumbline")
 settings: Settings | None = None
 
 
@@ -89,33 +91,80 @@ def org_context(u: CurrentUser) -> OrgContext:
         ) from None
 
 
-def _stub_coverage(ctx: OrgContext, doc) -> Coverage:
-    ran = [r for r in ctx.rules if r.cls != "C" and r.check_type != "ai_rule"]
-    not_run = {
-        r.id: "Judgement only (class C): stays in the rulebook, never run."
-        for r in ctx.rules
-        if r.cls == "C"
-    }
-    not_run |= {
-        r.id: "AI rule: AI checks are not connected in this build."
-        for r in ctx.rules
-        if r.cls != "C" and r.check_type == "ai_rule"
-    }
-    not_checked = [DEFAULT_NOT_CHECKED]
-    if any(b.busy_background for i in doc.images for b in i.ocr):
-        not_checked.append(
-            "Contrast of text over photo-like backgrounds (colours can't be measured reliably)."
-        )
-    return Coverage(
-        rules_run=[r.id for r in ran],
-        rules_advisory=[r.id for r in ran if not r.blocks],
-        rules_not_run=not_run,
-        not_checked=not_checked,
-        ai_status="unavailable",
-        ai_note=(
-            "AI checks did not run: not connected in this build. Code checks above are complete."
-        ),
+ORIGIN = {"external_creator": "agency"}  # everyone else writes as an employee
+SEES_CONFIDENTIAL = {"reviewer", "compliance", "brand_owner", "auditor"}  # via RLS (migration 0002)
+CONFIDENTIAL_UNAVAILABLE = (
+    "Confidential facts couldn't be loaded, so they weren't checked this time."
+)
+NOT_FOUND = ApiError(404, "not_found", "That content doesn't exist, or it isn't yours to check.")
+
+
+def _today():
+    """Embargo and expiry dates are Indian business dates, whatever the server's time zone."""
+    return datetime.now(ZoneInfo("Asia/Kolkata")).date()
+
+
+def _check_and_save(
+    u: User,
+    ctx: OrgContext,
+    doc: Document,
+    intent: Intent,
+    *,
+    submit: bool,
+    content_id: str | None,
+    title: str,
+) -> CheckReport:
+    s = cfg()
+    secret: list | None = None
+    if s.checker_database_url:
+        try:
+            secret = db.load_confidential_facts(s, u.org_id)
+        except Exception:  # the narrow role is unreachable: still check, but say so below
+            secret = None
+    known = {f.id for f in ctx.facts}
+    full = ctx.model_copy(
+        update={"facts": ctx.facts + [f for f in secret or [] if f.id not in known]}
     )
+    events: list[EgressEvent] = []
+    llm = LLM(default_chain(s), events.append)
+    cache = db.ReportCache(s, u.token)
+    try:
+        report = run_check(doc, full, intent, u.role, not submit, llm, _today(), cache=cache)
+    except httpx.HTTPError:
+        raise ApiError(
+            503, "db_unavailable", "The database is not reachable. Try again shortly."
+        ) from None
+    if secret is None and u.role not in SEES_CONFIDENTIAL:
+        report.coverage.not_checked.append(CONFIDENTIAL_UNAVAILABLE)
+    try:
+        content_id, version_id = db.save_check(
+            s,
+            u.token,
+            user_id=u.id,
+            org_id=u.org_id,
+            content_id=content_id,
+            title=title,
+            channel=intent.channel,
+            region=intent.region,
+            origin=ORIGIN.get(u.role, "employee"),
+            doc=doc.model_dump(mode="json"),
+            intent=intent.model_dump(mode="json"),
+            private=not submit,
+            status="submitted" if submit else "precheck",
+            report=report.model_dump(mode="json"),
+            rulebook_version=ctx.rulebook_version,
+            cache_key=cache.key,
+            egress=[e.model_dump(mode="json") for e in events],
+        )
+    except httpx.HTTPError as e:
+        reason = e.response.text[:500] if isinstance(e, httpx.HTTPStatusError) else repr(e)
+        log.error(
+            "saving check %s failed: %s", report.run_id, reason
+        )  # the DB's reason, no content
+        raise ApiError(
+            503, "db_unavailable", "The check ran but couldn't be saved. Try again shortly."
+        ) from None
+    return report.model_copy(update={"version_id": version_id})
 
 
 @app.post("/v1/checks", response_model=CheckReport)
@@ -130,7 +179,6 @@ def create_check(
     content_id: Annotated[str | None, Form()] = None,
     submit: Annotated[bool, Form()] = False,
 ) -> CheckReport:
-    started = time.perf_counter()
     s = cfg()
     limit = s.max_upload_mb * 1024 * 1024
     if text:
@@ -142,21 +190,37 @@ def create_check(
         )  # never read more than the cap
     else:
         raise ParseError("empty")
-    if intent_json:
-        try:
-            json.loads(intent_json)
-        except json.JSONDecodeError:
-            raise ApiError(
-                422, "invalid_intent", "The intent couldn't be read. Try setting it again."
-            ) from None
+    try:
+        intent = Intent.model_validate(
+            {**json.loads(intent_json or "{}"), "channel": channel, "region": region}
+        )
+    except (json.JSONDecodeError, ValueError):
+        raise ApiError(
+            422, "invalid_intent", "The intent couldn't be read. Try setting it again."
+        ) from None
+    if content_id and db.get_content(s, u.token, content_id) is None:
+        raise NOT_FOUND
     doc = parse_upload(name, data, s.max_upload_mb)
-    findings = run_rules(doc, ctx.rules, ctx.terms)
-    ms_code = round((time.perf_counter() - started) * 1000)
-    return CheckReport(
-        run_id=str(uuid.uuid4()),
-        version_id=None,
-        findings=findings,
-        coverage=_stub_coverage(ctx, doc),
-        ms_code=ms_code,
-        ms_total=round((time.perf_counter() - started) * 1000),
+    title = next((line.strip() for line in doc.text.splitlines() if line.strip()), name)
+    return _check_and_save(u, ctx, doc, intent, submit=submit, content_id=content_id, title=title)
+
+
+@app.post("/v1/contents/{content_id}/submit", response_model=CheckReport)
+def submit_content(
+    u: CurrentUser, ctx: Annotated[OrgContext, Depends(org_context)], content_id: str
+) -> CheckReport:
+    """Submit the latest version: re-run as a non-private submission (confidential checks included)."""
+    s = cfg()
+    content = db.get_content(s, u.token, content_id)
+    latest = db.latest_version(s, u.token, content_id) if content else None
+    if not latest:
+        raise NOT_FOUND
+    doc = (
+        Document.model_validate(latest["doc_json"])
+        if latest.get("doc_json")
+        else Document(format="text", text=latest["text"], blocks=[], images=[])
+    )
+    intent = Intent.model_validate(latest.get("intent_json") or {"channel": content["channel"]})
+    return _check_and_save(
+        u, ctx, doc, intent, submit=True, content_id=content_id, title=content["title"]
     )

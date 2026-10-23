@@ -85,3 +85,25 @@ def test_audit_log_own_work_only_for_creators(db):
     as_admin(db)
     as_user(db, auditor)
     assert count(db, sql, org) == 2
+
+
+def test_users_can_create_their_own_versions_with_returning(db):
+    """Task 14 live run: PostgREST inserts with RETURNING, which must also pass the read policy;
+    a policy that looks the row up again by id can't see it inside the same statement."""
+    org = make_org(db)
+    creator = make_user(db, org, "creator")
+    agency = make_user(db, org, "external_creator")
+    for user, private in ((creator, True), (agency, True), (creator, False)):
+        as_admin(db)
+        content = db.execute(
+            "insert into contents (org_id, title, channel, region, origin, created_by)"
+            " values (%s, 'Post', 'instagram', 'IN', 'agency', %s) returning id",
+            (org, user),
+        ).fetchone()[0]
+        as_user(db, user)
+        row = db.execute(
+            "insert into versions (org_id, content_id, n, text, private, status, created_by)"
+            " values (%s, %s, 1, 'Hello', %s, 'precheck', %s) returning id, private",
+            (org, content, private, user),
+        ).fetchone()
+        assert row[1] is private

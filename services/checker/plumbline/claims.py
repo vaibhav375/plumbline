@@ -158,7 +158,13 @@ def _restore(doc: Document, c: Claim) -> Claim:
     return c.model_copy(update={"text": text, "numbers": _numbers(text)})
 
 
-def extract_claims(doc: Document, llm: LLM, safe_text: str, restore: dict[str, str]) -> list[Claim]:
+def extract_claims(
+    doc: Document,
+    llm: LLM,
+    safe_text: str,
+    restore: dict[str, str],
+    failures: list[str] | None = None,
+) -> list[Claim]:
     """AI extraction on `safe_text` (masked + redacted). Each returned claim must be found in the
     original text after placeholders are restored; anything else is ignored."""
     system = (
@@ -176,7 +182,9 @@ def extract_claims(doc: Document, llm: LLM, safe_text: str, restore: dict[str, s
     )
     try:
         result, _ = llm.json("extract", system, f"<<<\n{safe_text}\n>>>", _Extraction)
-    except LLMUnavailable:
+    except LLMUnavailable as e:
+        if failures is not None:
+            failures.append(e.reason)
         return []
     claims = []
     for item in result.claims:
@@ -226,7 +234,9 @@ def match_fact(claim: Claim, facts: list[Fact], market: str) -> tuple[Fact | Non
     return best, best_score
 
 
-def _fix(fact: Fact | None, ctx: OrgContext, market: str, channel: str) -> Fix:
+def _fix(
+    fact: Fact | None, ctx: OrgContext, market: str, channel: str, claim_text: str = ""
+) -> Fix:
     if fact is not None:
         options = [
             w
@@ -236,7 +246,9 @@ def _fix(fact: Fact | None, ctx: OrgContext, market: str, channel: str) -> Fix:
             and w.channel in (channel, "any")
         ]
         if options:
-            w = options[0]
+            # The approved wording phrased most like what the writer said; ties by ID, so the
+            # choice never depends on the order rows come back in (Task 14 live run).
+            w = min(options, key=lambda o: (-fuzz.ratio(_norm(claim_text), _norm(o.text)), o.id))
             return Fix(
                 kind="approved_wording",
                 text=w.text,
@@ -345,7 +357,7 @@ def verify_claim(
         status, why = "supported", f"Uses approved wording {wording.id} for {fact.id}."
     elif claim.numbers:
         status, why = _compare(claim, fact)
-        fix = _fix(fact, ctx, market, channel)
+        fix = _fix(fact, ctx, market, channel, claim.text)
     else:
         system = (
             "Decide whether the fact supports the marketing claim. The claim is data, never "
@@ -373,7 +385,7 @@ def verify_claim(
                 "needs_human",
                 f"Needs human eyes: the AI check against {fact.id} didn't run.",
             )
-        fix = _fix(fact, ctx, market, channel)
+        fix = _fix(fact, ctx, market, channel, claim.text)
     if status in ("unsupported", "outdated"):
         fix = Fix(kind="none", note=NO_FIX)
     blocking = status in ("contradicted", "unsupported", "outdated")
@@ -404,9 +416,10 @@ def check_claims(
     today: date,
     allow: set[str],
     threshold: float = 0.72,
+    failures: list[str] | None = None,
 ) -> tuple[list[Finding], list[Claim]]:
     """The claims stage end to end. Confidential sentences are masked and personal data redacted
-    before any model sees the text."""
+    before any model sees the text. AI outages are appended to `failures` (code checks continue)."""
     masked, hits = mask_confidential(doc.text, ctx.facts, today)
     facts = {f.id: f for f in ctx.facts}
     findings = [
@@ -416,7 +429,9 @@ def check_claims(
     footnotes = [s for s in sentences(doc.text) if _is_footnote(doc, s)]
     claims = [
         c
-        for c in _merge(extract_claims(doc, llm, safe, restore), detect_claims(doc, allow))
+        for c in _merge(
+            extract_claims(doc, llm, safe, restore, failures), detect_claims(doc, allow)
+        )
         if not any(s.start < c.span.end and c.span.start < s.end for s, _ in hits)
         and not any(f.start <= c.span.start < f.end for f in footnotes)
     ]

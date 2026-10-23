@@ -561,6 +561,7 @@ dependencies = [
     { name = "pdfplumber" },
     { name = "pillow" },
     { name = "presidio-analyzer" },
+    { name = "psycopg", extra = ["binary"] },
     { name = "pydantic-settings" },
     { name = "pyjwt", extra = ["crypto"] },
     { name = "pytesseract" },
@@ -572,7 +573,6 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
-    { name = "psycopg", extra = ["binary"] },
     { name = "pypdf" },
     { name = "pytest" },
     { name = "respx" },
@@ -587,6 +587,7 @@ requires-dist = [
     { name = "pdfplumber", specifier = "==0.11.10" },
     { name = "pillow", specifier = "==13.0.0" },
     { name = "presidio-analyzer", specifier = "==2.2.364" },
+    { name = "psycopg", extras = ["binary"], specifier = "==3.3.6" },
     { name = "pydantic-settings", specifier = "==2.16.1" },
     { name = "pyjwt", extras = ["crypto"], specifier = "==2.15.1" },
     { name = "pytesseract", specifier = "==0.3.13" },
@@ -598,7 +599,6 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "psycopg", extras = ["binary"], specifier = "==3.3.6" },
     { name = "pypdf", specifier = "==6.21.2" },
     { name = "pytest", specifier = "==9.1.1" },
     { name = "respx", specifier = "==0.23.1" },

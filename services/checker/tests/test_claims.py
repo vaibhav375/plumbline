@@ -192,3 +192,13 @@ def test_product_names_are_not_claims(aurelle):
 def test_footnotes_are_evidence_not_claims(aurelle):
     text = "No white cast on Indian skin tones*.\n*In-use test, 60 participants, 2026."
     assert [c.text for c in detect_claims(doc(text))] == ["No white cast on Indian skin tones"]
+
+
+def test_approved_wording_choice_does_not_depend_on_row_order(aurelle):
+    """Task 14 live run: the DB returned AW-014a first and it was offered instead of AW-014b."""
+    reordered = aurelle.model_copy(
+        update={"wordings": sorted(aurelle.wordings, key=lambda w: w.id)}
+    )
+    for ctx in (aurelle, reordered):
+        findings, _, _ = run(ctx)
+        assert by_quote(findings, "60%").fix.ref_id == "AW-014b"
