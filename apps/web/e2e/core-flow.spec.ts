@@ -96,9 +96,11 @@ test("compliance approves", async ({ page }) => {
   await signInAndCheck(page);
   const asks = page.getByRole("button", { name: "Ask a reviewer" });
   while ((await asks.count()) > 0) {
+    const before = await asks.count();
     await asks.first().click();
     await page.getByLabel("What should the reviewer know? (required)").fill("No approved wording I can use here.");
     await page.getByRole("button", { name: "Send to a reviewer" }).click();
+    await expect(asks).toHaveCount(before - 1, { timeout: 60_000 });
   }
   await page.getByRole("button", { name: "Submit for review", exact: true }).click();
   const done = page.getByRole("status").filter({ hasText: "Submitted for review" });

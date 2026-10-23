@@ -30,6 +30,7 @@ export function FindingCard({
 }) {
   const [reason, setReason] = useState<string | null>(null);
   const [ask, setAsk] = useState<string | null>(null);
+  const [sending, setSending] = useState(false);
   const fix = f.fix && f.fix.kind !== "none" ? f.fix : null;
   const canChange = Boolean(f.record_id) && !state.dismissed;
   const blocking = f.severity === "blocking" && !f.advisory;
@@ -91,14 +92,19 @@ export function FindingCard({
         <form className="mt-3 flex flex-wrap items-end gap-2 text-sm"
           onSubmit={async (e) => {
             e.preventDefault();
-            await onEscalate(ask);
-            setAsk(null);
+            setSending(true);
+            try {
+              await onEscalate(ask);
+              setAsk(null);
+            } finally {
+              setSending(false);
+            }
           }}>
           <label className="grow">
             What should the reviewer know? (required)
             <input className="mt-1 w-full rounded border px-2 py-1" value={ask} onChange={(e) => setAsk(e.target.value)} />
           </label>
-          <Button size="sm" type="submit" disabled={!ask.trim()}>Send to a reviewer</Button>
+          <Button size="sm" type="submit" disabled={!ask.trim() || sending}>{sending ? "Sending…" : "Send to a reviewer"}</Button>
           <Button size="sm" type="button" variant="ghost" onClick={() => setAsk(null)}>Cancel</Button>
         </form>
       )}

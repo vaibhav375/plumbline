@@ -394,6 +394,10 @@ def _reports_with_ids(c: httpx.Client, version_ids: list[str]) -> dict[str, dict
     latest: dict[str, dict] = {}
     for r in runs:
         latest.setdefault(r["version_id"], r)
+    # Seeded history runs hold {"synthetic": true}, not a report; nothing in them is reviewable.
+    latest = {v: r for v, r in latest.items() if "findings" in (r["report_json"] or {})}
+    if not latest:
+        return {}
     rows = _get(
         c,
         "findings",
