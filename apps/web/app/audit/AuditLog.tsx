@@ -22,31 +22,43 @@ export function AuditLog() {
 
   return (
     <div className="space-y-6">
-      <section aria-labelledby="chain" className={`rounded-lg border p-4 ${data.valid ? "border-green-300 bg-green-50 text-green-950" : "border-red-300 bg-red-50 text-red-950"}`}>
-        <h2 id="chain" className="text-lg font-semibold" data-testid="chain-status">
-          {data.valid ? `Chain verified ✓ (${data.length} events)` : `Chain broken at event ${data.broken_at} of ${data.length}`}
-        </h2>
-        <p className="mt-1 text-sm">
-          Each event stores a SHA-256 hash of the previous event&apos;s hash, its own content and its time. The checker just
-          recomputed all {data.length}. Editing, removing or reordering any event breaks the chain from that point, and the
-          database refuses updates and deletes to this log.
-        </p>
-        <div className="mt-3 flex flex-wrap items-center gap-3">
-          <Button variant="outline" size="sm" disabled={exporting} onClick={async () => {
-            setExporting(true);
-            try {
-              await audit.exportCsv();
-            } catch (e) {
-              setError(e instanceof CheckError ? e.message : "Couldn't export the audit log.");
-            } finally {
-              setExporting(false);
-            }
-          }}>
-            {exporting ? "Exporting…" : "Export CSV"}
-          </Button>
-          <span className="text-xs">The export includes each event&apos;s exact payload, so anyone can recompute the hashes.</span>
-        </div>
-      </section>
+      {data.scope === "mine" ? (
+        <section aria-labelledby="chain" className="rounded-lg border p-4">
+          <h2 id="chain" className="text-lg font-semibold" data-testid="chain-status">
+            Events about your work ({data.length})
+          </h2>
+          <p className="mt-1 text-sm">
+            You see the decisions, approvals and status changes on your own content. Verifying the chain and exporting it
+            need every event in the organisation, so reviewers, compliance, the brand owner and auditors do that.
+          </p>
+        </section>
+      ) : (
+        <section aria-labelledby="chain" className={`rounded-lg border p-4 ${data.valid ? "border-green-300 bg-green-50 text-green-950" : "border-red-300 bg-red-50 text-red-950"}`}>
+          <h2 id="chain" className="text-lg font-semibold" data-testid="chain-status">
+            {data.valid ? `Chain verified ✓ (${data.length} events)` : `Chain broken at event ${data.broken_at} of ${data.length}`}
+          </h2>
+          <p className="mt-1 text-sm">
+            Each event stores a SHA-256 hash of the previous event&apos;s hash, its own content and its time. The checker just
+            recomputed all {data.length}. Editing, removing or reordering any event breaks the chain from that point, and the
+            database refuses updates and deletes to this log.
+          </p>
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            <Button variant="outline" size="sm" disabled={exporting} onClick={async () => {
+              setExporting(true);
+              try {
+                await audit.exportCsv();
+              } catch (e) {
+                setError(e instanceof CheckError ? e.message : "Couldn't export the audit log.");
+              } finally {
+                setExporting(false);
+              }
+            }}>
+              {exporting ? "Exporting…" : "Export CSV"}
+            </Button>
+            <span className="text-xs">The export includes each event&apos;s exact payload, so anyone can recompute the hashes.</span>
+          </div>
+        </section>
+      )}
 
       <section aria-labelledby="events" className="space-y-2">
         <h2 id="events" className="font-semibold">

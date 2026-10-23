@@ -178,7 +178,7 @@ test("brand owner previews and imports rules", async ({ page }) => {
   await expect(gm08.getByText(/Linter: .*sparingly/)).toBeVisible({ timeout: 90_000 });
   // Two seed rules, unchanged, so the live rulebook stays the same.
   const seed = fs.readFileSync(path.join(__dirname, "../../../supabase/seed/aurelle/rules.csv"), "utf8").split("\n");
-  const csv = [seed[0], ...seed.filter((l) => /^(CL-01|GM08),/.test(l))].join("\n");
+  const csv = [seed[0], ...seed.filter((l) => /^(TN-02|GM08),/.test(l))].join("\n");
   await page.getByLabel("Rules CSV file").setInputFiles({ name: "rules.csv", mimeType: "text/csv", buffer: Buffer.from(csv) });
   await page.getByRole("button", { name: "Preview" }).click();
   await expect(page.getByTestId("import-result")).toHaveText("Preview: 2 would be imported, 1 need clarification");
@@ -200,4 +200,28 @@ test("fact ledger hides restricted facts from an agency writer", async ({ page }
   await page.getByRole("link", { name: "Facts" }).click();
   await expect(page.getByRole("article", { name: "FACT-031" })).toBeVisible({ timeout: 90_000 });
   await expect(page.getByText("Some facts are restricted")).toHaveCount(0);
+});
+
+// Plan Task 19: guideline health. Brand owner sees the org view; a creator sees only their own work.
+test("guideline health shows unclear rules and graduation status", async ({ page }) => {
+  await signInAs(page, "Brand owner");
+  await page.getByRole("link", { name: "Guideline health" }).click();
+  await expect(page.getByText("Includes synthetic demo history")).toBeVisible({ timeout: 90_000 });
+  await expect(page.getByTestId("unclear-count")).toContainText(/\d+ rules? may be unclear/);
+  const tn03 = page.locator('tr[data-rule="TN-03"]');
+  await expect(tn03.getByText("May be unclear")).toBeVisible();
+  await expect(page.locator('tr[data-rule="TN-02"]').getByText("Ready to block")).toBeVisible();
+  await expect(page.locator('tr[data-rule="GM07"]').getByText("Too few decisions (n < 10)")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "By origin" })).toBeVisible();
+  await expect(page.getByRole("cell", { name: "Freelancers" })).toHaveCount(0); // 2 people: hidden
+  await page.getByRole("button", { name: "Sign out" }).click();
+  await expect(page).toHaveURL(/\/login/);
+
+  await signInAs(page, "Creator");
+  await page.getByRole("link", { name: "Guideline health" }).click();
+  await expect(page.getByText("Your submitted drafts only.")).toBeVisible({ timeout: 90_000 });
+  await expect(page.getByText("Includes synthetic demo history")).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "By origin" })).toHaveCount(0);
+  await page.getByRole("link", { name: "Audit log" }).click();
+  await expect(page.getByTestId("chain-status")).toContainText("Events about your work", { timeout: 90_000 });
 });

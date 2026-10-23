@@ -23,12 +23,11 @@ export async function AppHeader({ title, subtitle }: { title: string; subtitle: 
           <Link href="/check" className="underline-offset-4 hover:underline">Check content</Link>
           <Link href="/rules" className="underline-offset-4 hover:underline">Rulebook</Link>
           <Link href="/facts" className="underline-offset-4 hover:underline">Facts</Link>
+          <Link href="/health" className="underline-offset-4 hover:underline">Guideline health</Link>
           {profile && REVIEWERS.has(profile.role) && (
-            <>
-              <Link href="/review" className="underline-offset-4 hover:underline">Review queue</Link>
-              <Link href="/audit" className="underline-offset-4 hover:underline">Audit log</Link>
-            </>
+            <Link href="/review" className="underline-offset-4 hover:underline">Review queue</Link>
           )}
+          <Link href="/audit" className="underline-offset-4 hover:underline">Audit log</Link>
         </nav>
         <div className="flex items-center gap-3">
           {profile && <RoleBadge name={profile.display_name} role={profile.role} />}

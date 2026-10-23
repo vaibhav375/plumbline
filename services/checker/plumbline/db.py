@@ -439,6 +439,17 @@ def upsert_rules(s: Settings, token: str, rows: list[dict]) -> None:
         ).raise_for_status()
 
 
+def health(s: Settings, token: str) -> tuple[list[dict], list[dict], bool]:
+    """`rule_health` and `insights_by_origin` as the caller (both scope themselves by role, migration
+    0011), and whether any seeded synthetic history is in what they can see."""
+    with client_for(s, token) as c:
+        return (
+            _get(c, "rule_health", select="*", order="rule_id"),
+            _get(c, "insights_by_origin", select="origin,authors,versions,findings,blocking"),
+            bool(_get(c, "contents", select="id", title="like.[synthetic]*", limit="1")),
+        )
+
+
 def list_facts(s: Settings, token: str) -> tuple[list[dict], list[dict]]:
     with client_for(s, token) as c:
         return (

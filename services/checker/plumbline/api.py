@@ -13,6 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
 
 from plumbline import audit, auth, db, review
+from plumbline import health as guideline
 from plumbline.auth import ApiError, User
 from plumbline.config import Settings
 from plumbline.fixes import apply_fixes
@@ -367,19 +368,39 @@ def _reviewer(u: User) -> None:
         raise ApiError(403, "forbidden", "Only reviewers can open the review queue.")
 
 
+@app.get("/v1/health")
+def guideline_health(u: CurrentUser, ctx: Annotated[OrgContext, Depends(org_context)]) -> dict:
+    """Reviewer agreement per rule. Org-wide for reviewer roles; creators get their own work and
+    no group breakdown (the views enforce both)."""
+    rows, origins, synthetic = db.health(cfg(), u.token)
+    assessed = guideline.assess(rows, {r.id: r for r in ctx.rules})
+    org = u.role in REVIEW_ROLES
+    return {
+        "scope": "org" if org else "mine",
+        "synthetic": synthetic and org,  # seeded history belongs to synthetic authors, never to you
+        "unclear": sum(r["unclear"] for r in assessed),
+        "min_decisions": guideline.MIN_DECISIONS,
+        "rules": assessed,
+        "by_origin": origins if org else None,
+    }
+
+
 AUDIT_RECENT = 200
 
 
 def _audit_rows(u: User) -> tuple[list[dict], dict[str, str]]:
     if u.role not in REVIEW_ROLES:
-        raise ApiError(403, "forbidden", "Only reviewers and auditors can open the audit log.")
+        raise ApiError(403, "forbidden", "Only reviewers and auditors can export the audit log.")
     return db.audit_events(cfg(), u.token)
 
 
 @app.get("/v1/audit/verify")
 def audit_verify(u: CurrentUser) -> dict:
-    """Recomputes every hash in the org's chain, plus the newest events for the audit page."""
-    rows, names = _audit_rows(u)
+    """Recomputes every hash in the org's chain, plus the newest events for the audit page.
+    Creators see only events about their own work (RLS, migration 0004); a chain with gaps can't
+    be verified, so for them `valid` is null."""
+    org = u.role in REVIEW_ROLES
+    rows, names = db.audit_events(cfg(), u.token)
     recent = [
         {
             "id": r["id"],
@@ -393,7 +414,11 @@ def audit_verify(u: CurrentUser) -> dict:
         }
         for r in reversed(rows[-AUDIT_RECENT:])
     ]
-    return audit.verify_chain(rows) | {"recent": recent}
+    if not org:
+        return {"scope": "mine", "valid": None, "length": len(rows), "broken_at": None} | {
+            "recent": recent
+        }
+    return {"scope": "org"} | audit.verify_chain(rows) | {"recent": recent}
 
 
 @app.get("/v1/audit/export.csv")
@@ -406,11 +431,8 @@ def audit_export(u: CurrentUser) -> Response:
     )
 
 
-RULE_OWNERS = {
-    "brand_owner",
-    "compliance",
-    "accessibility",
-}  # may write rules (RLS, migration 0002)
+# Spec §4.5: each function edits only its own rules (enforced in the database by migration 0012).
+RULE_OWNERS = {"brand_owner": "brand", "compliance": "compliance", "accessibility": "accessibility"}
 RULES_CSV_LIMIT = 1024 * 1024
 
 
@@ -440,6 +462,13 @@ def import_rules(
     except UnicodeDecodeError:
         raise ApiError(422, "not_csv", "That file isn't a UTF-8 CSV.") from None
     rules, rejected = load_rules_csv(text)
+    mine = RULE_OWNERS[u.role]
+    rejected += [
+        f"{r.id}: owned by {r.owner_function}; only that function can edit it"
+        for r in rules
+        if r.owner_function != mine
+    ]
+    rules = [r for r in rules if r.owner_function == mine]
     warnings = {r.id: w for r in rules if (w := lint_rule(r))}
     if rules and not dry_run:
         db.upsert_rules(cfg(), u.token, [r.model_dump(mode="json") for r in rules])

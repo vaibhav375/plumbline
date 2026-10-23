@@ -1,3 +1,4 @@
+import psycopg
 import pytest
 
 from .conftest import as_admin, as_user, make_org, make_user, make_version
@@ -133,3 +134,16 @@ def test_wordings_follow_their_facts_visibility(db):
         as_admin(db)
         as_user(db, make_user(db, org, role))
         assert count(db, sql) == expected, role
+
+
+def test_each_function_writes_only_its_own_rules(db):
+    org = make_org(db)
+    rule = (
+        "insert into rules (org_id, id, title, category, cls, check_type, params, severity, tier,"
+        " source_ref, owner_function) values (%s, %s, 't', 'tone', 'A', 'pattern',"
+        " '{\"regex\": \"x\"}', 'minor', 'brand', 'src', %s)"
+    )
+    as_user(db, make_user(db, org, "brand_owner"))
+    db.execute(rule, (org, "BR-1", "brand"))
+    with pytest.raises(psycopg.errors.InsufficientPrivilege):
+        db.execute(rule, (org, "CO-1", "compliance"))

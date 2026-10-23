@@ -175,7 +175,13 @@ export type AuditEvent = {
   entity_id: string | null;
   hash: string;
 };
-export type AuditVerify = { valid: boolean; length: number; broken_at: number | null; recent: AuditEvent[] };
+export type AuditVerify = {
+  scope: "org" | "mine";
+  valid: boolean | null; // null: a creator's view has gaps, so it can't be verified
+  length: number;
+  broken_at: number | null;
+  recent: AuditEvent[];
+};
 
 export const audit = {
   verify: (onWaking: (w: boolean) => void = () => {}) => request<AuditVerify>("/v1/audit/verify", {}, onWaking),
@@ -239,3 +245,32 @@ export const rulebook = {
   },
   facts: (onWaking: (w: boolean) => void = () => {}) => request<FactsResponse>("/v1/facts", {}, onWaking),
 };
+
+export type HealthRow = {
+  rule_id: string;
+  title: string | null;
+  tier: "mandatory" | "brand" | null;
+  maturity: "advisory" | "blocking" | null;
+  flags: number;
+  upheld: number;
+  overruled: number;
+  dismissed: number;
+  decisions: number;
+  agreement: number | null;
+  wilson_lower: number | null;
+  status: "ready" | "advisory" | "too_few" | "blocks";
+  unclear: boolean;
+};
+export type OriginRow = { origin: string; authors: number; versions: number; findings: number; blocking: number };
+export type HealthResponse = {
+  scope: "org" | "mine";
+  synthetic: boolean;
+  unclear: number;
+  min_decisions: number;
+  rules: HealthRow[];
+  by_origin: OriginRow[] | null;
+};
+
+export function guidelineHealth(onWaking: (w: boolean) => void = () => {}) {
+  return request<HealthResponse>("/v1/health", {}, onWaking);
+}

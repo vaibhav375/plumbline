@@ -600,7 +600,12 @@ def test_auditor_verifies_the_chain_and_sees_newest_first(client, monkeypatch):
     r = client.get("/v1/audit/verify", headers=bearer(token()))
     assert r.status_code == 200
     body = r.json()
-    assert (body["valid"], body["length"], body["broken_at"]) == (True, 3, None)
+    assert (body["scope"], body["valid"], body["length"], body["broken_at"]) == (
+        "org",
+        True,
+        3,
+        None,
+    )
     assert [e["id"] for e in body["recent"]] == [c["id"] for c in reversed(chain)]
     assert body["recent"][-1]["what"] == "saved version 1"
 
@@ -614,7 +619,10 @@ def test_audit_export_is_a_csv_download(client, monkeypatch):
     assert r.text.splitlines()[0] == "at,actor,kind,entity,entity_id,prev_hash,hash,payload"
 
 
-def test_creators_cannot_open_the_audit_log(client, monkeypatch):
+def test_creators_see_their_own_events_but_cannot_verify_or_export(client, monkeypatch):
+    # Spec §4.5: creators view the audit log for their own work. RLS returns only those events,
+    # and a chain with gaps can't be verified, so `valid` is null rather than a false alarm.
     _audit_chain(monkeypatch, "creator")
-    for path in ("/v1/audit/verify", "/v1/audit/export.csv"):
-        assert client.get(path, headers=bearer(token())).status_code == 403
+    body = client.get("/v1/audit/verify", headers=bearer(token())).json()
+    assert (body["scope"], body["valid"], len(body["recent"])) == ("mine", None, 3)
+    assert client.get("/v1/audit/export.csv", headers=bearer(token())).status_code == 403

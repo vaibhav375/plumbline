@@ -31,12 +31,12 @@ def _import(client, csv_text: str, dry_run: bool = False):  # noqa: F811
 
 
 def test_import_returns_lint_counts(client, rules_db):  # noqa: F811
-    r = _import(client, "\n".join([HEADER, ROW["CL-01"], ROW["GM08"]]))
+    r = _import(client, "\n".join([HEADER, ROW["TN-02"], ROW["GM08"]]))
     assert r.status_code == 200
     body = r.json()
     assert (body["imported"], body["need_clarification"], body["rejected"]) == (2, 1, [])
     assert any("sparingly" in w for w in body["warnings"]["GM08"])
-    assert [w["id"] for w in rules_db["written"]] == ["CL-01", "GM08"]
+    assert [w["id"] for w in rules_db["written"]] == ["TN-02", "GM08"]
 
 
 def test_import_forbidden_for_creator(client, rules_db):  # noqa: F811
@@ -46,12 +46,13 @@ def test_import_forbidden_for_creator(client, rules_db):  # noqa: F811
 
 
 def test_dry_run_previews_without_writing(client, rules_db):  # noqa: F811
-    r = _import(client, "\n".join([HEADER, ROW["CL-01"], ROW["GM08"]]), dry_run=True)
+    r = _import(client, "\n".join([HEADER, ROW["TN-02"], ROW["GM08"]]), dry_run=True)
     assert (r.json()["imported"], r.json()["dry_run"]) == (2, True)
     assert rules_db["written"] == []
 
 
 def test_bad_rows_are_reported_and_skipped(client, rules_db):  # noqa: F811
+    rules_db["role"] = "compliance"
     bad = ROW["CL-02"].replace(",blocking,", ",fatal,")
     body = _import(client, "\n".join([HEADER, ROW["CL-01"], bad])).json()
     assert body["imported"] == 1
@@ -104,3 +105,10 @@ def test_fact_ledger_nests_wordings_and_marks_expired(client, rules_db, monkeypa
     rules_db["role"] = "compliance"
     assert client.get("/v1/facts", headers=bearer(token())).json()["restricted"] is False
     assert date.fromisoformat(body["today"]) == today
+
+
+def test_each_function_imports_only_its_own_rules(client, rules_db):  # noqa: F811
+    body = _import(client, "\n".join([HEADER, ROW["TN-02"], ROW["CL-01"]])).json()
+    assert body["imported"] == 1
+    assert body["rejected"] == ["CL-01: owned by compliance; only that function can edit it"]
+    assert [w["id"] for w in rules_db["written"]] == ["TN-02"]
