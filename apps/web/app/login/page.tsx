@@ -91,38 +91,39 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           {/* The thesis, acted out: a claim is struck out and the approved wording takes its place. */}
           <div className="space-y-3">
             <p className={`${label} text-ink/60`}>Before it&apos;s published</p>
-            <p className="font-display text-[clamp(2.6rem,7.2vw,6.6rem)] font-extrabold uppercase leading-[0.9] tracking-[-0.03em]">
+            <p className="font-display text-[clamp(2.4rem,5.6vw,5.4rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.03em]">
               <span className="block">Every claim</span>
-              <span className="relative block w-fit text-blocking">
-                Clinically proven
-                <span aria-hidden className="strike-line absolute inset-x-0 top-1/2 h-[0.09em] -translate-y-1/2 bg-ink" />
-              </span>
+              <span className="block"><span className="strike-bg text-blocking">Clinically proven</span></span>
               <span className="swap-in block text-ok">Shown to visibly reduce*</span>
               <span className="block">Checked.</span>
             </p>
             <p className="font-mono text-xs text-ink/60">*FACT-014 · 32% fewer visible dark spots in 8 weeks · in-house study, 48 participants</p>
           </div>
 
-          {/* The plumb bob as a window onto the content it checks. */}
-          <div className="relative mx-auto aspect-[5/6] w-full max-w-[420px]">
-            <svg viewBox="0 0 100 120" className="absolute inset-0 h-full w-full" aria-hidden>
+          {/* The plumb bob as a window onto the content it checks: a scan line passes, a finding appears. */}
+          <div className="relative mx-auto aspect-[5/6] w-full max-w-[400px]">
+            <svg viewBox="0 0 100 120" className="absolute inset-0 h-full w-full overflow-visible" aria-hidden>
               <defs>
                 <clipPath id="bob"><path d="M50 4 L94 58 L50 116 L6 58 Z" /></clipPath>
               </defs>
-              <line x1="50" y1="-40" x2="50" y2="4" stroke="#0B0B0C" strokeWidth="0.8" />
+              <line x1="50" y1="-60" x2="50" y2="4" stroke="#0B0B0C" strokeWidth="0.6" />
               <g clipPath="url(#bob)">
-                <rect width="100" height="120" fill="#0B0B0C" />
-                <foreignObject x="0" y="0" width="100" height="240">
-                  <div className="drift">
-                    <Image src="/images/aurelle-banner.png" alt="" width={100} height={100} className="block w-full" />
-                    <Image src="/images/plumbline-check.png" alt="" width={100} height={67} className="block w-full" />
-                    <Image src="/images/aurelle-banner.png" alt="" width={100} height={100} className="block w-full" />
-                    <Image src="/images/plumbline-check.png" alt="" width={100} height={67} className="block w-full" />
-                  </div>
-                </foreignObject>
+                <image href="/images/aurelle-banner.png" x="-10" y="0" width="120" height="120" preserveAspectRatio="xMidYMid slice" />
+                <rect className="scan" x="0" y="0" width="100" height="1.2" fill="#4B3FD1" />
+                <rect className="scan-glow" x="0" y="-14" width="100" height="14" fill="url(#glow)" />
               </g>
-              <path d="M50 4 L94 58 L50 116 L6 58 Z" fill="none" stroke="#4B3FD1" strokeWidth="0.8" />
+              <defs>
+                <linearGradient id="glow" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stopColor="#4B3FD1" stopOpacity="0" />
+                  <stop offset="1" stopColor="#4B3FD1" stopOpacity="0.28" />
+                </linearGradient>
+              </defs>
+              <path d="M50 4 L94 58 L50 116 L6 58 Z" fill="none" stroke="#4B3FD1" strokeWidth="0.7" />
             </svg>
+            <div className="finding-pop absolute top-[30%] -right-2 max-w-[220px] rounded-lg bg-white p-3 text-xs shadow-[0_20px_40px_-20px_rgba(0,0,0,0.5)] ring-1 ring-ink/10 sm:-right-10">
+              <p className="font-label text-[11px] font-semibold uppercase tracking-wider text-blocking">Blocks · A11Y-CONTRAST</p>
+              <p className="mt-1 font-semibold text-ink">“GLOW IN 2 WEEKS” is 1.96:1. Large text needs 3:1.</p>
+            </div>
             <span className={`${label} absolute -left-2 top-1/2 -translate-x-full -rotate-90 text-[10px] text-ink/50 max-lg:hidden`}>True vertical</span>
           </div>
         </div>
@@ -151,7 +152,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
       </div>
 
       {/* ---------- What goes out unchecked ---------- */}
-      <section id="how" className="guides-dark relative overflow-hidden bg-ink px-5 py-24 text-white sm:px-8 sm:py-32">
+      <section id="how" className="guides-dark relative overflow-hidden bg-ink px-5 pt-24 pb-16 text-white sm:px-8 sm:pt-32 sm:pb-24">
         <Reveal className="relative z-10 mx-auto max-w-5xl text-center">
           <p className={`${label} text-white/55`}>The problem</p>
           <h2 className="mt-3 font-display text-[clamp(2rem,5vw,4.2rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.02em]">
@@ -162,8 +163,8 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           </p>
         </Reveal>
 
-        <div className="relative mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <Parallax speed={0.06}>
+        <div className="relative mx-auto mt-20 grid max-w-6xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <Parallax speed={0.03}>
             <Specimen kind="Instagram post" finding="60% in 2 weeks: the evidence says 32% in 8">
               <div className="bg-gradient-to-br from-[#FDF1D6] to-[#F7D9A8] p-5">
                 <div className="mx-auto h-32 w-14 rounded-t-full rounded-b-lg bg-gradient-to-b from-[#F2A541] to-[#D9731A] shadow-inner" />
@@ -171,12 +172,12 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
               <p className="p-3 text-sm">Meet the NEW Aurelle Vitamin-C serum!!! Clinically proven to fade dark spots by 60% in just 2 weeks.</p>
             </Specimen>
           </Parallax>
-          <Parallax speed={0.14} className="lg:mt-24">
+          <Parallax speed={0.07} className="lg:mt-16">
             <Specimen kind="Banner" finding="Headline text at 1.96:1 contrast; needs 3:1">
               <Image src="/images/aurelle-banner.png" alt="Aurelle banner with pale headline text" width={540} height={540} className="block aspect-[4/3] w-full object-cover" />
             </Specimen>
           </Parallax>
-          <Parallax speed={0.04}>
+          <Parallax speed={0.02}>
             <Specimen kind="Email" finding="Mentions the embargoed Diwali sale (FACT-033)">
               <div className="space-y-2 p-4 text-sm">
                 <p className="font-mono text-[11px] text-ink/50">Subject: Something big is coming 🎁</p>
@@ -187,7 +188,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
               </div>
             </Specimen>
           </Parallax>
-          <Parallax speed={0.1} className="lg:-mt-10">
+          <Parallax speed={0.05} className="lg:-mt-10">
             <Specimen kind="Influencer post" finding="Gifted, but no #ad label">
               <div className="flex items-center gap-3 p-4">
                 <span className="size-10 rounded-full bg-gradient-to-br from-accent-brand to-[#E7A3C5]" />
@@ -198,7 +199,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
               </div>
             </Specimen>
           </Parallax>
-          <Parallax speed={0.18} className="lg:mt-16">
+          <Parallax speed={0.08} className="lg:mt-10">
             <Specimen kind="Product page" finding="“Dermatologist recommended”: no evidence on file">
               <div className="grid grid-cols-[72px_1fr] gap-3 p-4">
                 <div className="h-20 rounded-lg bg-gradient-to-b from-[#E8F1FB] to-[#BFD6F2]" />
@@ -210,7 +211,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
               </div>
             </Specimen>
           </Parallax>
-          <Parallax speed={0.08}>
+          <Parallax speed={0.04}>
             <Specimen kind="Ad caption" finding="“Click here”: name the product instead" tone="minor">
               <p className="p-4 text-sm">Click here to see the new lip shades. Six shades, one easy swipe.</p>
             </Specimen>
@@ -236,10 +237,8 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
             ["Reviewed and recorded", "Reviewers decide, approvals are routed, and every step lands in a tamper-evident log."],
           ].map(([title, body], i) => (
             <Reveal as="li" key={title} delay={i * 70} className="group bg-white p-6 transition-colors duration-300 hover:bg-ink hover:text-white">
-              <div className="flex items-start justify-between">
-                <h3 className="font-display text-xl font-bold uppercase tracking-tight">{title}</h3>
-                <span className={`${label} text-ink/40 group-hover:text-white/50`}>Step {i + 1} / 6</span>
-              </div>
+              <span className={`${label} text-ink/40 group-hover:text-white/50`}>Step {i + 1} of 6</span>
+              <h3 className="mt-2 font-display text-xl font-bold uppercase tracking-tight">{title}</h3>
               <p className="mt-3 text-[15px] leading-relaxed text-ink/70 group-hover:text-white/75">{body}</p>
             </Reveal>
           ))}

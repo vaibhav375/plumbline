@@ -218,7 +218,27 @@
 @keyframes drift { from { transform: translateY(0); } to { transform: translateY(-50%); } }
 .drift { animation: drift 24s linear infinite; }
 
+/* The claim is struck through line by line (each wrapped line gets its own stroke). */
+.strike-bg {
+  background-image: linear-gradient(#0b0b0c, #0b0b0c);
+  background-repeat: no-repeat;
+  background-position: 0 56%;
+  background-size: 0% 0.085em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  animation: strike-bg 5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+@keyframes strike-bg { 0%, 12% { background-size: 0% 0.085em; } 28%, 100% { background-size: 100% 0.085em; } }
+/* A scan line passes down the bob; then the finding pops in. */
+@keyframes scan { 0% { transform: translateY(0); } 70%, 100% { transform: translateY(120px); } }
+.scan, .scan-glow { animation: scan 4s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+@keyframes finding-pop { 0%, 38% { opacity: 0; transform: translateY(8px) scale(0.96); } 48%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+.finding-pop { animation: finding-pop 4s ease-out infinite; }
+
 @media (prefers-reduced-motion: reduce) {
+  .strike-bg { animation: none; background-size: 100% 0.085em; }
+  .scan, .scan-glow { animation: none; opacity: 0; }
+  .finding-pop { animation: none; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .marquee, .strike-line, .swap-in, .drift, .change-in, .drop { animation: none; }
   .strike-line { transform: scaleX(1); }

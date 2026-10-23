@@ -9,7 +9,7 @@ export function RoleButton({ label }: { label: string }) {
   const { pending } = useFormStatus();
   return (
     <Button type="submit" disabled={pending} aria-label={`Try as ${label}`}
-      className="h-11 w-full bg-white font-display text-sm font-bold uppercase tracking-wide text-ink hover:text-white">
+      className="h-auto min-h-11 w-full whitespace-normal bg-white py-2 font-display text-xs font-bold uppercase leading-tight tracking-wide text-ink hover:text-white">
       {pending ? "Signing in…" : `Try as ${label}`}
     </Button>
   );
