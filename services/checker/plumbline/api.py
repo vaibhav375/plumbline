@@ -3,6 +3,7 @@
 import json
 import logging
 import os
+import time
 from datetime import datetime
 from typing import Annotated
 from zoneinfo import ZoneInfo
@@ -12,7 +13,7 @@ from fastapi import Body, Depends, FastAPI, File, Form, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
 
-from plumbline import audit, auth, db, review
+from plumbline import audit, auth, db, ops, review
 from plumbline import health as guideline
 from plumbline.auth import ApiError, User
 from plumbline.config import Settings
@@ -43,18 +44,59 @@ app.add_middleware(
     allow_origins=os.environ.get("CORS_ORIGINS", "http://localhost:3000").split(","),
     allow_origin_regex=os.environ.get("CORS_ORIGIN_REGEX", r"https://plumbline[\w-]*\.vercel\.app"),
     allow_methods=["GET", "POST"],
-    allow_headers=["Authorization", "Content-Type"],
+    allow_headers=["Authorization", "Content-Type", "X-Request-ID"],
+    expose_headers=["X-Request-ID", "Server-Timing"],
 )
+
+FORM_OVERHEAD = 64 * 1024  # multipart boundaries and the small form fields around a file
+
+
+def _error(status: int, code: str, message: str) -> JSONResponse:
+    return JSONResponse(
+        {"code": code, "message": message, "request_id": ops.REQUEST_ID.get()}, status_code=status
+    )
+
+
+@app.middleware("http")
+async def _ops(request: Request, call_next) -> Response:
+    """Request id, a body-size cap before anything is read, timings, and one log line."""
+    rid, phases = ops.new_request(request.headers.get("x-request-id"))
+    t0 = time.perf_counter()
+    length = request.headers.get("content-length", "")
+    if length.isdigit() and int(length) > cfg().max_upload_mb * 1024 * 1024 + FORM_OVERHEAD:
+        response: Response = _error(
+            413, "too_large", f"That's over the {cfg().max_upload_mb} MB limit. Try a smaller file."
+        )
+    else:
+        try:
+            response = await call_next(request)
+        except Exception:
+            log.exception("unhandled error, request %s", rid)
+            response = _error(
+                500,
+                "internal",
+                f"Something went wrong on the checker. Try again; if it keeps happening, quote reference {rid}.",
+            )
+    total = (time.perf_counter() - t0) * 1000
+    response.headers["X-Request-ID"] = rid
+    response.headers["Server-Timing"] = ops.server_timing(phases, total)
+    ops.log_request(rid, request.method, request.url.path, response.status_code, total, phases)
+    return response
 
 
 @app.exception_handler(ApiError)
 def _api_error(_request: Request, e: ApiError) -> JSONResponse:
-    return JSONResponse({"code": e.code, "message": e.message}, status_code=e.status)
+    return _error(e.status, e.code, e.message)
 
 
 @app.exception_handler(ParseError)
 def _parse_error(_request: Request, e: ParseError) -> JSONResponse:
-    return JSONResponse({"code": e.code, "message": str(e)}, status_code=422)
+    return _error(422, e.code, str(e))
+
+
+@app.exception_handler(httpx.TransportError)
+def _db_unreachable(_request: Request, _e: httpx.TransportError) -> JSONResponse:
+    return _error(503, "db_unavailable", "The database is not reachable. Try again shortly.")
 
 
 def db_ok(s: Settings) -> bool:
@@ -81,7 +123,8 @@ def health() -> dict:
 
 
 def user(request: Request) -> User:
-    return auth.current_user(request, cfg())
+    with ops.phase("auth"):
+        return auth.current_user(request, cfg())
 
 
 CurrentUser = Annotated[User, Depends(user)]
@@ -89,7 +132,8 @@ CurrentUser = Annotated[User, Depends(user)]
 
 def org_context(u: CurrentUser) -> OrgContext:
     try:
-        return db.load_org_context(cfg(), u.token, u.org_id)
+        with ops.phase("rulebook"):
+            return db.load_org_context(cfg(), u.token, u.org_id)
     except httpx.HTTPError:
         raise ApiError(
             503, "db_unavailable", "The database is not reachable. Try again shortly."
@@ -123,7 +167,8 @@ def _check_and_save(
     secret: list | None = None
     if s.checker_database_url:
         try:
-            secret = db.load_confidential_facts(s, u.org_id)
+            with ops.phase("confidential"):
+                secret = db.load_confidential_facts(s, u.org_id)
         except Exception:  # the narrow role is unreachable: still check, but say so below
             secret = None
     known = {f.id for f in ctx.facts}
@@ -134,7 +179,8 @@ def _check_and_save(
     llm = LLM(default_chain(s), events.append)
     cache = db.ReportCache(s, u.token)
     try:
-        report = run_check(doc, full, intent, u.role, not submit, llm, _today(), cache=cache)
+        with ops.phase("check"):
+            report = run_check(doc, full, intent, u.role, not submit, llm, _today(), cache=cache)
     except httpx.HTTPError:
         raise ApiError(
             503, "db_unavailable", "The database is not reachable. Try again shortly."
@@ -142,25 +188,26 @@ def _check_and_save(
     if secret is None and u.role not in SEES_CONFIDENTIAL:
         report.coverage.not_checked.append(CONFIDENTIAL_UNAVAILABLE)
     try:
-        content_id, version_id, record_ids = db.save_check(
-            s,
-            u.token,
-            user_id=u.id,
-            org_id=u.org_id,
-            content_id=content_id,
-            title=title,
-            channel=intent.channel,
-            region=intent.region,
-            origin=ORIGIN.get(u.role, "employee"),
-            doc=doc.model_dump(mode="json"),
-            intent=intent.model_dump(mode="json"),
-            private=not submit,
-            status="submitted" if submit else "precheck",
-            report=report.model_dump(mode="json"),
-            rulebook_version=ctx.rulebook_version,
-            cache_key=cache.key,
-            egress=[e.model_dump(mode="json") for e in events],
-        )
+        with ops.phase("save"):
+            content_id, version_id, record_ids = db.save_check(
+                s,
+                u.token,
+                user_id=u.id,
+                org_id=u.org_id,
+                content_id=content_id,
+                title=title,
+                channel=intent.channel,
+                region=intent.region,
+                origin=ORIGIN.get(u.role, "employee"),
+                doc=doc.model_dump(mode="json"),
+                intent=intent.model_dump(mode="json"),
+                private=not submit,
+                status="submitted" if submit else "precheck",
+                report=report.model_dump(mode="json"),
+                rulebook_version=ctx.rulebook_version,
+                cache_key=cache.key,
+                egress=[e.model_dump(mode="json") for e in events],
+            )
     except httpx.HTTPError as e:
         reason = e.response.text[:500] if isinstance(e, httpx.HTTPStatusError) else repr(e)
         log.error(
@@ -219,7 +266,8 @@ def create_check(
         ) from None
     if content_id and db.get_content(s, u.token, content_id) is None:
         raise NOT_FOUND
-    doc = parse_upload(name, data, s.max_upload_mb, alt_text=alt_text, decorative=decorative)
+    with ops.phase("parse"):
+        doc = parse_upload(name, data, s.max_upload_mb, alt_text=alt_text, decorative=decorative)
     title = next((line.strip() for line in doc.text.splitlines() if line.strip()), name)
     return _check_and_save(u, ctx, doc, intent, submit=submit, content_id=content_id, title=title)
 

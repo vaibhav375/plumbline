@@ -59,14 +59,28 @@ async function authHeader(): Promise<Record<string, string>> {
   return { Authorization: `Bearer ${token}` };
 }
 
+// Render's proxy answers 502/503/504 (not our JSON) while the service restarts or wakes.
+const GATEWAY = new Set([502, 503, 504]);
+const isCheckerError = (r: Response) =>
+  r.clone().json().then((b) => typeof b?.code === "string", () => false);
+
 async function request<T>(path: string, init: RequestInit, onWaking: (w: boolean) => void): Promise<T> {
   const headers = { ...(await authHeader()), ...(init.headers as Record<string, string> | undefined) };
   await ensureAwake(onWaking);
-  let r: Response;
-  try {
-    r = await fetchWithTimeout(`${CHECKER}${path}`, { ...init, headers }, CHECK_TIMEOUT_MS);
-  } catch {
-    throw new CheckError("timeout", "The checker took too long. Try again.");
+  const send = async () => {
+    try {
+      return await fetchWithTimeout(`${CHECKER}${path}`, { ...init, headers }, CHECK_TIMEOUT_MS);
+    } catch {
+      throw new CheckError("timeout", "The checker took too long. Try again.");
+    }
+  };
+  let r = await send();
+  if (GATEWAY.has(r.status) && !(await isCheckerError(r))) {
+    // The request never reached the checker: wait for it to wake, then try once more.
+    onWaking(true);
+    await sleep(RETRY_DELAYS_MS[0]);
+    await ensureAwake(onWaking);
+    r = await send();
   }
   if (r.ok) return (await r.json()) as T;
   const body = await r.json().catch(() => null);

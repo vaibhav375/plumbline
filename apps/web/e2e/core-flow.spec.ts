@@ -329,3 +329,20 @@ test("status page is public and shows the checker's health", async ({ page }) =>
   await expect(page.getByTestId("checker-status")).toHaveText(/Up|Waking|Down/, { timeout: 60_000 });
   await expect(page.getByText(/Last evaluation run/)).toBeVisible();
 });
+
+// Plan Task 23: Render's proxy answers 503 while the service restarts; the app waits and retries.
+test("checker down shows message", async ({ page }) => {
+  let calls = 0;
+  await page.route("**/v1/checks", (route) =>
+    ++calls === 1
+      ? route.fulfill({ status: 503, contentType: "text/html", body: "<html>Service Unavailable</html>" })
+      : route.continue(),
+  );
+  await signInAs(page, "Creator");
+  await page.getByLabel("Paste a post, or upload a file").fill("Click here to shop!!!");
+  await page.getByRole("button", { name: "Check", exact: true }).click();
+  await expect(page.getByRole("status").filter({ hasText: "Waking the checker" })).toBeVisible();
+  await expect(page.getByTestId("blocking-count")).toBeVisible({ timeout: 120_000 });
+  await expect(page.getByRole("alert")).toHaveCount(0);
+  expect(calls).toBe(2);
+});
