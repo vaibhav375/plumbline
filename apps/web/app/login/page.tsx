@@ -1,4 +1,4 @@
-import { ArrowRight, BadgeCheck, Building2, ClipboardCheck, Megaphone, PenLine } from "lucide-react";
+import { ArrowDown, ArrowRight, BadgeCheck, Building2, ClipboardCheck, Megaphone, PenLine } from "lucide-react";
 import Link from "next/link";
 
 import { Brandmark } from "@/components/Brandmark";
@@ -60,15 +60,20 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
               Paste a post and see what breaks your rules, which claims your evidence doesn&apos;t back, and the approved way to say
               it. Plumbline also tells you what it didn&apos;t check, so nothing is quietly waved through.
             </p>
-            <Link href="/about" className="inline-flex items-center gap-1.5 text-sm font-medium text-[#C9C4FA] hover:text-white">
-              How I know it works: tested against a baseline <ArrowRight className="size-4" aria-hidden />
-            </Link>
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+              <a href="#roles" className="inline-flex items-center gap-1.5 rounded-lg bg-accent-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#3F34B8]">
+                Try it now: pick a role <ArrowDown className="size-4" aria-hidden />
+              </a>
+              <Link href="/about" className="inline-flex items-center gap-1.5 text-sm font-medium text-[#C9C4FA] hover:text-white">
+                How I know it works <ArrowRight className="size-4" aria-hidden />
+              </Link>
+            </div>
           </header>
           <Example />
         </div>
       </div>
 
-      <main className="mx-auto max-w-6xl space-y-5 px-4 py-10 sm:px-6">
+      <main id="roles" className="mx-auto max-w-6xl scroll-mt-4 space-y-5 px-4 py-10 sm:px-6">
         <div>
           <h2 className="font-display text-2xl font-bold tracking-tight">Try it as one of the team</h2>
           <p className="text-muted-foreground">
