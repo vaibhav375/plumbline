@@ -71,7 +71,9 @@ def apply_fixes(text: str, findings: list[Finding], accepted_ids: set[str]) -> s
         edits.append((f.span, "" if f.fix.kind == "remove" else (f.fix.text or "")))
     for span, new in sorted(edits, key=lambda e: e[0].start, reverse=True):
         text = text[: span.start] + new + text[span.end :]
-    return _tidy(text)
+    notes = [f.fix.footnote for f in findings if f.id in accepted_ids and f.fix and f.fix.footnote]
+    missing = [n for n in dict.fromkeys(notes) if n not in text]
+    return _tidy(text) + ("\n" + "\n".join(missing) if missing else "")
 
 
 def _tidy(text: str) -> str:

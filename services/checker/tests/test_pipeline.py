@@ -157,3 +157,10 @@ def test_agency_sees_restricted_information_without_details_on_submission(aurell
     )
     brand = check(aurelle, worked_doc, role="compliance", precheck=False)
     assert any(f.fact_id == "FACT-031" for f in brand.findings)
+
+
+def test_code_findings_carry_their_deterministic_fixes(aurelle, worked_doc):
+    report = check(aurelle, worked_doc)
+    by_rule = {f.rule_id: f for f in report.findings}
+    assert by_rule["TN-02"].fix.text == "." and by_rule["TN-03"].fix.text == "new"
+    assert by_rule["TM-007"].fix.text == "Vitamin C Brightening Serum"

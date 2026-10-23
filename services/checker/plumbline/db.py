@@ -145,9 +145,9 @@ def save_check(
     rulebook_version: str,
     cache_key: str | None,
     egress: list[dict],
-) -> tuple[str, str]:
+) -> tuple[str, str, list[str]]:
     """Persist a check as the caller: content (if new), version, check run, findings, egress events.
-    Returns (content_id, version_id)."""
+    Returns (content_id, version_id, finding record ids in report order: findings, then needs_human)."""
 
     def post(c: httpx.Client, table: str, rows, one: bool = True):
         r = c.post(f"/{table}", json=rows, headers={"Prefer": "return=representation"})
@@ -226,8 +226,7 @@ def save_check(
             for group in ("findings", "needs_human")
             for f in report[group]
         ]
-        if rows:
-            post(c, "findings", rows, one=False)
+        record_ids = [r["id"] for r in post(c, "findings", rows, one=False)] if rows else []
         if egress:
             post(
                 c,
@@ -248,4 +247,110 @@ def save_check(
                 ],
                 one=False,
             )
-    return content_id, version["id"]
+    return content_id, version["id"], record_ids
+
+
+def load_version(s: Settings, token: str, version_id: str) -> dict | None:
+    """A version the caller can see, with its document, intent and latest report."""
+    from plumbline.models import Document
+
+    with client_for(s, token) as c:
+        r = c.get(
+            "/versions",
+            params={"id": f"eq.{version_id}", "select": "id,content_id,text,doc_json,intent_json"},
+        )
+        if r.status_code == 400:
+            return None
+        r.raise_for_status()
+        rows = r.json()
+        if not rows:
+            return None
+        runs = c.get(
+            "/check_runs",
+            params={
+                "version_id": f"eq.{version_id}",
+                "select": "report_json",
+                "order": "created_at.desc",
+                "limit": "1",
+            },
+        )
+        runs.raise_for_status()
+    v = rows[0]
+    doc = (
+        Document.model_validate(v["doc_json"])
+        if v.get("doc_json")
+        else Document(format="text", text=v["text"], blocks=[], images=[])
+    )
+    report = runs.json()[0]["report_json"] if runs.json() else None
+    return {
+        "id": v["id"],
+        "content_id": v["content_id"],
+        "doc": doc,
+        "intent": v.get("intent_json") or {},
+        "report": report,
+    }
+
+
+def get_finding(s: Settings, token: str, record_id: str) -> dict | None:
+    with client_for(s, token) as c:
+        r = c.get("/findings", params={"id": f"eq.{record_id}", "select": "id,org_id,severity"})
+        if r.status_code == 400:
+            return None
+        r.raise_for_status()
+        rows = r.json()
+    return rows[0] if rows else None
+
+
+def insert_decision(
+    s: Settings,
+    token: str,
+    *,
+    org_id: str,
+    user_id: str,
+    finding_id: str,
+    action: str,
+    reason: str | None = None,
+    edited_text: str | None = None,
+) -> None:
+    """One decision as the caller; the audit trigger chains it into the org's log."""
+    with client_for(s, token) as c:
+        r = c.post(
+            "/decisions",
+            json={
+                "org_id": org_id,
+                "finding_id": finding_id,
+                "actor": user_id,
+                "action": action,
+                "reason": reason,
+                "edited_text": edited_text,
+            },
+        )
+        r.raise_for_status()
+
+
+def record_decisions(
+    s: Settings,
+    token: str,
+    *,
+    org_id: str,
+    user_id: str,
+    accepted: list[str],
+    edits: dict[str, str],
+) -> None:
+    rows = [
+        {"org_id": org_id, "finding_id": rid, "actor": user_id, "action": "accept"}
+        for rid in accepted
+    ]
+    rows += [
+        {
+            "org_id": org_id,
+            "finding_id": rid,
+            "actor": user_id,
+            "action": "edit",
+            "edited_text": text,
+        }
+        for rid, text in edits.items()
+    ]
+    if rows:
+        with client_for(s, token) as c:
+            c.post("/decisions", json=rows).raise_for_status()

@@ -172,6 +172,7 @@ class Finding(BaseModel):
     support: Literal["agree", "disagree", "n/a"] = "n/a"
     fix: Fix | None = None
     # Claims only (§6.2 claim verification); None for rule findings.
+    record_id: str | None = None  # the saved findings row, for decisions
     claim_status: (
         Literal["supported", "contradicted", "unsupported", "needs_human", "outdated", "restricted"]
         | None
@@ -224,6 +225,8 @@ class IntentResult(BaseModel):
 class CheckReport(BaseModel):
     run_id: str
     version_id: str | None
+    content_id: str | None = None
+    previous_text: str | None = None  # the text before accepted fixes, for the diff view
     findings: list[Finding]
     needs_human: list[Finding] = []
     dropped_count: int = 0

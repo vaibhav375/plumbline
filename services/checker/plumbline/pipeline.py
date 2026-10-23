@@ -15,7 +15,7 @@ from datetime import date
 from pathlib import Path
 
 from plumbline.claims import check_claims
-from plumbline.fixes import suggested_version
+from plumbline.fixes import code_fix, suggested_version
 from plumbline.judge import judge_document
 from plumbline.llm import LLM
 from plumbline.models import (
@@ -190,6 +190,8 @@ def run_check(
     )
     claim_problems = [f for f in claim_findings if f.claim_status in PROBLEM]
     needs_human += [f for f in claim_findings if f.claim_status == "needs_human"]
+    # Deterministic fixes from rule data travel with the finding, so a writer can accept them one by one.
+    code = [f if f.fix else f.model_copy(update={"fix": code_fix(f, rules)}) for f in code]
     findings = _dedupe(code, claim_problems) + judged
     if withhold:
         # The agency never learns that its text matched something confidential (§4.5).

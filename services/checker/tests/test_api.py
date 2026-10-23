@@ -61,7 +61,12 @@ def client(monkeypatch, aurelle):
 
     def save_check(s, token, **kw):
         saved.append(kw)
-        return kw["content_id"] or "content-1", f"version-{len(saved)}"
+        n = len(kw["report"]["findings"]) + len(kw["report"]["needs_human"])
+        return (
+            kw["content_id"] or "content-1",
+            f"version-{len(saved)}",
+            [f"rec-{len(saved)}-{i}" for i in range(n)],
+        )
 
     monkeypatch.setattr(api.db, "ReportCache", MemoryCache)
     monkeypatch.setattr(api.db, "save_check", save_check)
@@ -272,3 +277,87 @@ def test_missing_confidential_role_is_reported_not_hidden(client):
         data={"text": "Hello there.", "channel": "x", "region": "IN"},
     )
     assert api.CONFIDENTIAL_UNAVAILABLE in r.json()["coverage"]["not_checked"]
+
+
+def test_apply_accepted_fixes_records_decisions_and_rechecks(client, monkeypatch, aurelle):
+    from plumbline.models import Document
+
+    text = "Meet the NEW Aurelle Vitamin-C serum!!! Click here to shop!"
+    first = client.post(
+        "/v1/checks",
+        headers=bearer(token()),
+        data={"text": text, "channel": "instagram", "region": "IN"},
+    ).json()
+    report = first | {
+        "findings": [f | {"record_id": f"rec-{i}"} for i, f in enumerate(first["findings"])]
+    }
+    term = next(f for f in report["findings"] if f["rule_id"] == "TM-007")
+    decisions = []
+    monkeypatch.setattr(
+        api.db,
+        "load_version",
+        lambda s, t, vid: {
+            "id": vid,
+            "content_id": "content-1",
+            "doc": Document(format="text", text=text, blocks=[], images=[]),
+            "intent": {"channel": "instagram"},
+            "report": report,
+        },
+    )
+    monkeypatch.setattr(api.db, "record_decisions", lambda s, t, **kw: decisions.append(kw))
+    r = client.post(
+        f"/v1/versions/{first['version_id']}/apply",
+        headers=bearer(token()),
+        json={"accepted": [term["record_id"]], "edits": {}},
+    )
+    assert r.status_code == 200, r.text
+    new = r.json()
+    assert new["previous_text"] == text
+    assert client.saved[-1]["doc"]["text"].startswith(
+        "Meet the NEW Aurelle Vitamin C Brightening Serum"
+    )
+    assert decisions[0]["accepted"] == [term["record_id"]]
+    assert not any(f["rule_id"] == "TM-007" for f in new["findings"])
+    assert new["content_id"] == "content-1"
+
+
+def test_apply_on_someone_elses_version_is_404(client, monkeypatch):
+    monkeypatch.setattr(api.db, "load_version", lambda s, t, vid: None)
+    r = client.post(
+        "/v1/versions/v-x/apply", headers=bearer(token()), json={"accepted": [], "edits": {}}
+    )
+    assert r.status_code == 404
+
+
+def test_blocking_findings_cannot_be_dismissed(client, monkeypatch):
+    monkeypatch.setattr(
+        api.db, "get_finding", lambda s, t, rid: {"id": rid, "severity": "blocking"}
+    )
+    r = client.post(
+        "/v1/findings/f-1/decisions",
+        headers=bearer(token()),
+        json={"action": "dismiss", "reason": "fine"},
+    )
+    assert r.status_code == 409 and "blocking" in r.json()["message"].lower()
+
+
+def test_dismiss_needs_a_reason_and_is_recorded(client, monkeypatch):
+    calls = []
+    monkeypatch.setattr(api.db, "get_finding", lambda s, t, rid: {"id": rid, "severity": "minor"})
+    monkeypatch.setattr(api.db, "insert_decision", lambda s, t, **kw: calls.append(kw))
+    assert (
+        client.post(
+            "/v1/findings/f-1/decisions",
+            headers=bearer(token()),
+            json={"action": "dismiss", "reason": "  "},
+        ).status_code
+        == 422
+    )
+    r = client.post(
+        "/v1/findings/f-1/decisions",
+        headers=bearer(token()),
+        json={"action": "dismiss", "reason": "Intentional brand style."},
+    )
+    assert (
+        r.status_code == 200 and calls[0]["action"] == "dismiss" and calls[0]["finding_id"] == "f-1"
+    )

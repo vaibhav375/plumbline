@@ -289,3 +289,22 @@ def test_dropping_a_sentence_keeps_the_paragraph_break_before_it(aurelle):
     assert (
         out == "Subject: Your glow, sorted\n\nShop the serum." and result.edits_in_flagged_sentences
     )
+
+
+def test_applying_an_approved_wording_adds_its_footnote():
+    text = "Fades dark spots by 60% in 2 weeks. Shop now."
+    f = finding(
+        "w",
+        0,
+        34,
+        text,
+        Fix(
+            kind="approved_wording",
+            text="shown to visibly reduce dark spots by 32% in 8 weeks*",
+            footnote="*In-house study, 48 participants, 2026.",
+        ),
+    )
+    out = apply_fixes(text, [f], {"w"})
+    assert out.startswith("shown to visibly reduce dark spots by 32% in 8 weeks*.")
+    assert out.endswith("\n*In-house study, 48 participants, 2026.")
+    assert apply_fixes(out + "", [], set()).count("In-house study") == 1

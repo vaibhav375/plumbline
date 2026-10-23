@@ -8,15 +8,16 @@ from typing import Annotated
 from zoneinfo import ZoneInfo
 
 import httpx
-from fastapi import Depends, FastAPI, File, Form, Request, UploadFile
+from fastapi import Body, Depends, FastAPI, File, Form, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from plumbline import auth, db
 from plumbline.auth import ApiError, User
 from plumbline.config import Settings
+from plumbline.fixes import apply_fixes
 from plumbline.llm import LLM, EgressEvent, default_chain
-from plumbline.models import CheckReport, Document, Intent, OrgContext, ParseError
+from plumbline.models import CheckReport, Document, Fix, Intent, OrgContext, ParseError
 from plumbline.parsers import parse_upload
 from plumbline.pipeline import run_check
 
@@ -137,7 +138,7 @@ def _check_and_save(
     if secret is None and u.role not in SEES_CONFIDENTIAL:
         report.coverage.not_checked.append(CONFIDENTIAL_UNAVAILABLE)
     try:
-        content_id, version_id = db.save_check(
+        content_id, version_id, record_ids = db.save_check(
             s,
             u.token,
             user_id=u.id,
@@ -164,7 +165,17 @@ def _check_and_save(
         raise ApiError(
             503, "db_unavailable", "The check ran but couldn't be saved. Try again shortly."
         ) from None
-    return report.model_copy(update={"version_id": version_id})
+    ids = iter(record_ids)
+    findings = [f.model_copy(update={"record_id": next(ids, None)}) for f in report.findings]
+    needs_human = [f.model_copy(update={"record_id": next(ids, None)}) for f in report.needs_human]
+    return report.model_copy(
+        update={
+            "version_id": version_id,
+            "content_id": content_id,
+            "findings": findings,
+            "needs_human": needs_human,
+        }
+    )
 
 
 @app.post("/v1/checks", response_model=CheckReport)
@@ -224,3 +235,96 @@ def submit_content(
     return _check_and_save(
         u, ctx, doc, intent, submit=True, content_id=content_id, title=content["title"]
     )
+
+
+@app.post("/v1/versions/{version_id}/apply", response_model=CheckReport)
+def apply_accepted(
+    u: CurrentUser,
+    ctx: Annotated[OrgContext, Depends(org_context)],
+    version_id: str,
+    accepted: Annotated[list[str], Body()] = (),
+    edits: Annotated[dict[str, str], Body()] = None,
+) -> CheckReport:
+    """Apply the writer's accepted fixes and edits (record ids), record those decisions, and re-check
+    the result as the next version. Offsets are applied here, in the same units the checker used."""
+    s = cfg()
+    edits = edits or {}
+    v = db.load_version(s, u.token, version_id)
+    if not v or not v["report"]:
+        raise NOT_FOUND
+    report = CheckReport.model_validate(v["report"])
+    by_record = {f.record_id: f for f in report.findings + report.needs_human if f.record_id}
+    chosen = [
+        by_record[r]
+        for r in accepted
+        if r in by_record and by_record[r].fix and by_record[r].fix.kind != "none"
+    ]
+    chosen += [
+        by_record[r].model_copy(update={"fix": Fix(kind="rewrite", text=t)})
+        for r, t in edits.items()
+        if r in by_record
+    ]
+    if not chosen:
+        raise ApiError(
+            422, "nothing_to_apply", "Choose at least one fix to accept, or edit a finding."
+        )
+    text = apply_fixes(v["doc"].text, chosen, {f.id for f in chosen})
+    db.record_decisions(
+        s,
+        u.token,
+        org_id=u.org_id,
+        user_id=u.id,
+        accepted=[r for r in accepted if r in by_record],
+        edits={r: t for r, t in edits.items() if r in by_record},
+    )
+    doc = parse_upload("paste.txt", text.encode(), s.max_upload_mb)
+    intent = Intent.model_validate(v["intent"] or {})
+    new = _check_and_save(
+        u,
+        ctx,
+        doc,
+        intent,
+        submit=False,
+        content_id=v["content_id"],
+        title=next((ln.strip() for ln in text.splitlines() if ln.strip()), "Post"),
+    )
+    return new.model_copy(update={"previous_text": v["doc"].text})
+
+
+@app.post("/v1/findings/{record_id}/decisions")
+def decide(
+    u: CurrentUser,
+    record_id: str,
+    action: Annotated[str, Body()],
+    reason: Annotated[str | None, Body()] = None,
+) -> dict:
+    """A writer's dismissal (reason required). Blocking findings can't be dismissed: they need a fix,
+    an edit, or a reviewer's decision."""
+    s = cfg()
+    if action != "dismiss":
+        raise ApiError(
+            422,
+            "unsupported_action",
+            "Use Accept or Edit to change the text; only Dismiss is recorded here.",
+        )
+    if not (reason or "").strip():
+        raise ApiError(422, "reason_required", "Say why you're dismissing this finding.")
+    finding = db.get_finding(s, u.token, record_id)
+    if not finding:
+        raise NOT_FOUND
+    if finding["severity"] == "blocking":
+        raise ApiError(
+            409,
+            "blocking",
+            "Blocking findings can't be dismissed. Fix or edit the text, or submit it for a reviewer to decide.",
+        )
+    db.insert_decision(
+        s,
+        u.token,
+        org_id=u.org_id,
+        user_id=u.id,
+        finding_id=record_id,
+        action="dismiss",
+        reason=reason.strip(),
+    )
+    return {"ok": True}
