@@ -51,10 +51,11 @@ Full list with the Round 1 section for each: docs/features.md.
   enables self-hosting). Free tiers mean the demo uses fictional data only.
 - Hosting: Supabase Pro and a paid worker → free tiers kept awake by a database cron job; the cost is
   image checks at about 6 s instead of under 5 s.
-- Not done in Round 2: the interviews and survey, human raters, a held-out set labelled by
-  practitioners, a tester back-test and user tests. Hypotheses H1–H6 were checked against published
-  surveys instead, labelled as desk research (H1, H3 and H6 partly supported; H2 weakly; H4 and H5 no
-  evidence). No AI-simulated persona stands in for any of it. All of it moves to Round 3.
+- Moved to Round 3: the interviews and survey, human raters, a held-out set labelled by practitioners, a
+  tester back-test and user tests. They need recruited participants, so Round 2 put its hours into
+  building and measuring the product; they were not run in Round 2, and no AI-simulated persona stands in
+  for them. Meanwhile, hypotheses H1–H6 were checked against published surveys, labelled as desk research
+  (H1, H3 and H6 partly supported; H2 weakly; H4 and H5 no evidence).
 - Found during the build and fixed: creators now see insights for their own work only, and each
   function edits only its own rules, as Round 1's permissions table required; the second approver
   shipped a round early.

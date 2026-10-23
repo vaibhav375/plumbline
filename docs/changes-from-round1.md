@@ -15,21 +15,22 @@ the evidence behind each, are in the [build log](build-log.md).
 | Postgres full-text search to match claims to facts | In-memory fuzzy matching against the fact ledger | The ledger is small (40 facts); full-text search when it grows |
 | ASCI decisions as an evaluation set | Not used yet | Moved to Round 3 |
 
-## Round 1 commitments for Round 2 that were not met
+## Round 1 commitments for Round 2, and where each stands
 
-Everything Round 1 planned that needed other people (interviews, a survey, human raters, labellers and
-user tests) was not done in Round 2. No AI-simulated personas stand in for any of it.
+The studies Round 1 planned with recruited participants (interviews, a survey, human raters, labellers
+and user tests) move to Round 3: Round 2 put its hours into building and measuring the product. They
+were not run in Round 2, and no AI-simulated persona stands in for them.
 
 | Round 1 said | What happened | What replaces it |
 |---|---|---|
-| §3.5: 6–8 interviews and a 30+ response survey before the window, results reported in Round 2 | Not conducted | [Desk research](desk-research.md) on published surveys for H1–H6, labelled as such: H1, H3 and H6 partly supported, H2 weakly, H4 and H5 no evidence. Interviews move to Round 3 |
-| §3.2: human raters re-classify the 114-rule style-guide audit blind; repeat it on a D2C brand book | Not conducted | Nothing replaces it: the audit stays AI-rated and labelled so. Round 3 |
-| §6.7: a held-out set of 50 items (~120 issues) labelled by two recruited marketing practitioners (κ reported), scored at Round 2 | Not conducted | A 40-post dev set written for this project, labels frozen before any model run, against a one-call AI baseline; the results page says the held-out set arrives in Round 3 |
-| §4.6: guideline health fed by testers labelling a back-test of 60 past posts | Not conducted | Synthetic reviewer history, labelled "Includes synthetic demo history" in the app |
-| §8, §10: counterbalanced tests with 6 users (matched sets of 20 posts, brand-book PDF vs Plumbline) | Not conducted | An automated baseline: Plumbline found 31/33 problems, the one-call baseline 18/33 |
+| §3.5: 6–8 interviews and a 30+ response survey before the window, results reported in Round 2 | Moved to Round 3 | [Desk research](desk-research.md) on published surveys for H1–H6, labelled as such: H1, H3 and H6 partly supported, H2 weakly, H4 and H5 no evidence. Interviews move to Round 3 |
+| §3.2: human raters re-classify the 114-rule style-guide audit blind; repeat it on a D2C brand book | Moved to Round 3 | The audit stays AI-rated, and labelled so, until the human raters' pass in Round 3 |
+| §6.7: a held-out set of 50 items (~120 issues) labelled by two recruited marketing practitioners (κ reported), scored at Round 2 | Moved to Round 3 | A 40-post dev set written for this project, labels frozen before any model run, against a one-call AI baseline; the results page says the held-out set arrives in Round 3 |
+| §4.6: guideline health fed by testers labelling a back-test of 60 past posts | Moved to Round 3 | Synthetic reviewer history, labelled "Includes synthetic demo history" in the app |
+| §8, §10: counterbalanced tests with 6 users (matched sets of 20 posts, brand-book PDF vs Plumbline) | Moved to Round 3 | An automated baseline: Plumbline found 31/33 problems, the one-call baseline 18/33 |
 | §6.7 Round 2 target: ≥ 90/100 citations correct, checked by a person (n = 100) | Checked automatically only: 52/52 valid (ID exists, quote at its place) | Human check on the held-out set |
 | Improvement 2 target: 0 invented claims in a 200-fix audit; ≥ 70% of fixes accepted in user tests | 10 live posts audited: 0 invented claims, intent kept 10/10. No user test | 200-fix audit and user tests in Round 3 |
-| Improvement 3 target: testers name the confusing rules before seeing the list | Not run; guideline health ships with labelled synthetic history | Round 3 |
+| Improvement 3 target: testers name the confusing rules before seeing the list | Moved to Round 3; guideline health ships with labelled synthetic history meanwhile | Round 3 |
 | §6.7 Round 2 target: recall ≥ 80% on seeded claim issues in the held-out set | No held-out set; on the dev set, 13/14 claim and fact labels found (93%), a small sample | Re-measure on the held-out set |
 
 ## Changes made during the build

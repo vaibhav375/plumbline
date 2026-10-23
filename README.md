@@ -107,9 +107,10 @@ the right words. The baseline is one model call per post with the whole brand bo
 
 - The dev set was written for this project, not drawn from real posts, and it is small, so the
   intervals are wide; the held-out, human-labelled set is Round 3.
-- No primary research or human study yet: the interviews, survey, human raters, labellers and user
-  tests planned in Round 1 were not conducted. Hypotheses H1–H6 were checked against published surveys
-  instead ([desk research](docs/desk-research.md)); see [changes from Round 1](docs/changes-from-round1.md).
+- Primary research and human studies move to Round 3: the interviews, survey, human raters, labellers and
+  user tests planned in Round 1 need recruited participants and were not run in Round 2. Meanwhile,
+  hypotheses H1–H6 were checked against published surveys ([desk research](docs/desk-research.md)); see
+  [changes from Round 1](docs/changes-from-round1.md).
 - Image checks miss the 5 s target on the free CPU; claims inside images aren't checked yet.
 - Guideline-health history is synthetic and labelled as such in the app.
 - Free model tiers may use inputs for training, which is why the demo uses fictional data only.

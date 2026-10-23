@@ -1,10 +1,10 @@
 # Desk research for hypotheses H1–H6
 
 **This is desk research, not primary research.** Round 1 (§3.5) planned 6–8 interviews and a survey with
-30+ responses before the window, with results reported in Round 2. They were not conducted, and neither
-were the other studies that needed people (human raters for the style-guide audit, a held-out set
-labelled by practitioners, a back-test labelled by testers, counterbalanced user tests). See
-[changes from Round 1](changes-from-round1.md).
+30+ responses before the window, with results reported in Round 2. These, and the other studies that need
+recruited participants (human raters for the style-guide audit, a held-out set labelled by practitioners,
+a back-test labelled by testers, counterbalanced user tests), move to Round 3; they were not run in
+Round 2. See [changes from Round 1](changes-from-round1.md).
 
 In their place, each Round 1 hypothesis was checked against published surveys and reports, retrieved
 on 24 October 2026. Every figure below was read at its source. Most sources are vendors, small or

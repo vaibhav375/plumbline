@@ -943,8 +943,8 @@ Chrome as in Round 1).
   and for key-shaped patterns.
 - *Round 1's Round 2 commitments were only the features.* Reading every "Round 2" mention in the Round 1
   PDF found five commitments that needed other people (interviews and survey, human raters, held-out
-  labellers, a tester back-test, user tests). None were done. They are listed as not done, with
-  published-survey desk research for H1–H6 in place of the interviews, labelled as such; no AI persona
+  labellers, a tester back-test, user tests). None were run in Round 2. They are listed as moved to
+  Round 3, with published-survey desk research for H1–H6 in the meantime, labelled as such; no AI persona
   stands in for people (the user proposed agents; Round 1 itself had ruled them out as evidence).
 - *"No-training model tiers" and similar phrasings were Round 1's words.* Checked against the PDF: Round 1
   planned the Claude API (Haiku, Opus), Supabase Pro and a paid 2 GB worker; the changes table quotes those.
