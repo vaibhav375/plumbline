@@ -55,3 +55,22 @@ def test_same_actor_second_approval_rejected(db):
             " values (%s, %s, %s, 'second', 'approve', 'ok')",
             (org, vid, reviewer),
         )
+
+
+def test_escalate_is_a_valid_decision_and_is_audited(db):
+    org = make_org(db)
+    creator = make_user(db, org, "creator")
+    finding = make_finding(db, org, make_version(db, org, creator))
+    as_user(db, creator)
+    db.execute(
+        "insert into decisions (org_id, finding_id, actor, action, reason) values (%s, %s, %s, 'escalate', 'r')",
+        (org, finding, creator),
+    )
+    as_admin(db)
+    assert (
+        db.execute(
+            "select count(*) from audit_events where org_id = %s and kind = 'decisions.insert'",
+            (org,),
+        ).fetchone()[0]
+        == 1
+    )

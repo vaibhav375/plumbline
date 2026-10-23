@@ -369,3 +369,239 @@ def record_decisions(
     if rows:
         with client_for(s, token) as c:
             c.post("/decisions", json=rows).raise_for_status()
+
+
+REVIEW_STATUSES = "(submitted,in_review,changes_requested,approved)"
+
+
+def _get(c: httpx.Client, table: str, **params) -> list[dict]:
+    r = c.get(f"/{table}", params=params)
+    r.raise_for_status()
+    return r.json()
+
+
+def _reports_with_ids(c: httpx.Client, version_ids: list[str]) -> dict[str, dict]:
+    """Latest report per version, with finding record ids re-attached from the saved rows."""
+    if not version_ids:
+        return {}
+    runs = _get(
+        c,
+        "check_runs",
+        version_id=f"in.({','.join(version_ids)})",
+        select="id,version_id,report_json,created_at",
+        order="created_at.desc",
+    )
+    latest: dict[str, dict] = {}
+    for r in runs:
+        latest.setdefault(r["version_id"], r)
+    rows = _get(
+        c,
+        "findings",
+        run_id=f"in.({','.join(r['id'] for r in latest.values())})",
+        select="id,run_id,payload_json",
+    )
+    ids = {
+        (r["run_id"], r["payload_json"].get("group"), r["payload_json"].get("id")): r["id"]
+        for r in rows
+    }
+    out = {}
+    for vid, run in latest.items():
+        report = run["report_json"]
+        for group in ("findings", "needs_human"):
+            report[group] = [
+                f | {"record_id": ids.get((run["id"], group, f["id"]))} for f in report[group]
+            ]
+        out[vid] = report
+    return out
+
+
+def _names(c: httpx.Client) -> dict[str, str]:
+    return {
+        p["user_id"]: p["display_name"] for p in _get(c, "profiles", select="user_id,display_name")
+    }
+
+
+def review_queue(s: Settings, token: str) -> dict:
+    """Submitted versions the caller can see (pre-checks are private, so RLS never returns them)."""
+    with client_for(s, token) as c:
+        versions = _get(
+            c,
+            "versions",
+            status=f"in.{REVIEW_STATUSES}",
+            private="is.false",
+            select="id,content_id,n,status,created_by,created_at",
+            order="created_at.desc",
+            limit="50",
+        )
+        # Only each content's newest submitted version is in the queue.
+        newest: dict[str, dict] = {}
+        for v in versions:
+            newest.setdefault(v["content_id"], v)
+        versions = list(newest.values())
+        vids = [v["id"] for v in versions]
+        contents = (
+            {
+                c_["id"]: c_
+                for c_ in _get(
+                    c,
+                    "contents",
+                    id=f"in.({','.join(v['content_id'] for v in versions)})",
+                    select="id,title,channel,origin",
+                )
+            }
+            if versions
+            else {}
+        )
+        reports = _reports_with_ids(c, vids)
+        record_ids = [
+            f["record_id"] for r in reports.values() for f in r["findings"] if f.get("record_id")
+        ]
+        decisions = (
+            _get(
+                c,
+                "decisions",
+                finding_id=f"in.({','.join(record_ids)})",
+                select="finding_id,actor,action,reason,at",
+            )
+            if record_ids
+            else []
+        )
+        approvals = (
+            _get(
+                c,
+                "approvals",
+                version_id=f"in.({','.join(vids)})",
+                select="version_id,actor,stage,outcome,reason,at",
+            )
+            if vids
+            else []
+        )
+        names = _names(c)
+    return {
+        "versions": versions,
+        "contents": contents,
+        "reports": reports,
+        "decisions": decisions,
+        "approvals": approvals,
+        "names": names,
+    }
+
+
+def load_review(s: Settings, token: str, version_id: str) -> dict | None:
+    with client_for(s, token) as c:
+        r = c.get(
+            "/versions",
+            params={
+                "id": f"eq.{version_id}",
+                "private": "is.false",
+                "select": "id,content_id,n,text,status,created_by,created_at",
+            },
+        )
+        if r.status_code == 400:
+            return None
+        r.raise_for_status()
+        if not r.json():
+            return None
+        version = r.json()[0]
+        content = _get(
+            c, "contents", id=f"eq.{version['content_id']}", select="id,title,channel,origin"
+        )[0]
+        report = _reports_with_ids(c, [version_id]).get(version_id)
+        record_ids = [
+            f["record_id"]
+            for f in (report or {}).get("findings", []) + (report or {}).get("needs_human", [])
+            if f.get("record_id")
+        ]
+        decisions = (
+            _get(
+                c,
+                "decisions",
+                finding_id=f"in.({','.join(record_ids)})",
+                select="finding_id,actor,action,reason,at",
+            )
+            if record_ids
+            else []
+        )
+        approvals = _get(
+            c, "approvals", version_id=f"eq.{version_id}", select="actor,stage,outcome,reason,at"
+        )
+        comments = _get(
+            c,
+            "comments",
+            version_id=f"eq.{version_id}",
+            select="author,body,created_at",
+            order="created_at.asc",
+        )
+        names = _names(c)
+    return {
+        "version": version,
+        "content": content,
+        "report": report,
+        "decisions": decisions,
+        "approvals": approvals,
+        "comments": comments,
+        "names": names,
+    }
+
+
+class SecondApproverError(Exception):
+    pass
+
+
+def add_approval(
+    s: Settings,
+    token: str,
+    *,
+    org_id: str,
+    user_id: str,
+    version_id: str,
+    stage: str,
+    outcome: str,
+    reason: str | None,
+) -> None:
+    with client_for(s, token) as c:
+        r = c.post(
+            "/approvals",
+            json={
+                "org_id": org_id,
+                "version_id": version_id,
+                "actor": user_id,
+                "stage": stage,
+                "outcome": outcome,
+                "reason": reason,
+            },
+        )
+        if r.status_code >= 400 and "different person" in r.text:
+            raise SecondApproverError()  # the database's separation-of-duties trigger (0003)
+        r.raise_for_status()
+
+
+def set_status(s: Settings, token: str, version_id: str, status: str) -> None:
+    with client_for(s, token) as c:
+        c.patch(
+            "/versions", params={"id": f"eq.{version_id}"}, json={"status": status}
+        ).raise_for_status()
+
+
+def add_comment(
+    s: Settings, token: str, *, org_id: str, user_id: str, version_id: str, body: str
+) -> None:
+    with client_for(s, token) as c:
+        c.post(
+            "/comments",
+            json={"org_id": org_id, "version_id": version_id, "author": user_id, "body": body},
+        ).raise_for_status()
+
+
+def escalations(s: Settings, token: str, record_ids: list[str]) -> list[dict]:
+    """The writer's "ask a reviewer" decisions on these findings."""
+    if not record_ids:
+        return []
+    with client_for(s, token) as c:
+        return _get(
+            c,
+            "decisions",
+            finding_id=f"in.({','.join(record_ids)})",
+            action="eq.escalate",
+            select="finding_id,reason",
+        )

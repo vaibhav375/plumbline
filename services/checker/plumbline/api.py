@@ -12,7 +12,7 @@ from fastapi import Body, Depends, FastAPI, File, Form, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from plumbline import auth, db
+from plumbline import auth, db, review
 from plumbline.auth import ApiError, User
 from plumbline.config import Settings
 from plumbline.fixes import apply_fixes
@@ -20,6 +20,7 @@ from plumbline.llm import LLM, EgressEvent, default_chain
 from plumbline.models import CheckReport, Document, Fix, Intent, OrgContext, ParseError
 from plumbline.parsers import parse_upload
 from plumbline.pipeline import run_check
+from plumbline.routing import can_approve, can_decide
 
 VERSION = os.environ.get("RENDER_GIT_COMMIT", "dev")[:7]
 log = logging.getLogger("plumbline")
@@ -233,9 +234,31 @@ def submit_content(
         else Document(format="text", text=latest["text"], blocks=[], images=[])
     )
     intent = Intent.model_validate(latest.get("intent_json") or {"channel": content["channel"]})
-    return _check_and_save(
+    # The writer's "ask a reviewer" notes were made on the pre-check; carry them to the same findings
+    # (same rule, same place) in the submitted version, so the reviewer sees why.
+    before = db.load_version(s, u.token, latest["id"]) if latest.get("id") else None
+    old = CheckReport.model_validate(before["report"]) if before and before["report"] else None
+    by_record = {f.record_id: f.id for f in (old.findings if old else []) if f.record_id}
+    asked = {
+        by_record[e["finding_id"]]: e["reason"]
+        for e in db.escalations(s, u.token, list(by_record))
+        if e["finding_id"] in by_record
+    }
+    new = _check_and_save(
         u, ctx, doc, intent, submit=True, content_id=content_id, title=content["title"]
     )
+    for f in new.findings:
+        if f.id in asked and f.record_id:
+            db.insert_decision(
+                s,
+                u.token,
+                org_id=u.org_id,
+                user_id=u.id,
+                finding_id=f.record_id,
+                action="escalate",
+                reason=asked[f.id],
+            )
+    return new
 
 
 @app.post("/v1/versions/{version_id}/apply", response_model=CheckReport)
@@ -299,25 +322,28 @@ def decide(
     action: Annotated[str, Body()],
     reason: Annotated[str | None, Body()] = None,
 ) -> dict:
-    """A writer's dismissal (reason required). Blocking findings can't be dismissed: they need a fix,
-    an edit, or a reviewer's decision."""
+    """A writer's own decisions: dismiss a non-blocking finding, or pass a blocking one to a reviewer
+    ("escalate"). Both need a reason. Blocking findings can never be dismissed by the writer."""
     s = cfg()
-    if action != "dismiss":
-        raise ApiError(
-            422,
-            "unsupported_action",
-            "Use Accept or Edit to change the text; only Dismiss is recorded here.",
-        )
+    if action not in ("dismiss", "escalate"):
+        raise ApiError(422, "unsupported_action", "Use Accept or Edit to change the text.")
     if not (reason or "").strip():
-        raise ApiError(422, "reason_required", "Say why you're dismissing this finding.")
+        raise ApiError(422, "reason_required", "Say why, so the reviewer knows.")
     finding = db.get_finding(s, u.token, record_id)
     if not finding:
         raise NOT_FOUND
-    if finding["severity"] == "blocking":
+    blocking = finding["severity"] == "blocking"
+    if action == "dismiss" and blocking:
         raise ApiError(
             409,
             "blocking",
-            "Blocking findings can't be dismissed. Fix or edit the text, or submit it for a reviewer to decide.",
+            "Blocking findings can't be dismissed. Fix or edit the text, or ask a reviewer.",
+        )
+    if action == "escalate" and not blocking:
+        raise ApiError(
+            422,
+            "not_blocking",
+            "Only blocking findings go to a reviewer; dismiss this one with a reason instead.",
         )
     db.insert_decision(
         s,
@@ -325,7 +351,198 @@ def decide(
         org_id=u.org_id,
         user_id=u.id,
         finding_id=record_id,
-        action="dismiss",
+        action=action,
         reason=reason.strip(),
     )
     return {"ok": True}
+
+
+REVIEW_ROLES = {"reviewer", "compliance", "brand_owner", "accessibility", "auditor"}
+
+
+def _reviewer(u: User) -> None:
+    if u.role not in REVIEW_ROLES:
+        raise ApiError(403, "forbidden", "Only reviewers can open the review queue.")
+
+
+def _review(u: User, version_id: str) -> tuple[dict, CheckReport, dict]:
+    data = db.load_review(cfg(), u.token, version_id)
+    if not data or not data["report"]:
+        raise NOT_FOUND
+    report = CheckReport.model_validate(data["report"])
+    return data, report, review.stage_state(report, data["decisions"], data["approvals"])
+
+
+def _detail(u: User, version_id: str) -> dict:
+    data, report, state = _review(u, version_id)
+    names = data["names"]
+    approved_by_me = {
+        a["stage"] for a in data["approvals"] if a["actor"] == u.id and a["outcome"] == "approve"
+    }
+    return {
+        "version": {
+            k: data["version"][k] for k in ("id", "content_id", "n", "text", "status", "created_at")
+        },
+        "content": data["content"],
+        "report": report.model_dump(mode="json"),
+        "state": state,
+        "decisions": [d | {"who": names.get(d["actor"], "Someone")} for d in data["decisions"]],
+        "comments": [c | {"who": names.get(c["author"], "Someone")} for c in data["comments"]],
+        "timeline": review.timeline(
+            data["version"], report, data["decisions"], data["approvals"], names
+        ),
+        "can_decide": [
+            f.record_id
+            for f in report.findings + report.needs_human
+            if f.record_id and can_decide(u.role, f)
+        ],
+        "can_approve": [
+            st
+            for st in state["pending"]
+            if can_approve(u.role, st) and not (st == "second" and "first" in approved_by_me)
+        ],
+    }
+
+
+@app.get("/v1/review/queue")
+def review_queue(u: CurrentUser) -> list[dict]:
+    """Submitted versions, riskiest first. Pre-checks are private, so they never appear."""
+    _reviewer(u)
+    d = db.review_queue(cfg(), u.token)
+    rows = []
+    for v in d["versions"]:
+        if v["id"] not in d["reports"]:
+            continue
+        report = CheckReport.model_validate(d["reports"][v["id"]])
+        ids = {f.record_id for f in report.findings + report.needs_human}
+        rows.append(
+            review.queue_row(
+                v,
+                d["contents"].get(v["content_id"], {}),
+                report,
+                [x for x in d["decisions"] if x["finding_id"] in ids],
+                [a for a in d["approvals"] if a["version_id"] == v["id"]],
+                d["names"],
+            )
+        )
+    return review.risk_order(rows)
+
+
+@app.get("/v1/review/{version_id}")
+def review_detail(u: CurrentUser, version_id: str) -> dict:
+    _reviewer(u)
+    return _detail(u, version_id)
+
+
+@app.post("/v1/review/{version_id}/decisions")
+def review_decide(
+    u: CurrentUser,
+    version_id: str,
+    record_id: Annotated[str, Body()],
+    action: Annotated[str, Body()],
+    reason: Annotated[str | None, Body()] = None,
+) -> dict:
+    _reviewer(u)
+    if action not in ("uphold", "overrule"):
+        raise ApiError(422, "unsupported_action", "Reviewers uphold or overrule a finding.")
+    if not (reason or "").strip():
+        raise ApiError(422, "reason_required", "Give a reason; it goes in the audit log.")
+    data, report, _ = _review(u, version_id)
+    finding = next(
+        (f for f in report.findings + report.needs_human if f.record_id == record_id), None
+    )
+    if finding is None:
+        raise NOT_FOUND
+    if not can_decide(u.role, finding):
+        raise ApiError(
+            403,
+            "not_your_decision",
+            "This finding is decided by "
+            + (
+                "Compliance."
+                if finding.category in ("claim", "confidential")
+                else "the accessibility approver."
+                if finding.category == "accessibility"
+                else "a reviewer."
+            ),
+        )
+    s = cfg()
+    db.insert_decision(
+        s,
+        u.token,
+        org_id=u.org_id,
+        user_id=u.id,
+        finding_id=record_id,
+        action=action,
+        reason=reason.strip(),
+    )
+    if data["version"]["status"] == "submitted":
+        db.set_status(s, u.token, version_id, "in_review")
+    return _detail(u, version_id)
+
+
+@app.post("/v1/versions/{version_id}/approve")
+def approve(
+    u: CurrentUser,
+    version_id: str,
+    stage: Annotated[str, Body()],
+    outcome: Annotated[str, Body()],
+    reason: Annotated[str | None, Body()] = None,
+) -> dict:
+    _reviewer(u)
+    if outcome not in ("approve", "request_changes"):
+        raise ApiError(422, "unsupported_outcome", "Approve, or request changes.")
+    data, report, state = _review(u, version_id)
+    if stage not in state["required"]:
+        raise ApiError(422, "stage_not_needed", f"This version doesn't need a {stage} approval.")
+    if not can_approve(u.role, stage):
+        raise ApiError(403, "not_your_stage", f"Your role can't approve the {stage} stage.")
+    if outcome == "approve" and state["undecided_blocking"]:
+        raise ApiError(
+            409,
+            "undecided",
+            "Decide every blocking finding first: uphold or overrule it, with a reason.",
+        )
+    if outcome == "approve" and stage == "second" and "first" not in state["approved"]:
+        raise ApiError(409, "first_missing", "The first approval comes before the second.")
+    if outcome == "request_changes" and not (reason or "").strip():
+        raise ApiError(422, "reason_required", "Say what needs to change.")
+    s = cfg()
+    try:
+        db.add_approval(
+            s,
+            u.token,
+            org_id=u.org_id,
+            user_id=u.id,
+            version_id=version_id,
+            stage=stage,
+            outcome=outcome,
+            reason=(reason or "").strip() or None,
+        )
+    except db.SecondApproverError:
+        raise ApiError(
+            409, "same_approver", "A second approval must come from a different person."
+        ) from None
+    approvals = data["approvals"] + [
+        {"actor": u.id, "stage": stage, "outcome": outcome, "at": "9999"}
+    ]
+    after = review.stage_state(report, data["decisions"], approvals)
+    status = (
+        "changes_requested"
+        if outcome == "request_changes"
+        else ("approved" if not after["pending"] else "in_review")
+    )
+    if status != data["version"]["status"]:
+        db.set_status(s, u.token, version_id, status)
+    return _detail(u, version_id)
+
+
+@app.post("/v1/review/{version_id}/comments")
+def comment(u: CurrentUser, version_id: str, body: Annotated[str, Body(embed=True)]) -> dict:
+    if not body.strip():
+        raise ApiError(422, "empty_comment", "Write something first.")
+    _review(u, version_id)  # 404 if you can't see it
+    db.add_comment(
+        cfg(), u.token, org_id=u.org_id, user_id=u.id, version_id=version_id, body=body.strip()
+    )
+    return _detail(u, version_id)

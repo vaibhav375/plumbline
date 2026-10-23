@@ -370,3 +370,218 @@ def test_report_returns_the_exact_text_it_checked(client):
         data={"text": "Shop\r\nnow\u00a0please.", "channel": "x", "region": "IN"},
     )
     assert r.json()["checked_text"] == "Shop\nnow please."
+
+
+# ---- review workflow (Task 16) ---------------------------------------------------------------
+
+
+def _claim_report():
+    from plumbline.models import CheckReport, Coverage, Finding
+
+    claim = Finding(
+        id="FACT-014@10",
+        category="claim",
+        severity="blocking",
+        advisory=False,
+        rule_id="CL-01",
+        fact_id="FACT-014",
+        quote="60% in 2 weeks",
+        span=None,
+        image_id=None,
+        explanation="x",
+        basis_excerpt="b",
+        method="code",
+        claim_status="contradicted",
+        record_id="r1",
+    )
+    cov = Coverage(
+        rules_run=[],
+        rules_advisory=[],
+        rules_not_run={},
+        not_checked=["x"],
+        ai_status="ok",
+        ai_note=None,
+    )
+    return CheckReport(
+        run_id="run", version_id="v1", findings=[claim], coverage=cov, ms_code=1, ms_total=1
+    )
+
+
+@pytest.fixture
+def review_db(client, monkeypatch):
+    state = {"status": "submitted", "decisions": [], "approvals": [], "role": "reviewer"}
+    monkeypatch.setattr(
+        auth, "fetch_profile", lambda s, t, uid: {"org_id": "org-1", "role": state["role"]}
+    )
+    monkeypatch.setattr(
+        api.db,
+        "load_review",
+        lambda s, t, vid: {
+            "version": {
+                "id": vid,
+                "content_id": "c1",
+                "n": 1,
+                "text": "60% in 2 weeks",
+                "status": state["status"],
+                "created_by": "creator-1",
+                "created_at": "2026-10-23T10:00:00",
+            },
+            "content": {"id": "c1", "title": "Post"},
+            "report": _claim_report().model_dump(mode="json"),
+            "decisions": list(state["decisions"]),
+            "approvals": list(state["approvals"]),
+            "comments": [],
+            "names": {"creator-1": "Creator Asha"},
+        },
+    )
+    tick = iter(range(100))
+    monkeypatch.setattr(
+        api.db,
+        "insert_decision",
+        lambda s, t, **kw: state["decisions"].append(
+            {
+                "finding_id": kw["finding_id"],
+                "actor": kw["user_id"],
+                "action": kw["action"],
+                "reason": kw["reason"],
+                "at": f"2026-10-23T11:{next(tick):02d}",
+            }
+        ),
+    )
+
+    def add_approval(s, t, **kw):
+        if kw["stage"] == "second" and any(
+            a["stage"] == "first" and a["actor"] == kw["user_id"] for a in state["approvals"]
+        ):
+            raise api.db.SecondApproverError()
+        state["approvals"].append(
+            {
+                "actor": kw["user_id"],
+                "stage": kw["stage"],
+                "outcome": kw["outcome"],
+                "reason": kw["reason"],
+                "at": f"2026-10-23T12:{next(tick):02d}",
+            }
+        )
+
+    monkeypatch.setattr(api.db, "add_approval", add_approval)
+    monkeypatch.setattr(api.db, "set_status", lambda s, t, vid, status: state.update(status=status))
+    return state
+
+
+def test_creators_cannot_open_the_queue(client, review_db):
+    review_db["role"] = "creator"
+    assert client.get("/v1/review/queue", headers=bearer(token())).status_code == 403
+
+
+def test_claim_needs_compliance_and_decisions_before_approval(client, review_db):
+    h = bearer(token())
+    detail = client.get("/v1/review/v1", headers=h).json()
+    assert detail["state"]["required"] == ["first", "compliance"] and detail["can_decide"] == []
+    r = client.post(
+        "/v1/review/v1/decisions",
+        headers=h,
+        json={"record_id": "r1", "action": "uphold", "reason": "x"},
+    )
+    assert (
+        r.status_code == 403 and "Compliance" in r.json()["message"]
+    )  # a reviewer can't decide a claim
+    review_db["role"] = "compliance"
+    r = client.post(
+        "/v1/versions/v1/approve", headers=h, json={"stage": "first", "outcome": "approve"}
+    )
+    assert r.status_code == 409 and r.json()["code"] == "undecided"
+    r = client.post(
+        "/v1/review/v1/decisions",
+        headers=h,
+        json={"record_id": "r1", "action": "uphold", "reason": "Use AW-014b before publishing."},
+    )
+    assert r.status_code == 200 and review_db["status"] == "in_review"
+    for stage in ("first", "compliance"):
+        assert (
+            client.post(
+                "/v1/versions/v1/approve", headers=h, json={"stage": stage, "outcome": "approve"}
+            ).status_code
+            == 200
+        )
+    assert review_db["status"] == "approved"
+    timeline = client.get("/v1/review/v1", headers=h).json()["timeline"]
+    assert [e["what"] for e in timeline] == [
+        "submitted for review",
+        "upheld CL-01",
+        "approved the first stage",
+        "approved the compliance stage",
+    ]
+
+
+def test_overruled_blocking_needs_a_different_second_approver(client, review_db):
+    h = bearer(token())
+    review_db["role"] = "compliance"
+    client.post(
+        "/v1/review/v1/decisions",
+        headers=h,
+        json={"record_id": "r1", "action": "overrule", "reason": "Study is new."},
+    )
+    assert client.get("/v1/review/v1", headers=h).json()["state"]["required"] == [
+        "first",
+        "compliance",
+        "second",
+    ]
+    for stage in ("first", "compliance"):
+        client.post(
+            "/v1/versions/v1/approve", headers=h, json={"stage": stage, "outcome": "approve"}
+        )
+    assert (
+        "second" not in client.get("/v1/review/v1", headers=h).json()["can_approve"]
+    )  # same person
+    r = client.post(
+        "/v1/versions/v1/approve", headers=h, json={"stage": "second", "outcome": "approve"}
+    )
+    assert (
+        r.status_code == 409
+        and r.json()["message"] == "A second approval must come from a different person."
+    )
+    assert review_db["status"] != "approved"
+
+
+def test_request_changes_needs_a_reason_and_sets_the_status(client, review_db):
+    h = bearer(token())
+    assert (
+        client.post(
+            "/v1/versions/v1/approve",
+            headers=h,
+            json={"stage": "first", "outcome": "request_changes"},
+        ).status_code
+        == 422
+    )
+    client.post(
+        "/v1/versions/v1/approve",
+        headers=h,
+        json={
+            "stage": "first",
+            "outcome": "request_changes",
+            "reason": "Use the approved wording.",
+        },
+    )
+    assert review_db["status"] == "changes_requested"
+
+
+def test_writer_escalates_blocking_but_cannot_dismiss_it(client, monkeypatch):
+    calls = []
+    monkeypatch.setattr(
+        api.db, "get_finding", lambda s, t, rid: {"id": rid, "severity": "blocking"}
+    )
+    monkeypatch.setattr(api.db, "insert_decision", lambda s, t, **kw: calls.append(kw))
+    h = bearer(token())
+    assert (
+        client.post(
+            "/v1/findings/f/decisions", headers=h, json={"action": "dismiss", "reason": "x"}
+        ).status_code
+        == 409
+    )
+    r = client.post(
+        "/v1/findings/f/decisions",
+        headers=h,
+        json={"action": "escalate", "reason": "No approved wording."},
+    )
+    assert r.status_code == 200 and calls[0]["action"] == "escalate"
