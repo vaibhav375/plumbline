@@ -3,6 +3,7 @@ only the JWKS lookup and the database reads are replaced."""
 
 import json
 import time
+from pathlib import Path
 
 import httpx
 import jwt
@@ -585,3 +586,35 @@ def test_writer_escalates_blocking_but_cannot_dismiss_it(client, monkeypatch):
         json={"action": "escalate", "reason": "No approved wording."},
     )
     assert r.status_code == 200 and calls[0]["action"] == "escalate"
+
+
+def _audit_chain(monkeypatch, role):
+    chain = json.loads((Path(__file__).parent / "fixtures" / "audit_chain.json").read_text())
+    monkeypatch.setattr(auth, "fetch_profile", lambda s, t, uid: {"org_id": "org-1", "role": role})
+    monkeypatch.setattr(api.db, "audit_events", lambda s, t: (chain, {chain[0]["actor"]: "Asha"}))
+    return chain
+
+
+def test_auditor_verifies_the_chain_and_sees_newest_first(client, monkeypatch):
+    chain = _audit_chain(monkeypatch, "auditor")
+    r = client.get("/v1/audit/verify", headers=bearer(token()))
+    assert r.status_code == 200
+    body = r.json()
+    assert (body["valid"], body["length"], body["broken_at"]) == (True, 3, None)
+    assert [e["id"] for e in body["recent"]] == [c["id"] for c in reversed(chain)]
+    assert body["recent"][-1]["what"] == "saved version 1"
+
+
+def test_audit_export_is_a_csv_download(client, monkeypatch):
+    _audit_chain(monkeypatch, "compliance")
+    r = client.get("/v1/audit/export.csv", headers=bearer(token()))
+    assert r.status_code == 200
+    assert r.headers["content-type"].startswith("text/csv")
+    assert "attachment" in r.headers["content-disposition"]
+    assert r.text.splitlines()[0] == "at,actor,kind,entity,entity_id,prev_hash,hash,payload"
+
+
+def test_creators_cannot_open_the_audit_log(client, monkeypatch):
+    _audit_chain(monkeypatch, "creator")
+    for path in ("/v1/audit/verify", "/v1/audit/export.csv"):
+        assert client.get(path, headers=bearer(token())).status_code == 403

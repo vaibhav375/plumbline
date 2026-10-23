@@ -164,3 +164,30 @@ export const review = {
     request<ReviewDetail>(`/v1/versions/${versionId}/approve`, json({ stage, outcome, reason }), () => {}),
   comment: (versionId: string, body: string) => request<ReviewDetail>(`/v1/review/${versionId}/comments`, json({ body }), () => {}),
 };
+
+export type AuditEvent = {
+  id: number;
+  at: string;
+  who: string;
+  what: string;
+  reason: string | null;
+  kind: string;
+  entity_id: string | null;
+  hash: string;
+};
+export type AuditVerify = { valid: boolean; length: number; broken_at: number | null; recent: AuditEvent[] };
+
+export const audit = {
+  verify: (onWaking: (w: boolean) => void = () => {}) => request<AuditVerify>("/v1/audit/verify", {}, onWaking),
+  /** Downloads the whole chain as CSV (the browser can't attach the token to a plain link). */
+  async exportCsv() {
+    const r = await fetch(`${CHECKER}/v1/audit/export.csv`, { headers: await authHeader() });
+    if (!r.ok) throw new CheckError(`http_${r.status}`, "Couldn't export the audit log. Try again.");
+    const url = URL.createObjectURL(await r.blob());
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "plumbline-audit.csv";
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1_000);
+  },
+};

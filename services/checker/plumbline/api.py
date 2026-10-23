@@ -10,9 +10,9 @@ from zoneinfo import ZoneInfo
 import httpx
 from fastapi import Body, Depends, FastAPI, File, Form, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 
-from plumbline import auth, db, review
+from plumbline import audit, auth, db, review
 from plumbline.auth import ApiError, User
 from plumbline.config import Settings
 from plumbline.fixes import apply_fixes
@@ -363,6 +363,45 @@ REVIEW_ROLES = {"reviewer", "compliance", "brand_owner", "accessibility", "audit
 def _reviewer(u: User) -> None:
     if u.role not in REVIEW_ROLES:
         raise ApiError(403, "forbidden", "Only reviewers can open the review queue.")
+
+
+AUDIT_RECENT = 200
+
+
+def _audit_rows(u: User) -> tuple[list[dict], dict[str, str]]:
+    if u.role not in REVIEW_ROLES:
+        raise ApiError(403, "forbidden", "Only reviewers and auditors can open the audit log.")
+    return db.audit_events(cfg(), u.token)
+
+
+@app.get("/v1/audit/verify")
+def audit_verify(u: CurrentUser) -> dict:
+    """Recomputes every hash in the org's chain, plus the newest events for the audit page."""
+    rows, names = _audit_rows(u)
+    recent = [
+        {
+            "id": r["id"],
+            "at": r["at"],
+            "who": names.get(r["actor"], "Someone"),
+            "what": audit.describe(r["kind"], json.loads(r["payload"])),
+            "reason": json.loads(r["payload"]).get("reason"),
+            "kind": r["kind"],
+            "entity_id": r["entity_id"],
+            "hash": r["hash"],
+        }
+        for r in reversed(rows[-AUDIT_RECENT:])
+    ]
+    return audit.verify_chain(rows) | {"recent": recent}
+
+
+@app.get("/v1/audit/export.csv")
+def audit_export(u: CurrentUser) -> Response:
+    rows, _ = _audit_rows(u)
+    return Response(
+        audit.to_csv(rows),
+        media_type="text/csv",
+        headers={"Content-Disposition": 'attachment; filename="plumbline-audit.csv"'},
+    )
 
 
 def _review(u: User, version_id: str) -> tuple[dict, CheckReport, dict]:

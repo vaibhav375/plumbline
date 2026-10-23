@@ -22,7 +22,10 @@ export async function AppHeader({ title, subtitle }: { title: string; subtitle: 
         <nav aria-label="Main" className="flex gap-4 text-sm">
           <Link href="/check" className="underline-offset-4 hover:underline">Check content</Link>
           {profile && REVIEWERS.has(profile.role) && (
-            <Link href="/review" className="underline-offset-4 hover:underline">Review queue</Link>
+            <>
+              <Link href="/review" className="underline-offset-4 hover:underline">Review queue</Link>
+              <Link href="/audit" className="underline-offset-4 hover:underline">Audit log</Link>
+            </>
           )}
         </nav>
         <div className="flex items-center gap-3">

@@ -425,6 +425,27 @@ def _names(c: httpx.Client) -> dict[str, str]:
     }
 
 
+AUDIT_PAGE = 1000  # Supabase's default max rows per request
+
+
+def audit_events(s: Settings, token: str) -> tuple[list[dict], dict[str, str]]:
+    """The caller's org chain in id order (RLS scopes it), with `payload` as the exact hashed text."""
+    rows: list[dict] = []
+    with client_for(s, token) as c:
+        while True:
+            page = _get(
+                c,
+                "audit_events",
+                select="id,actor,kind,entity,entity_id,payload::text,prev_hash,hash,at",
+                order="id.asc",
+                limit=str(AUDIT_PAGE),
+                offset=str(len(rows)),
+            )
+            rows += page
+            if len(page) < AUDIT_PAGE:
+                return rows, _names(c)
+
+
 def review_queue(s: Settings, token: str) -> dict:
     """Submitted versions the caller can see (pre-checks are private, so RLS never returns them)."""
     with client_for(s, token) as c:

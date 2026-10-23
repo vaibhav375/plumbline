@@ -137,3 +137,26 @@ test("compliance approves", async ({ page }) => {
     await expect(timeline.getByText(step).first()).toBeVisible();
   }
 });
+
+// Plan Task 17: the audit chain verifies, and the export is the whole chain with exact payloads.
+test("audit log verifies and exports", async ({ page }) => {
+  await page.goto("/login");
+  await page.getByRole("button", { name: "Try as Compliance" }).click();
+  await expect(page).toHaveURL(/\/check/, { timeout: 30_000 });
+  await page.getByRole("link", { name: "Audit log" }).click();
+  const status = page.getByTestId("chain-status");
+  await expect(status).toContainText(/Chain verified ✓ \(\d+ events\)/, { timeout: 90_000 });
+  const total = Number((await status.textContent())!.match(/\((\d+) events\)/)![1]);
+  await expect(page.getByRole("row").nth(1)).toBeVisible();
+  const download = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Export CSV" }).click();
+  const csv = await (await download).createReadStream().then(async (s) => {
+    let out = "";
+    for await (const chunk of s) out += chunk;
+    return out;
+  });
+  expect(csv.split("\n")[0].trim()).toBe("at,actor,kind,entity,entity_id,prev_hash,hash,payload");
+  // At least as many events as verified a moment ago (other runs may have added more since).
+  const rows = csv.match(/^\d{4}-\d\d-\d\dT/gm) ?? [];
+  expect(rows.length).toBeGreaterThanOrEqual(total);
+});
