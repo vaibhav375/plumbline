@@ -16,7 +16,9 @@ RUN uv sync --frozen --no-dev --no-install-project
 COPY plumbline ./plumbline
 RUN uv sync --frozen --no-dev
 
-RUN useradd --create-home app
+# uagents-core opens uagents_core.log in the working directory on import, so the app user must
+# be able to write there (without it the checker crashes at startup).
+RUN useradd --create-home app && chown app /app
 USER app
 EXPOSE 8000
 CMD ["sh", "-c", "uvicorn plumbline.api:app --host 0.0.0.0 --port ${PORT:-8000} --proxy-headers --forwarded-allow-ips='*'"]
