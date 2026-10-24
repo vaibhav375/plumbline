@@ -3,27 +3,27 @@ import type { Finding } from "@/lib/api";
 export type Group = "Blocking" | "Major" | "Minor" | "Needs human eyes" | "Advisory";
 export const GROUPS: Group[] = ["Blocking", "Major", "Minor", "Needs human eyes", "Advisory"];
 
-// Colour always comes with a word (and a number), never on its own. Tags are white with a coloured
-// border, dot and text (every colour is >= 4.68:1 on white); highlights keep ink text on a light
-// tint, because the brand colours drop below 4.5:1 on their own tints.
+// Colour always comes with a word (and a number), never on its own. Tags sit on the dark panels in
+// the bright severity colours (each >= 6.3:1 there); marks on the paper sheet keep ink text, with the
+// colour only in the underline and the pin.
 const DOT = "before:mr-1.5 before:inline-block before:size-2 before:rounded-full before:bg-current before:content-['']";
 
 /** Labelled tags: group chips and box numbers. */
 export const TAG: Record<Group, string> = {
-  Blocking: `border-blocking bg-white text-blocking ${DOT}`,
-  Major: `border-major bg-white text-major ${DOT}`,
-  Minor: `border-minor bg-white text-minor ${DOT}`,
-  "Needs human eyes": `border-accent-brand bg-white text-accent-brand ${DOT}`,
-  Advisory: `border-slate-400 bg-white text-slate-700 ${DOT}`,
+  Blocking: `border-blocking/70 bg-blocking/10 text-blocking ${DOT}`,
+  Major: `border-major/70 bg-major/10 text-major ${DOT}`,
+  Minor: `border-minor/70 bg-minor/10 text-minor ${DOT}`,
+  "Needs human eyes": `border-iris/70 bg-iris/10 text-iris ${DOT}`,
+  Advisory: `border-line bg-white/5 text-ash ${DOT}`,
 };
 
-/** Highlights in the draft. */
-export const MARK: Record<Group, string> = {
-  Blocking: "border-blocking bg-blocking/10 text-ink",
-  Major: "border-major bg-major/10 text-ink",
-  Minor: "border-minor bg-minor/10 text-ink",
-  "Needs human eyes": "border-accent-brand bg-accent-brand/10 text-ink",
-  Advisory: "border-slate-400 bg-slate-100 text-ink",
+/** The same colours as hex, for inline styles (underlines, pins, chart marks). */
+export const HEX: Record<Group, string> = {
+  Blocking: "#FF6A5C",
+  Major: "#F0A03C",
+  Minor: "#74A7F0",
+  "Needs human eyes": "#A39CFF",
+  Advisory: "#9B9AA1",
 };
 
 /** Outlines drawn on images. */
@@ -31,8 +31,8 @@ export const EDGE: Record<Group, string> = {
   Blocking: "border-blocking",
   Major: "border-major",
   Minor: "border-minor",
-  "Needs human eyes": "border-accent-brand",
-  Advisory: "border-slate-400",
+  "Needs human eyes": "border-iris",
+  Advisory: "border-ash",
 };
 
 export function groupOf(f: Finding, needsHuman: boolean): Group {

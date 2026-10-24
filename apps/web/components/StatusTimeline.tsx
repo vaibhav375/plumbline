@@ -2,7 +2,7 @@ import type { ReviewDetail } from "@/lib/api";
 
 export function StatusTimeline({ events }: { events: ReviewDetail["timeline"] }) {
   return (
-    <section aria-labelledby="timeline" className="rounded-xl bg-white shadow-sm ring-1 ring-ink/5 p-4">
+    <section aria-labelledby="timeline" className="rounded-xl bg-panel shadow-sm ring-1 ring-line p-4">
       <h2 id="timeline" className="font-semibold">Timeline</h2>
       <ol className="mt-2 space-y-2 text-sm">
         {events.map((e, i) => (

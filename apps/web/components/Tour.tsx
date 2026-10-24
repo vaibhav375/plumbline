@@ -40,7 +40,7 @@ export function Tour() {
   const s = STEPS[step];
   return (
     <section role="dialog" aria-modal="false" aria-labelledby="tour-title"
-      className="rounded-lg border-2 border-accent-brand bg-white p-4">
+      className="rounded-lg border-2 border-accent-brand bg-panel p-4">
       <p id="tour-title" className="font-semibold">
         <span className="text-accent-brand">Step {step + 1} of {STEPS.length}:</span> {s.title}
       </p>

@@ -30,7 +30,7 @@ function ImportPanel({ onImported }: { onImported: () => void }) {
   }
 
   return (
-    <section aria-labelledby="import" className="space-y-3 rounded-xl bg-white shadow-sm ring-1 ring-ink/5 p-4">
+    <section aria-labelledby="import" className="space-y-3 rounded-xl bg-panel shadow-sm ring-1 ring-line p-4">
       <h2 id="import" className="font-semibold">Import CSV</h2>
       <p className="text-sm text-muted-foreground">
         Same columns as the seed rulebook. Rows are added or updated by ID, never deleted. Preview first: nothing changes until you import.
@@ -47,7 +47,7 @@ function ImportPanel({ onImported }: { onImported: () => void }) {
           </Button>
         )}
       </div>
-      {error && <p role="alert" className="text-sm text-red-800">{error}</p>}
+      {error && <p role="alert" className="text-sm text-blocking">{error}</p>}
       {result && (
         <div role="status" className="space-y-2 text-sm">
           <p className="font-medium" data-testid="import-result">
@@ -58,7 +58,7 @@ function ImportPanel({ onImported }: { onImported: () => void }) {
           {Object.entries(result.warnings).map(([id, ws]) => (
             <p key={id}><span className="font-mono">{id}</span>: {ws.join("; ")}</p>
           ))}
-          {result.rejected.map((r) => <p key={r} className="text-red-800">{r}</p>)}
+          {result.rejected.map((r) => <p key={r} className="text-blocking">{r}</p>)}
         </div>
       )}
     </section>
@@ -73,7 +73,7 @@ export function RulesTable() {
     rulebook.rules(setWaking).then(setData, (e) => setError(e instanceof CheckError ? e.message : "Couldn't load the rulebook."));
   }, []);
   useEffect(load, [load]);
-  if (error) return <p role="alert" className="rounded-lg border border-blocking/40 bg-white px-4 py-3 text-sm text-blocking">{error}</p>;
+  if (error) return <p role="alert" className="rounded-lg border border-blocking/40 bg-panel px-4 py-3 text-sm text-blocking">{error}</p>;
   if (!data) return <>{waking && <WakingBanner />}<p className="text-sm text-muted-foreground">Loading…</p></>;
   const flagged = data.rules.filter((r) => r.warnings.length).length;
 
@@ -84,7 +84,7 @@ export function RulesTable() {
         Mandatory rules block publishing; brand rules start as advisory and block only once they graduate.
       </p>
       {data.can_import && <ImportPanel onImported={load} />}
-      <div className="overflow-x-auto rounded-xl bg-white shadow-sm ring-1 ring-ink/5">
+      <div className="overflow-x-auto rounded-xl bg-panel shadow-sm ring-1 ring-line">
         <table className="w-full text-left text-sm">
           <thead className="bg-muted/50">
             <tr>
@@ -101,7 +101,7 @@ export function RulesTable() {
                   <p>{r.title}</p>
                   <p className="text-xs text-muted-foreground">{r.source_ref}</p>
                   {r.warnings.map((w) => (
-                    <p key={w} className="mt-1 inline-block rounded border border-amber-300 bg-amber-50 px-2 py-0.5 text-xs text-amber-950">
+                    <p key={w} className="mt-1 inline-block rounded border border-major/50 bg-major/10 px-2 py-0.5 text-xs text-major">
                       Linter: {w}
                     </p>
                   ))}

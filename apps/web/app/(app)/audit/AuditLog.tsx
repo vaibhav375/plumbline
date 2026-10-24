@@ -17,13 +17,13 @@ export function AuditLog() {
   useEffect(() => {
     audit.verify(setWaking).then(setData, (e) => setError(e instanceof CheckError ? e.message : "Couldn't load the audit log."));
   }, []);
-  if (error) return <p role="alert" className="rounded-lg border border-blocking/40 bg-white px-4 py-3 text-sm text-blocking">{error}</p>;
+  if (error) return <p role="alert" className="rounded-lg border border-blocking/40 bg-panel px-4 py-3 text-sm text-blocking">{error}</p>;
   if (!data) return <>{waking && <WakingBanner />}<p className="text-sm text-muted-foreground">Verifying the chain…</p></>;
 
   return (
     <div className="space-y-6">
       {data.scope === "mine" ? (
-        <section aria-labelledby="chain" className="rounded-xl bg-white shadow-sm ring-1 ring-ink/5 p-4">
+        <section aria-labelledby="chain" className="rounded-xl bg-panel shadow-sm ring-1 ring-line p-4">
           <h2 id="chain" className="text-lg font-semibold" data-testid="chain-status">
             Events about your work ({data.length})
           </h2>
@@ -33,7 +33,7 @@ export function AuditLog() {
           </p>
         </section>
       ) : (
-        <section aria-labelledby="chain" className={`rounded-xl bg-white shadow-sm ring-1 ring-ink/5 p-4 ${data.valid ? "border-green-300 bg-green-50 text-green-950" : "border-red-300 bg-red-50 text-red-950"}`}>
+        <section aria-labelledby="chain" className={`rounded-xl bg-panel shadow-sm ring-1 ring-line p-4 ${data.valid ? "border-ok/50 bg-ok/10 text-ok" : "border-blocking/50 bg-blocking/10 text-blocking"}`}>
           <h2 id="chain" className="text-lg font-semibold" data-testid="chain-status">
             {data.valid ? `Chain verified ✓ (${data.length} events)` : `Chain broken at event ${data.broken_at} of ${data.length}`}
           </h2>
@@ -64,7 +64,7 @@ export function AuditLog() {
         <h2 id="events" className="font-semibold">
           Newest events{data.recent.length < data.length ? ` (latest ${data.recent.length} of ${data.length}; export for all)` : ""}
         </h2>
-        <div className="overflow-x-auto rounded-xl bg-white shadow-sm ring-1 ring-ink/5">
+        <div className="overflow-x-auto rounded-xl bg-panel shadow-sm ring-1 ring-line">
           <table className="w-full text-left text-sm">
             <thead className="bg-muted/50">
               <tr>

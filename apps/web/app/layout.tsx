@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Barlow_Condensed, JetBrains_Mono, Jost } from "next/font/google";
+import { Archivo, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-// Jost: a geometric sans in the Futura tradition, set bold and uppercase for statements, plain for text.
-// Barlow Condensed: small uppercase labels, like a surveyor's notes. Mono: the evidence (IDs, quotes, hashes).
-const display = Jost({ variable: "--nf-display", subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
-const body = Barlow_Condensed({ variable: "--nf-body", subsets: ["latin"], weight: ["500", "600", "700"] });
+// Archivo (Omnibus-Type), a grotesque with a width axis: one family, set wide and heavy for statements,
+// condensed for labels, normal for reading. JetBrains Mono is the evidence (IDs, quotes, hashes).
+const sans = Archivo({ variable: "--nf-sans", subsets: ["latin"], axes: ["wdth"] });
 const mono = JetBrains_Mono({ variable: "--nf-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,7 +15,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${display.variable} ${body.variable} ${mono.variable} bg-chalk font-sans text-ink antialiased`}>
+      <body className={`${sans.variable} ${mono.variable} bg-carbon font-sans text-bone antialiased`}>
         {children}
       </body>
     </html>

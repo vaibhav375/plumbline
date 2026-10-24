@@ -10,14 +10,14 @@ const buttonVariants = cva(
       variant: {
         // Hover sweeps a fill in from the left (the ::before layer sits under the label).
         default:
-          "bg-ink text-white before:absolute before:inset-0 before:-z-10 before:origin-left before:scale-x-0 before:bg-accent-brand before:transition-transform before:duration-300 before:ease-out hover:before:scale-x-100",
+          "bg-bone text-carbon before:absolute before:inset-0 before:-z-10 before:origin-left before:scale-x-0 before:bg-accent-brand before:transition-transform before:duration-300 before:ease-out hover:text-white hover:before:scale-x-100",
         destructive:
           "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40",
         outline:
-          "border-[1.5px] border-ink bg-white text-ink before:absolute before:inset-0 before:-z-10 before:origin-left before:scale-x-0 before:bg-ink before:transition-transform before:duration-300 before:ease-out hover:text-white hover:before:scale-x-100",
+          "border-[1.5px] border-bone/40 bg-transparent text-bone before:absolute before:inset-0 before:-z-10 before:origin-left before:scale-x-0 before:bg-bone before:transition-transform before:duration-300 before:ease-out hover:border-bone hover:text-carbon hover:before:scale-x-100",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "text-ink hover:bg-ink/5",
+        ghost: "text-bone hover:bg-white/5",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {

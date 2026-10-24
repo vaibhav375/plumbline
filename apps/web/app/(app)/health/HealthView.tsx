@@ -12,13 +12,13 @@ const ORIGIN: Record<string, string> = { employee: "Employees", agency: "Agencie
 function status(r: HealthRow, min: number) {
   switch (r.status) {
     case "ready":
-      return { label: "Ready to block", tone: "border-green-300 bg-green-50 text-green-950" };
+      return { label: "Ready to block", tone: "border-ok/50 bg-ok/10 text-ok" };
     case "blocks":
-      return { label: r.tier === "mandatory" ? "Blocks (mandatory)" : "Blocks (graduated)", tone: "border-slate-300 bg-slate-50 text-slate-900" };
+      return { label: r.tier === "mandatory" ? "Blocks (mandatory)" : "Blocks (graduated)", tone: "border-line bg-raised text-bone" };
     case "too_few":
-      return { label: `Too few decisions (n < ${min})`, tone: "border-slate-300 bg-white text-slate-700" };
+      return { label: `Too few decisions (n < ${min})`, tone: "border-line text-ash" };
     default:
-      return { label: "Still advisory", tone: "border-slate-300 bg-white text-slate-900" };
+      return { label: "Still advisory", tone: "border-line text-bone" };
   }
 }
 
@@ -29,13 +29,13 @@ export function HealthView() {
   useEffect(() => {
     guidelineHealth(setWaking).then(setData, (e) => setError(e instanceof CheckError ? e.message : "Couldn't load guideline health."));
   }, []);
-  if (error) return <p role="alert" className="rounded-lg border border-blocking/40 bg-white px-4 py-3 text-sm text-blocking">{error}</p>;
+  if (error) return <p role="alert" className="rounded-lg border border-blocking/40 bg-panel px-4 py-3 text-sm text-blocking">{error}</p>;
   if (!data) return <>{waking && <WakingBanner />}<p className="text-sm text-muted-foreground">Loading…</p></>;
 
   return (
     <div className="space-y-6">
       {data.synthetic && (
-        <p role="note" className="rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+        <p role="note" className="rounded-md border border-major/50 bg-major/10 px-4 py-3 text-sm text-major">
           <strong>Includes synthetic demo history:</strong> generated reviewer decisions, not real data, so the page has something to show.
         </p>
       )}
@@ -55,7 +55,7 @@ export function HealthView() {
       </section>
 
       {data.rules.some((r) => r.decisions > 0) && (
-        <section aria-labelledby="agreement" className="rounded-xl bg-white p-5 shadow-sm ring-1 ring-ink/5">
+        <section aria-labelledby="agreement" className="rounded-xl bg-panel p-5 shadow-sm ring-1 ring-line">
           <h2 id="agreement" className="font-display text-lg font-bold">How often reviewers agree with each rule</h2>
           <p className="mb-2 text-sm text-muted-foreground">
             Dot: share of decisions that agreed. Line: the range we are 95% sure it lies in. A brand rule is ready to block
@@ -88,7 +88,7 @@ export function HealthView() {
       {data.rules.length === 0 ? (
         <p>No rule has flagged {data.scope === "mine" ? "your submitted drafts" : "submitted content"} yet.</p>
       ) : (
-        <div className="overflow-x-auto rounded-xl bg-white shadow-sm ring-1 ring-ink/5">
+        <div className="overflow-x-auto rounded-xl bg-panel shadow-sm ring-1 ring-line">
           <table className="w-full text-left text-sm">
             <thead className="bg-muted/50">
               <tr>
@@ -106,7 +106,7 @@ export function HealthView() {
                       <span className="font-mono text-xs">{r.rule_id}</span>
                       {r.title && <p>{r.title}</p>}
                       {r.unclear && (
-                        <span className="mt-1 inline-block rounded border border-amber-300 bg-amber-50 px-2 py-0.5 text-xs text-amber-950">
+                        <span className="mt-1 inline-block rounded border border-major/50 bg-major/10 px-2 py-0.5 text-xs text-major">
                           May be unclear
                         </span>
                       )}
@@ -135,7 +135,7 @@ export function HealthView() {
           {data.by_origin.length === 0 ? (
             <p className="text-sm">No group is large enough to show yet.</p>
           ) : (
-            <div className="overflow-x-auto rounded-xl bg-white shadow-sm ring-1 ring-ink/5">
+            <div className="overflow-x-auto rounded-xl bg-panel shadow-sm ring-1 ring-line">
               <table className="w-full text-left text-sm">
                 <thead className="bg-muted/50">
                   <tr>

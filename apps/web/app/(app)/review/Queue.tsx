@@ -20,14 +20,14 @@ export function Queue() {
   useEffect(() => {
     review.queue(setWaking).then(setRows, (e) => setError(e instanceof CheckError ? e.message : "Couldn't load the queue."));
   }, []);
-  if (error) return <p role="alert" className="rounded-lg border border-blocking/40 bg-white px-4 py-3 text-sm text-blocking">{error}</p>;
+  if (error) return <p role="alert" className="rounded-lg border border-blocking/40 bg-panel px-4 py-3 text-sm text-blocking">{error}</p>;
   if (!rows) return <>{waking && <WakingBanner />}<p className="text-sm text-muted-foreground">Loading…</p></>;
   if (!rows.length) return <p>Nothing is waiting for review.</p>;
   return (
     <ul className="space-y-3">
       {rows.map((r) => (
         <li key={r.version_id}>
-          <Link href={`/review/${r.version_id}`} className="block rounded-xl bg-white shadow-sm ring-1 ring-ink/5 p-4 transition-shadow hover:shadow-md">
+          <Link href={`/review/${r.version_id}`} className="block rounded-xl bg-panel shadow-sm ring-1 ring-line p-4 transition-shadow hover:shadow-md">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <span className="font-medium">{r.title ?? "Untitled"}</span>
               <span className="text-sm">{STATUS[r.status] ?? r.status}</span>

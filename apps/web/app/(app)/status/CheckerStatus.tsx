@@ -32,7 +32,7 @@ export function CheckerStatus() {
   }, []);
 
   return (
-    <section aria-labelledby="checker" className="rounded-xl bg-white shadow-sm ring-1 ring-ink/5">
+    <section aria-labelledby="checker" className="rounded-xl bg-panel shadow-sm ring-1 ring-line">
       <h2 id="checker" className="flex items-center justify-between gap-3 px-4 pt-4 font-semibold">
         Checker
         <span data-testid="checker-status" className={state === "up" ? "text-ok" : state === "down" ? "text-blocking" : "text-major"}>

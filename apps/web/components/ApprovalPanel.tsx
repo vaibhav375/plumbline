@@ -26,7 +26,7 @@ export function ApprovalPanel({
   const undecided = state.undecided_blocking.length;
   const done = detail.version.status === "approved";
   return (
-    <section aria-labelledby="approvals" className="rounded-xl bg-white shadow-sm ring-1 ring-ink/5 p-4">
+    <section aria-labelledby="approvals" className="rounded-xl bg-panel shadow-sm ring-1 ring-line p-4">
       <h2 id="approvals" className="font-semibold">Approvals</h2>
       <p className="mt-1 text-sm" data-testid="version-status">Status: {detail.version.status.replace("_", " ")}</p>
       <ul className="mt-2 space-y-1 text-sm">

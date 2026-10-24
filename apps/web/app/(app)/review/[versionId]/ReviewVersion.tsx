@@ -40,12 +40,12 @@ function DecisionCard({
   const decided = [...history].reverse().find((d) => d.action === "uphold" || d.action === "overrule");
   const canDecide = Boolean(f.record_id && detail.can_decide.includes(f.record_id)) && detail.version.status !== "approved";
   return (
-    <article aria-label={`Finding ${n}: ${f.rule_id ?? f.fact_id ?? "finding"}`} className="rounded-xl bg-white shadow-sm ring-1 ring-ink/5 p-4">
+    <article aria-label={`Finding ${n}: ${f.rule_id ?? f.fact_id ?? "finding"}`} className="rounded-xl bg-panel shadow-sm ring-1 ring-line p-4">
       <div className="flex flex-wrap items-center gap-2 text-sm">
         <span className="font-semibold">{n}</span>
         <span className={`rounded border px-2 py-0.5 font-medium ${TAG[group]}`}>{group}</span>
         {decided && (
-          <span className="rounded border border-ok bg-white px-2 py-0.5 font-medium text-ok">
+          <span className="rounded border border-ok bg-panel px-2 py-0.5 font-medium text-ok">
             ✓ {decided.action === "uphold" ? "Upheld" : "Overruled"}
           </span>
         )}
@@ -130,10 +130,10 @@ export function ReviewVersion({ versionId }: { versionId: string }) {
       <p className="text-sm text-muted-foreground">
         {detail.content.title} · version {detail.version.n} · {detail.content.origin} · {detail.content.channel}
       </p>
-      {error && <p role="alert" className="rounded-lg border border-blocking/40 bg-white px-4 py-3 text-sm text-blocking">{error}</p>}
+      {error && <p role="alert" className="rounded-lg border border-blocking/40 bg-panel px-4 py-3 text-sm text-blocking">{error}</p>}
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <div className="min-w-0 space-y-6">
-          <section aria-label="Submitted text" className="rounded-xl bg-white shadow-sm ring-1 ring-ink/5 p-4">
+          <section aria-label="Submitted text" className="rounded-xl bg-panel shadow-sm ring-1 ring-line p-4">
             <HighlightedText text={detail.report.checked_text ?? detail.version.text} marks={marks} />
           </section>
           <ApprovalPanel

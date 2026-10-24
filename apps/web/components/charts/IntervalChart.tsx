@@ -43,7 +43,7 @@ export function IntervalChart({
             <span />
             <div className="relative h-7">
               <div className={INNER}>
-                <span className="absolute bottom-1 -translate-x-1/2 whitespace-nowrap font-label text-xs font-semibold uppercase tracking-wide text-ink"
+                <span className="absolute bottom-1 -translate-x-1/2 whitespace-nowrap font-label text-xs font-semibold uppercase tracking-wide text-bone"
                   style={{ left: pct(threshold.value) }}>
                   {threshold.label}
                 </span>
@@ -59,10 +59,10 @@ export function IntervalChart({
                 <span className="font-mono text-xs font-medium">{r.label}</span>
                 {r.sub && <span className="block truncate text-xs text-muted-foreground">{r.sub}</span>}
               </div>
-              <div className="relative h-12 border-b border-dashed border-ink/15">
+              <div className="relative h-12 border-b border-dashed border-line">
                 <div className={INNER}>
                   {threshold && (
-                    <span aria-hidden className="absolute inset-y-0 z-10 w-0.5 -translate-x-1/2 bg-ink" style={{ left: pct(threshold.value) }} />
+                    <span aria-hidden className="absolute inset-y-0 z-10 w-0.5 -translate-x-1/2 bg-bone" style={{ left: pct(threshold.value) }} />
                   )}
                   {r.points.map((p, i) => {
                     const s = series[i];
@@ -71,14 +71,14 @@ export function IntervalChart({
                       <div key={s.name} title={p.tip} className="group absolute inset-x-0 z-20 h-5 -translate-y-1/2 cursor-default" style={{ top: y }}>
                         <span className="absolute top-1/2 h-0.5 -translate-y-1/2 rounded-full opacity-70"
                           style={{ left: pct(p.lo), width: `calc(${pct(p.hi)} - ${pct(p.lo)})`, background: s.color }} />
-                        <span className="absolute top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full ring-2 ring-white transition-transform duration-300 group-hover:scale-150"
+                        <span className="absolute top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full ring-2 ring-panel transition-transform duration-300 group-hover:scale-150"
                           style={{ left: pct(p.value), background: s.color }} />
                       </div>
                     );
                   })}
                 </div>
               </div>
-              <div className="flex flex-col justify-center gap-1 pl-3 text-xs font-semibold leading-tight tabular-nums text-ink">
+              <div className="flex flex-col justify-center gap-1 pl-3 text-xs font-semibold leading-tight tabular-nums text-bone">
                 {r.points.map((p, i) => <span key={series[i].name}>{p.label}</span>)}
               </div>
             </li>
@@ -90,7 +90,7 @@ export function IntervalChart({
             <div className={`${INNER} text-[11px] text-muted-foreground`}>
               {threshold && (
                 <svg viewBox="0 0 10 12" className="absolute -top-px size-2.5 -translate-x-1/2" style={{ left: pct(threshold.value) }}>
-                  <path d="M5 0 L10 6 L5 12 L0 6 Z" fill="#0A0A0A" />
+                  <path d="M5 0 L10 6 L5 12 L0 6 Z" fill="#EDEBE6" />
                 </svg>
               )}
               {[0, 0.5, 1].map((t) => (

@@ -4,19 +4,29 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Plumbline's visual identity (the Round 1 PDF). Every text colour here is >= 4.5:1 on white. */
+/* Plumbline's workspace: a dark drafting table, with the post being checked laid on it as paper.
+   Every text colour below is >= 6.3:1 on the panels (computed). */
 @theme {
-  --color-ink: #0b0b0c;
-  --color-chalk: #f3f3f1;
-  --font-display: var(--nf-display), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--nf-display), ui-sans-serif, system-ui, sans-serif;
-  --font-label: var(--nf-body), "Arial Narrow", sans-serif;
-  --font-mono: var(--nf-mono), ui-monospace, monospace;
+  --color-carbon: #0c0c0e;
+  --color-panel: #17171a;
+  --color-raised: #212126;
+  --color-line: #2e2e34;
+  --color-bone: #edebe6;
+  --color-ash: #9b9aa1;
+  --color-iris: #a39cff;
+  --color-paper: #eceae4;
+  --color-ink: #0c0c0e; /* text on paper */
+  --color-chalk: #0c0c0e;
   --color-accent-brand: #4b3fd1;
-  --color-blocking: #c2362b;
-  --color-major: #a86400;
-  --color-minor: #3d6fb6;
-  --color-ok: #1e7f55;
+  /* Severity, as read on the dark panels. On paper they mark (underlines, pins), never colour text. */
+  --color-blocking: #ff6a5c;
+  --color-major: #f0a03c;
+  --color-minor: #74a7f0;
+  --color-ok: #3dc48a;
+  --font-display: var(--nf-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--nf-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-label: var(--nf-sans), "Arial Narrow", sans-serif;
+  --font-mono: var(--nf-mono), ui-monospace, monospace;
   /* Body text is at least 15 px: text-sm is 15 px; text-xs stays for labels and metadata. */
   --text-sm: 0.9375rem;
   --text-sm--line-height: 1.4rem;
@@ -61,38 +71,38 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
+  --radius: 0.5rem;
+  --background: #0c0c0e;
+  --foreground: #edebe6;
+  --card: #17171a;
+  --card-foreground: #edebe6;
+  --popover: #17171a;
+  --popover-foreground: #edebe6;
   --primary: #4b3fd1;
   --primary-foreground: #ffffff;
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: #4b3fd1;
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-  --background: oklch(1 0 0);
-  --foreground: #0b0b0c;
+  --secondary: #212126;
+  --secondary-foreground: #edebe6;
+  --muted: #212126;
+  --muted-foreground: #9b9aa1;
+  --accent: #212126;
+  --accent-foreground: #edebe6;
+  --destructive: #ff6a5c;
+  --border: #2e2e34;
+  --input: #2e2e34;
+  --ring: #a39cff;
+  --chart-1: #a39cff;
+  --chart-2: #9b9aa1;
+  --chart-3: #74a7f0;
+  --chart-4: #3dc48a;
+  --chart-5: #f0a03c;
+  --sidebar: #0c0c0e;
+  --sidebar-foreground: #edebe6;
+  --sidebar-primary: #4b3fd1;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #212126;
+  --sidebar-accent-foreground: #edebe6;
+  --sidebar-border: #2e2e34;
+  --sidebar-ring: #a39cff;
 }
 
 .dark {
@@ -162,15 +172,15 @@
   .plumb-swing, .rise-in { animation: none; }
 }
 
-:focus-visible { outline: 2px solid #4b3fd1; outline-offset: 2px; }
+:root { color-scheme: dark; }
+:focus-visible { outline: 2px solid #a39cff; outline-offset: 2px; }
 
 /* ---------- Drafting texture: Plumbline's surveyor marks ---------- */
 /* Dashed guides, like construction lines on a drawing. */
 .guides {
   background-image:
-    repeating-linear-gradient(90deg, transparent 0 calc(25% - 1px), rgb(11 11 12 / 0.14) calc(25% - 1px) 25%),
-    repeating-linear-gradient(180deg, transparent 0 119px, rgb(11 11 12 / 0.08) 119px 120px);
-  -webkit-mask-image: linear-gradient(#000, #000);
+    repeating-linear-gradient(90deg, transparent 0 calc(25% - 1px), rgb(237 235 230 / 0.07) calc(25% - 1px) 25%),
+    repeating-linear-gradient(180deg, transparent 0 119px, rgb(237 235 230 / 0.045) 119px 120px);
 }
 .guides-dark {
   background-image:
@@ -179,7 +189,7 @@
 }
 /* Contour lines: a survey of the ground the plumb line hangs over. */
 .contours {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400' fill='none' stroke='%230b0b0c' stroke-opacity='.13' stroke-width='1'%3E%3Cpath d='M-20 300 C 80 240 160 330 260 270 S 440 180 620 250'/%3E%3Cpath d='M-20 270 C 90 210 170 300 270 240 S 450 150 620 220'/%3E%3Cpath d='M-20 240 C 100 180 180 270 280 210 S 460 120 620 190'/%3E%3Cpath d='M-20 210 C 110 150 190 240 290 180 S 470 90 620 160'/%3E%3Cpath d='M-20 180 C 120 120 200 210 300 150 S 480 60 620 130'/%3E%3Cpath d='M-20 150 C 130 90 210 180 310 120 S 490 30 620 100'/%3E%3Cpath d='M-20 120 C 140 60 220 150 320 90 S 500 0 620 70'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400' fill='none' stroke='%23edebe6' stroke-opacity='.07' stroke-width='1'%3E%3Cpath d='M-20 300 C 80 240 160 330 260 270 S 440 180 620 250'/%3E%3Cpath d='M-20 270 C 90 210 170 300 270 240 S 450 150 620 220'/%3E%3Cpath d='M-20 240 C 100 180 180 270 280 210 S 460 120 620 190'/%3E%3Cpath d='M-20 210 C 110 150 190 240 290 180 S 470 90 620 160'/%3E%3Cpath d='M-20 180 C 120 120 200 210 300 150 S 480 60 620 130'/%3E%3Cpath d='M-20 150 C 130 90 210 180 310 120 S 490 30 620 100'/%3E%3Cpath d='M-20 120 C 140 60 220 150 320 90 S 500 0 620 70'/%3E%3C/svg%3E");
   background-size: 900px auto;
 }
 /* Crosshair registration marks on a box's corners. */
@@ -220,7 +230,7 @@
 
 /* The claim is struck through line by line (each wrapped line gets its own stroke). */
 .strike-bg {
-  background-image: linear-gradient(#0b0b0c, #0b0b0c);
+  background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
   background-position: 0 56%;
   background-size: 0% 0.085em;
@@ -245,5 +255,33 @@
   .curtain { display: none; }
 }
 
-/* Section headings across the app: bold, uppercase, tight, like the landing page. */
-main h2 { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; }
+/* One family, Archivo, across its width axis: wide and heavy for display, condensed for labels. */
+.font-display { font-stretch: 118%; }
+.font-label { font-stretch: 72%; }
+main h2 { font-family: var(--font-display); font-stretch: 112%; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; }
+
+/* ---------- Paper: the post being checked, laid on the drafting table ---------- */
+.paper {
+  background-color: #eceae4;
+  color: #0c0c0e;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 30px 60px -20px rgb(0 0 0 / 0.7), 0 12px 24px -12px rgb(0 0 0 / 0.6);
+}
+/* Faint ruled lines with a red margin rule, so the composer reads as a sheet you write on. */
+.ruled {
+  background-image:
+    linear-gradient(90deg, transparent 2.75rem, rgb(194 54 43 / 0.35) 2.75rem, rgb(194 54 43 / 0.35) calc(2.75rem + 1px), transparent calc(2.75rem + 1px)),
+    repeating-linear-gradient(180deg, transparent 0 calc(2.1rem - 1px), rgb(12 12 14 / 0.08) calc(2.1rem - 1px) 2.1rem);
+  background-position: 0 0, 0 0.85rem;
+  background-attachment: local;
+  line-height: 2.1rem;
+}
+/* Tick marks along a ruler edge. */
+.ruler {
+  background-image:
+    repeating-linear-gradient(90deg, rgb(237 235 230 / 0.35) 0 1px, transparent 1px 40px),
+    repeating-linear-gradient(90deg, rgb(237 235 230 / 0.18) 0 1px, transparent 1px 8px);
+  background-size: 100% 10px, 100% 5px;
+  background-repeat: no-repeat;
+  background-position: 0 100%, 0 100%;
+}
