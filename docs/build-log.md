@@ -1187,3 +1187,23 @@ page.
 4. The "clean" sample gets one blocking finding: "Your skin, a little calmer every morning" flagged as an
    unsupported claim, with a muddled explanation. Defensible (an implied claim) but noisy.
 5. Minor: non-check endpoints answer 401 with "Sign in to run a check"; content titles are cut mid-word.
+
+**Fixed after the test pass (24 Oct, 23:15–23:50 IST)**
+1. *Queue:* deleted the 36 submitted copies of the sample post that e2e runs had left (33 by the demo
+   creator, 3 by the agency; with them 72 versions, 572 decisions, 58 approvals), in one transaction that
+   asserted the count. Synthetic history (184 items) and private pre-checks were not touched; the audit log
+   is insert-only and was not touched, and the chain still verifies (1,587 events). Five different sample
+   posts were then submitted through the app's own flow (pre-check, ask a reviewer about each blocking
+   finding with a note, submit), so the queue shows a varied workload: 5 waiting, 15 blocking, 5 needing
+   compliance. One e2e post that compliance approved during the re-test is kept as a finished example.
+2. *Sentence case at fix seams:* applying fixes now capitalises a replacement that starts a sentence and
+   a word that a replacement's full stop starts; the writer's untouched words never change. Live: "…Serum.
+   Made with 94% naturally derived ingredients…". New unit test; one old test had encoded the lowercase.
+3. *Scroll:* a new page opens at the top (Back and Forward keep their position). Live: signing in from
+   4,594 px down the landing page opens /check at scrollY 0 with the title visible.
+4. *Round 3 plan* (doc, submission answers, PDF): improvement 2 now builds on the ASI:One agent shipped in
+   Round 2, checked against each caller's own brand; improvement 1's measures repeat on a second brand from
+   another sector loaded by CSV only. The AI disclosure lists ASI:One as a fallback.
+
+**Re-test:** checker 250/250 and lint; e2e 18/18 on getplumbline.xyz after the deploy, then 17 non-
+submitting tests again after the cleanup; audit chain verified.
