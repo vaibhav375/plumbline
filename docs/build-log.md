@@ -1004,3 +1004,39 @@ and sit "far out"; wording is too generic to know what to do; similar features a
 - Shipped through a branch preview first, then fast-forwarded to `main`.
 
 **Not yet done:** a second stranger test on the new design (the plan's "under 3 minutes without help").
+
+## Task 22 follow-up 2: second design pass after user review
+
+**Feedback:** the guideline-health chart looked misaligned; "Accept fix" changed nothing visible; the
+UI still looked basic. Reference given: podium.global (studied in the browser: Futura-bold uppercase
+type, white/black section flips, a brand mark used as a mask over media, a floating media collage with
+parallax, a project grid with tiny condensed meta, drafting-style dashed guides and contour lines, hover
+scaling on media over 0.7 s). Its patterns were adapted to Plumbline's own content; none of its
+brand, copy or images were used.
+
+**Fixed**
+- *Chart:* the plumb line was drawn under the row tracks, so it showed only between rows, and its label
+  overlapped the description. It is now drawn inside every row above the track (continuous), the label
+  has its own row on the same scale, and dots at 0%/100% are no longer clipped.
+- *Accept fix:* accepting a fix (or editing) now shows the change immediately: the original words struck
+  through and the replacement in green, in the draft and on the card ("Ready to apply · old → new"), and
+  the apply button turns primary with a count of fixes waiting.
+
+**Redesign**
+- Type: Jost (geometric, Futura tradition) bold uppercase for statements and titles; Barlow Condensed
+  for small labels; JetBrains Mono for evidence. Colour: carbon and white sections, indigo as the only
+  accent, severity colours only inside findings.
+- Texture (signature): surveyor's drafting marks: dashed construction guides, contour lines, a plumb
+  line and bob.
+- Landing: a 1.5 s intro (the bob drops; never blocks clicks; once per session; off with reduced
+  motion); a hero where "Clinically proven" is struck out line by line and replaced by the approved
+  wording; the bob as a window onto the Aurelle banner with a scan line and the contrast finding it
+  raises; a ticker of real findings; a black section of six pieces of content (post, banner, email,
+  influencer post, product page, ad), each with its finding, drifting with gentle parallax; how-it-works
+  tiles that invert on hover; the proof numbers from `latest.json`; role cards; a closing statement.
+- Buttons: a fill that sweeps in from the left on hover, a press scale; app page titles in big
+  uppercase over the drafting texture; sidebar labels condensed, the active page marked in indigo.
+
+**Checked:** no horizontal overflow at 1440 px or on a phone profile after fixing three issues found in
+review (the bob's string crossed the headline on phones; the strike-through sat between wrapped lines;
+role buttons overflowed). All 18 e2e tests pass on the preview and on production.
