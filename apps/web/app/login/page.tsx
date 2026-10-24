@@ -108,6 +108,9 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
               </defs>
               <line x1="50" y1="-12" x2="50" y2="4" stroke="#0B0B0C" strokeWidth="0.6" />
               <g clipPath="url(#bob)">
+                {/* The banner's own cream and pink continue past its edges, so the window has no gaps. */}
+                <rect width="100" height="120" fill="#FBF6EC" />
+                <rect y="88" width="100" height="32" fill="#FF3EA5" />
                 <image href="/images/aurelle-banner.png" x="14" y="6" width="104" height="104" preserveAspectRatio="xMidYMid slice" />
                 <rect className="scan" x="0" y="0" width="100" height="1.2" fill="#4B3FD1" />
                 <rect className="scan-glow" x="0" y="-14" width="100" height="14" fill="url(#glow)" />
