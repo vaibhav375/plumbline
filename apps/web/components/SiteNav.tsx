@@ -60,7 +60,9 @@ export function SiteNav({ profile }: { profile: Profile }) {
   const isActive = (href: string) => path === href || path.startsWith(href + "/");
   const bar = GROUPS.flatMap((g) => g.items).filter((i) => i.work && visible(profile)(i));
 
+  // The menu is a sibling of the header: the header's backdrop blur would otherwise clip a fixed overlay.
   return (
+    <>
     <header className="sticky top-0 z-40 border-b border-line bg-carbon/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between gap-6 px-4 sm:px-6">
         <Link href={profile ? "/check" : "/login"} className="flex shrink-0 items-center gap-2 text-bone">
@@ -104,13 +106,14 @@ export function SiteNav({ profile }: { profile: Profile }) {
           </button>
         </div>
       </div>
+    </header>
 
       <AnimatePresence>
         {open && (
           <motion.div id="site-menu" data-lenis-prevent
             initial={{ clipPath: "inset(0 0 100% 0)" }} animate={{ clipPath: "inset(0 0 0% 0)" }} exit={{ clipPath: "inset(0 0 100% 0)" }}
             transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-x-0 top-16 bottom-0 overflow-y-auto bg-carbon px-4 pt-8 pb-10 sm:px-6 xl:hidden">
+            className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto bg-carbon px-4 pt-8 pb-10 sm:px-6 xl:hidden">
             <div aria-hidden className="guides contours pointer-events-none absolute inset-0 opacity-60" />
             <nav aria-label="Main" className="relative mx-auto max-w-[1400px] space-y-8">
               {GROUPS.map((g) => {
@@ -146,6 +149,6 @@ export function SiteNav({ profile }: { profile: Profile }) {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }
