@@ -4,6 +4,7 @@ import logging
 from fastapi.testclient import TestClient
 
 from plumbline import api, ops
+from plumbline.config import Settings
 
 from .test_api import bearer, client, token  # noqa: F401  (client is a fixture)
 
@@ -80,6 +81,12 @@ def test_one_structured_log_line_per_request_without_content(client, caplog):  #
 
 
 def test_rulebook_is_cached_per_org_and_role_and_cleared_by_import(monkeypatch, aurelle):
+    # Its own settings: CI has no .env, and this test must not depend on one.
+    monkeypatch.setattr(
+        api,
+        "settings",
+        Settings(_env_file=None, supabase_url="https://test.supabase.co", supabase_anon_key="anon"),
+    )
     calls = []
     monkeypatch.setattr(api.db, "load_org_context", lambda s, t, org: calls.append(org) or aurelle)
     user = lambda org, role: api.User(id="u", org_id=org, role=role, token="t")  # noqa: E731
