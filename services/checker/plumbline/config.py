@@ -21,5 +21,5 @@ class Settings(BaseSettings):
     agent_seed_phrase: str = ""
     agent_demo_email: str = "sana@agency.example"
     demo_user_password: str = ""
-    app_url: str = "https://plumbline-pes1ug23cs665s-projects.vercel.app"
+    app_url: str = "https://getplumbline.xyz"
     match_threshold: float = 0.72

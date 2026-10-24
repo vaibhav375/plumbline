@@ -5,10 +5,12 @@ Every finding cites the rule or fact it comes from and quotes the exact words; e
 didn't check. On a 40-post dev set, Plumbline found **31 of 33** labelled problems (94%) where a
 one-call AI baseline with the whole brand book found 18 (55%).
 
-- **Live app:** https://plumbline-pes1ug23cs665s-projects.vercel.app (pick a role; no sign-up)
-- **How I know it works:** https://plumbline-pes1ug23cs665s-projects.vercel.app/about
-- **Status:** https://plumbline-pes1ug23cs665s-projects.vercel.app/status
+- **Live app:** https://getplumbline.xyz (pick a role; no sign-up)
+- **How I know it works:** https://getplumbline.xyz/about
+- **Status:** https://getplumbline.xyz/status
 - **Checker API:** https://plumbline-checker.onrender.com/docs
+- **In ASI:One chat:** the Agentverse agent "Plumbline Brand Checker"
+  (`agent1qdec79g6x8dfjkvklj2gr9gwr28ggrk5julydls9e00mrsxct6rxcym5p4p`)
 - **Round 2 PDF:** [docs/AtoZ_Plumbline_Round2.pdf](docs/AtoZ_Plumbline_Round2.pdf) (Round 2 progress, then the Round 1 plan unchanged)
 
 Demo runs on free model tiers using fictional data only; production uses paid no-training tiers or
@@ -37,6 +39,10 @@ guidelines make brands *and* endorsers liable for misleading claims, with penalt
 - **Review and approve.** Risk-ordered queue; claims route to compliance; overruling a blocking finding
   needs a second approver, enforced in the database; every decision lands in a hash-chained audit log
   you can verify and export.
+- **Check from chat.** The checker is also a Fetch.ai Agentverse agent, so it can be found and used
+  in ASI:One: paste a post, get the same cited findings and approved wording back. It checks as an
+  agency writer (confidential findings withheld), saves nothing, and allows 5 checks per sender per
+  10 minutes.
 - **Improve the guidelines.** Guideline health shows which rules reviewers keep overruling and which
   have earned the right to block (Wilson 95% lower bound of agreement ≥ 0.80).
 

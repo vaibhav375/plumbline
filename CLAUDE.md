@@ -13,7 +13,7 @@ Plan: `docs/superpowers/plans/2026-10-22-plumbline-round2.md`. Spec: Round 1 pla
 - Checker API: https://plumbline-checker.onrender.com (Render free, Docker, Singapore; auto-deploys `main`; sleeps when idle, ~25 s cold start, keep-alive every 10 min)
 - Render env holds only SUPABASE_URL, SUPABASE_ANON_KEY, GROQ_API_KEY, GEMINI_API_KEY, LLM_CHAIN and CHECKER_DATABASE_URL (the narrow `plumbline_checker` role from migration 0006; rotate with `scripts/checker_role.py`). Never the service key.
 
-- Web app: https://plumbline-pes1ug23cs665s-projects.vercel.app (Vercel, root `apps/web`, auto-deploys `main`; Vercel Authentication off; env: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, NEXT_PUBLIC_CHECKER_URL, DEMO_USER_PASSWORD server-only)
+- Web app: https://getplumbline.xyz (custom domain since 24 Oct; also https://plumbline-pes1ug23cs665s-projects.vercel.app) (Vercel, root `apps/web`, auto-deploys `main`; Vercel Authentication off; env: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, NEXT_PUBLIC_CHECKER_URL, DEMO_USER_PASSWORD server-only)
 - Keep-alive: Supabase pg_cron job `keepalive-checker` (migration 0005) pings the checker every 10 min; the GitHub workflow is a throttled backup.
 - `make e2e` (local prod build) or `BASE_URL=<live url> pnpm -C apps/web exec playwright test`.
 

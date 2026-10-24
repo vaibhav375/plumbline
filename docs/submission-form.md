@@ -4,7 +4,7 @@ Every number here matches the live app, the README and the Round 2 PDF (checked 
 evaluation figures come from the run on 23 Oct 2026, 23:43 IST, at commit a7beb93.
 
 ## Working link
-https://plumbline-pes1ug23cs665s-projects.vercel.app
+https://getplumbline.xyz
 (Pick a role on the first screen; no sign-up. Results and method: /about. Health: /status.)
 
 ## Public repository
@@ -28,6 +28,9 @@ Plumbline works end to end from the public link, on fictional data:
 - Rulebook with a linter and CSV import; fact ledger with expiry and approved wording; guideline health
   showing which rules reviewers keep overruling and which are ready to block.
 - Image accessibility floor: low-contrast text and missing alt text block, with boxes on the image.
+- The same check from chat: the checker is registered on Fetch.ai's Agentverse ("Plumbline Brand
+  Checker"), so ASI:One users can paste a post and get cited findings back (checked as an agency
+  writer, nothing saved).
 - A public results page comparing Plumbline with a one-call AI baseline, a status page, and a tour.
 Full list with the Round 1 section for each: docs/features.md.
 

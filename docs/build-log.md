@@ -1122,3 +1122,37 @@ uppercase links on the right.
 
 **Checked:** type-check and lint clean; 18/18 e2e on the preview and on production (`acf02e7`); laptop and
 phone widths reviewed; screenshots refreshed. Photo credits are in the README.
+
+## Task 22 follow-up 5: own domain, Agentverse agent, ASI:One provider
+
+**Request:** use the resources bought for the hackathon (a .xyz domain, Agentverse Premium, ASI:One
+Pro) in the pipeline: domain first, then the agent, then the model.
+
+**Domain.** `getplumbline.xyz` now serves the app (nameservers moved from gen.xyz parking to Vercel; the
+.xyz registry took about 30 minutes to publish the change). The checker's CORS allow-list accepts it (a
+test checks look-alike origins are refused). 18/18 e2e pass on `https://getplumbline.xyz`. README,
+submission answers and the PDF now link to it; the Vercel address still works.
+
+**Agentverse agent.** The checker exposes `GET /status` and `POST /chat` (Fetch.ai's chat protocol via
+`uagents-core` 0.4.12, Apache-2.0) and is registered on Agentverse as "Plumbline Brand Checker"
+(`agent1qdec79g6x8dfjkvklj2gr9gwr28ggrk5julydls9e00mrsxct6rxcym5p4p`), active, so ASI:One can route
+posts to it. A message runs the app's check as the demo agency writer: confidential facts are matched
+but their findings withheld, nothing is saved, the log keeps counts only, 5 checks per sender per 10
+minutes. Envelopes must be signed and addressed to this agent; anything else is refused (tested live:
+200 for a signed message to this agent, 400 for one addressed elsewhere). A live run of the sample post
+through this path found 4 blocking issues in 11.9 s, with the embargoed launch withheld.
+
+**ASI:One.** Added as an optional last provider in the model chain (`asi1-mini`, OpenAI-compatible). It
+only answers when Groq and Gemini both fail, so the evaluated numbers don't change; it stays off until a
+key is set and `LLM_CHAIN` includes `asi1`.
+
+**Evaluation (what didn't work as assumed)**
+- Both checker deploys after adding `uagents-core` failed, so Render kept the old version: the package
+  opens `uagents_core.log` in the working directory on import, and the container's app user couldn't
+  write to `/app`. The Dockerfile now gives that user the directory; the deploy came up in 60 s.
+- Agentverse rejects agent names over 32 characters; the name was shortened.
+- The ASI:One docs publish no per-token pricing or data-retention terms; until those are confirmed in the
+  account, it stays a fallback for fictional demo data only.
+
+**Checked:** 249 checker tests (9 new) and lint pass; 18/18 e2e on the new domain. Not yet seen: a reply
+inside ASI:One's chat (needs the account owner to send one from Agentverse's "Chat with Agent").
