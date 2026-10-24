@@ -40,7 +40,7 @@ guidelines make brands *and* endorsers liable for misleading claims, with penalt
 - **Improve the guidelines.** Guideline health shows which rules reviewers keep overruling and which
   have earned the right to block (Wilson 95% lower bound of agreement ≥ 0.80).
 
-![Role picker](docs/screenshots/login.png)
+![Landing page: a sample ad with the contrast finding Plumbline raises on it](docs/screenshots/login.png)
 
 ## How it works
 

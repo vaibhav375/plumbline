@@ -1085,3 +1085,40 @@ motion.
 
 **Checked:** type-check and lint clean; all 18 e2e tests pass on the branch preview and on
 production (`134ed8e`); laptop and phone widths reviewed page by page; README screenshots refreshed.
+
+## Task 22 follow-up 4: Podium's type and navigation, real photos
+
+**Feedback:** the left rail still looked AI-generated; the plumb-bob window cut its picture off so it made
+no sense; the sample banners weren't convincing; the fonts on the inside pages still looked generic.
+Instruction: follow podium.global's fonts, and use photos from the web if needed.
+
+**Measured on podium.global** (computed styles in the browser): every text is Futura: 700 uppercase with
+slightly negative tracking for headings (14–32 px), 400 in normal case for body (16 px); small labels are
+Univers Condensed 12 px uppercase with *normal* tracking. Navigation is the logo on the left and three bold
+uppercase links on the right.
+
+**Changes**
+- *Type:* Futura and Univers are paid licences, so Jost (an open Futura revival) is set the way Podium
+  sets Futura, and Archivo at its narrowest width stands in for Univers Condensed. The wide letter-spacing
+  on labels (a common AI-template tell) is gone; Podium's labels use none.
+- *Navigation:* the sidebar is replaced by a top bar: the mark, then the work pages in one line of bold
+  uppercase, an underline that slides to the current page, and the account on the right. Below 1280 px a
+  full-screen menu opens with large links grouped as before.
+- *Hero:* a real product photo (amber serum on orange, Unsplash) in full instead of a cropped diamond. Its
+  drip runs straight up out of the frame as the plumb line; the ad's white headline is boxed with the
+  contrast finding. White on that orange measures **1.96:1** (sampled from the photo), which is the number
+  the finding quotes.
+- *Sample content:* six cards rebuilt as real formats (Instagram post, web banner, email, influencer
+  post, product page, ad) with photos, and the flagged words underlined the way the checker marks them.
+  The finding sits under each card instead of a solid red slab.
+
+**Evaluation (what didn't work as assumed)**
+- A web-banner card first claimed a contrast ratio for white text over a busy photo. Sampling showed it
+  ranged 1.0–7.0:1, so no single number was honest; that card now carries a claim finding (FACT-014).
+- The new `.jpg` photos were redirected to the sign-in page: the middleware's matcher only exempted
+  `png|svg|ico`. It now exempts `jpg|jpeg|webp` too.
+- The phone menu rendered 72 px tall: the header's backdrop blur makes it the containing block for fixed
+  children. The menu now renders beside the header.
+
+**Checked:** type-check and lint clean; 18/18 e2e on the preview and on production (`acf02e7`); laptop and
+phone widths reviewed; screenshots refreshed. Photo credits are in the README.
