@@ -6,6 +6,7 @@ evaluation figures come from the run on 23 Oct 2026, 23:43 IST, at commit a7beb9
 ## Working link
 https://getplumbline.xyz
 (Pick a role on the first screen; no sign-up. Results and method: /about. Health: /status.)
+Backup address (same app, in case the new domain hasn't reached your network): https://plumbline-pes1ug23cs665s-projects.vercel.app
 
 ## Public repository
 https://github.com/vaibhav375/plumbline
