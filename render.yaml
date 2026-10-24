@@ -20,5 +20,11 @@ services:
         sync: false
       - key: GEMINI_API_KEY
         sync: false
+      - key: AGENT_SEED_PHRASE  # Agentverse agent identity; /chat is off without it
+        sync: false
+      - key: DEMO_USER_PASSWORD  # the agent checks as the demo agency writer
+        sync: false
+      - key: ASI1_API_KEY  # Fetch.ai ASI:One, last-resort fallback
+        sync: false
       - key: LLM_CHAIN
-        value: '["groq","gemini"]'
+        value: '["groq","gemini","asi1"]'
