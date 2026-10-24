@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
+import { Fragment } from "react";
 
 import { type Group, HEX as EDGE } from "@/components/severity";
 import { utf16Index } from "@/lib/offsets";
@@ -55,7 +56,10 @@ export function HighlightedText({ text, marks, active = null, onPick }: {
           </AnimatePresence>
         </span>
       ) : (
-        <mark key={m.n} aria-label={`Finding ${m.n}: ${m.group}`} onMouseEnter={() => onPick?.(m.n)}
+        <Fragment key={m.n}>
+        {/* The pin sits just outside the mark, so the mark holds exactly the flagged words. */}
+        <Pin n={m.n} group={m.group} active={isActive} />
+        <mark aria-label={`Finding ${m.n}: ${m.group}`} onMouseEnter={() => onPick?.(m.n)}
           onClick={() => {
             onPick?.(m.n);
             document.getElementById(`finding-${m.n}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -65,9 +69,9 @@ export function HighlightedText({ text, marks, active = null, onPick }: {
             background: isActive ? `${EDGE[m.group]}55` : `${EDGE[m.group]}1f`,
             boxShadow: `inset 0 -3px 0 ${EDGE[m.group]}`,
           }}>
-          <Pin n={m.n} group={m.group} active={isActive} />
           {text.slice(m.s, m.e)}
         </mark>
+        </Fragment>
       ),
     );
     pos = m.e;
