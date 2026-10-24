@@ -53,6 +53,7 @@ export function CheckerStatus() {
         <dl className="relative border-t border-line text-sm">
           <Row name="Groq (first choice)" ok={health.providers.groq} />
           <Row name="Gemini (fallback)" ok={health.providers.gemini} />
+          {"asi1" in health.providers && <Row name="ASI:One (last fallback)" ok={health.providers.asi1} />}
           <Row name="Database" ok={health.db} />
         </dl>
       )}

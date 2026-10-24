@@ -86,7 +86,7 @@ def test_health_ok(client, monkeypatch):
     monkeypatch.setattr(api, "db_ok", lambda s: True)
     body = client.get("/health").json()
     assert body["status"] == "ok" and body["db"] is True
-    assert set(body["providers"]) == {"groq", "gemini"} and isinstance(body["version"], str)
+    assert set(body["providers"]) == {"groq", "gemini", "asi1"} and isinstance(body["version"], str)
 
 
 def test_checks_requires_auth(client):

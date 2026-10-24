@@ -141,7 +141,11 @@ def health() -> dict:
     return {
         "status": "ok",
         "version": VERSION,
-        "providers": {"groq": bool(s.groq_api_key), "gemini": bool(s.gemini_api_key)},
+        "providers": {
+            "groq": bool(s.groq_api_key),
+            "gemini": bool(s.gemini_api_key),
+            "asi1": bool(s.asi1_api_key) and "asi1" in s.llm_chain,
+        },
         "db": db_ok(s),
     }
 
