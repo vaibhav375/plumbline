@@ -218,7 +218,7 @@ Demo runs on free model tiers using fictional data only; production uses paid no
 </div>
 <div>
 <p><b>A negative result.</b> "Citations that check out" was 100% for both systems: the baseline cites real IDs and real quotes, just the wrong ones. Precision is what separates them. Two of Plumbline's 8 false alarms are plain errors.</p>
-<p><b>Tests.</b> 240 checker unit tests, 17 database tests (row-level security, audit chain, second approver), 18 end-to-end tests run against the live site.</p>
+<p><b>Tests.</b> 251 checker unit tests, 17 database tests (row-level security, audit chain, second approver), 18 end-to-end tests run against the live site.</p>
 <p><b>Speed on free tiers.</b> Text checks 1.8–3.6 s; image checks about 6 s, over the 5 s target because OCR alone takes ~3.8 s on the shared CPU. The first check after a restart fell from ~20 s to 4.6 s by loading the privacy model at startup.</p>
 <p><b>Build log.</b> Every one of the 24 tasks was evaluated against real runs, and each assumption that failed is recorded with what replaced it (<i>docs/build-log.md</i>).</p>
 </div>
@@ -230,9 +230,23 @@ Demo runs on free model tiers using fictional data only; production uses paid no
   <tr><td>v1 of all three improvements</td><td><span class="tag t-ok">Met</span> Evidence or silence; fixes from approved wording with the intent lock (10/10 live posts kept intent, 0 invented claims); guideline health v1</td></tr>
   <tr><td>§6.7 recall ≥ 80% on seeded claim issues (held-out set)</td><td><span class="tag t-major">Partly</span> 13 / 14 claim and fact labels (93%) on the builder's dev set; no held-out set yet</td></tr>
   <tr><td>§6.7 ≥ 90/100 citations correct, checked by a person</td><td><span class="tag t-major">Partly</span> 52 / 52 valid, checked automatically only</td></tr>
-  <tr><td>§3.5 interviews and survey; §3.2 human raters; §6.7 held-out labellers; §4.6 tester back-test; §8/§10 user tests with 6 people</td><td><span class="tag t-ai">Round 3</span> These studies need recruited participants, so Round 2 put its hours into building and measuring the product; they run in Round 3. They were not run in Round 2, and no AI-simulated persona stands in for them. Meanwhile, hypotheses H1–H6 were checked against published surveys (below)</td></tr>
+  <tr><td>§3.5 interviews and survey; §3.2 human raters; §6.7 held-out labellers; §4.6 tester back-test; §8/§10 user tests with 6 people</td><td><span class="tag t-grey">Not run</span> They need recruited participants, which a one-person team can't run in a hackathon. The evidence plan changed instead (below). No AI-simulated persona stands in for them</td></tr>
   <tr><td>Second approver and publish gate in Round 3</td><td><span class="tag t-ok">Ahead</span> The second approver shipped in Round 2, enforced in the database</td></tr>
 </table>
+
+<div class="avoid">
+<h3>How the evidence plan changed, and why</h3>
+<p>Round 1 planned to prove Plumbline with recruited people. Plumbline is built by one person, and recruiting and running studies with outside participants doesn't fit a hackathon's build windows. So the plan moved from panels the builder would recruit to evidence anyone can verify: the competition asks that everything be openable, runnable and checkable, and a private panel is none of those. Each question Round 1 asked is kept, and answered with a source independent of the builder or a check one person can do and anyone can re-run.</p>
+<table>
+  <tr><th style="width:30%">Round 1 promised</th><th style="width:40%">Instead</th><th>What it proves</th></tr>
+  <tr><td>Test set labelled by two recruited marketers</td><td>Public ASCI (India) and UK ASA rulings on beauty and personal-care ads; the regulator's verdict is the label (Round 3)</td><td>Catches what regulators act on, on labels independent of the builder</td></tr>
+  <tr><td>100 citations checked by a person</td><td>Checked by the builder against the rule or fact each cites (Round 3)</td><td>Every finding points at real evidence</td></tr>
+  <tr><td>User tests: ≥ 70% of fixes accepted</td><td>A 200-fix audit (0 invented claims) and automatic intent checks (Round 3)</td><td>Fixes are safe and keep the message</td></tr>
+  <tr><td>Testers name confusing rules; testers' 60-post back-test</td><td>Recorded decisions replayed, with regulator rulings as real upheld or not-upheld decisions (Round 3)</td><td>Clarifications reduce disagreement, on real decisions</td></tr>
+  <tr><td>Interviews and a survey</td><td>Published surveys, labelled as desk research (below)</td><td>The problem exists at scale; not primary research</td></tr>
+</table>
+<p class="small"><b>What this doesn't show:</b> regulator rulings test whether Plumbline finds the right problems, not whether writers enjoy using it. No user study is claimed, and none is simulated with AI personas. Every number can be re-run from the public repository.</p>
+</div>
 
 <h3>Desk research in place of interviews (labelled as such)</h3>
 <table>
@@ -251,18 +265,19 @@ Demo runs on free model tiers using fictional data only; production uses paid no
   <tr><td>Anthropic Claude API (Haiku extracts, Opus judges)</td><td>Open-weight Qwen3.8-27B and GPT-OSS on Groq; Gemini Flash fallback</td><td>₹0 budget; open weights enable self-hosting</td></tr>
   <tr><td>Paid model API with redacted brand data</td><td>Free tiers, fictional data only</td><td>Free tiers may use inputs</td></tr>
   <tr><td>Supabase Pro; a paid 2 GB worker</td><td>Free tiers, kept awake by a database cron job every 10 min</td><td>₹0; images run slower on the free CPU</td></tr>
-  <tr><td>Audit chain head e-mailed daily</td><td>Chain verified in the app and exportable</td><td>External anchor moved to Round 3</td></tr>
+  <tr><td>Audit chain head e-mailed daily</td><td>Chain verified in the app and exportable</td><td>External anchor later; not a Round 3 commitment</td></tr>
   <tr><td>Postgres full-text search for facts</td><td>In-memory fuzzy matching</td><td>40 facts; full-text search when the ledger grows</td></tr>
   <tr><td>Back-test on reviewer decisions</td><td>Synthetic history, labelled in the app</td><td>No real decisions yet</td></tr>
   <tr><td>Creators see org-wide insights; any owner edits any rule</td><td>Own work only; each function edits only its own rules (both enforced in the database)</td><td>Round 1's own permissions table (§4.5), caught during the build</td></tr>
 </table>
 
 <div class="avoid">
-<h3>Three improvements for Round 3</h3>
+<h3>Three improvements for Round 3 (each one deliverable and measurable by one person)</h3>
 <div class="grid3 impr">
-  <div class="card"><h4>Claim recall and live-post watch</h4>When a fact expires or changes, every published asset using it gets an update-or-withdraw task; published URLs are re-checked against the approved version; claims inside images are checked.<span class="target">Measured on the human-labelled held-out set and ASCI decisions, then on a second brand loaded by CSV only</span></div>
-  <div class="card"><h4>Fixes where creators work</h4>Grows the ASI:One agent shipped in Round 2: checks in ASI:One and Slack against each caller's own brand, a no-login agency link with expiry and rate limits, a publish-gate API, and DOCX tracked changes.<span class="target">0 invented claims in a 200-fix audit; ≥ 70% of fixes accepted by real writers</span></div>
-  <div class="card"><h4>Self-learning guidelines and confidential mode</h4>Automated rule graduation with undo, AI-drafted clarifications from real decisions, and a self-hosted open-weight Qwen mode.<span class="target">Top-5 "may be unclear" includes ≥ 2 of testers' 3 most confusing rules</span></div>
+  <div class="card"><h4>Claim watch, tested on regulator rulings</h4>When a fact expires or changes, every published post that used it gets an update-or-withdraw task with the replacement wording; published URLs are re-checked against the approved version.<span class="target">Held-out ASCI and UK ASA rulings: recall ≥ 80% on upheld claims; ≥ 95% of 100 citations correct (builder-checked); repeated on a second brand loaded by CSV only</span></div>
+  <div class="card"><h4>Each brand's own checks, in chat and before publishing</h4>A brand links its ASI:One address to its Plumbline organisation with a one-time code, so chat checks use its own rules and facts; a publish-gate API tells scheduling and CMS tools "not yet" while anything blocks.<span class="target">200-fix audit with 0 invented claims; automated tests: the gate refuses 100% of blocked versions, no brand sees another's facts</span></div>
+  <div class="card"><h4>Self-learning guidelines</h4>Brand rules graduate to blocking automatically at a Wilson lower bound ≥ 0.80, with an audit entry and undo; Plumbline drafts clearer wording for "may be unclear" rules from recorded decisions.<span class="target">Replayed decisions, incl. regulator rulings: accepted clarifications agree more often than the old wording</span></div>
+</div>
 </div>
 </div>
 

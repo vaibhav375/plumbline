@@ -112,11 +112,13 @@ the right words. The baseline is one model call per post with the whole brand bo
 ## Limits
 
 - The dev set was written for this project, not drawn from real posts, and it is small, so the
-  intervals are wide; the held-out, human-labelled set is Round 3.
-- Primary research and human studies move to Round 3: the interviews, survey, human raters, labellers and
-  user tests planned in Round 1 need recruited participants and were not run in Round 2. Meanwhile,
-  hypotheses H1–H6 were checked against published surveys ([desk research](docs/desk-research.md)); see
-  [changes from Round 1](docs/changes-from-round1.md).
+  intervals are wide. Round 3 adds a held-out set from public ASCI and UK ASA rulings, where the
+  regulator's verdict is the label.
+- No primary research or user study: the interviews, survey, raters, labellers and user tests planned in
+  Round 1 need recruited participants, which a one-person team can't run in a hackathon. The evidence plan
+  moved to sources anyone can verify instead
+  ([how and why](docs/changes-from-round1.md#how-the-evidence-plan-changed-and-why)), and hypotheses
+  H1–H6 were checked against published surveys ([desk research](docs/desk-research.md)).
 - Image checks miss the 5 s target on the free CPU; claims inside images aren't checked yet.
 - Guideline-health history is synthetic and labelled as such in the app.
 - Free model tiers may use inputs for training, which is why the demo uses fictional data only.

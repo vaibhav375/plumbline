@@ -52,8 +52,11 @@ review loop (15–19) · **M4** images and evaluation (20–21) · **M5** usabil
 | Role landing, 5 role cards, a 4-step tour, brand colours with checked contrast | §5 | 22 · M5 | Live |
 | Status page, request references on every error, waking and retry on cold starts, keep-alive | §6.7 | 6, 22, 23 · M1, M5 | Live |
 
-## Not in Round 2 (planned)
+## Not in Round 2
 
-Slack results, a no-login agency link, a publish-gate API, DOCX tracked changes, logo and palette checks,
-claims inside image text, Google Sheets sync and live-post monitoring. See
-[Round 3 improvements](round3-improvements.md).
+Committed for Round 3 ([the three improvements](round3-improvements.md)): watching published posts when a
+fact changes, a held-out evaluation on public regulator rulings, chat checks against each brand's own
+rulebook, a publish-gate API, automatic rule graduation and AI-drafted rule clarifications.
+
+Not committed (ideas only, no date): Slack, a no-login agency link, DOCX tracked changes, logo and palette
+checks, claims inside image text, Google Sheets sync and a self-hosted model mode.

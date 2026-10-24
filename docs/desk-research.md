@@ -3,8 +3,9 @@
 **This is desk research, not primary research.** Round 1 (§3.5) planned 6–8 interviews and a survey with
 30+ responses before the window, with results reported in Round 2. These, and the other studies that need
 recruited participants (human raters for the style-guide audit, a held-out set labelled by practitioners,
-a back-test labelled by testers, counterbalanced user tests), move to Round 3; they were not run in
-Round 2. See [changes from Round 1](changes-from-round1.md).
+a back-test labelled by testers, counterbalanced user tests), were not run: Plumbline is built by a
+one-person team, and recruiting outside participants does not fit a hackathon's build windows. See
+[how the evidence plan changed](changes-from-round1.md#how-the-evidence-plan-changed-and-why).
 
 In their place, each Round 1 hypothesis was checked against published surveys and reports, retrieved
 on 24 October 2026. Every figure below was read at its source. Most sources are vendors, small or
@@ -35,7 +36,7 @@ it was, a design critique.
 - **Limits:** neither source splits reviewer time into mechanical and substantive work; one is a US
   financial-services vendor survey, the other a sample of influencer posts, not reviewers.
 - **What it changes:** nothing yet. Code-first checks for mechanical issues (required labels, banned
-  phrases, contrast) stay first in the pipeline; the time split is a Round 3 interview question.
+  phrases, contrast) stay first in the pipeline; the time split stays an open question.
 
 ## H2. Creators prefer an editable suggested fix to a list of violations
 
@@ -45,7 +46,7 @@ it was, a design critique.
   ([GitHub blog](https://github.blog/news-insights/product-news/secure-code-more-than-three-times-faster-with-copilot-autofix/))
 - **Limits:** vendor data, a different profession, and it measures speed, not preference.
 - **What it changes:** keeps the Round 1 design (suggestions are editable and never applied without a
-  click); fix acceptance with real writers is a Round 3 test.
+  click); fix acceptance with real writers is not measured; Round 3 measures fix safety instead (a 200-fix audit and automatic intent checks).
 
 ## H3. Brand owners can name at least three rules their teams interpret differently
 
@@ -60,7 +61,7 @@ it was, a design critique.
 - **Limits:** evidence that guidelines are applied inconsistently, not that brand owners can name the
   rules.
 - **What it changes:** supports building guideline health (shipped in Round 2 with labelled synthetic
-  history); the "name three rules" test is Round 3.
+  history); Round 3 replays regulator rulings as real decisions instead of the "name three rules" test.
 
 ## H4. Claim evidence lives in email and spreadsheets, not a system
 
@@ -79,7 +80,7 @@ it was, a design critique.
   listing ([G2](https://www.g2.com/products/acrolinx/pricing)). Not checked against vendors' own pages or
   sales quotes.
 - **Limits:** what vendors charge says nothing about what buyers prefer.
-- **What it changes:** nothing in the product; pricing remains a hypothesis for Round 3 interviews.
+- **What it changes:** nothing in the product; pricing remains an untested hypothesis.
 
 ## H6. The synthetic panel's conditions matter to real reviewers
 
@@ -97,6 +98,7 @@ it was, a design critique.
 
 ## What happens in Round 3
 
-The interviews and survey in Appendix C run with real brand, agency and compliance people, and each
-verdict above is replaced by primary evidence. The human studies Round 1 planned (rater agreement on
-the style-guide audit, the held-out set, counterbalanced user tests) run in the same window.
+No interviews, survey or user study are part of the Round 3 commitments, so each verdict above stays
+desk research, labelled as such. Round 3 adds independent evidence where one person can gather it: public
+ASCI and UK ASA rulings become a held-out evaluation set (the regulator's verdict is the label) and real
+decisions for guideline health. See [the three Round 3 improvements](round3-improvements.md).
