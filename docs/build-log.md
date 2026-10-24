@@ -1156,3 +1156,34 @@ key is set and `LLM_CHAIN` includes `asi1`.
 
 **Checked:** 249 checker tests (9 new) and lint pass; 18/18 e2e on the new domain. Not yet seen: a reply
 inside ASI:One's chat (needs the account owner to send one from Agentverse's "Chat with Agent").
+
+## Pre-submission test pass (24 Oct, 22:30–23:00 IST)
+
+**Automated:** checker unit 249/249, database 17/17, ruff, TypeScript and ESLint clean; e2e 18/18 on
+`https://getplumbline.xyz`; `make doctor` ✓ Groq, Gemini, both Supabase projects (ASI:One checked
+separately).
+
+**Live API, as the demo creator** (19 requests): all 10 sample posts plus Hindi, emoji, a 9,000-character
+post, DOCX, PDF and an image returned in 2.1–9.2 s end to end (server 1.0–7.1 s; target p95 < 60 s).
+Empty, scanned and password-protected files get a plain 422 that says what to do. No token or a bad token
+gets a 401. The prompt-injection post still gets its findings. Hindi claims were caught (CL-01, CL-03).
+
+**Core loop by hand:** sample replay → run live → accept 6 fixes → apply: re-checked in 4.0 s, blocking
+6 → 2 (the two with no approved wording, as designed), diff shown, submit stays locked with "2 blocking
+left". Reviewer queue and review page load; audit chain verifies (1,505 events); status shows all four
+services up.
+
+**Accessibility and layout:** axe-core (WCAG 2 A and AA) on landing, check (with results), queue, review,
+rulebook, facts, health, audit, about and status: 0 violations. No horizontal overflow at 375 px on any
+page.
+
+**Found**
+1. The review queue shows 35 copies of the sample post: every e2e run on production submits one. A judge
+   opening the queue sees clutter, not a realistic workload.
+2. Applying fixes can leave a lowercase word after a new full stop ("…Brightening Serum. made with 94%…"):
+   the "!!!" → "." fix ends a sentence, and the next approved wording starts lower-case.
+3. Signing in from far down the landing page opens /check scrolled 180 px down, with the title under the
+   bar (smooth scrolling keeps the old position across the sign-in redirect; in-app links are fine).
+4. The "clean" sample gets one blocking finding: "Your skin, a little calmer every morning" flagged as an
+   unsupported claim, with a muddled explanation. Defensible (an implied claim) but noisy.
+5. Minor: non-check endpoints answer 401 with "Sign in to run a check"; content titles are cut mid-word.
