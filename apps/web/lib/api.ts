@@ -250,6 +250,19 @@ export type FactRow = {
 };
 export type FactsResponse = { today: string; restricted: boolean; facts: FactRow[] };
 
+/** Rule titles for the finding cards. A nice-to-have, so it never probes or waits for a sleeping checker
+ * (the check itself does that) and any failure just leaves the cards with their rule codes. */
+export async function ruleTitles(): Promise<Record<string, string>> {
+  try {
+    const r = await fetchWithTimeout(`${CHECKER}/v1/rules`, { headers: await authHeader() }, HEALTH_TIMEOUT_MS * 2);
+    if (!r.ok) return {};
+    const body = (await r.json()) as RulesResponse;
+    return Object.fromEntries(body.rules.map((x) => [x.id, x.title]));
+  } catch {
+    return {};
+  }
+}
+
 export const rulebook = {
   rules: (onWaking: (w: boolean) => void = () => {}) => request<RulesResponse>("/v1/rules", {}, onWaking),
   importCsv: (file: File, dryRun: boolean) => {
