@@ -90,7 +90,7 @@ export function HealthView() {
       ) : (
         <div className="overflow-x-auto rounded-xl bg-panel ring-1 ring-line">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-line font-label text-[11px] uppercase tracking-[0.14em] text-ash">
+            <thead className="border-b border-line font-label text-[11px] uppercase text-ash">
               <tr>
                 {["Rule", "Flags", "Upheld", "Overruled", "Dismissed", "Agreement", "Lower bound", "Status"].map((h) => (
                   <th key={h} scope="col" className="px-3 py-2 font-medium">{h}</th>
@@ -106,7 +106,7 @@ export function HealthView() {
                       <span className="font-mono text-xs">{r.rule_id}</span>
                       {r.title && <p>{r.title}</p>}
                       {r.unclear && (
-                        <span className="mt-1 inline-block rounded border border-major/50 bg-major/10 px-2 py-0.5 font-label text-[11px] font-semibold uppercase tracking-[0.12em] text-major">
+                        <span className="mt-1 inline-block rounded border border-major/50 bg-major/10 px-2 py-0.5 font-label text-[11px] font-semibold uppercase text-major">
                           May be unclear
                         </span>
                       )}
@@ -137,7 +137,7 @@ export function HealthView() {
           ) : (
             <div className="overflow-x-auto rounded-xl bg-panel ring-1 ring-line">
               <table className="w-full text-left text-sm">
-                <thead className="border-b border-line font-label text-[11px] uppercase tracking-[0.14em] text-ash">
+                <thead className="border-b border-line font-label text-[11px] uppercase text-ash">
                   <tr>
                     {["Origin", "People", "Versions", "Findings per version", "Blocking per version"].map((h) => (
                       <th key={h} scope="col" className="px-3 py-2 font-medium">{h}</th>

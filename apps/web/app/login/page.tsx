@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowRight, ArrowUpRight, BadgeCheck, Building2, ClipboardCheck, Megaphone, PenLine } from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUpRight, BadgeCheck, Building2, ClipboardCheck, Heart, Megaphone, MessageCircle, PenLine, Send } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -36,9 +36,9 @@ const TICKER = [
   ["“Gifted by Aurelle”", "add #ad", "block"],
 ] as const;
 
-const label = "font-label text-xs font-semibold uppercase tracking-[0.18em]";
+const label = "font-label text-xs font-semibold uppercase";
 
-/** A piece of content as it would go out, with the finding Plumbline raises on it. */
+/** A piece of content as it would go out, with the finding Plumbline raises on it pinned underneath. */
 function Specimen({ kind, children, finding, tone = "block", className = "" }: {
   kind: string;
   children: React.ReactNode;
@@ -47,20 +47,37 @@ function Specimen({ kind, children, finding, tone = "block", className = "" }: {
   className?: string;
 }) {
   return (
-    <figure className={`paper group overflow-hidden rounded-xl text-ink ${className}`}>
-      <div className="flex items-center justify-between border-b border-ink/10 px-3 py-2">
-        <span className={`${label} text-[10px] text-ink/60`}>{kind}</span>
-        <span className="size-1.5 rounded-full bg-ink/20" />
+    <figure className={`group ${className}`}>
+      <div className="paper overflow-hidden rounded-md text-ink">
+        <div className="flex items-center justify-between border-b border-ink/10 px-3 py-2">
+          <span className="font-label text-[11px] text-ink/60 uppercase">{kind}</span>
+          <span className="flex gap-1" aria-hidden><span className="size-1.5 rounded-full bg-ink/20" /><span className="size-1.5 rounded-full bg-ink/20" /></span>
+        </div>
+        {children}
       </div>
-      <div className="overflow-hidden">
-        <div className="transition-transform duration-700 ease-out group-hover:scale-[1.04]">{children}</div>
-      </div>
-      <figcaption className={`flex items-center gap-2 px-3 py-2 text-xs font-semibold ${tone === "block" ? "bg-blocking text-ink" : "bg-minor text-ink"}`}>
-        <span className="font-label uppercase tracking-wider">{tone === "block" ? "Blocks" : "Minor"}</span> {finding}
+      <figcaption className="mt-2 flex items-start gap-2 rounded-md border border-line bg-panel px-3 py-2 text-sm text-bone">
+        <span aria-hidden className={`mt-1.5 size-2 shrink-0 rotate-45 ${tone === "block" ? "bg-blocking" : "bg-minor"}`} />
+        <span>
+          <span className={`font-label text-xs uppercase ${tone === "block" ? "text-blocking" : "text-minor"}`}>{tone === "block" ? "Blocks" : "Minor"} </span>
+          {finding}
+        </span>
       </figcaption>
     </figure>
   );
 }
+
+/** The words Plumbline flags, underlined in the severity colour the way the checker marks them. */
+const Flag = ({ children, tone = "block" }: { children: React.ReactNode; tone?: "block" | "minor" }) => (
+  <span className="rounded-sm px-0.5" style={{ boxShadow: `inset 0 -3px 0 ${tone === "block" ? "#FF6A5C" : "#74A7F0"}`, background: tone === "block" ? "#FF6A5C1f" : "#74A7F01f" }}>{children}</span>
+);
+
+/** Photos sit in a frame that scales them slowly on hover, as Podium does with its media. */
+const Photo = ({ src, alt, className = "aspect-square" }: { src: string; alt: string; className?: string }) => (
+  <div className={`relative overflow-hidden ${className}`}>
+    <Image src={src} alt={alt} fill sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
+      className="object-cover transition-transform duration-700 ease-[cubic-bezier(0,0,.2,1)] group-hover:scale-[1.05]" />
+  </div>
+);
 
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
   const { error } = await searchParams;
@@ -76,11 +93,11 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         <nav className="relative z-10 flex items-center justify-between px-5 py-5 sm:px-8">
           <Link href="/login" className="flex items-center gap-2">
             <Brandmark className="size-8 text-bone" />
-            <span className="font-display text-xl font-extrabold uppercase tracking-tight">Plumbline</span>
+            <span className="font-display text-xl font-bold uppercase tracking-tight">Plumbline</span>
           </Link>
           <div className="flex items-center gap-5 sm:gap-8">
-            <Link href="/about" className={`${label} hidden text-bone/70 transition-colors hover:text-bone sm:block`}>How I know it works</Link>
-            <Link href="/status" className={`${label} hidden text-bone/70 transition-colors hover:text-bone sm:block`}>Status</Link>
+            <Link href="/about" className={`hidden font-display text-sm font-bold tracking-[-0.02em] text-bone/70 uppercase transition-colors hover:text-bone sm:block`}>How I know it works</Link>
+            <Link href="/status" className={`hidden font-display text-sm font-bold tracking-[-0.02em] text-bone/70 uppercase transition-colors hover:text-bone sm:block`}>Status</Link>
             <a href="#roles" className="group inline-flex items-center gap-1.5 rounded-full bg-bone px-4 py-2 font-display text-xs font-bold uppercase tracking-wide text-carbon transition-colors hover:bg-accent-brand hover:text-white">
               Try it <ArrowDown className="size-3.5 transition-transform group-hover:translate-y-0.5" aria-hidden />
             </a>
@@ -91,7 +108,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           {/* The thesis, acted out: a claim is struck out and the approved wording takes its place. */}
           <div className="space-y-3">
             <p className={`${label} text-bone/60`}>Before it&apos;s published</p>
-            <p className="font-display text-[clamp(2.4rem,5.6vw,5.4rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.03em]">
+            <p className="font-display text-[clamp(2.4rem,5.6vw,5.4rem)] font-bold uppercase leading-[0.92] tracking-[-0.03em]">
               <span className="block">Every claim</span>
               <span className="block"><span className="strike-bg text-blocking">Clinically proven</span></span>
               <span className="swap-in block text-ok">Shown to visibly reduce*</span>
@@ -100,34 +117,29 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
             <p className="font-mono text-xs text-bone/60">*FACT-014 · 32% fewer visible dark spots in 8 weeks · in-house study, 48 participants</p>
           </div>
 
-          {/* The plumb bob as a window onto the content it checks: a scan line passes, a finding appears. */}
-          <div className="relative mx-auto aspect-[5/6] w-full max-w-[250px] sm:max-w-[400px]">
-            <svg viewBox="0 0 100 120" className="absolute inset-0 h-full w-full overflow-visible" aria-hidden>
-              <defs>
-                <clipPath id="bob"><path d="M50 4 L94 58 L50 116 L6 58 Z" /></clipPath>
-              </defs>
-              <line x1="50" y1="-12" x2="50" y2="4" stroke="#EDEBE6" strokeWidth="0.6" />
-              <g clipPath="url(#bob)">
-                {/* The banner's own cream and pink continue past its edges, so the window has no gaps. */}
-                <rect width="100" height="120" fill="#FBF6EC" />
-                <rect y="88" width="100" height="32" fill="#FF3EA5" />
-                <image href="/images/aurelle-banner.png" x="14" y="6" width="104" height="104" preserveAspectRatio="xMidYMid slice" />
-                <rect className="scan" x="0" y="0" width="100" height="1.2" fill="#4B3FD1" />
-                <rect className="scan-glow" x="0" y="-14" width="100" height="14" fill="url(#glow)" />
-              </g>
-              <defs>
-                <linearGradient id="glow" x1="0" x2="0" y1="0" y2="1">
-                  <stop offset="0" stopColor="#4B3FD1" stopOpacity="0" />
-                  <stop offset="1" stopColor="#4B3FD1" stopOpacity="0.28" />
-                </linearGradient>
-              </defs>
-              <path d="M50 4 L94 58 L50 116 L6 58 Z" fill="none" stroke="#4B3FD1" strokeWidth="0.7" />
-            </svg>
-            <div className="finding-pop absolute top-[30%] -right-4 max-w-[200px] sm:max-w-[220px] paper rounded-lg p-3 text-xs sm:-right-10">
-              <p className="font-label text-[11px] font-semibold uppercase tracking-wider text-[#B3261E]">Blocks · A11Y-CONTRAST</p>
+          {/* A real-looking ad on the table: the serum's drip runs straight down like a plumb line, and Plumbline
+              boxes the headline it can't pass (white on this orange measures 1.96:1). */}
+          <div className="relative mx-auto w-full max-w-[300px] sm:max-w-[360px]">
+            <span aria-hidden className="absolute -top-[40vh] left-[51.5%] h-[40vh] w-px bg-gradient-to-b from-transparent to-[#F7E7D2]/80" />
+            <figure className="relative aspect-[1000/1481] overflow-hidden rounded-sm shadow-[0_40px_80px_-30px_rgba(0,0,0,0.9)]">
+              <Image src="/images/serum-amber-orange.jpg" alt="A sample Aurelle ad: a Vitamin C serum bottle on orange, headline “Glow in 2 weeks” in white"
+                fill priority sizes="(min-width: 640px) 360px, 300px" className="object-cover" />
+              <p aria-hidden className="absolute top-[6%] left-[7%] font-display text-[clamp(1.9rem,3.4vw,2.6rem)] leading-[0.88] font-bold tracking-[-0.03em] text-white uppercase">
+                Glow in<br />2 weeks
+              </p>
+              <div aria-hidden className="absolute top-[67%] left-[33.5%] flex h-[21%] w-[30.5%] flex-col items-center justify-center gap-0.5 text-center text-[#2A1A0E]">
+                <span className="font-display text-[clamp(0.7rem,1.2vw,0.95rem)] leading-none font-bold tracking-[-0.02em] uppercase">Aurelle</span>
+                <span className="font-label text-[clamp(0.45rem,0.75vw,0.6rem)] leading-tight uppercase">Vitamin C<br />Brightening Serum</span>
+                <span className="font-label text-[clamp(0.4rem,0.65vw,0.5rem)] uppercase opacity-70">30 ml</span>
+              </div>
+              <div aria-hidden className="scan-y absolute inset-x-0 h-14 bg-gradient-to-b from-transparent via-[#A39CFF]/35 to-transparent" />
+              <div aria-hidden className="box-in absolute top-[4.5%] left-[5%] h-[17%] w-[50%] border-2 border-dashed border-blocking" />
+            </figure>
+            <div className="finding-pop paper absolute top-[7%] -right-3 max-w-[210px] rounded-lg p-3 text-xs sm:-right-24">
+              <p className="font-label text-[11px] font-semibold text-[#B3261E] uppercase">Blocks · A11Y-CONTRAST</p>
               <p className="mt-1 font-semibold text-ink">“GLOW IN 2 WEEKS” is 1.96:1. Large text needs 3:1.</p>
             </div>
-            <span className={`${label} absolute -left-2 top-1/2 -translate-x-full -rotate-90 text-[10px] text-bone/50 max-lg:hidden`}>True vertical</span>
+            <span className={`${label} absolute top-1/2 -left-3 -translate-x-full -rotate-90 text-[10px] text-bone/50 max-lg:hidden`}>True vertical</span>
           </div>
         </div>
 
@@ -148,7 +160,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
             <span key={i} className="flex items-center gap-3 font-display text-lg font-bold uppercase tracking-tight">
               <span className={`size-2 rotate-45 ${tone === "block" ? "bg-blocking" : "bg-minor"}`} aria-hidden />
               {what}
-              <span className="font-label text-sm font-semibold tracking-[0.14em] text-white/55">{why}</span>
+              <span className="font-label text-sm font-semibold text-white/55">{why}</span>
             </span>
           ))}
         </div>
@@ -158,7 +170,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
       <section id="how" className="guides-dark relative overflow-hidden bg-carbon px-5 pt-24 pb-16 text-white sm:px-8 sm:pt-32 sm:pb-24">
         <Reveal className="relative z-10 mx-auto max-w-5xl text-center">
           <p className={`${label} text-white/55`}>The problem</p>
-          <h2 className="mt-3 font-display text-[clamp(2rem,5vw,4.2rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.02em]">
+          <h2 className="mt-3 font-display text-[clamp(2rem,5vw,4.2rem)] font-bold uppercase leading-[0.95] tracking-[-0.02em]">
             Content comes from everyone now. So do the mistakes.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-white/70">
@@ -166,57 +178,74 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           </p>
         </Reveal>
 
-        <div className="relative mx-auto mt-20 grid max-w-6xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="relative mx-auto mt-20 grid max-w-6xl grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           <Parallax speed={0.03}>
-            <Specimen kind="Instagram post" finding="60% in 2 weeks: the evidence says 32% in 8">
-              <div className="bg-gradient-to-br from-[#FDF1D6] to-[#F7D9A8] p-5">
-                <div className="mx-auto h-32 w-14 rounded-t-full rounded-b-lg bg-gradient-to-b from-[#F2A541] to-[#D9731A] shadow-inner" />
+            <Specimen kind="Instagram post" finding="60% in 2 weeks: the evidence says 32% in 8 (FACT-014)">
+              <div className="flex items-center gap-2 px-3 py-2">
+                <span className="flex size-7 items-center justify-center rounded-full bg-[#E8892B] font-display text-[10px] font-bold text-white">A</span>
+                <span className="text-sm font-semibold">aurelle.skin</span>
+                <span className="ml-auto text-xs text-ink/50">Sponsored</span>
               </div>
-              <p className="p-3 text-sm">Meet the NEW Aurelle Vitamin-C serum!!! Clinically proven to fade dark spots by 60% in just 2 weeks.</p>
+              <Photo src="/images/serum-shadow.jpg" alt="An amber dropper bottle in afternoon light" className="aspect-[4/5]" />
+              <p className="flex gap-3 px-3 pt-2 text-ink/70" aria-hidden><Heart className="size-5" /><MessageCircle className="size-5" /><Send className="size-5" /></p>
+              <p className="px-3 pt-1 pb-3 text-sm leading-relaxed">
+                <b>aurelle.skin</b> Meet the NEW Vitamin C serum! Clinically proven to fade dark spots <Flag>by 60% in just 2 weeks</Flag>.
+              </p>
             </Specimen>
           </Parallax>
-          <Parallax speed={0.07} className="lg:mt-16">
-            <Specimen kind="Banner" finding="Headline text at 1.96:1 contrast; needs 3:1">
-              <Image src="/images/aurelle-banner.png" alt="Aurelle banner with pale headline text" width={540} height={540} className="block aspect-[4/3] w-full object-cover" />
+          <Parallax speed={0.07} className="lg:mt-24">
+            <Specimen kind="Web banner" finding="“Glow in 2 weeks”: the evidence covers 8 weeks, not 2 (FACT-014)">
+              <div className="relative">
+                <Photo src="/images/textures-flatlay.jpg" alt="Serum and gel textures on glass discs" className="aspect-[4/3]" />
+                <p className="absolute top-4 left-4 font-display text-3xl leading-[0.95] font-bold tracking-[-0.03em] text-ink uppercase">
+                  Glow in<br /><Flag>2 weeks</Flag>
+                </p>
+                <span className="absolute right-4 bottom-3 font-display text-sm font-bold tracking-[-0.02em] text-ink uppercase">Aurelle</span>
+              </div>
             </Specimen>
           </Parallax>
           <Parallax speed={0.02}>
-            <Specimen kind="Email" finding="Mentions the embargoed Diwali sale (FACT-033)">
-              <div className="space-y-2 p-4 text-sm">
-                <p className="font-mono text-[11px] text-ink/50">Subject: Something big is coming 🎁</p>
-                <p className="font-semibold">Our Diwali sale is here: 20% off everything.</p>
-                <div className="h-2 w-3/4 rounded bg-ink/10" />
-                <div className="h-2 w-1/2 rounded bg-ink/10" />
-                <span className="inline-block rounded-md bg-ink px-3 py-1.5 text-xs font-bold text-white">Shop now</span>
+            <Specimen kind="Email" finding="Announces the Diwali sale while it's still embargoed (FACT-033)">
+              <div className="space-y-0.5 border-b border-ink/10 px-4 py-2.5 text-xs">
+                <p><span className="text-ink/50">From</span> Aurelle Skin</p>
+                <p><span className="text-ink/50">Subject</span> <b>Something big is coming</b></p>
+              </div>
+              <Photo src="/images/textures-leaves.jpg" alt="Skincare textures with green leaves" className="aspect-[16/9]" />
+              <div className="space-y-3 p-4">
+                <p className="font-display text-xl leading-tight font-bold tracking-[-0.02em] uppercase"><Flag>Our Diwali sale is here: 20% off</Flag> everything.</p>
+                <span className="inline-block rounded-full bg-ink px-4 py-1.5 font-display text-xs font-bold text-white uppercase">Shop now</span>
               </div>
             </Specimen>
           </Parallax>
-          <Parallax speed={0.05} className="lg:-mt-10">
-            <Specimen kind="Influencer post" finding="Gifted, but no #ad label">
-              <div className="flex items-center gap-3 p-4">
-                <span className="size-10 rounded-full bg-gradient-to-br from-accent-brand to-[#E7A3C5]" />
-                <div className="text-sm">
-                  <p className="font-semibold">@glowwithsana</p>
-                  <p className="text-ink/70">Gifted by Aurelle: I tried the SPF 50 Daily Sunscreen all week…</p>
-                </div>
+          <Parallax speed={0.05} className="lg:-mt-16">
+            <Specimen kind="Influencer post" finding="Gifted product, but no #ad label">
+              <div className="flex items-center gap-2 px-3 py-2">
+                <span className="size-7 rounded-full bg-gradient-to-br from-[#E7A3C5] to-[#8A80F2]" />
+                <span className="text-sm font-semibold">glowwithsana</span>
               </div>
+              <Photo src="/images/applying-serum.jpg" alt="Someone pressing serum into their cheek" className="aspect-[3/2]" />
+              <p className="px-3 py-3 text-sm leading-relaxed">
+                <b>glowwithsana</b> <Flag>Gifted by Aurelle</Flag>: two weeks with the Vitamin C serum and my skin has never been calmer ✨
+              </p>
             </Specimen>
           </Parallax>
-          <Parallax speed={0.08} className="lg:mt-10">
+          <Parallax speed={0.08} className="lg:mt-8">
             <Specimen kind="Product page" finding="“Dermatologist recommended”: no evidence on file">
-              <div className="grid grid-cols-[72px_1fr] gap-3 p-4">
-                <div className="h-20 rounded-lg bg-gradient-to-b from-[#E8F1FB] to-[#BFD6F2]" />
-                <div className="space-y-1.5 text-sm">
-                  <p className="font-semibold">Ceramide Barrier Cream</p>
-                  <p className="text-ink/70">Dermatologist recommended and loved by thousands.</p>
-                  <p className="font-mono text-xs">₹1,099</p>
+              <Photo src="/images/cream-jar.jpg" alt="A jar of cream on marble with carnations" className="aspect-[3/2]" />
+              <div className="space-y-1.5 p-4">
+                <p className="font-display text-lg leading-tight font-bold tracking-[-0.02em] uppercase">Ceramide Barrier Cream</p>
+                <p className="text-sm text-ink/75"><Flag>Dermatologist recommended</Flag> and loved by thousands.</p>
+                <div className="flex items-center justify-between pt-1">
+                  <span className="font-mono text-sm">₹1,099</span>
+                  <span className="rounded-full bg-ink px-4 py-1.5 font-display text-xs font-bold text-white uppercase">Add to bag</span>
                 </div>
               </div>
             </Specimen>
           </Parallax>
-          <Parallax speed={0.04}>
-            <Specimen kind="Ad caption" finding="“Click here”: name the product instead" tone="minor">
-              <p className="p-4 text-sm">Click here to see the new lip shades. Six shades, one easy swipe.</p>
+          <Parallax speed={0.04} className="lg:-mt-8">
+            <Specimen kind="Ad caption" finding="“Click here” says nothing; name the product" tone="minor">
+              <Photo src="/images/lip-gloss-pink.jpg" alt="A pink lip gloss on a pink background" className="aspect-[4/3]" />
+              <p className="p-4 text-sm leading-relaxed"><Flag tone="minor">Click here</Flag> to see the new lip shades. Six shades, one easy swipe.</p>
             </Specimen>
           </Parallax>
         </div>
@@ -226,7 +255,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
       <section className="guides relative px-5 py-24 sm:px-8 sm:py-32">
         <Reveal className="mx-auto max-w-6xl">
           <p className={`${label} text-bone/60`}>How it works</p>
-          <h2 className="mt-3 max-w-4xl font-display text-[clamp(2rem,5vw,4.2rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.02em]">
+          <h2 className="mt-3 max-w-4xl font-display text-[clamp(2rem,5vw,4.2rem)] font-bold uppercase leading-[0.95] tracking-[-0.02em]">
             Checked against <span className="text-iris">your</span> rulebook and <span className="text-iris">your</span> facts. With the evidence.
           </h2>
         </Reveal>
@@ -254,7 +283,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         <Reveal className="relative mx-auto grid max-w-6xl items-end gap-10 lg:grid-cols-[1.1fr_1fr]">
           <div>
             <p className={`${label} text-white/70`}>Tested, not claimed</p>
-            <h2 className="mt-3 font-display text-[clamp(2rem,5vw,4rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.02em]">
+            <h2 className="mt-3 font-display text-[clamp(2rem,5vw,4rem)] font-bold uppercase leading-[0.95] tracking-[-0.02em]">
               Finds {p.recall[0]} of {p.recall[1]} problems. A single AI prompt finds {b.recall[0]}.
             </h2>
             <p className="mt-4 max-w-xl text-white/80">
@@ -287,7 +316,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
       <main id="roles" className="scroll-mt-4 border-t border-line bg-panel px-5 py-24 text-white sm:px-8">
         <Reveal className="mx-auto max-w-6xl">
           <p className={`${label} text-white/55`}>Try it as one of the team</p>
-          <h2 className="mt-3 font-display text-[clamp(2rem,5vw,4.2rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.02em]">
+          <h2 className="mt-3 font-display text-[clamp(2rem,5vw,4.2rem)] font-bold uppercase leading-[0.95] tracking-[-0.02em]">
             Pick a role. No sign-up.
           </h2>
           <p className="mt-3 max-w-2xl text-white/70">Five demo accounts for Aurelle Skin, a fictional brand. Each one opens where its work is.</p>
@@ -305,7 +334,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
                 <span className="inline-flex size-10 items-center justify-center rounded-lg bg-white/10 text-white transition-colors duration-300 group-hover:bg-accent-brand">
                   <Icon className="size-5" aria-hidden />
                 </span>
-                <h3 className="font-display text-2xl font-extrabold uppercase tracking-tight">{name}</h3>
+                <h3 className="font-display text-2xl font-bold uppercase tracking-tight">{name}</h3>
                 <p className={`${label} text-[11px] text-white/50`}>{who}</p>
                 <p className="text-[15px] leading-relaxed text-white/80">{can}</p>
               </div>
@@ -326,10 +355,10 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
       <section className="relative overflow-hidden bg-ink px-5 text-white sm:px-8">
         <div className="relative mx-auto flex max-w-6xl flex-col items-center border-t border-white/15 pt-24 pb-20 text-center">
           <Brandmark swing className="mb-8 size-16 text-white/80" />
-          <p className="font-display text-[clamp(2.2rem,6vw,5rem)] font-extrabold uppercase leading-[0.9] tracking-[-0.03em]">
+          <p className="font-display text-[clamp(2.2rem,6vw,5rem)] font-bold uppercase leading-[0.9] tracking-[-0.03em]">
             Silence is never clearance.
           </p>
-          <a href="#roles" className="mt-6 font-display text-[clamp(1.4rem,3.4vw,2.6rem)] font-extrabold uppercase underline decoration-[3px] underline-offset-[10px] transition-colors hover:text-[#A9A2F7]">
+          <a href="#roles" className="mt-6 font-display text-[clamp(1.4rem,3.4vw,2.6rem)] font-bold uppercase underline decoration-[3px] underline-offset-[10px] transition-colors hover:text-[#A9A2F7]">
             Check your first post
           </a>
         </div>

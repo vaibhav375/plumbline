@@ -11,7 +11,7 @@ import type { Finding } from "@/lib/api";
 const METHOD: Record<string, string> = { code: "Checked by rule", ai: "Checked by AI", "ai+code": "AI, confirmed by rule" };
 const NOT_DISMISSIBLE = "Blocking findings can't be dismissed. Fix or edit the text, or submit it for a reviewer.";
 const FIELD = "mt-1 w-full rounded-md border border-line bg-carbon px-2.5 py-1.5 text-bone placeholder:text-ash focus:border-iris focus:outline-none";
-const LABEL = "font-label text-[11px] font-semibold uppercase tracking-[0.14em] text-ash";
+const LABEL = "font-label text-[11px] font-semibold uppercase text-ash";
 
 export type CardState = { accepted: boolean; edit: string | null; dismissed: boolean; escalated?: boolean };
 
@@ -54,7 +54,7 @@ export function FindingCard({
           {done ? <Check className="size-4" /> : n}
         </span>
         <span className="sr-only">{n}</span>
-        <span className={`rounded border px-2 py-0.5 font-label text-[11px] font-semibold uppercase tracking-[0.12em] ${TAG[group]}`}>{group}</span>
+        <span className={`rounded border px-2 py-0.5 font-label text-[11px] font-semibold uppercase ${TAG[group]}`}>{group}</span>
         {f.tier && (
           <span className="rounded border border-line px-2 py-0.5 text-bone/80">
             {f.tier === "mandatory" ? "Mandatory" : "Brand"} {f.category}
@@ -97,7 +97,7 @@ export function FindingCard({
             {state.accepted && fix && (
               <motion.p key="ready" role="status" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
                 className="overflow-hidden text-sm">
-                <span className="mt-3 flex items-center gap-1.5 border-t border-ok/30 pt-2 font-label text-xs font-semibold uppercase tracking-[0.12em] text-ok">
+                <span className="mt-3 flex items-center gap-1.5 border-t border-ok/30 pt-2 font-label text-xs font-semibold uppercase text-ok">
                   <Check className="size-3.5" aria-hidden /> Ready to apply
                 </span>
                 <span className="mt-1 block text-xs text-ash">It&apos;s shown in your draft now. Apply your fixes to update the post and check it again.</span>
@@ -131,7 +131,7 @@ export function FindingCard({
           {blocking && <span className="sr-only">{NOT_DISMISSIBLE}</span>}
           {blocking && onEscalate && (
             state.escalated ? (
-              <span className="self-center font-label text-xs font-semibold uppercase tracking-[0.12em] text-iris">Sent to a reviewer</span>
+              <span className="self-center font-label text-xs font-semibold uppercase text-iris">Sent to a reviewer</span>
             ) : (
               <Button size="sm" variant="outline" disabled={!canChange} onClick={() => setAsk("")}>
                 Ask a reviewer

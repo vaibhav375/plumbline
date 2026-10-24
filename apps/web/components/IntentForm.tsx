@@ -3,7 +3,7 @@ export type IntentValue = { key_phrases: string; cta: string; channel: string };
 export function IntentForm({ value, onChange }: { value: IntentValue; onChange: (v: IntentValue) => void }) {
   return (
     <details className="group rounded-xl border border-line bg-panel px-4 py-3 text-sm">
-      <summary className="cursor-pointer font-label text-xs font-semibold uppercase tracking-[0.14em] text-bone/80 marker:text-ash hover:text-bone">Optional: words and the call to action this post must keep</summary>
+      <summary className="cursor-pointer font-label text-xs font-semibold uppercase text-bone/80 marker:text-ash hover:text-bone">Optional: words and the call to action this post must keep</summary>
       <div className="mt-3 grid gap-3 text-bone/80 sm:grid-cols-3">
         <label>
           Key phrases, comma separated

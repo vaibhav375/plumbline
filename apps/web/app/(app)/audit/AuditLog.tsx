@@ -70,7 +70,7 @@ export function AuditLog() {
         </h2>
         <div className="overflow-x-auto rounded-xl bg-panel ring-1 ring-line">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-line font-label text-[11px] uppercase tracking-[0.14em] text-ash">
+            <thead className="border-b border-line font-label text-[11px] uppercase text-ash">
               <tr>
                 <th scope="col" className="px-3 py-2 font-medium">When (IST)</th>
                 <th scope="col" className="px-3 py-2 font-medium">Who</th>
@@ -117,7 +117,7 @@ function Chain({ events, length, brokenAt }: { events: AuditVerify["recent"]; le
               animate={{ borderColor: bad ? "#ff6a5c" : "#3dc48a", y: 0, opacity: 1 }}
               transition={{ delay: 0.1 + i * 0.18, duration: 0.4 }}
               className="w-40 rounded-lg border-[1.5px] bg-carbon p-2.5" title={e.hash}>
-              <p className="flex justify-between font-label text-[11px] font-semibold uppercase tracking-[0.12em] text-ash">
+              <p className="flex justify-between font-label text-[11px] font-semibold uppercase text-ash">
                 <span>Event {index}</span><span className={bad ? "text-blocking" : "text-ok"}>{bad ? "broken" : "✓"}</span>
               </p>
               <p className="mt-1 truncate text-xs text-bone">{e.what}</p>

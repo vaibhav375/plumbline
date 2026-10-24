@@ -13,7 +13,7 @@ const CONF: Record<FactRow["confidentiality"], string> = {
   confidential: "border-iris/50 bg-iris/10 text-iris",
   embargoed: "border-iris/50 bg-iris/10 text-iris",
 };
-const chip = "rounded border px-2 py-0.5 font-label text-[11px] font-semibold uppercase tracking-[0.12em]";
+const chip = "rounded border px-2 py-0.5 font-label text-[11px] font-semibold uppercase";
 const day = (d: string) => new Date(`${d}T00:00:00Z`).getTime();
 const fmt = (d: string) => new Date(`${d}T00:00:00Z`).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 
@@ -81,8 +81,8 @@ export function FactLedger() {
           ["With an end date", data.facts.filter((f) => f.valid_until).length, "text-bone"], ["Approved wordings", data.facts.reduce((a, f) => a + f.wordings.length, 0), "text-iris"]]
           .map(([label, n, c]) => (
             <li key={label as string} className="rounded-xl border border-line bg-panel p-3">
-              <p className={`font-display text-3xl font-extrabold tabular-nums ${c}`}>{n}</p>
-              <p className="font-label text-[11px] font-semibold uppercase tracking-[0.14em] text-ash">{label}</p>
+              <p className={`font-display text-3xl font-bold tabular-nums ${c}`}>{n}</p>
+              <p className="font-label text-[11px] font-semibold uppercase text-ash">{label}</p>
             </li>
           ))}
       </ul>
@@ -99,7 +99,7 @@ export function FactLedger() {
               <button key={p ?? "all"} type="button" aria-pressed={on} onClick={() => setProduct(p)}
                 className={`group flex w-28 shrink-0 flex-col items-center gap-1 rounded-xl border px-2 pt-3 pb-2 text-center transition-colors ${on ? "border-bone/60 bg-raised" : "border-line bg-panel hover:border-bone/30"}`}>
                 {p ? <Packshot product={p === "Brand-wide" ? null : p} className="h-16 w-11 transition-transform duration-500 ease-out group-hover:-translate-y-1" />
-                  : <span className="flex h-16 items-center font-display text-2xl font-extrabold">All</span>}
+                  : <span className="flex h-16 items-center font-display text-2xl font-bold">All</span>}
                 <span className="line-clamp-2 text-[11px] leading-tight text-bone/80">{p ?? `${data.facts.length} facts`}</span>
               </button>
             );
@@ -129,7 +129,7 @@ function Timeline({ facts, today }: { facts: FactRow[]; today: string }) {
       <p className="relative mt-1 text-sm text-ash">Each bar runs from the date a fact became valid to the date it ends. Past the line, a post can&apos;t use it.</p>
       <div className="relative mt-5 pt-6">
         <div aria-hidden className="absolute inset-y-0 z-10 w-0.5 bg-bone" style={{ left: x(today) }}>
-          <span className="absolute -top-0 left-1.5 whitespace-nowrap font-label text-[11px] font-bold uppercase tracking-[0.14em] text-bone">Today</span>
+          <span className="absolute -top-0 left-1.5 whitespace-nowrap font-label text-[11px] font-bold uppercase text-bone">Today</span>
         </div>
         <ul className="space-y-2">
           {dated.map((f, i) => (

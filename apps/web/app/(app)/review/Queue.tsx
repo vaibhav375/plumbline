@@ -44,8 +44,8 @@ export function Queue() {
       <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4" aria-label="Queue summary">
         {stats.map(([label, n, c]) => (
           <li key={label} className="rounded-xl border border-line bg-panel p-4">
-            <p className={`font-display text-4xl font-extrabold tabular-nums ${c}`}>{n}</p>
-            <p className="font-label text-[11px] font-semibold uppercase tracking-[0.14em] text-ash">{label}</p>
+            <p className={`font-display text-4xl font-bold tabular-nums ${c}`}>{n}</p>
+            <p className="font-label text-[11px] font-semibold uppercase text-ash">{label}</p>
           </li>
         ))}
       </ul>
@@ -57,9 +57,9 @@ export function Queue() {
               className="group grid gap-4 rounded-xl border border-line bg-panel p-4 transition-colors duration-300 hover:border-bone/40 hover:bg-raised sm:grid-cols-[6.5rem_minmax(0,1fr)_auto] sm:items-center">
               {/* Risk: the blocking count, with a bar scaled to the riskiest post in the queue. */}
               <div className="flex items-center gap-3 sm:block">
-                <p className={`font-display text-4xl leading-none font-extrabold tabular-nums ${r.blocking ? "text-blocking" : "text-ok"}`}>{r.blocking}</p>
+                <p className={`font-display text-4xl leading-none font-bold tabular-nums ${r.blocking ? "text-blocking" : "text-ok"}`}>{r.blocking}</p>
                 <div>
-                  <p className="font-label text-[11px] font-semibold uppercase tracking-[0.14em] text-ash sm:mt-1">blocking</p>
+                  <p className="font-label text-[11px] font-semibold uppercase text-ash sm:mt-1">blocking</p>
                   <div aria-hidden className="mt-1 h-1.5 w-20 rounded-full bg-raised">
                     <div className="h-1.5 rounded-full bg-blocking" style={{ width: `${(r.blocking / maxBlocking) * 100}%` }} />
                   </div>
@@ -68,7 +68,7 @@ export function Queue() {
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="truncate text-lg font-semibold text-bone">{r.title ?? "Untitled"}</span>
-                  <span className={`rounded border px-2 py-0.5 font-label text-[11px] font-semibold uppercase tracking-[0.12em] ${STATUS_TONE[r.status] ?? "border-line text-ash"}`}>
+                  <span className={`rounded border px-2 py-0.5 font-label text-[11px] font-semibold uppercase ${STATUS_TONE[r.status] ?? "border-line text-ash"}`}>
                     {STATUS[r.status] ?? r.status}
                   </span>
                 </div>

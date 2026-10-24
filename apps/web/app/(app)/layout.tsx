@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { type Profile, Sidebar } from "@/components/Sidebar";
+import { type Profile, SiteNav } from "@/components/SiteNav";
 import { supabaseServer } from "@/lib/supabase/server";
 
 // Loaded once per visit: layouts stay mounted while you move between pages.
@@ -13,10 +13,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     : { data: null };
   return (
     <div className="min-h-dvh">
-      <Sidebar profile={(profile as Profile) ?? null} />
-      <div className="lg:pl-64">
+      <SiteNav profile={(profile as Profile) ?? null} />
+      <div>
         {children}
-        <footer className="mx-auto flex max-w-6xl flex-wrap gap-x-4 gap-y-1 px-4 pb-8 pt-4 text-sm text-muted-foreground sm:px-6">
+        <footer className="mx-auto mt-10 flex max-w-6xl flex-wrap gap-x-6 gap-y-1 border-t border-line px-4 pt-6 pb-10 font-label text-xs uppercase text-bone/50 sm:px-6">
           <Link href="/status" className="underline-offset-4 hover:underline">Status</Link>
           <Link href="/about" className="underline-offset-4 hover:underline">How I know it works</Link>
           <span>Aurelle Skin is a fictional brand; no real data is used.</span>

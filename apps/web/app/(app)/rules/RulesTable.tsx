@@ -9,7 +9,7 @@ import { CheckError, type ImportResult, rulebook, type RulesResponse } from "@/l
 const CLS: Record<string, string> = { A: "A · code", B: "B · AI judgement", C: "C · not run" };
 // Class colours always sit beside their letter and count, never alone.
 const CLS_HEX: Record<string, string> = { A: "#A39CFF", B: "#74A7F0", C: "#9B9AA1" };
-const PILL = "inline-block rounded border px-2 py-0.5 font-label text-[11px] font-semibold uppercase tracking-[0.12em]";
+const PILL = "inline-block rounded border px-2 py-0.5 font-label text-[11px] font-semibold uppercase";
 
 function ImportPanel({ onImported }: { onImported: () => void }) {
   const [file, setFile] = useState<File | null>(null);
@@ -93,8 +93,8 @@ export function RulesTable() {
         {([["Rules", data.rules.length, "text-bone"], ["Mandatory", data.rules.filter((r) => r.tier === "mandatory").length, "text-blocking"],
           ["Brand", data.rules.filter((r) => r.tier === "brand").length, "text-iris"], ["Linter warnings", flagged, "text-major"]] as const).map(([label, n, c]) => (
           <li key={label} className="rounded-xl border border-line bg-panel p-4">
-            <p className={`font-display text-4xl font-extrabold tabular-nums ${c}`}>{n}</p>
-            <p className="font-label text-[11px] font-semibold uppercase tracking-[0.14em] text-ash">{label}</p>
+            <p className={`font-display text-4xl font-bold tabular-nums ${c}`}>{n}</p>
+            <p className="font-label text-[11px] font-semibold uppercase text-ash">{label}</p>
           </li>
         ))}
       </ul>
@@ -119,8 +119,8 @@ export function RulesTable() {
               <button key={c} type="button" aria-pressed={on} onClick={() => setCategory(on ? null : c)}
                 className={`rounded-xl border p-3 text-left transition-colors duration-300 ${on ? "border-bone/60 bg-raised" : "border-line bg-panel hover:border-bone/30"}`}>
                 <span className="flex items-baseline justify-between">
-                  <span className="font-label text-xs font-semibold uppercase tracking-[0.14em] text-bone">{c}</span>
-                  <span className="font-display text-2xl font-extrabold tabular-nums">{n}</span>
+                  <span className="font-label text-xs font-semibold uppercase text-bone">{c}</span>
+                  <span className="font-display text-2xl font-bold tabular-nums">{n}</span>
                 </span>
                 <span aria-hidden className="mt-2 flex h-2 gap-0.5 overflow-hidden rounded-full">
                   {by.filter(([, k]) => k).map(([k, m]) => <span key={k} style={{ flexGrow: m, background: CLS_HEX[k] }} />)}
@@ -137,7 +137,7 @@ export function RulesTable() {
       {data.can_import && <ImportPanel onImported={load} />}
       <div className="overflow-x-auto rounded-xl bg-panel ring-1 ring-line">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-line font-label text-[11px] uppercase tracking-[0.14em] text-ash">
+          <thead className="border-b border-line font-label text-[11px] uppercase text-ash">
             <tr>
               {["ID", "Rule", "Tier", "Class", "Check", "Maturity", "Owner"].map((h) => (
                 <th key={h} scope="col" className="px-3 py-2 font-medium">{h}</th>

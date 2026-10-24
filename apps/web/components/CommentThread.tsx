@@ -13,7 +13,7 @@ export function CommentThread({ comments, onAdd }: { comments: ReviewDetail["com
       <ul className="mt-3 space-y-2 text-sm">
         {comments.map((c, i) => (
           <li key={i} className="rounded-lg bg-raised px-3 py-2">
-            <span className="block font-label text-[11px] font-semibold uppercase tracking-[0.12em] text-iris">{c.who}</span>{c.body}
+            <span className="block font-label text-[11px] font-semibold uppercase text-iris">{c.who}</span>{c.body}
           </li>
         ))}
         {!comments.length && <li className="text-muted-foreground">No comments yet.</li>}

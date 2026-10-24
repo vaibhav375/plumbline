@@ -15,7 +15,7 @@ export function StagePipeline({ required, approved, compact = false }: { require
               <span aria-hidden className={`inline-flex ${compact ? "size-5" : "size-7"} items-center justify-center rounded-full border-[1.5px] ${done ? "border-ok bg-ok text-ink" : "border-ash/60 text-ash"}`}>
                 {done ? <Check className={compact ? "size-3" : "size-4"} /> : <span className="font-label text-[10px] font-bold">{i + 1}</span>}
               </span>
-              <span className={`font-label ${compact ? "text-[11px]" : "text-xs"} font-semibold uppercase tracking-[0.12em] ${done ? "text-ok" : "text-bone/80"}`}>
+              <span className={`font-label ${compact ? "text-[11px]" : "text-xs"} font-semibold uppercase ${done ? "text-ok" : "text-bone/80"}`}>
                 {SHORT[s] ?? s}<span className="sr-only">{done ? ": approved" : ": waiting"}</span>
               </span>
             </span>

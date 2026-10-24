@@ -62,7 +62,7 @@ function MetricCard({ name, help, metric, better }: { name: string; help: string
   return (
     <section aria-label={name} className="space-y-3 rounded-xl bg-panel ring-1 ring-line p-4">
       <div>
-        <h3 className="font-display text-base font-extrabold uppercase">{name}</h3>
+        <h3 className="font-display text-base font-bold uppercase">{name}</h3>
         <p className="text-xs text-muted-foreground">{help} {better}</p>
       </div>
       <dl className="grid grid-cols-2 gap-3">
@@ -70,8 +70,8 @@ function MetricCard({ name, help, metric, better }: { name: string; help: string
           const r = data.results[mode];
           return (
             <div key={mode} className={`rounded-lg border p-3 ${mode === "plumbline" ? "border-[#8A80F2]/60 bg-[#8A80F2]/[0.08]" : "border-[#22A596]/50"}`}>
-              <dt className="font-label text-[11px] font-semibold uppercase tracking-[0.14em] text-ash">{mode === "plumbline" ? "Plumbline" : "Baseline"}</dt>
-              <dd className="font-display text-3xl font-extrabold tabular-nums" data-testid={`${metric}-${mode}`}>{show(value(r))}</dd>
+              <dt className="font-label text-[11px] font-semibold uppercase text-ash">{mode === "plumbline" ? "Plumbline" : "Baseline"}</dt>
+              <dd className="font-display text-3xl font-bold tabular-nums" data-testid={`${metric}-${mode}`}>{show(value(r))}</dd>
               {count && (
                 <dd className="text-xs tabular-nums">
                   {r.counts[count][0]} / {r.counts[count][1]} · {interval(r.intervals[count])}
@@ -103,7 +103,7 @@ function EgressTable({ rows, label }: { rows: Egress[]; label: string }) {
     <div className="overflow-x-auto rounded-xl bg-panel ring-1 ring-line">
       <table className="w-full text-left text-sm">
         <caption className="px-3 py-2 text-left text-xs text-muted-foreground">{label}</caption>
-        <thead className="border-b border-line font-label text-[11px] uppercase tracking-[0.14em] text-ash">
+        <thead className="border-b border-line font-label text-[11px] uppercase text-ash">
           <tr>
             {["Provider", "Model", "Region", "Calls", "Characters sent", "Purpose", "Outcome"].map((h) => (
               <th key={h} scope="col" className="px-3 py-2 font-medium">{h}</th>
@@ -139,9 +139,9 @@ export default function AboutPage() {
         <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {STEPS.map((s, i) => (
             <li key={s.title} className="group relative overflow-hidden rounded-xl bg-panel p-4 ring-1 ring-line transition-colors duration-300 hover:ring-iris/50">
-              <span aria-hidden className="absolute -top-3 right-2 font-display text-7xl font-extrabold text-white/[0.04] transition-colors duration-500 group-hover:text-iris/15">{i + 1}</span>
-              <p className="relative font-label text-[11px] font-semibold uppercase tracking-[0.14em] text-iris">Step {i + 1} of {STEPS.length}</p>
-              <p className="relative mt-1 font-display text-base font-extrabold uppercase">{s.title}</p>
+              <span aria-hidden className="absolute -top-3 right-2 font-display text-7xl font-bold text-white/[0.04] transition-colors duration-500 group-hover:text-iris/15">{i + 1}</span>
+              <p className="relative font-label text-[11px] font-semibold uppercase text-iris">Step {i + 1} of {STEPS.length}</p>
+              <p className="relative mt-1 font-display text-base font-bold uppercase">{s.title}</p>
               <p className="relative mt-1 text-sm text-ash">{s.body}</p>
             </li>
           ))}

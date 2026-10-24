@@ -140,8 +140,8 @@ export function CheckForm() {
       <form onSubmit={onCheck} className="space-y-4">
         <div className="paper relative overflow-hidden rounded-xl">
           <div className="flex items-center justify-between gap-3 border-b border-ink/10 px-4 py-2.5">
-            <label htmlFor="draft" className="font-label text-xs font-bold uppercase tracking-[0.16em] text-ink">Paste a post, or upload a file</label>
-            <span className="font-label text-[11px] uppercase tracking-[0.14em] text-ink/60 tabular-nums">
+            <label htmlFor="draft" className="font-label text-xs font-bold uppercase text-ink">Paste a post, or upload a file</label>
+            <span className="font-label text-[11px] uppercase text-ink/60 tabular-nums">
               {file ? file.name : `${text.length} characters`} · {intent.channel}
             </span>
           </div>
@@ -156,7 +156,7 @@ export function CheckForm() {
         <IntentForm value={intent} onChange={setIntent} />
         {imageUrl && (
           <fieldset className="space-y-2 rounded-xl border border-line bg-panel p-4">
-            <legend className="px-1 font-label text-xs font-bold uppercase tracking-[0.14em] text-bone">Image description</legend>
+            <legend className="px-1 font-label text-xs font-bold uppercase text-bone">Image description</legend>
             <label htmlFor="alt-text" className="block text-sm">
               Alt text: what must someone who can&apos;t see this image learn from it?
             </label>
@@ -196,7 +196,7 @@ export function CheckForm() {
         </div>
       </form>
 
-      <div id="results" className="scroll-mt-20 space-y-6 lg:scroll-mt-4">
+      <div id="results" className="scroll-mt-20 space-y-6">
       {isReplay && report && (
         <div role="note" className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-iris/40 bg-iris/[0.07] px-4 py-3 text-sm">
           <p>
@@ -222,8 +222,8 @@ export function CheckForm() {
             <div aria-hidden className="guides pointer-events-none absolute inset-0 opacity-60" />
             <div className="relative grid gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:items-end">
               <div>
-                <p className="font-label text-xs font-semibold uppercase tracking-[0.18em] text-ash">The verdict</p>
-                <p className="mt-2 font-display text-3xl font-extrabold uppercase leading-[0.95] tracking-[-0.02em] sm:text-[2.6rem]">
+                <p className="font-label text-xs font-semibold uppercase text-ash">The verdict</p>
+                <p className="mt-2 font-display text-3xl font-bold uppercase leading-[0.95] tracking-[-0.02em] sm:text-[2.6rem]">
                   <strong data-testid="blocking-count" data-count={blockingTotal}
                     className={blockingTotal ? "text-blocking" : "text-ok"}>
                     {blockingTotal === 0
@@ -243,9 +243,9 @@ export function CheckForm() {
           </section>
 
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
-            <div data-lenis-prevent className="min-w-0 space-y-6 lg:sticky lg:top-4 lg:max-h-[calc(100vh-2rem)] lg:self-start lg:overflow-y-auto lg:pb-2">
+            <div data-lenis-prevent className="min-w-0 space-y-6 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:self-start lg:overflow-y-auto lg:pb-2">
               <section aria-label="Your draft" className="paper rounded-xl">
-                <div className="flex items-center justify-between border-b border-ink/10 px-5 py-2.5 font-label text-[11px] font-semibold uppercase tracking-[0.16em] text-ink/70">
+                <div className="flex items-center justify-between border-b border-ink/10 px-5 py-2.5 font-label text-[11px] font-semibold uppercase text-ink/70">
                   <span>Your draft · as checked</span>
                   <span>{marks.length} marked</span>
                 </div>
@@ -253,7 +253,7 @@ export function CheckForm() {
                   <HighlightedText text={report.checked_text ?? text} marks={marks} active={active} onPick={setActive} />
                 </div>
                 {pendingFixes > 0 && (
-                  <p className="border-t border-ink/10 px-5 py-2.5 font-label text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1E7F55]">
+                  <p className="border-t border-ink/10 px-5 py-2.5 font-label text-[11px] font-semibold uppercase text-[#1E7F55]">
                     {pendingFixes} {pendingFixes === 1 ? "change" : "changes"} shown · not applied yet
                   </p>
                 )}
@@ -276,7 +276,7 @@ export function CheckForm() {
                     <h2 className="flex items-center gap-2 text-base">
                       <span aria-hidden className="size-2.5 rounded-full" style={{ background: HEX[g] }} />
                       {g}
-                      <span className="font-label text-xs font-semibold tracking-[0.12em] text-ash">{items.length}</span>
+                      <span className="font-label text-xs font-semibold text-ash">{items.length}</span>
                     </h2>
                     {items.map((r, i) => (
                       <motion.div key={r.f.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
@@ -336,9 +336,9 @@ export function CheckForm() {
 function BlockingMeter({ rows, handled, isDone }: { rows: Row[]; handled: number; isDone: (r: Row) => boolean }) {
   return (
     <div role="img" aria-label={`${handled} of ${rows.length} blocking issues handled`}>
-      <div className="flex items-baseline justify-between font-label text-xs font-semibold uppercase tracking-[0.14em] text-ash">
+      <div className="flex items-baseline justify-between font-label text-xs font-semibold uppercase text-ash">
         <span>Blocking issues handled</span>
-        <span className="font-display text-2xl font-extrabold tracking-normal text-bone tabular-nums">
+        <span className="font-display text-2xl font-bold tracking-normal text-bone tabular-nums">
           {handled}<span className="text-ash">/{rows.length}</span>
         </span>
       </div>

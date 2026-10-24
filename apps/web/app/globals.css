@@ -25,7 +25,7 @@
   --color-ok: #3dc48a;
   --font-display: var(--nf-sans), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--nf-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-label: var(--nf-sans), "Arial Narrow", sans-serif;
+  --font-label: var(--nf-label), "Arial Narrow", sans-serif;
   --font-mono: var(--nf-mono), ui-monospace, monospace;
   /* Body text is at least 15 px: text-sm is 15 px; text-xs stays for labels and metadata. */
   --text-sm: 0.9375rem;
@@ -289,3 +289,9 @@ main h2 { font-family: var(--font-display); font-stretch: 112%; font-weight: 800
 @keyframes mask-up { from { transform: translateY(105%); } to { transform: none; } }
 .mask-up { animation: mask-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
 @media (prefers-reduced-motion: reduce) { .mask-up { animation: none; } }
+/* The hero: a scan passes down the ad, then the failing headline is boxed. */
+@keyframes scan-y { 0% { top: -4rem; } 60%, 100% { top: 100%; } }
+.scan-y { animation: scan-y 4s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+@keyframes box-in { 0%, 35% { opacity: 0; transform: scale(1.06); } 45%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+.box-in { animation: box-in 4s ease-out infinite; }
+@media (prefers-reduced-motion: reduce) { .scan-y { display: none; } .box-in { animation: none; } }

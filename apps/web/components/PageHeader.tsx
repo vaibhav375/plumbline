@@ -1,20 +1,19 @@
 import { Fragment } from "react";
 
-/** A page's title and, in plain words, what the page is for, over the drafting texture, with the plumb line hanging true. */
+/** A page's title and, in plain words, what the page is for, with the plumb line hanging true beside it. */
 export function PageHeader({ title, subtitle }: { title: string; subtitle: string }) {
   return (
-    <header className="relative -mx-4 -mt-4 mb-2 overflow-hidden border-b border-line bg-panel px-4 pt-10 pb-9 sm:-mx-6 sm:-mt-6 sm:px-6 sm:pt-14">
-      <div aria-hidden className="guides contours pointer-events-none absolute inset-0 opacity-70" />
-      <svg aria-hidden viewBox="0 0 60 200" preserveAspectRatio="xMidYMin meet" className="pointer-events-none absolute top-0 right-6 hidden h-full w-16 sm:block lg:right-12">
+    <header className="relative mb-4 border-b border-line pt-10 pb-8 sm:pt-16">
+      <svg aria-hidden viewBox="0 0 60 200" preserveAspectRatio="xMidYMin meet" className="pointer-events-none absolute -top-6 right-2 hidden h-[calc(100%+1.5rem)] w-14 sm:block">
         <g className="plumb-swing" style={{ transformOrigin: "30px 0px" }}>
-          <line x1="30" y1="0" x2="30" y2="128" stroke="#A39CFF" strokeWidth="1" strokeDasharray="3 3" />
-          <path d="M30 128 L44 148 L30 176 L16 148 Z" fill="#4B3FD1" />
-          <path d="M30 128 L44 148 L30 152 Z" fill="#fff" opacity=".15" />
+          <line x1="30" y1="0" x2="30" y2="132" stroke="#A39CFF" strokeWidth="1" strokeDasharray="3 3" />
+          <path d="M30 132 L44 152 L30 180 L16 152 Z" fill="#4B3FD1" />
+          <path d="M30 132 L44 152 L30 156 Z" fill="#fff" opacity=".15" />
         </g>
       </svg>
-      <div className="relative space-y-3 sm:pr-24">
-        <p className="font-label text-xs font-semibold uppercase tracking-[0.18em] text-bone/55">Plumbline · Aurelle Skin</p>
-        <h1 className="font-display text-4xl font-extrabold uppercase leading-[0.92] tracking-[-0.025em] text-bone sm:text-6xl lg:text-7xl">
+      <div className="relative sm:pr-20">
+        <p className="font-label text-xs uppercase text-bone/50">Plumbline · Aurelle Skin</p>
+        <h1 className="mt-3 font-display text-[clamp(2.5rem,6.5vw,5rem)] font-bold uppercase leading-[0.86] tracking-[-0.04em] text-bone">
           {title.split(" ").map((w, i) => (
             <Fragment key={i}>
               {i > 0 && " "}
@@ -24,9 +23,8 @@ export function PageHeader({ title, subtitle }: { title: string; subtitle: strin
             </Fragment>
           ))}
         </h1>
-        <p className="rise-in max-w-3xl text-base text-bone/70" style={{ animationDelay: "200ms" }}>{subtitle}</p>
+        <p className="rise-in mt-4 max-w-2xl text-lg leading-snug text-bone/65" style={{ animationDelay: "200ms" }}>{subtitle}</p>
       </div>
-      <div aria-hidden className="ruler absolute inset-x-0 bottom-0 h-2.5" />
     </header>
   );
 }

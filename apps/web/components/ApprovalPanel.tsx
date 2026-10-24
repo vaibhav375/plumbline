@@ -23,7 +23,7 @@ export function ApprovalPanel({
     <section aria-labelledby="approvals" className="rounded-xl border border-line bg-panel p-5">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 id="approvals" className="text-base">Approvals</h2>
-        <p className={`font-label text-xs font-semibold uppercase tracking-[0.14em] ${done ? "text-ok" : "text-major"}`} data-testid="version-status">Status: {detail.version.status.replace("_", " ")}</p>
+        <p className={`font-label text-xs font-semibold uppercase ${done ? "text-ok" : "text-major"}`} data-testid="version-status">Status: {detail.version.status.replace("_", " ")}</p>
       </div>
       <div className="mt-4 overflow-x-auto pb-1">
         <StagePipeline required={state.required} approved={state.approved} />
