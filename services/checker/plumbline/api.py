@@ -11,11 +11,14 @@ from typing import Annotated
 from zoneinfo import ZoneInfo
 
 import httpx
-from fastapi import Body, Depends, FastAPI, File, Form, Request, UploadFile
+from fastapi import BackgroundTasks, Body, Depends, FastAPI, File, Form, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
+from uagents_core.contrib.protocols.chat import ChatAcknowledgement, ChatMessage
+from uagents_core.envelope import Envelope
+from uagents_core.utils.messages import parse_envelope
 
-from plumbline import audit, auth, db, ops, review
+from plumbline import agent, audit, auth, db, ops, review
 from plumbline import health as guideline
 from plumbline.auth import ApiError, User
 from plumbline.config import Settings
@@ -176,16 +179,11 @@ def _today():
     return datetime.now(ZoneInfo("Asia/Kolkata")).date()
 
 
-def _check_and_save(
-    u: User,
-    ctx: OrgContext,
-    doc: Document,
-    intent: Intent,
-    *,
-    submit: bool,
-    content_id: str | None,
-    title: str,
-) -> CheckReport:
+def _report(
+    u: User, ctx: OrgContext, doc: Document, intent: Intent, *, submit: bool
+) -> tuple[CheckReport, list[EgressEvent], db.ReportCache]:
+    """Run the full check as this user: their rulebook (RLS) plus confidential facts, which are
+    matched in code and withheld from roles that may not see them."""
     s = cfg()
     secret: list | None = None
     if s.checker_database_url:
@@ -212,6 +210,21 @@ def _check_and_save(
         ) from None
     if secret is None and u.role not in SEES_CONFIDENTIAL:
         report.coverage.not_checked.append(CONFIDENTIAL_UNAVAILABLE)
+    return report, events, cache
+
+
+def _check_and_save(
+    u: User,
+    ctx: OrgContext,
+    doc: Document,
+    intent: Intent,
+    *,
+    submit: bool,
+    content_id: str | None,
+    title: str,
+) -> CheckReport:
+    s = cfg()
+    report, events, cache = _report(u, ctx, doc, intent, submit=submit)
     try:
         with ops.phase("save"):
             content_id, version_id, record_ids = db.save_check(
@@ -762,3 +775,51 @@ def comment(u: CurrentUser, version_id: str, body: Annotated[str, Body(embed=Tru
         cfg(), u.token, org_id=u.org_id, user_id=u.id, version_id=version_id, body=body.strip()
     )
     return _detail(u, version_id)
+
+
+# ---- Agentverse chat agent (ASI:One) ----
+
+
+@app.get("/status")
+def agent_status() -> dict:
+    return {"status": "OK - Agent is running"}
+
+
+def _agent_check(text: str) -> CheckReport:
+    """The app's check, run as the demo agency writer; nothing is saved."""
+    s = cfg()
+    token = agent.demo_token(s)
+    claims = auth.verify_token(token, s)
+    profile = db.fetch_profile(s, token, claims["sub"])
+    u = User(id=claims["sub"], org_id=profile["org_id"], role=profile["role"], token=token)
+    ctx = ops.cached(
+        ("rulebook", u.org_id, u.role), lambda: db.load_org_context(s, token, u.org_id)
+    )
+    doc = parse_upload("paste.txt", text.encode(), s.max_upload_mb)
+    report, events, _ = _report(u, ctx, doc, Intent(), submit=False)
+    log.info(  # counts only, never content
+        "agent check %s: %d findings, %d model calls, %d chars sent",
+        report.run_id,
+        len(report.findings),
+        len(events),
+        sum(e.chars_sent for e in events),
+    )
+    return report
+
+
+@app.post("/chat")
+def agent_chat(env: Envelope, background: BackgroundTasks) -> dict:
+    s = cfg()
+    if not s.agent_seed_phrase:
+        raise ApiError(404, "not_found", "The chat agent isn't enabled here.")
+    me = agent.identity(s.agent_seed_phrase)
+    try:
+        valid = env.target == me.address and env.verify()
+    except Exception:
+        valid = False
+    if not valid:
+        raise ApiError(400, "bad_envelope", "The message isn't signed for this agent.")
+    msg = parse_envelope(env, {ChatMessage, ChatAcknowledgement})
+    if isinstance(msg, ChatMessage):
+        background.add_task(agent.answer, env.sender, env.session, msg, me, _agent_check, s.app_url)
+    return {}

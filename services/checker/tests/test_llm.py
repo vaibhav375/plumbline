@@ -181,3 +181,27 @@ def test_default_chain_spills_over_to_a_second_groq_model_before_gemini():
         ("groq", GROQ_SPILLOVER_MODEL),
         ("gemini", GEMINI_MODEL),
     ]
+
+
+def test_asi1_joins_the_chain_only_where_llm_chain_puts_it():
+    from plumbline.config import Settings
+    from plumbline.llm import default_chain
+
+    s = Settings(
+        _env_file=None,
+        supabase_url="x",
+        supabase_anon_key="y",
+        groq_api_key="g",
+        gemini_api_key="m",
+        asi1_api_key="a",
+        llm_chain=["groq", "gemini", "asi1"],
+    )
+    last = default_chain(s)[-1]
+    assert (last.name, last.base_url, last.models["judge"]) == (
+        "asi1",
+        "https://api.asi1.ai/v1",
+        "asi1-mini",
+    )
+    assert "asi1" not in [
+        p.name for p in default_chain(s.model_copy(update={"llm_chain": ["groq", "gemini"]}))
+    ]

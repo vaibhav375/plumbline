@@ -53,7 +53,7 @@ PLAIN = {
 
 
 class ProviderCfg(BaseModel):
-    name: Literal["groq", "gemini", "ollama"]
+    name: Literal["groq", "gemini", "asi1", "ollama"]
     base_url: str
     api_key: str | None
     region: str
@@ -238,6 +238,15 @@ def default_chain(s: Settings) -> list[ProviderCfg]:
             region="global",
             models=dict.fromkeys(GROQ_MODELS, GEMINI_MODEL),
             params=GEMINI_PARAMS,
+        ),
+        # Fetch.ai's ASI:One, OpenAI-compatible. Meant for the end of the chain: it only answers
+        # when Groq and Gemini both fail, so the evaluated numbers (Groq first) don't change.
+        "asi1": ProviderCfg(
+            name="asi1",
+            base_url="https://api.asi1.ai/v1",
+            api_key=s.asi1_api_key or None,
+            region="global",
+            models=dict.fromkeys(GROQ_MODELS, s.asi1_model),
         ),
         "ollama": ProviderCfg(
             name="ollama",

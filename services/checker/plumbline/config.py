@@ -12,7 +12,14 @@ class Settings(BaseSettings):
     checker_database_url: str = ""
     groq_api_key: str = ""
     gemini_api_key: str = ""
+    asi1_api_key: str = ""
+    asi1_model: str = "asi1-mini"
     ollama_base_url: str = "http://localhost:11434/v1"
     llm_chain: list[str] = ["groq", "gemini"]
     max_upload_mb: int = 10
+    # Agentverse chat agent: off unless a seed phrase is set. It checks as the demo agency writer.
+    agent_seed_phrase: str = ""
+    agent_demo_email: str = "sana@agency.example"
+    demo_user_password: str = ""
+    app_url: str = "https://plumbline-pes1ug23cs665s-projects.vercel.app"
     match_threshold: float = 0.72
