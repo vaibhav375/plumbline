@@ -101,14 +101,14 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           </div>
 
           {/* The plumb bob as a window onto the content it checks: a scan line passes, a finding appears. */}
-          <div className="relative mx-auto aspect-[5/6] w-full max-w-[400px]">
+          <div className="relative mx-auto aspect-[5/6] w-full max-w-[250px] sm:max-w-[400px]">
             <svg viewBox="0 0 100 120" className="absolute inset-0 h-full w-full overflow-visible" aria-hidden>
               <defs>
                 <clipPath id="bob"><path d="M50 4 L94 58 L50 116 L6 58 Z" /></clipPath>
               </defs>
-              <line x1="50" y1="-60" x2="50" y2="4" stroke="#0B0B0C" strokeWidth="0.6" />
+              <line x1="50" y1="-12" x2="50" y2="4" stroke="#0B0B0C" strokeWidth="0.6" />
               <g clipPath="url(#bob)">
-                <image href="/images/aurelle-banner.png" x="-10" y="0" width="120" height="120" preserveAspectRatio="xMidYMid slice" />
+                <image href="/images/aurelle-banner.png" x="14" y="6" width="104" height="104" preserveAspectRatio="xMidYMid slice" />
                 <rect className="scan" x="0" y="0" width="100" height="1.2" fill="#4B3FD1" />
                 <rect className="scan-glow" x="0" y="-14" width="100" height="14" fill="url(#glow)" />
               </g>
@@ -120,7 +120,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
               </defs>
               <path d="M50 4 L94 58 L50 116 L6 58 Z" fill="none" stroke="#4B3FD1" strokeWidth="0.7" />
             </svg>
-            <div className="finding-pop absolute top-[30%] -right-2 max-w-[220px] rounded-lg bg-white p-3 text-xs shadow-[0_20px_40px_-20px_rgba(0,0,0,0.5)] ring-1 ring-ink/10 sm:-right-10">
+            <div className="finding-pop absolute top-[30%] -right-4 max-w-[200px] sm:max-w-[220px] rounded-lg bg-white p-3 text-xs shadow-[0_20px_40px_-20px_rgba(0,0,0,0.5)] ring-1 ring-ink/10 sm:-right-10">
               <p className="font-label text-[11px] font-semibold uppercase tracking-wider text-blocking">Blocks · A11Y-CONTRAST</p>
               <p className="mt-1 font-semibold text-ink">“GLOW IN 2 WEEKS” is 1.96:1. Large text needs 3:1.</p>
             </div>
