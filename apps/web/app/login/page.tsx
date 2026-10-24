@@ -217,7 +217,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
               </div>
             </Specimen>
           </Parallax>
-          <Parallax speed={0.05} className="lg:-mt-16">
+          <Parallax speed={0.05}>
             <Specimen kind="Influencer post" finding="Gifted product, but no #ad label">
               <div className="flex items-center gap-2 px-3 py-2">
                 <span className="size-7 rounded-full bg-gradient-to-br from-[#E7A3C5] to-[#8A80F2]" />
@@ -242,7 +242,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
               </div>
             </Specimen>
           </Parallax>
-          <Parallax speed={0.04} className="lg:-mt-8">
+          <Parallax speed={0.04}>
             <Specimen kind="Ad caption" finding="“Click here” says nothing; name the product" tone="minor">
               <Photo src="/images/lip-gloss-pink.jpg" alt="A pink lip gloss on a pink background" className="aspect-[4/3]" />
               <p className="p-4 text-sm leading-relaxed"><Flag tone="minor">Click here</Flag> to see the new lip shades. Six shades, one easy swipe.</p>
