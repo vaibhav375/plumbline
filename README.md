@@ -139,3 +139,15 @@ the changes, ran and judged every evaluation, and am the sole author of every co
 Plumbline itself uses open-weight models on Groq (Qwen3.8-27B, GPT-OSS 20B and 120B) with Google's
 Gemini 2.5 Flash as a fallback, on fictional data only. The evaluation's dev set and the fictional Aurelle
 data were drafted with the assistant; the dev set's labels were frozen before any model was run on it.
+
+## Photo credits
+
+The landing page's sample content uses free photos from [Unsplash](https://unsplash.com/license), shown
+as a fictional brand's ads; none of them shows a real brand:
+[amber serum on orange](https://unsplash.com/photos/GjJZ5HBl2qQ),
+[serum in shadow](https://unsplash.com/photos/GDSNp1RJyLE),
+[textures on glass](https://unsplash.com/photos/QbHwPe1HE84),
+[textures with leaves](https://unsplash.com/photos/g6q3lFAe3kA),
+[applying serum](https://unsplash.com/photos/7LAbLSKbkaQ),
+[cream jar](https://unsplash.com/photos/k2JN5zC54zQ),
+[pink lip gloss](https://unsplash.com/photos/QM77NRAFVOg).
