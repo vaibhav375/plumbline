@@ -27,7 +27,7 @@ advertising rules (ASCI) and accessibility basics are checked too.
 endpoint = sys.argv[1]
 seed = os.environ["AGENT_SEED_PHRASE"]
 register_chat_agent(
-    name="Plumbline brand compliance checker",
+    name="Plumbline Brand Checker",  # Agentverse allows 32 characters
     endpoint=endpoint,
     active=True,
     credentials=RegistrationRequestCredentials(
