@@ -35,8 +35,8 @@ export function Queue() {
   const maxBlocking = Math.max(1, ...rows.map((r) => r.blocking));
   const stats: [string, number, string][] = [
     ["Waiting", rows.filter((r) => r.status !== "approved").length, "text-bone"],
-    ["Blocking issues", rows.reduce((a, r) => a + r.blocking, 0), "text-blocking"],
-    ["Need compliance", rows.filter((r) => r.pending.includes("compliance")).length, "text-iris"],
+    ["Blocking, still waiting", rows.filter((r) => r.status !== "approved").reduce((a, r) => a + r.blocking, 0), "text-blocking"],
+    ["Need compliance", rows.filter((r) => r.status !== "approved" && r.pending.includes("compliance")).length, "text-iris"],
     ["Approved", rows.filter((r) => r.status === "approved").length, "text-ok"],
   ];
   return (

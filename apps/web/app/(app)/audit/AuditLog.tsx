@@ -99,7 +99,7 @@ export function AuditLog() {
 
 /** The newest events as linked blocks, oldest on the left; each lights up as its hash is confirmed. */
 function Chain({ events, length, brokenAt }: { events: AuditVerify["recent"]; length: number; brokenAt: number | null }) {
-  const shown = events.slice(0, 6).reverse();
+  const shown = events.slice(0, 5).reverse();
   return (
     <ol aria-label="The newest links in the chain" className="relative mt-5 flex items-stretch gap-0 overflow-x-auto pb-2">
       {shown.map((e, i) => {

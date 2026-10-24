@@ -62,16 +62,16 @@ function MetricCard({ name, help, metric, better }: { name: string; help: string
   return (
     <section aria-label={name} className="space-y-3 rounded-xl bg-panel ring-1 ring-line p-4">
       <div>
-        <h3 className="font-semibold">{name}</h3>
+        <h3 className="font-display text-base font-extrabold uppercase">{name}</h3>
         <p className="text-xs text-muted-foreground">{help} {better}</p>
       </div>
       <dl className="grid grid-cols-2 gap-3">
         {(["plumbline", "baseline"] as const).map((mode) => {
           const r = data.results[mode];
           return (
-            <div key={mode} className={`rounded-md border p-3 ${mode === "plumbline" ? "bg-muted/40" : ""}`}>
-              <dt className="text-xs font-medium">{mode === "plumbline" ? "Plumbline" : "Baseline"}</dt>
-              <dd className="text-2xl font-semibold tabular-nums" data-testid={`${metric}-${mode}`}>{show(value(r))}</dd>
+            <div key={mode} className={`rounded-lg border p-3 ${mode === "plumbline" ? "border-[#8A80F2]/60 bg-[#8A80F2]/[0.08]" : "border-[#22A596]/50"}`}>
+              <dt className="font-label text-[11px] font-semibold uppercase tracking-[0.14em] text-ash">{mode === "plumbline" ? "Plumbline" : "Baseline"}</dt>
+              <dd className="font-display text-3xl font-extrabold tabular-nums" data-testid={`${metric}-${mode}`}>{show(value(r))}</dd>
               {count && (
                 <dd className="text-xs tabular-nums">
                   {r.counts[count][0]} / {r.counts[count][1]} · {interval(r.intervals[count])}
@@ -138,9 +138,11 @@ export default function AboutPage() {
         <h2 id="architecture" className="text-lg font-semibold">How a check runs</h2>
         <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {STEPS.map((s, i) => (
-            <li key={s.title} className="rounded-xl bg-panel ring-1 ring-line p-3">
-              <p className="text-sm font-semibold">{i + 1}. {s.title}</p>
-              <p className="text-sm text-muted-foreground">{s.body}</p>
+            <li key={s.title} className="group relative overflow-hidden rounded-xl bg-panel p-4 ring-1 ring-line transition-colors duration-300 hover:ring-iris/50">
+              <span aria-hidden className="absolute -top-3 right-2 font-display text-7xl font-extrabold text-white/[0.04] transition-colors duration-500 group-hover:text-iris/15">{i + 1}</span>
+              <p className="relative font-label text-[11px] font-semibold uppercase tracking-[0.14em] text-iris">Step {i + 1} of {STEPS.length}</p>
+              <p className="relative mt-1 font-display text-base font-extrabold uppercase">{s.title}</p>
+              <p className="relative mt-1 text-sm text-ash">{s.body}</p>
             </li>
           ))}
         </ol>
@@ -187,7 +189,7 @@ export default function AboutPage() {
         </p>
         <EgressTable rows={data.egress.plumbline} label="Plumbline run" />
         <EgressTable rows={data.egress.baseline} label="Baseline run" />
-        <p className="rounded-md border px-4 py-3 text-sm">
+        <p className="rounded-xl border border-dashed border-line px-4 py-3 text-sm text-ash">
           Aurelle, its products, people and figures are fictional. No real customer or personal data is used anywhere in
           this demo.
         </p>
