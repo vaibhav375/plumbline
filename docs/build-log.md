@@ -1207,3 +1207,18 @@ page.
 
 **Re-test:** checker 250/250 and lint; e2e 18/18 on getplumbline.xyz after the deploy, then 17 non-
 submitting tests again after the cleanup; audit chain verified.
+
+**Polish (25 Oct, 00:00–00:20 IST)**
+- Finding cards (check and review) show the rule's plain-English title, e.g. "Rule: Never mention
+  unreleased product codenames", unless the explanation already says it. Titles come from one rulebook
+  request per visit that skips the wake-up probe: the first version went through the normal request path,
+  added a fourth /health probe, and broke the e2e test that counts them.
+- "More examples" on the check page loads five other kinds of post into the draft to check live: a
+  creator caption (gifted, no disclosure), a Diwali email, a product page, an agency teaser (codename) and
+  a Hinglish caption that follows the rules. Checked live: the agency teaser gives 2 blocking issues.
+- Content titles are cut at a word boundary with an ellipsis (was a hard cut at 120 characters: "…in ju");
+  unit test added.
+- Every endpoint's 401 now says "Sign in to use Plumbline." (it said "Sign in to run a check").
+
+**Re-test:** checker 251/251; e2e 18/18 on getplumbline.xyz (16, then the 2 that submit, whose one new
+submission was deleted afterwards so the queue stays as set up).
