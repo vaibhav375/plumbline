@@ -105,7 +105,7 @@ export function Sidebar({ profile }: { profile: Profile }) {
   );
   return (
     <>
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col gap-6 overflow-y-auto bg-ink px-3 py-5 lg:flex">
+      <aside data-lenis-prevent className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col gap-6 overflow-y-auto border-r border-line bg-ink px-3 py-5 lg:flex">
         <div className="px-3">{brand}</div>
         <Nav profile={profile} />
         <div className="mt-auto"><Account profile={profile} /></div>
@@ -118,7 +118,7 @@ export function Sidebar({ profile }: { profile: Profile }) {
         </button>
       </div>
       {open && (
-        <div id="mobile-nav" className="fixed inset-x-0 top-[52px] bottom-0 z-30 space-y-6 overflow-y-auto bg-ink px-3 py-5 lg:hidden">
+        <div id="mobile-nav" data-lenis-prevent className="fixed inset-x-0 top-[52px] bottom-0 z-30 space-y-6 overflow-y-auto bg-ink px-3 py-5 lg:hidden">
           <Nav profile={profile} onNavigate={() => setOpen(false)} />
           <Account profile={profile} />
         </div>

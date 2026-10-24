@@ -23,13 +23,13 @@ export function Intro() {
   }, []);
   if (!show) return null;
   return (
-    <div aria-hidden className="curtain pointer-events-none fixed inset-0 z-50 flex items-center justify-center bg-white">
+    <div aria-hidden className="curtain pointer-events-none fixed inset-0 z-50 flex items-center justify-center bg-carbon text-bone">
       <div className="flex flex-col items-center">
-        <span className="h-24 w-0.5 origin-top bg-ink" />
+        <span className="h-24 w-0.5 origin-top bg-bone" />
         <svg viewBox="0 0 20 24" className="drop -mt-px h-8 w-7"><path d="M10 0 L20 12 L10 24 L0 12 Z" fill="#4B3FD1" /></svg>
       </div>
       <span className="absolute top-6 right-6 font-display text-sm font-bold tabular-nums">{n}%</span>
-      <span className="absolute bottom-6 left-6 font-label text-xs font-semibold uppercase tracking-[0.2em] text-ink/60">Finding true vertical</span>
+      <span className="absolute bottom-6 left-6 font-label text-xs font-semibold uppercase tracking-[0.2em] text-bone/60">Finding true vertical</span>
     </div>
   );
 }

@@ -7,8 +7,8 @@ export default function Loading() {
         <div className="h-4 w-96 max-w-full animate-pulse rounded bg-white/10" />
       </div>
       <div className="grid gap-4 md:grid-cols-2">
-        <div className="h-40 animate-pulse rounded-xl bg-panel shadow-sm ring-1 ring-line" />
-        <div className="h-40 animate-pulse rounded-xl bg-panel shadow-sm ring-1 ring-line" />
+        <div className="h-40 animate-pulse rounded-xl bg-panel ring-1 ring-line" />
+        <div className="h-40 animate-pulse rounded-xl bg-panel ring-1 ring-line" />
       </div>
       <p className="text-sm text-muted-foreground">Loading…</p>
     </main>

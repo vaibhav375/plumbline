@@ -243,7 +243,7 @@ export function CheckForm() {
           </section>
 
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
-            <div className="min-w-0 space-y-6 lg:sticky lg:top-4 lg:max-h-[calc(100vh-2rem)] lg:self-start lg:overflow-y-auto lg:pb-2">
+            <div data-lenis-prevent className="min-w-0 space-y-6 lg:sticky lg:top-4 lg:max-h-[calc(100vh-2rem)] lg:self-start lg:overflow-y-auto lg:pb-2">
               <section aria-label="Your draft" className="paper rounded-xl">
                 <div className="flex items-center justify-between border-b border-ink/10 px-5 py-2.5 font-label text-[11px] font-semibold uppercase tracking-[0.16em] text-ink/70">
                   <span>Your draft · as checked</span>

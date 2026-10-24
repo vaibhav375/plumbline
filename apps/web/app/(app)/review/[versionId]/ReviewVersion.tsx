@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ApprovalPanel } from "@/components/ApprovalPanel";
 import { CommentThread } from "@/components/CommentThread";
 import { HighlightedText, type Mark } from "@/components/HighlightedText";
-import { GROUPS, groupOf, TAG } from "@/components/severity";
+import { GROUPS, groupOf, HEX, TAG } from "@/components/severity";
 import { StatusTimeline } from "@/components/StatusTimeline";
 import { Button } from "@/components/ui/button";
 import { WakingBanner } from "@/components/WakingBanner";
@@ -40,24 +40,27 @@ function DecisionCard({
   const decided = [...history].reverse().find((d) => d.action === "uphold" || d.action === "overrule");
   const canDecide = Boolean(f.record_id && detail.can_decide.includes(f.record_id)) && detail.version.status !== "approved";
   return (
-    <article aria-label={`Finding ${n}: ${f.rule_id ?? f.fact_id ?? "finding"}`} className="rounded-xl bg-panel shadow-sm ring-1 ring-line p-4">
-      <div className="flex flex-wrap items-center gap-2 text-sm">
-        <span className="font-semibold">{n}</span>
-        <span className={`rounded border px-2 py-0.5 font-medium ${TAG[group]}`}>{group}</span>
+    <article id={`finding-${n}`} aria-label={`Finding ${n}: ${f.rule_id ?? f.fact_id ?? "finding"}`}
+      className={`relative scroll-mt-24 overflow-hidden rounded-xl bg-panel p-4 pl-5 ring-1 ${decided ? "ring-ok/40" : "ring-line"}`}>
+      <span aria-hidden className="absolute inset-y-0 left-0 w-1" style={{ background: HEX[group] }} />
+      <div className="flex flex-wrap items-center gap-2 text-xs">
+        <span aria-hidden className="inline-flex size-7 items-center justify-center rounded-full font-label text-sm font-bold text-ink" style={{ background: HEX[group] }}>{n}</span>
+        <span className="sr-only">{n}</span>
+        <span className={`rounded border px-2 py-0.5 font-label text-[11px] font-semibold uppercase tracking-[0.12em] ${TAG[group]}`}>{group}</span>
         {decided && (
-          <span className="rounded border border-ok bg-panel px-2 py-0.5 font-medium text-ok">
+          <span className="rounded border border-ok bg-ok/10 px-2 py-0.5 font-label text-[11px] font-semibold uppercase tracking-[0.12em] text-ok">
             ✓ {decided.action === "uphold" ? "Upheld" : "Overruled"}
           </span>
         )}
-        <span className="font-mono text-xs">{[f.rule_id, f.fact_id].filter(Boolean).join(" · ")}</span>
-        {f.claim_status && <span className="text-muted-foreground">claim {f.claim_status.replace("_", " ")}</span>}
+        <span className="ml-auto font-mono text-[11px] text-ash">{[f.rule_id, f.fact_id].filter(Boolean).join(" · ")}</span>
       </div>
-      {f.quote && <p className="mt-2 font-medium">“{f.quote}”</p>}
-      <p className="mt-1">{f.explanation}</p>
-      <p className="mt-1 text-xs text-muted-foreground">Source: {f.basis_excerpt}</p>
-      {f.fix?.text && <p className="mt-2 text-sm">Suggested fix{f.fix.ref_id ? ` (${f.fix.ref_id})` : ""}: {f.fix.text}</p>}
+      {f.quote && <p className="paper mt-3 rounded-md px-3 py-2 text-[15px] font-medium text-ink" style={{ boxShadow: `inset 0 -3px 0 ${HEX[group]}` }}>“{f.quote}”</p>}
+      <p className="mt-3 leading-relaxed">{f.explanation}</p>
+      {f.claim_status && <p className="mt-1 text-xs text-ash">Claim {f.claim_status.replace("_", " ")}</p>}
+      <p className="mt-2 border-l border-line pl-3 text-xs text-ash">Source: {f.basis_excerpt}</p>
+      {f.fix?.text && <p className="mt-3 rounded-lg border border-line bg-carbon/60 p-3 text-sm"><span className="font-label text-[11px] font-semibold uppercase tracking-[0.14em] text-ash">Suggested fix{f.fix.ref_id ? ` (${f.fix.ref_id})` : ""}: </span><b>{f.fix.text}</b></p>}
       {history.length > 0 && (
-        <ul className="mt-2 space-y-1 text-sm">
+        <ul className="mt-3 space-y-1 border-t border-line pt-3 text-sm">
           {history.map((d, i) => (
             <li key={i}>
               <span className="font-medium">{d.who}</span> {ACTION[d.action] ?? d.action}
@@ -87,7 +90,7 @@ function DecisionCard({
           }}>
           <label className="grow">
             Reason for {pending === "uphold" ? "upholding" : "overruling"} (required, goes in the audit log)
-            <input className="mt-1 w-full rounded border px-2 py-1" value={reason} onChange={(e) => setReason(e.target.value)} />
+            <input className="mt-1 w-full rounded-md border border-line bg-carbon px-2.5 py-1.5 text-bone focus:border-iris focus:outline-none" value={reason} onChange={(e) => setReason(e.target.value)} />
           </label>
           <Button size="sm" type="submit" disabled={sending || !reason.trim()}>
             {sending ? "Saving…" : `${pending === "uphold" ? "Uphold" : "Overrule"} with reason`}
@@ -103,6 +106,7 @@ export function ReviewVersion({ versionId }: { versionId: string }) {
   const [detail, setDetail] = useState<ReviewDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [waking, setWaking] = useState(false);
+  const [active, setActive] = useState<number | null>(null);
   const fail = (e: unknown) => setError(e instanceof CheckError ? e.message : "Something went wrong. Try again.");
   const act = useCallback(async (job: () => Promise<ReviewDetail>) => {
     setError(null);
@@ -127,14 +131,18 @@ export function ReviewVersion({ versionId }: { versionId: string }) {
 
   return (
     <div className="space-y-6">
-      <p className="text-sm text-muted-foreground">
-        {detail.content.title} · version {detail.version.n} · {detail.content.origin} · {detail.content.channel}
-      </p>
-      {error && <p role="alert" className="rounded-lg border border-blocking/40 bg-panel px-4 py-3 text-sm text-blocking">{error}</p>}
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-label text-xs font-semibold uppercase tracking-[0.14em] text-ash">
+        <span className="font-display text-base tracking-normal normal-case text-bone">{detail.content.title}</span>
+        <span>Version {detail.version.n}</span><span>{detail.content.origin}</span><span>{detail.content.channel}</span>
+      </div>
+      {error && <p role="alert" className="rounded-xl border border-blocking/40 bg-blocking/[0.07] px-4 py-3 text-sm text-blocking">{error}</p>}
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
         <div className="min-w-0 space-y-6">
-          <section aria-label="Submitted text" className="rounded-xl bg-panel shadow-sm ring-1 ring-line p-4">
-            <HighlightedText text={detail.report.checked_text ?? detail.version.text} marks={marks} />
+          <section aria-label="Submitted text" className="paper rounded-xl">
+            <p className="border-b border-ink/10 px-5 py-2.5 font-label text-[11px] font-semibold uppercase tracking-[0.16em] text-ink/70">Submitted text · version {detail.version.n}</p>
+            <div className="px-5 py-4">
+              <HighlightedText text={detail.report.checked_text ?? detail.version.text} marks={marks} active={active} onPick={setActive} />
+            </div>
           </section>
           <ApprovalPanel
             detail={detail}
@@ -151,9 +159,9 @@ export function ReviewVersion({ versionId }: { versionId: string }) {
           <CommentThread comments={detail.comments} onAdd={(body) => act(() => review.comment(versionId, body))} />
         </div>
         <div className="min-w-0 space-y-3">
-          <p className="text-lg">
-            <strong>{rows.filter((r) => r.group === "Blocking").length} blocking</strong> ·{" "}
-            {detail.state.undecided_blocking.length} still to decide
+          <p className="font-display text-2xl font-extrabold uppercase tracking-[-0.01em]">
+            <strong className="text-blocking">{rows.filter((r) => r.group === "Blocking").length} blocking</strong>{" "}
+            <span className={detail.state.undecided_blocking.length ? "text-major" : "text-ok"}>· {detail.state.undecided_blocking.length} still to decide</span>
           </p>
           {rows.map((r) => (
             <DecisionCard key={r.f.id} n={r.n} f={r.f} group={r.group} detail={detail}

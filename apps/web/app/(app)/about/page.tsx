@@ -60,7 +60,7 @@ const STEPS = [
 function MetricCard({ name, help, metric, better }: { name: string; help: string; metric: keyof typeof KEYS; better: string }) {
   const { value, count, show } = KEYS[metric];
   return (
-    <section aria-label={name} className="space-y-3 rounded-xl bg-panel shadow-sm ring-1 ring-line p-4">
+    <section aria-label={name} className="space-y-3 rounded-xl bg-panel ring-1 ring-line p-4">
       <div>
         <h3 className="font-semibold">{name}</h3>
         <p className="text-xs text-muted-foreground">{help} {better}</p>
@@ -100,10 +100,10 @@ const KEYS = {
 
 function EgressTable({ rows, label }: { rows: Egress[]; label: string }) {
   return (
-    <div className="overflow-x-auto rounded-xl bg-panel shadow-sm ring-1 ring-line">
+    <div className="overflow-x-auto rounded-xl bg-panel ring-1 ring-line">
       <table className="w-full text-left text-sm">
         <caption className="px-3 py-2 text-left text-xs text-muted-foreground">{label}</caption>
-        <thead className="bg-muted/50">
+        <thead className="border-b border-line font-label text-[11px] uppercase tracking-[0.14em] text-ash">
           <tr>
             {["Provider", "Model", "Region", "Calls", "Characters sent", "Purpose", "Outcome"].map((h) => (
               <th key={h} scope="col" className="px-3 py-2 font-medium">{h}</th>
@@ -138,7 +138,7 @@ export default function AboutPage() {
         <h2 id="architecture" className="text-lg font-semibold">How a check runs</h2>
         <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {STEPS.map((s, i) => (
-            <li key={s.title} className="rounded-xl bg-panel shadow-sm ring-1 ring-line p-3">
+            <li key={s.title} className="rounded-xl bg-panel ring-1 ring-line p-3">
               <p className="text-sm font-semibold">{i + 1}. {s.title}</p>
               <p className="text-sm text-muted-foreground">{s.body}</p>
             </li>
@@ -160,9 +160,9 @@ export default function AboutPage() {
           it is never shown confidential facts. Run on {RUN_AT} IST with rulebook{" "}
           <span className="font-mono">{data.rulebook_version}</span>; dates are judged as of {data.today}.
         </p>
-        <div className="rounded-xl bg-panel p-5 shadow-sm ring-1 ring-line">
+        <div className="rounded-xl bg-panel p-5 ring-1 ring-line">
           <IntervalChart
-            series={[{ name: "Plumbline", color: "#4B3FD1" }, { name: "Baseline (one AI call, whole brand book)", color: "#0C9A8F" }]}
+            series={[{ name: "Plumbline", color: "#8A80F2" }, { name: "Baseline (one AI call, whole brand book)", color: "#22A596" }]}
             caption="Dots are the measured share; lines are 95% intervals. Higher is better for the first two rows, lower for the last. The cards below have the counts."
             rows={COMPARE}
           />

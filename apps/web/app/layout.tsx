@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Archivo, JetBrains_Mono } from "next/font/google";
+import "lenis/dist/lenis.css";
 import "./globals.css";
+
+import { MotionRoot } from "@/components/Motion";
 
 // Archivo (Omnibus-Type), a grotesque with a width axis: one family, set wide and heavy for statements,
 // condensed for labels, normal for reading. JetBrains Mono is the evidence (IDs, quotes, hashes).
@@ -16,7 +19,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body className={`${sans.variable} ${mono.variable} bg-carbon font-sans text-bone antialiased`}>
-        {children}
+        <MotionRoot>{children}</MotionRoot>
       </body>
     </html>
   );

@@ -47,7 +47,7 @@ function Specimen({ kind, children, finding, tone = "block", className = "" }: {
   className?: string;
 }) {
   return (
-    <figure className={`group overflow-hidden rounded-xl bg-white text-ink shadow-[0_30px_60px_-30px_rgba(0,0,0,0.8)] ${className}`}>
+    <figure className={`paper group overflow-hidden rounded-xl text-ink ${className}`}>
       <div className="flex items-center justify-between border-b border-ink/10 px-3 py-2">
         <span className={`${label} text-[10px] text-ink/60`}>{kind}</span>
         <span className="size-1.5 rounded-full bg-ink/20" />
@@ -55,7 +55,7 @@ function Specimen({ kind, children, finding, tone = "block", className = "" }: {
       <div className="overflow-hidden">
         <div className="transition-transform duration-700 ease-out group-hover:scale-[1.04]">{children}</div>
       </div>
-      <figcaption className={`flex items-center gap-2 px-3 py-2 text-xs font-semibold ${tone === "block" ? "bg-blocking text-white" : "bg-minor text-white"}`}>
+      <figcaption className={`flex items-center gap-2 px-3 py-2 text-xs font-semibold ${tone === "block" ? "bg-blocking text-ink" : "bg-minor text-ink"}`}>
         <span className="font-label uppercase tracking-wider">{tone === "block" ? "Blocks" : "Minor"}</span> {finding}
       </figcaption>
     </figure>
@@ -67,7 +67,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   const p = latest.results.plumbline.counts;
   const b = latest.results.baseline.counts;
   return (
-    <div className="bg-white text-ink">
+    <div className="bg-carbon text-bone">
       <Intro />
 
       {/* ---------- Hero ---------- */}
@@ -75,13 +75,13 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         <div aria-hidden className="guides contours pointer-events-none absolute inset-0" />
         <nav className="relative z-10 flex items-center justify-between px-5 py-5 sm:px-8">
           <Link href="/login" className="flex items-center gap-2">
-            <Brandmark className="size-8 text-ink" />
+            <Brandmark className="size-8 text-bone" />
             <span className="font-display text-xl font-extrabold uppercase tracking-tight">Plumbline</span>
           </Link>
           <div className="flex items-center gap-5 sm:gap-8">
-            <Link href="/about" className={`${label} hidden text-ink/70 transition-colors hover:text-ink sm:block`}>How I know it works</Link>
-            <Link href="/status" className={`${label} hidden text-ink/70 transition-colors hover:text-ink sm:block`}>Status</Link>
-            <a href="#roles" className="group inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 font-display text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-accent-brand">
+            <Link href="/about" className={`${label} hidden text-bone/70 transition-colors hover:text-bone sm:block`}>How I know it works</Link>
+            <Link href="/status" className={`${label} hidden text-bone/70 transition-colors hover:text-bone sm:block`}>Status</Link>
+            <a href="#roles" className="group inline-flex items-center gap-1.5 rounded-full bg-bone px-4 py-2 font-display text-xs font-bold uppercase tracking-wide text-carbon transition-colors hover:bg-accent-brand hover:text-white">
               Try it <ArrowDown className="size-3.5 transition-transform group-hover:translate-y-0.5" aria-hidden />
             </a>
           </div>
@@ -90,14 +90,14 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         <div className="relative z-10 grid flex-1 items-center gap-10 px-5 pb-8 sm:px-8 lg:grid-cols-[1.2fr_1fr]">
           {/* The thesis, acted out: a claim is struck out and the approved wording takes its place. */}
           <div className="space-y-3">
-            <p className={`${label} text-ink/60`}>Before it&apos;s published</p>
+            <p className={`${label} text-bone/60`}>Before it&apos;s published</p>
             <p className="font-display text-[clamp(2.4rem,5.6vw,5.4rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.03em]">
               <span className="block">Every claim</span>
               <span className="block"><span className="strike-bg text-blocking">Clinically proven</span></span>
               <span className="swap-in block text-ok">Shown to visibly reduce*</span>
               <span className="block">Checked.</span>
             </p>
-            <p className="font-mono text-xs text-ink/60">*FACT-014 · 32% fewer visible dark spots in 8 weeks · in-house study, 48 participants</p>
+            <p className="font-mono text-xs text-bone/60">*FACT-014 · 32% fewer visible dark spots in 8 weeks · in-house study, 48 participants</p>
           </div>
 
           {/* The plumb bob as a window onto the content it checks: a scan line passes, a finding appears. */}
@@ -106,7 +106,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
               <defs>
                 <clipPath id="bob"><path d="M50 4 L94 58 L50 116 L6 58 Z" /></clipPath>
               </defs>
-              <line x1="50" y1="-12" x2="50" y2="4" stroke="#0B0B0C" strokeWidth="0.6" />
+              <line x1="50" y1="-12" x2="50" y2="4" stroke="#EDEBE6" strokeWidth="0.6" />
               <g clipPath="url(#bob)">
                 {/* The banner's own cream and pink continue past its edges, so the window has no gaps. */}
                 <rect width="100" height="120" fill="#FBF6EC" />
@@ -123,11 +123,11 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
               </defs>
               <path d="M50 4 L94 58 L50 116 L6 58 Z" fill="none" stroke="#4B3FD1" strokeWidth="0.7" />
             </svg>
-            <div className="finding-pop absolute top-[30%] -right-4 max-w-[200px] sm:max-w-[220px] rounded-lg bg-white p-3 text-xs shadow-[0_20px_40px_-20px_rgba(0,0,0,0.5)] ring-1 ring-ink/10 sm:-right-10">
-              <p className="font-label text-[11px] font-semibold uppercase tracking-wider text-blocking">Blocks · A11Y-CONTRAST</p>
+            <div className="finding-pop absolute top-[30%] -right-4 max-w-[200px] sm:max-w-[220px] paper rounded-lg p-3 text-xs sm:-right-10">
+              <p className="font-label text-[11px] font-semibold uppercase tracking-wider text-[#B3261E]">Blocks · A11Y-CONTRAST</p>
               <p className="mt-1 font-semibold text-ink">“GLOW IN 2 WEEKS” is 1.96:1. Large text needs 3:1.</p>
             </div>
-            <span className={`${label} absolute -left-2 top-1/2 -translate-x-full -rotate-90 text-[10px] text-ink/50 max-lg:hidden`}>True vertical</span>
+            <span className={`${label} absolute -left-2 top-1/2 -translate-x-full -rotate-90 text-[10px] text-bone/50 max-lg:hidden`}>True vertical</span>
           </div>
         </div>
 
@@ -135,14 +135,14 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           <h1 className="max-w-3xl font-display text-xl font-bold uppercase leading-tight tracking-tight sm:text-2xl">
             Check marketing content against your brand&apos;s own rules and facts, before it&apos;s published.
           </h1>
-          <a href="#how" className={`${label} hidden shrink-0 items-center gap-1 text-ink/70 hover:text-ink sm:inline-flex`}>
+          <a href="#how" className={`${label} hidden shrink-0 items-center gap-1 text-bone/70 hover:text-bone sm:inline-flex`}>
             Scroll down <ArrowDown className="size-3.5" aria-hidden />
           </a>
         </div>
       </header>
 
       {/* ---------- Ticker ---------- */}
-      <div className="overflow-hidden border-y border-ink bg-ink py-3 text-white" aria-label="Examples of findings">
+      <div className="overflow-hidden border-y border-line bg-panel py-3 text-bone" aria-label="Examples of findings">
         <div className="marquee flex w-max gap-10 whitespace-nowrap">
           {[...TICKER, ...TICKER].map(([what, why, tone], i) => (
             <span key={i} className="flex items-center gap-3 font-display text-lg font-bold uppercase tracking-tight">
@@ -155,7 +155,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
       </div>
 
       {/* ---------- What goes out unchecked ---------- */}
-      <section id="how" className="guides-dark relative overflow-hidden bg-ink px-5 pt-24 pb-16 text-white sm:px-8 sm:pt-32 sm:pb-24">
+      <section id="how" className="guides-dark relative overflow-hidden bg-carbon px-5 pt-24 pb-16 text-white sm:px-8 sm:pt-32 sm:pb-24">
         <Reveal className="relative z-10 mx-auto max-w-5xl text-center">
           <p className={`${label} text-white/55`}>The problem</p>
           <h2 className="mt-3 font-display text-[clamp(2rem,5vw,4.2rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.02em]">
@@ -225,12 +225,12 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
       {/* ---------- How it works ---------- */}
       <section className="guides relative px-5 py-24 sm:px-8 sm:py-32">
         <Reveal className="mx-auto max-w-6xl">
-          <p className={`${label} text-ink/60`}>How it works</p>
+          <p className={`${label} text-bone/60`}>How it works</p>
           <h2 className="mt-3 max-w-4xl font-display text-[clamp(2rem,5vw,4.2rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.02em]">
-            Checked against <span className="text-accent-brand">your</span> rulebook and <span className="text-accent-brand">your</span> facts. With the evidence.
+            Checked against <span className="text-iris">your</span> rulebook and <span className="text-iris">your</span> facts. With the evidence.
           </h2>
         </Reveal>
-        <ol className="mx-auto mt-14 grid max-w-6xl gap-px overflow-hidden rounded-xl bg-ink/15 sm:grid-cols-2 lg:grid-cols-3">
+        <ol className="mx-auto mt-14 grid max-w-6xl gap-px overflow-hidden rounded-xl bg-line sm:grid-cols-2 lg:grid-cols-3">
           {[
             ["Paste or upload", "A draft, a DOCX, a PDF or an image. Text inside images is read too."],
             ["Rules run first", "Your banned phrases, required labels, product names, contrast and alt text, checked by code."],
@@ -239,10 +239,10 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
             ["Fixed without inventing", "Claims are fixed only with approved wording; your call to action and key phrases are kept."],
             ["Reviewed and recorded", "Reviewers decide, approvals are routed, and every step lands in a tamper-evident log."],
           ].map(([title, body], i) => (
-            <Reveal as="li" key={title} delay={i * 70} className="group bg-white p-6 transition-colors duration-300 hover:bg-ink hover:text-white">
-              <span className={`${label} text-ink/40 group-hover:text-white/50`}>Step {i + 1} of 6</span>
+            <Reveal as="li" key={title} delay={i * 70} className="group bg-panel p-6 transition-colors duration-300 hover:bg-bone hover:text-carbon">
+              <span className={`${label} text-bone/45 group-hover:text-carbon/60`}>Step {i + 1} of 6</span>
               <h3 className="mt-2 font-display text-xl font-bold uppercase tracking-tight">{title}</h3>
-              <p className="mt-3 text-[15px] leading-relaxed text-ink/70 group-hover:text-white/75">{body}</p>
+              <p className="mt-3 text-[15px] leading-relaxed text-bone/70 group-hover:text-carbon/75">{body}</p>
             </Reveal>
           ))}
         </ol>
@@ -284,7 +284,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
       </section>
 
       {/* ---------- Try it ---------- */}
-      <main id="roles" className="scroll-mt-4 bg-ink px-5 py-24 text-white sm:px-8">
+      <main id="roles" className="scroll-mt-4 border-t border-line bg-panel px-5 py-24 text-white sm:px-8">
         <Reveal className="mx-auto max-w-6xl">
           <p className={`${label} text-white/55`}>Try it as one of the team</p>
           <h2 className="mt-3 font-display text-[clamp(2rem,5vw,4.2rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.02em]">
@@ -293,7 +293,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           <p className="mt-3 max-w-2xl text-white/70">Five demo accounts for Aurelle Skin, a fictional brand. Each one opens where its work is.</p>
         </Reveal>
         {error && (
-          <p role="alert" className="mx-auto mt-6 max-w-6xl rounded-lg border border-blocking bg-white px-4 py-3 text-sm text-blocking">
+          <p role="alert" className="mx-auto mt-6 max-w-6xl rounded-lg border border-blocking bg-blocking/10 px-4 py-3 text-sm text-blocking">
             {ERRORS[error] ?? ERRORS.signin}
           </p>
         )}

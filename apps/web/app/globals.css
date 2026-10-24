@@ -285,3 +285,7 @@ main h2 { font-family: var(--font-display); font-stretch: 112%; font-weight: 800
   background-repeat: no-repeat;
   background-position: 0 100%, 0 100%;
 }
+/* Page titles rise out of a mask, word by word. */
+@keyframes mask-up { from { transform: translateY(105%); } to { transform: none; } }
+.mask-up { animation: mask-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@media (prefers-reduced-motion: reduce) { .mask-up { animation: none; } }
