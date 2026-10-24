@@ -18,16 +18,22 @@ expires, a study is superseded, an embargo lifts. Round 3 follows a claim after 
 
 **Measured on** the held-out, human-labelled set (replacing the builder's dev set) and on public ASCI
 decisions: recall ≥ 90% on seeded claims and ≥ 80% on ASCI-upheld complaints, with citations checked by
-a person (≥ 95% correct).
+a person (≥ 95% correct). The same measures run on a second brand from another sector (a fintech app),
+loaded only through the rulebook CSV import and fact ledger with no code changes, to show the engine
+is not tied to Aurelle.
 
 ## 2. Fixes where creators work
 
 *Continues "Fixes that keep intent and never invent claims".*
 
 Round 2 fixes live in the Plumbline web app. Most writers are elsewhere: an agency's document, a
-chat thread, a scheduling tool. Round 3 takes the same checks and fixes to them:
+chat thread, a scheduling tool. Round 2 already took the first step: the checker is an Agentverse agent,
+so anyone in ASI:One chat can paste a post and get the cited findings and approved wording back (checked
+as an agency writer, nothing saved). It only knows the demo brand. Round 3 takes the same checks and
+fixes to where creators work, each caller checked against their own brand:
 
-- Slack: paste a draft, get the findings and the suggested version in the thread.
+- The ASI:One agent and Slack: paste a draft, get the findings and the suggested version in the chat,
+  checked against the caller's brand (linked to their Plumbline organisation).
 - A no-login link for agencies, with expiry and rate limits, so an outside writer can pre-check without
   an account.
 - A publish-gate API that scheduling and CMS tools can call before a post goes out.

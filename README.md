@@ -143,7 +143,7 @@ I built Plumbline with **Claude Code** (Anthropic) as a coding assistant: it dra
 documentation under my direction. I chose the product and its design, decided each trade-off, reviewed
 the changes, ran and judged every evaluation, and am the sole author of every commit. At runtime,
 Plumbline itself uses open-weight models on Groq (Qwen3.8-27B, GPT-OSS 20B and 120B) with Google's
-Gemini 2.5 Flash as a fallback, on fictional data only. The evaluation's dev set and the fictional Aurelle
+Gemini 2.5 Flash and Fetch.ai's ASI:One (asi1-mini) as fallbacks, on fictional data only. The evaluation's dev set and the fictional Aurelle
 data were drafted with the assistant; the dev set's labels were frozen before any model was run on it.
 
 ## Photo credits

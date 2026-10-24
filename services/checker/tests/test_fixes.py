@@ -305,6 +305,40 @@ def test_applying_an_approved_wording_adds_its_footnote():
         ),
     )
     out = apply_fixes(text, [f], {"w"})
-    assert out.startswith("shown to visibly reduce dark spots by 32% in 8 weeks*.")
+    assert out.startswith("Shown to visibly reduce dark spots by 32% in 8 weeks*.")
     assert out.endswith("\n*In-house study, 48 participants, 2026.")
     assert apply_fixes(out + "", [], set()).count("In-house study") == 1
+
+
+def test_a_fix_that_ends_a_sentence_capitalises_only_the_seam():
+    # Pre-submission test: "!!!" -> "." plus an approved wording left "Serum. made with 94% ...".
+    text = "Meet the serum!!! 100% natural, and lovely. small things stay as written."
+    fs = [
+        finding("1", 14, 17, text, Fix(kind="replace_term", text=".")),
+        finding(
+            "2",
+            18,
+            30,
+            text,
+            Fix(kind="approved_wording", text="made with 94% naturally derived ingredients"),
+        ),
+    ]
+    out = apply_fixes(text, fs, {"1", "2"})
+    assert (
+        out
+        == "Meet the serum. Made with 94% naturally derived ingredients, and lovely. small things stay as written."
+    )
+    # A fix alone that ends a sentence capitalises the next word too; mid-sentence edits don't.
+    assert apply_fixes(text, fs, {"1"}).startswith("Meet the serum. 100% natural")
+    assert (
+        apply_fixes(
+            "so nice!!! wow",
+            [finding("1", 7, 10, "so nice!!! wow", Fix(kind="replace_term", text="."))],
+            {"1"},
+        )
+        == "so nice. Wow"
+    )
+    assert (
+        apply_fixes(text, fs, {"2"})
+        == "Meet the serum!!! Made with 94% naturally derived ingredients, and lovely. small things stay as written."
+    )

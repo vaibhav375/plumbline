@@ -67,9 +67,12 @@ Full table: docs/changes-from-round1.md.
 ## Three improvements for Round 3
 1. **Claim recall and live-post watch:** when a fact expires or changes, every published asset using it
    gets an update-or-withdraw task; published URLs are re-checked against the approved version; claims
-   inside images are checked. Measured on a human-labelled held-out set and ASCI decisions.
-2. **Fixes where creators work:** Slack results, a no-login agency link with expiry and rate limits, a
-   publish-gate API, and DOCX tracked changes. Measured by a 200-fix audit (0 invented claims) and fix
+   inside images are checked. Measured on a human-labelled held-out set and ASCI decisions, and repeated
+   on a second brand from another sector (loaded by CSV import only) to show the engine isn't tied to
+   Aurelle.
+2. **Fixes where creators work:** builds on the ASI:One agent shipped in Round 2 (which knows only the
+   demo brand): checks in ASI:One and Slack against the caller's own brand, a no-login agency link with
+   expiry and rate limits, a publish-gate API, and DOCX tracked changes. Measured by a 200-fix audit (0 invented claims) and fix
    acceptance with real writers (≥ 70%).
 3. **Self-learning guidelines and confidential mode:** automated rule graduation with undo, AI-drafted
    clarifications for unclear rules from real decisions, and a self-hosted open-weight Qwen mode so

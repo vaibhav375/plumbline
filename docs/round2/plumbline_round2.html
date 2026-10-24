@@ -260,13 +260,13 @@ Demo runs on free model tiers using fictional data only; production uses paid no
 <div class="avoid">
 <h3>Three improvements for Round 3</h3>
 <div class="grid3 impr">
-  <div class="card"><h4>Claim recall and live-post watch</h4>When a fact expires or changes, every published asset using it gets an update-or-withdraw task; published URLs are re-checked against the approved version; claims inside images are checked.<span class="target">Measured on the human-labelled held-out set and ASCI decisions</span></div>
-  <div class="card"><h4>Fixes where creators work</h4>Slack results, a no-login agency link with expiry and rate limits, a publish-gate API, and DOCX tracked changes.<span class="target">0 invented claims in a 200-fix audit; ≥ 70% of fixes accepted by real writers</span></div>
+  <div class="card"><h4>Claim recall and live-post watch</h4>When a fact expires or changes, every published asset using it gets an update-or-withdraw task; published URLs are re-checked against the approved version; claims inside images are checked.<span class="target">Measured on the human-labelled held-out set and ASCI decisions, then on a second brand loaded by CSV only</span></div>
+  <div class="card"><h4>Fixes where creators work</h4>Grows the ASI:One agent shipped in Round 2: checks in ASI:One and Slack against each caller's own brand, a no-login agency link with expiry and rate limits, a publish-gate API, and DOCX tracked changes.<span class="target">0 invented claims in a 200-fix audit; ≥ 70% of fixes accepted by real writers</span></div>
   <div class="card"><h4>Self-learning guidelines and confidential mode</h4>Automated rule graduation with undo, AI-drafted clarifications from real decisions, and a self-hosted open-weight Qwen mode.<span class="target">Top-5 "may be unclear" includes ≥ 2 of testers' 3 most confusing rules</span></div>
 </div>
 </div>
 
-<p class="small" style="margin-top:2.5mm"><b>AI-use disclosure.</b> Built with Claude Code (Anthropic) as a coding assistant, under my direction: I chose the design and every trade-off, reviewed the changes, ran and judged the evaluations, and am the sole author of every commit. The dev set and the fictional Aurelle data were drafted with the assistant. At runtime Plumbline uses open-weight models on Groq with Gemini as a fallback, on fictional data only.</p>
+<p class="small" style="margin-top:2.5mm"><b>AI-use disclosure.</b> Built with Claude Code (Anthropic) as a coding assistant, under my direction: I chose the design and every trade-off, reviewed the changes, ran and judged the evaluations, and am the sole author of every commit. The dev set and the fictional Aurelle data were drafted with the assistant. At runtime Plumbline uses open-weight models on Groq with Gemini and ASI:One as fallbacks, on fictional data only.</p>
 </div>
 
 <!-- ============ 1. PROBLEM ============ -->

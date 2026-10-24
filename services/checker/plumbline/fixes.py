@@ -70,7 +70,14 @@ def apply_fixes(text: str, findings: list[Finding], accepted_ids: set[str]) -> s
             continue
         edits.append((f.span, "" if f.fix.kind == "remove" else (f.fix.text or "")))
     for span, new in sorted(edits, key=lambda e: e[0].start, reverse=True):
-        text = text[: span.start] + new + text[span.end :]
+        before, after = text[: span.start], text[span.end :]
+        # Keep sentence case at the seams only, so the writer's untouched words never change: a
+        # replacement that starts a sentence is capitalised, and so is a word a new full stop starts.
+        if new and (not before.strip() or before.rstrip()[-1] in ".!?"):
+            new = new[0].upper() + new[1:]
+        if new.rstrip()[-1:] in (".", "!", "?"):
+            after = re.sub(r"^(\s+)([a-z])", lambda m: m.group(1) + m.group(2).upper(), after)
+        text = before + new + after
     notes = [f.fix.footnote for f in findings if f.id in accepted_ids and f.fix and f.fix.footnote]
     missing = [n for n in dict.fromkeys(notes) if n not in text]
     return _tidy(text) + ("\n" + "\n".join(missing) if missing else "")
