@@ -75,7 +75,7 @@ def verify_token(token: str, s: Settings) -> dict:
 def current_user(request: Request, s: Settings) -> User:
     header = request.headers.get("authorization", "")
     if not header.lower().startswith("bearer "):
-        raise ApiError(401, "unauthorized", "Sign in to run a check.")
+        raise ApiError(401, "unauthorized", "Sign in to use Plumbline.")
     token = header[7:].strip()
     try:
         claims = verify_token(token, s)

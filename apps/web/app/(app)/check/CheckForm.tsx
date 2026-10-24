@@ -29,6 +29,12 @@ import replay from "@/lib/sample-replay.json";
 import samples from "@/lib/samples.json";
 
 const SAMPLE = samples.find((s) => s.key === "worked-example")!;
+// Other kinds of post, loaded into the draft to check live: an influencer caption, an email, a product
+// page, an agency teaser (confidential details) and a Hinglish caption that follows the rules.
+const EXAMPLES = ["influencer-no-disclosure", "diwali-offer", "medical-claim", "codename-leak", "hinglish"]
+  .map((k) => samples.find((s) => s.key === k)!)
+  .map((s) => ({ ...s, title: s.title.replace(/\s*\(draft\)$/, "") }));
+const CHANNELS = new Set(["instagram", "email", "web", "print", "other"]);
 const NO_INTENT: IntentValue = { key_phrases: "", cta: "", channel: "instagram" };
 const FRESH: CardState = { accepted: false, edit: null, dismissed: false };
 // On narrow screens results land below the form; bring them into view so the click visibly did something.
@@ -193,6 +199,29 @@ export function CheckForm() {
               onChange={(e) => (setFile(e.target.files?.[0] ?? null), setAltText(""), setDecorative(false))} />
           </label>
           <Button type="submit" size="lg" className="ml-auto min-w-36" disabled={busy || (!text.trim() && !file)}>{busy ? "Checking…" : "Check"}</Button>
+        </div>
+        <div className="flex flex-wrap items-center gap-2" role="group" aria-label="More example posts">
+          <span className="font-label text-xs text-ash uppercase">More examples</span>
+          {EXAMPLES.map((ex) => (
+            <button key={ex.key} type="button"
+              className="rounded-full border border-line px-3 py-1 text-xs text-bone/80 transition-colors hover:border-bone hover:text-bone"
+              onClick={() => {
+                setText(ex.text);
+                setFile(null);
+                setIntent({ key_phrases: "", cta: "", channel: CHANNELS.has(ex.channel) ? ex.channel : "other" });
+                setReport(null);
+                setCards({});
+                setSubmitted(false);
+                setError(null);
+                setIsReplay(false);
+                document.getElementById("draft")?.focus();
+              }}>
+              {ex.title}
+            </button>
+          ))}
+          {EXAMPLES.some((ex) => ex.text === text) && !report && (
+            <span className="text-xs text-ash" role="status">Loaded into the draft. Press Check to run it live.</span>
+          )}
         </div>
       </form>
 

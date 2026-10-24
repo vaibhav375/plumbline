@@ -27,3 +27,12 @@ def test_synthetic_history_runs_are_skipped():
         out = db._reports_with_ids(c, ["v1", "v2"])
     assert list(out) == ["v1"]
     assert out["v1"]["findings"][0]["record_id"] == "rec1"
+
+
+def test_titles_are_cut_at_a_word_boundary():
+    from plumbline.db import clip_title
+
+    long = "Meet the NEW Aurelle Vitamin-C serum!!! 100% natural, eco-friendly and clinically proven to fade dark spots by 60% in just 2 weeks."
+    t = clip_title(long)
+    assert len(t) <= 120 and t.endswith("by 60% in…") and "in ju" not in t
+    assert clip_title("Short post title ") == "Short post title"

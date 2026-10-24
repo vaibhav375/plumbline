@@ -10,6 +10,7 @@ import { StatusTimeline } from "@/components/StatusTimeline";
 import { Button } from "@/components/ui/button";
 import { WakingBanner } from "@/components/WakingBanner";
 import { CheckError, type Finding, review, type ReviewDetail } from "@/lib/api";
+import { useRuleTitle } from "@/lib/rule-titles";
 
 const ACTION: Record<string, string> = {
   escalate: "asked a reviewer",
@@ -34,6 +35,7 @@ function DecisionCard({
   onDecide: (action: "uphold" | "overrule", reason: string) => Promise<void>;
 }) {
   const [pending, setPending] = useState<"uphold" | "overrule" | null>(null);
+  const ruleTitle = useRuleTitle(f.rule_id);
   const [reason, setReason] = useState("");
   const [sending, setSending] = useState(false);
   const history = detail.decisions.filter((d) => d.finding_id === f.record_id);
@@ -55,7 +57,8 @@ function DecisionCard({
         <span className="ml-auto font-mono text-[11px] text-ash">{[f.rule_id, f.fact_id].filter(Boolean).join(" · ")}</span>
       </div>
       {f.quote && <p className="paper mt-3 rounded-md px-3 py-2 text-[15px] font-medium text-ink" style={{ boxShadow: `inset 0 -3px 0 ${HEX[group]}` }}>“{f.quote}”</p>}
-      <p className="mt-3 leading-relaxed">{f.explanation}</p>
+      {ruleTitle && <p className="mt-3 text-sm font-semibold text-bone">Rule: {ruleTitle}</p>}
+      <p className="mt-2 leading-relaxed">{f.explanation}</p>
       {f.claim_status && <p className="mt-1 text-xs text-ash">Claim {f.claim_status.replace("_", " ")}</p>}
       <p className="mt-2 border-l border-line pl-3 text-xs text-ash">Source: {f.basis_excerpt}</p>
       {f.fix?.text && <p className="mt-3 rounded-lg border border-line bg-carbon/60 p-3 text-sm"><span className="font-label text-[11px] font-semibold uppercase text-ash">Suggested fix{f.fix.ref_id ? ` (${f.fix.ref_id})` : ""}: </span><b>{f.fix.text}</b></p>}

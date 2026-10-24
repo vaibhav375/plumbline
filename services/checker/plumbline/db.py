@@ -127,6 +127,15 @@ def latest_version(s: Settings, token: str, content_id: str) -> dict | None:
     return rows[0] if rows else None
 
 
+def clip_title(title: str, limit: int = 120) -> str:
+    """A content title from the post's first line: whole words only, with an ellipsis if cut."""
+    title = title.strip()
+    if len(title) <= limit:
+        return title
+    cut = title[: limit - 1].rsplit(" ", 1)[0].rstrip(" ,;:-")
+    return cut + "…"
+
+
 def save_check(
     s: Settings,
     token: str,
@@ -162,7 +171,7 @@ def save_check(
                 "contents",
                 {
                     "org_id": org_id,
-                    "title": title[:120],
+                    "title": clip_title(title),
                     "channel": channel,
                     "region": region,
                     "origin": origin,

@@ -7,6 +7,7 @@ import { useState } from "react";
 import { HEX, TAG, type Group } from "@/components/severity";
 import { Button } from "@/components/ui/button";
 import type { Finding } from "@/lib/api";
+import { useRuleTitle } from "@/lib/rule-titles";
 
 const METHOD: Record<string, string> = { code: "Checked by rule", ai: "Checked by AI", "ai+code": "AI, confirmed by rule" };
 const NOT_DISMISSIBLE = "Blocking findings can't be dismissed. Fix or edit the text, or submit it for a reviewer.";
@@ -37,6 +38,7 @@ export function FindingCard({
   onEscalate?: (reason: string) => Promise<void>;
 }) {
   const [reason, setReason] = useState<string | null>(null);
+  const ruleTitle = useRuleTitle(f.rule_id);
   const [ask, setAsk] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
   const fix = f.fix && f.fix.kind !== "none" ? f.fix : null;
@@ -71,7 +73,8 @@ export function FindingCard({
         <p className="paper mt-3 rounded-md px-3 py-2 text-[15px] font-medium leading-relaxed text-ink"
           style={{ boxShadow: `inset 0 -3px 0 ${color}` }}>“{f.quote}”</p>
       ) : f.image_id && <p className="mt-3 text-sm">Image {f.image_id}</p>}
-      <p className="mt-3 text-[15px] leading-relaxed text-bone">{f.explanation}</p>
+      {ruleTitle && <p className="mt-3 text-sm font-semibold text-bone">Rule: {ruleTitle}</p>}
+      <p className="mt-2 text-[15px] leading-relaxed text-bone">{f.explanation}</p>
       {f.claim_status && <p className="mt-1 text-xs text-ash">Claim {f.claim_status.replace("_", " ")}</p>}
       <p className="mt-2 border-l border-line pl-3 text-xs leading-relaxed text-ash"><span className={LABEL}>Source </span>{f.basis_excerpt}</p>
 
