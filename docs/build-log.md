@@ -1040,3 +1040,48 @@ brand, copy or images were used.
 **Checked:** no horizontal overflow at 1440 px or on a phone profile after fixing three issues found in
 review (the bob's string crossed the headline on phones; the strike-through sat between wrapped lines;
 role buttons overflowed). All 18 e2e tests pass on the preview and on production.
+
+## Task 22 follow-up 3: third design pass, every page
+
+**Feedback:** the inside pages still looked the same once a role was picked; white read as
+AI-generated; the fonts felt generic; changes in the draft needed to stand out more; pictures,
+charts and animation were still thin.
+
+**Direction:** the app is now a dark drafting table (carbon #0C0C0E, panels #17171A, bone text
+#EDEBE6), and the post being checked lies on it as a sheet of paper (#ECEAE4, with grain and ruled
+lines in the composer). One type family, Archivo, across its width axis: extra-wide and heavy for
+titles, condensed for labels, normal for reading; JetBrains Mono for IDs and hashes. Motion (Framer
+Motion's successor) runs the animations and Lenis the smooth scrolling; both are off under reduced
+motion.
+
+**Per page**
+- *Check a post:* a verdict band (the blocking count in display type, a meter with one segment per
+  blocking issue that fills as each gets a fix, an edit or a reviewer, and the severity tiles); the
+  draft on paper with a coloured underline and numbered pin per finding; hovering a finding lights up
+  its words and the reverse; clicking a mark scrolls to its card. Accepting a fix strikes the words
+  through on the card and in the draft, and the approved wording springs in green.
+- *Review queue:* summary counts, a risk number per post, and the approval stages as a pipeline.
+  *Review:* the submitted text on paper, decision cards in the same style, a vertical timeline.
+- *Audit log:* the newest links of the hash chain drawn as linked blocks that light up as verified.
+- *Rulebook:* counts and a breakdown by category and class (code, AI judgement, not run) that filters
+  the table. *Facts:* a shelf of SVG packshots (one per product, drawn here) that filters the ledger,
+  and a timeline of facts with end dates against a "today" line.
+- *Health, How I know it works, Status:* restyled; the status dot pulses.
+- *Landing:* converted to dark; the specimen cards are paper.
+
+**Evaluation (what didn't work as assumed, and what replaced it)**
+- Indigo #4B3FD1 as a chart colour is ~2.3:1 on the dark panel. The dataviz validator picked
+  #8A80F2 (Plumbline) and #22A596 (baseline): lightness band, chroma, CVD ΔE 15.0 and contrast all
+  pass on #17171A.
+- Number pins inside the `<mark>` broke the e2e check that a mark holds exactly the flagged words
+  ("highlights land on the right words after an emoji"). Pins now sit just outside the mark.
+- The queue's "blocking issues" total counted approved posts; it now counts open work only.
+- Severity colours on paper fail contrast as text (#FF6A5C on #ECEAE4 ≈ 2.6:1), so on paper they
+  appear only as underlines and pins; text on paper stays ink. White text on the bright severity fills
+  was replaced with ink.
+- Screenshots from the in-app browser sometimes caught animations mid-way (a background pane runs
+  slowly); computed styles confirmed the end state, and the README screenshots were taken with
+  Playwright with reduced motion.
+
+**Checked:** type-check and lint clean; all 18 e2e tests pass on the branch preview and on
+production (`134ed8e`); laptop and phone widths reviewed page by page; README screenshots refreshed.
