@@ -654,3 +654,17 @@ def test_image_upload_without_alt_text_asks_for_it(client):
 def test_image_upload_with_alt_text_or_decorative_has_no_alt_finding(client):
     assert "A11Y-ALT" not in _check_banner(client, alt_text="Glow in 2 weeks, Aurelle")
     assert "A11Y-ALT" not in _check_banner(client, decorative="true")
+
+
+def test_cors_allows_the_app_domains_and_nothing_else(client):
+    def allowed(origin: str) -> bool:
+        r = client.options(
+            "/v1/checks",
+            headers={"Origin": origin, "Access-Control-Request-Method": "POST"},
+        )
+        return r.headers.get("access-control-allow-origin") == origin
+
+    assert allowed("https://getplumbline.xyz") and allowed("https://www.getplumbline.xyz")
+    assert allowed("https://plumbline-git-redesign-3-pes1ug23cs665s-projects.vercel.app")
+    assert not allowed("https://getplumbline.xyz.evil.com")
+    assert not allowed("https://notgetplumbline.xyz")

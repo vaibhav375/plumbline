@@ -63,7 +63,10 @@ app = FastAPI(title="Plumbline checker", version=VERSION, lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=os.environ.get("CORS_ORIGINS", "http://localhost:3000").split(","),
-    allow_origin_regex=os.environ.get("CORS_ORIGIN_REGEX", r"https://plumbline[\w-]*\.vercel\.app"),
+    allow_origin_regex=os.environ.get(
+        "CORS_ORIGIN_REGEX",
+        r"https://plumbline[\w-]*\.vercel\.app|https://(www\.)?getplumbline\.xyz",
+    ),
     allow_methods=["GET", "POST"],
     allow_headers=["Authorization", "Content-Type", "X-Request-ID"],
     expose_headers=["X-Request-ID", "Server-Timing"],
