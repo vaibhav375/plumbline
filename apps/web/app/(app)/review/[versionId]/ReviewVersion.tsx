@@ -57,7 +57,9 @@ function DecisionCard({
         <span className="ml-auto font-mono text-[11px] text-ash">{[f.rule_id, f.fact_id].filter(Boolean).join(" · ")}</span>
       </div>
       {f.quote && <p className="paper mt-3 rounded-md px-3 py-2 text-[15px] font-medium text-ink" style={{ boxShadow: `inset 0 -3px 0 ${HEX[group]}` }}>“{f.quote}”</p>}
-      {ruleTitle && <p className="mt-3 text-sm font-semibold text-bone">Rule: {ruleTitle}</p>}
+      {ruleTitle && !f.explanation.toLowerCase().includes(ruleTitle.toLowerCase()) && (
+        <p className="mt-3 text-sm font-semibold text-bone">Rule: {ruleTitle}</p>
+      )}
       <p className="mt-2 leading-relaxed">{f.explanation}</p>
       {f.claim_status && <p className="mt-1 text-xs text-ash">Claim {f.claim_status.replace("_", " ")}</p>}
       <p className="mt-2 border-l border-line pl-3 text-xs text-ash">Source: {f.basis_excerpt}</p>

@@ -73,7 +73,9 @@ export function FindingCard({
         <p className="paper mt-3 rounded-md px-3 py-2 text-[15px] font-medium leading-relaxed text-ink"
           style={{ boxShadow: `inset 0 -3px 0 ${color}` }}>“{f.quote}”</p>
       ) : f.image_id && <p className="mt-3 text-sm">Image {f.image_id}</p>}
-      {ruleTitle && <p className="mt-3 text-sm font-semibold text-bone">Rule: {ruleTitle}</p>}
+      {ruleTitle && !f.explanation.toLowerCase().includes(ruleTitle.toLowerCase()) && (
+        <p className="mt-3 text-sm font-semibold text-bone">Rule: {ruleTitle}</p>
+      )}
       <p className="mt-2 text-[15px] leading-relaxed text-bone">{f.explanation}</p>
       {f.claim_status && <p className="mt-1 text-xs text-ash">Claim {f.claim_status.replace("_", " ")}</p>}
       <p className="mt-2 border-l border-line pl-3 text-xs leading-relaxed text-ash"><span className={LABEL}>Source </span>{f.basis_excerpt}</p>
