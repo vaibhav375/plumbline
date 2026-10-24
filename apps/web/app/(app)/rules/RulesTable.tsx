@@ -83,7 +83,7 @@ export function RulesTable() {
 
   const categories = [...new Set(data.rules.map((r) => r.category))].map((c) => {
     const rs = data.rules.filter((r) => r.category === c);
-    return { c, n: rs.length, by: (["A", "B", "C"] as const).map((k) => [k, rs.filter((r) => r.cls === k).length] as const), blocking: rs.filter((r) => r.maturity === "blocking").length };
+    return { c, n: rs.length, by: (["A", "B", "C"] as const).map((k) => [k, rs.filter((r) => r.cls === k).length] as const), mandatory: rs.filter((r) => r.tier === "mandatory").length };
   }).sort((a, b) => b.n - a.n);
   const shown = data.rules.filter((r) => !category || r.category === category);
 
@@ -113,7 +113,7 @@ export function RulesTable() {
           </p>
         </div>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4" role="group" aria-label="Show rules in">
-          {categories.map(({ c, n, by, blocking }) => {
+          {categories.map(({ c, n, by, mandatory }) => {
             const on = category === c;
             return (
               <button key={c} type="button" aria-pressed={on} onClick={() => setCategory(on ? null : c)}
@@ -126,7 +126,7 @@ export function RulesTable() {
                   {by.filter(([, k]) => k).map(([k, m]) => <span key={k} style={{ flexGrow: m, background: CLS_HEX[k] }} />)}
                 </span>
                 <span className="mt-1.5 block text-[11px] text-ash">
-                  {by.filter(([, m]) => m).map(([k, m]) => `${k} ${m}`).join(" · ")} · {blocking} blocking
+                  {by.filter(([, m]) => m).map(([k, m]) => `${k} ${m}`).join(" · ")} · {mandatory} mandatory
                 </span>
               </button>
             );
