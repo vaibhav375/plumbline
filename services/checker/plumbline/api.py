@@ -8,9 +8,11 @@ import time
 from contextlib import asynccontextmanager
 from datetime import datetime
 from typing import Annotated
+from uuid import UUID
 from zoneinfo import ZoneInfo
 
 import httpx
+import psycopg
 from fastapi import BackgroundTasks, Body, Depends, FastAPI, File, Form, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
@@ -18,7 +20,7 @@ from uagents_core.contrib.protocols.chat import ChatAcknowledgement, ChatMessage
 from uagents_core.envelope import Envelope
 from uagents_core.utils.messages import parse_envelope
 
-from plumbline import agent, audit, auth, db, ops, review
+from plumbline import agent, audit, auth, connect, db, ops, review
 from plumbline import health as guideline
 from plumbline.auth import ApiError, User
 from plumbline.config import Settings
@@ -187,8 +189,8 @@ def _today():
 
 
 def _report(
-    u: User, ctx: OrgContext, doc: Document, intent: Intent, *, submit: bool
-) -> tuple[CheckReport, list[EgressEvent], db.ReportCache]:
+    u: User, ctx: OrgContext, doc: Document, intent: Intent, *, submit: bool, use_cache: bool = True
+) -> tuple[CheckReport, list[EgressEvent], db.ReportCache | None]:
     """Run the full check as this user: their rulebook (RLS) plus confidential facts, which are
     matched in code and withheld from roles that may not see them."""
     s = cfg()
@@ -207,7 +209,8 @@ def _report(
     )
     events: list[EgressEvent] = []
     llm = LLM(default_chain(s), events.append)
-    cache = db.ReportCache(s, u.token)
+    # The cache is read through the user's own row-level security; a chat caller has no user.
+    cache = db.ReportCache(s, u.token) if use_cache else None
     try:
         with ops.phase("check"):
             report = run_check(doc, full, intent, u.role, not submit, llm, _today(), cache=cache)
@@ -250,7 +253,7 @@ def _check_and_save(
                 status="submitted" if submit else "precheck",
                 report=report.model_dump(mode="json"),
                 rulebook_version=ctx.rulebook_version,
-                cache_key=cache.key,
+                cache_key=cache.key if cache else None,
                 egress=[e.model_dump(mode="json") for e in events],
             )
     except httpx.HTTPError as e:
@@ -792,18 +795,25 @@ def agent_status() -> dict:
     return {"status": "OK - Agent is running"}
 
 
-def _agent_check(text: str) -> CheckReport:
-    """The app's check, run as the demo agency writer; nothing is saved."""
+def _agent_check(text: str, org_id: str | None = None) -> CheckReport:
+    """The app's check for a chat message; nothing is saved. A linked address is checked against its own
+    organisation (the org comes only from the link row), anyone else against the demo agency writer."""
     s = cfg()
-    token = agent.demo_token(s)
-    claims = auth.verify_token(token, s)
-    profile = db.fetch_profile(s, token, claims["sub"])
-    u = User(id=claims["sub"], org_id=profile["org_id"], role=profile["role"], token=token)
-    ctx = ops.cached(
-        ("rulebook", u.org_id, u.role), lambda: db.load_org_context(s, token, u.org_id)
-    )
+    if org_id:
+        u = User(id="chat", org_id=org_id, role="external_creator", token="")
+        ctx = ops.cached(("chat-context", org_id), lambda: connect.org_context(s, org_id))
+        use_cache = False
+    else:
+        token = agent.demo_token(s)
+        claims = auth.verify_token(token, s)
+        profile = db.fetch_profile(s, token, claims["sub"])
+        u = User(id=claims["sub"], org_id=profile["org_id"], role=profile["role"], token=token)
+        ctx = ops.cached(
+            ("rulebook", u.org_id, u.role), lambda: db.load_org_context(s, token, u.org_id)
+        )
+        use_cache = True
     doc = parse_upload("paste.txt", text.encode(), s.max_upload_mb)
-    report, events, _ = _report(u, ctx, doc, Intent(), submit=False)
+    report, events, _ = _report(u, ctx, doc, Intent(), submit=False, use_cache=use_cache)
     log.info(  # counts only, never content
         "agent check %s: %d findings, %d model calls, %d chars sent",
         report.run_id,
@@ -828,5 +838,137 @@ def agent_chat(env: Envelope, background: BackgroundTasks) -> dict:
         raise ApiError(400, "bad_envelope", "The message isn't signed for this agent.")
     msg = parse_envelope(env, {ChatMessage, ChatAcknowledgement})
     if isinstance(msg, ChatMessage):
-        background.add_task(agent.answer, env.sender, env.session, msg, me, _agent_check, s.app_url)
+        background.add_task(
+            agent.answer, env.sender, env.session, msg, me, _agent_check, s, s.app_url
+        )
     return {}
+
+
+# ---- Connect: link codes, gate keys and the publish gate (Round 3, improvement 2) ----
+
+
+def _owner(u: User) -> None:
+    if u.role != "brand_owner":
+        raise ApiError(403, "forbidden", "Only the brand owner can manage connections.")
+
+
+def _enabled():
+    try:
+        yield
+    except connect.NotEnabled:
+        raise ApiError(
+            503, "not_enabled", "Connections aren't switched on for this deployment."
+        ) from None
+    except psycopg.OperationalError:
+        raise ApiError(
+            503, "db_unavailable", "The database is not reachable. Try again shortly."
+        ) from None
+
+
+Connections = Depends(_enabled)
+
+
+@app.post("/v1/connect/link-codes", dependencies=[Connections])
+def connect_make_code(u: CurrentUser) -> dict:
+    _owner(u)
+    code, expires = connect.make_code(cfg(), u.org_id, u.id)
+    return {"code": code, "expires_at": expires, "minutes": connect.CODE_MINUTES}
+
+
+@app.get("/v1/connect/overview", dependencies=[Connections])
+def connect_overview(u: CurrentUser) -> dict:
+    _owner(u)
+    s = cfg()
+    return {
+        "links": connect.links_list(s, u.org_id),
+        "open_codes": connect.open_codes(s, u.org_id),
+        "keys": connect.keys_list(s, u.org_id),
+        "calls": connect.calls_recent(s, u.org_id),
+        "agent_address": agent.identity(s.agent_seed_phrase).address
+        if s.agent_seed_phrase
+        else None,
+        "api_base": os.environ.get("RENDER_EXTERNAL_URL", "https://plumbline-checker.onrender.com"),
+    }
+
+
+@app.delete("/v1/connect/links/{address}", dependencies=[Connections])
+def connect_revoke_link(u: CurrentUser, address: str) -> dict:
+    _owner(u)
+    return {"removed": connect.unlink(cfg(), address, u.org_id)}
+
+
+@app.post("/v1/connect/gate-keys", dependencies=[Connections])
+def connect_make_key(u: CurrentUser, label: Annotated[str, Body(embed=True)]) -> dict:
+    _owner(u)
+    label = label.strip()[:60] or "Gate key"
+    key_id, key = connect.key_create(cfg(), u.org_id, u.id, label)
+    return {"id": key_id, "key": key, "label": label}
+
+
+@app.delete("/v1/connect/gate-keys/{key_id}", dependencies=[Connections])
+def connect_revoke_key(u: CurrentUser, key_id: str) -> dict:
+    _owner(u)
+    try:
+        UUID(key_id)
+    except ValueError:
+        raise NOT_FOUND from None
+    return {"revoked": connect.key_revoke(cfg(), u.org_id, key_id)}
+
+
+def gate_org(request: Request) -> str:
+    header = request.headers.get("authorization", "")
+    if not header.lower().startswith("bearer "):
+        raise ApiError(
+            401, "unauthorized", "Send your gate key as 'Authorization: Bearer plk_...'."
+        )
+    try:
+        org = connect.key_org(cfg(), header[7:].strip())
+    except connect.NotEnabled:
+        raise ApiError(503, "not_enabled", "The publish gate isn't switched on here.") from None
+    if not org:
+        raise ApiError(401, "unauthorized", "That gate key isn't valid, or it was revoked.")
+    return org
+
+
+GateOrg = Annotated[str, Depends(gate_org)]
+
+
+def _gate_answer(org: str, version_id: str, text_sha256: str | None) -> dict:
+    s = cfg()
+    try:
+        UUID(version_id)
+    except ValueError:
+        raise ApiError(404, "not_found", "No such version.") from None
+    snap = connect.snapshot(s, org, version_id)
+    if not snap:
+        raise ApiError(404, "not_found", "No such version.")
+    decision, reasons = connect.decide(snap, text_sha256)
+    connect.log_call(s, org, version_id, decision, reasons)
+    return {
+        "decision": decision,
+        "reasons": reasons,
+        "version_id": version_id,
+        "content_id": snap["version"]["content_id"],
+        "status": snap["version"]["status"],
+        "fix_url": f"{s.app_url}/review/{version_id}",
+    }
+
+
+@app.get("/v1/gate/versions/{version_id}")
+def gate_version(version_id: str, org: GateOrg, text_sha256: str | None = None) -> dict:
+    """May this version go out? Needs a gate key. `text_sha256` (optional) is the SHA-256 of the text
+    the tool is about to publish; the gate then also checks it is the approved text."""
+    return _gate_answer(org, version_id, text_sha256)
+
+
+@app.get("/v1/gate/contents/{content_id}")
+def gate_content(content_id: str, org: GateOrg, text_sha256: str | None = None) -> dict:
+    """The same for a piece of content: its latest submitted version."""
+    try:
+        UUID(content_id)
+    except ValueError:
+        raise ApiError(404, "not_found", "No such content.") from None
+    version = connect.latest_version(cfg(), org, content_id)
+    if not version:
+        raise ApiError(404, "not_found", "No such content.")
+    return _gate_answer(org, version, text_sha256)
