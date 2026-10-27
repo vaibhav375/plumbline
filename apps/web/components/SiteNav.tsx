@@ -19,7 +19,7 @@ const ROLE: Record<string, string> = {
   auditor: "Auditor",
 };
 
-type Item = { href: string; label: string; hint: string; reviewers?: boolean; work?: boolean };
+type Item = { href: string; label: string; hint: string; reviewers?: boolean; owner?: boolean; work?: boolean };
 // The bar carries the work; the menu adds the proof pages. Similar features sit together.
 const GROUPS: { name: string; items: Item[] }[] = [
   {
@@ -36,6 +36,7 @@ const GROUPS: { name: string; items: Item[] }[] = [
       { href: "/rules", label: "Rulebook", hint: "What the checker looks for", work: true },
       { href: "/facts", label: "Facts", hint: "Claims you can make, and their wording", work: true },
       { href: "/health", label: "Guideline health", hint: "Rules reviewers disagree with", work: true },
+      { href: "/connect", label: "Connect", hint: "Chat links and the publish gate", owner: true, work: true },
     ],
   },
   {
@@ -49,7 +50,10 @@ const GROUPS: { name: string; items: Item[] }[] = [
 
 export type Profile = { display_name: string; role: string } | null;
 
-const visible = (profile: Profile) => (i: Item) => (!i.work || profile) && (!i.reviewers || (profile && REVIEWERS.has(profile.role)));
+const visible = (profile: Profile) => (i: Item) =>
+  (!i.work || profile) &&
+  (!i.reviewers || (profile && REVIEWERS.has(profile.role))) &&
+  (!i.owner || profile?.role === "brand_owner");
 
 /** Podium-style navigation: the mark on the left, the work in one line of bold uppercase on wide screens,
  * and a full-screen menu everywhere else. */

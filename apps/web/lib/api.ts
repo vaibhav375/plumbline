@@ -301,3 +301,28 @@ export type HealthResponse = {
 export function guidelineHealth(onWaking: (w: boolean) => void = () => {}) {
   return request<HealthResponse>("/v1/health", {}, onWaking);
 }
+
+// ---- Connect: chat links and the publish gate (brand owner) ----
+
+export type ConnectOverview = {
+  links: { address: string; linked_at: string }[];
+  open_codes: number;
+  keys: { id: string; label: string; created_at: string; last_used_at: string | null; revoked_at: string | null }[];
+  calls: { version_id: string | null; decision: "go" | "not_yet"; reasons: string[]; at: string }[];
+  agent_address: string | null;
+  api_base: string;
+};
+const JSON_HEADERS = { "Content-Type": "application/json" };
+export const connectApi = {
+  overview: (onWaking: (w: boolean) => void = () => {}) => request<ConnectOverview>("/v1/connect/overview", {}, onWaking),
+  makeCode: () => request<{ code: string; expires_at: string; minutes: number }>("/v1/connect/link-codes", { method: "POST" }, () => {}),
+  revokeLink: (address: string) =>
+    request<{ removed: number }>(`/v1/connect/links/${encodeURIComponent(address)}`, { method: "DELETE" }, () => {}),
+  makeKey: (label: string) =>
+    request<{ id: string; key: string; label: string }>(
+      "/v1/connect/gate-keys",
+      { method: "POST", headers: JSON_HEADERS, body: JSON.stringify({ label }) },
+      () => {},
+    ),
+  revokeKey: (id: string) => request<{ revoked: number }>(`/v1/connect/gate-keys/${id}`, { method: "DELETE" }, () => {}),
+};
