@@ -253,7 +253,7 @@ def _check_and_save(
                 status="submitted" if submit else "precheck",
                 report=report.model_dump(mode="json"),
                 rulebook_version=ctx.rulebook_version,
-                cache_key=cache.key if cache else None,
+                cache_key=cache.key if cache is not None else None,
                 egress=[e.model_dump(mode="json") for e in events],
             )
     except httpx.HTTPError as e:

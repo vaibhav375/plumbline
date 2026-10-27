@@ -16,6 +16,9 @@ from plumbline.models import Fix
 from tests.test_api import _claim_report
 
 SEED = "plumbline test agent seed"
+SETTINGS = Settings(
+    _env_file=None, supabase_url="https://test.supabase.co", supabase_anon_key="anon"
+)
 
 
 @pytest.fixture
@@ -53,7 +56,7 @@ def test_status_answers_for_agentverse(client):
 def test_a_signed_chat_message_is_answered_in_the_background(client):
     r = client.post("/chat", json=envelope("Clinically proven to fade dark spots in 2 weeks."))
     assert r.status_code == 200
-    ((sender, _session, msg, me, check, url),) = client.calls
+    ((sender, _session, msg, me, check, _settings, url),) = client.calls
     assert msg.text().startswith("Clinically proven") and me.address == agent.identity(SEED).address
     assert check is api._agent_check and url.startswith("https://")
 
@@ -101,7 +104,129 @@ def test_rate_limit_is_per_sender_and_slides():
 def test_short_messages_get_the_help_text_without_a_check(monkeypatch):
     sent = []
     monkeypatch.setattr(agent, "_send", lambda to, msg, me, session: sent.append(msg))
+    monkeypatch.setattr(agent.connect, "link_for", lambda s, a: None)
     agent.answer(
-        "s", uuid4(), ChatMessage([TextContent("hi")]), agent.identity(SEED), lambda t: 1 / 0, "u"
+        "s",
+        uuid4(),
+        ChatMessage([TextContent("hi")]),
+        agent.identity(SEED),
+        lambda t, o: 1 / 0,
+        SETTINGS,
+        "u",
     )
     assert sent[-1].text() == agent.HELP
+
+
+# ---- Round 3: linking a chat address to a brand ----------------------------------------------------
+
+
+class Brain:
+    """Fakes for the database calls, remembering which org each check was run for."""
+
+    def __init__(self, monkeypatch):
+        self.links: dict[str, dict] = {}
+        self.codes: dict[str, dict] = {"ABCD-2345": {"org_id": "org-A", "org_name": "Acme Foods"}}
+        self.checked: list[tuple[str, str | None]] = []
+        monkeypatch.setattr(agent, "_wrong", {})
+        monkeypatch.setattr(agent, "_sent", {})
+        for name, fn in {
+            "link_for": lambda s, a: self.links.get(a),
+            "unlink": lambda s, a, org=None: 1 if self.links.pop(a, None) else 0,
+            "redeem_code": self.redeem,
+        }.items():
+            monkeypatch.setattr(agent.connect, name, fn)
+        monkeypatch.setattr(
+            agent, "_wrong", __import__("collections").defaultdict(__import__("collections").deque)
+        )
+        monkeypatch.setattr(
+            agent, "_sent", __import__("collections").defaultdict(__import__("collections").deque)
+        )
+
+    def redeem(self, s, code, address):
+        got = self.codes.pop(agent.connect.normalise_code(code), None)
+        if got:
+            self.links[address] = got
+        return got
+
+    def check(self, text, org_id):
+        self.checked.append((text, org_id))
+        return _claim_report()
+
+    def say(self, sender, text):
+        return agent.handle(text, sender, SETTINGS, self.check, "https://app")
+
+
+@pytest.fixture
+def brain(monkeypatch):
+    return Brain(monkeypatch)
+
+
+POST = "Clinically proven to fade dark spots by 60% in just 2 weeks, shop now."
+
+
+def test_unlinked_senders_get_the_demo_brand_and_a_hint(brain):
+    reply = brain.say("agent1a", POST)
+    assert brain.checked == [(POST, None)]
+    assert "Checked against the demo brand" in reply and "link <code>" in reply
+
+
+def test_linking_then_checking_runs_against_that_org_only(brain):
+    assert "Linked to Acme Foods" in brain.say("agent1a", "link abcd 2345")
+    reply = brain.say("agent1a", POST)
+    assert brain.checked == [(POST, "org-A")]
+    assert reply.startswith("Checked against Acme Foods's rulebook")
+    assert "demo brand" not in reply
+    # Someone else's address is unaffected by that link.
+    brain.say("agent1b", POST)
+    assert brain.checked[-1] == (POST, None)
+
+
+def test_the_org_comes_from_the_link_never_from_the_message(brain):
+    brain.say("agent1a", "link ABCD-2345")
+    brain.say("agent1a", "org_id org-B " + POST)  # a message naming another org changes nothing
+    assert brain.checked[-1][1] == "org-A"
+
+
+def test_a_code_works_once_and_a_bad_one_is_refused_politely(brain):
+    assert "Linked" in brain.say("agent1a", "link ABCD-2345")
+    assert brain.say("agent1b", "link ABCD-2345") == agent.BAD_CODE
+    assert brain.say("agent1b", "link nonsense") == agent.BAD_CODE
+    assert "agent1b" not in brain.links
+
+
+def test_guessing_codes_is_rate_limited(brain):
+    replies = [brain.say("agent1x", f"link AAAA-{i:04d}"[:14]) for i in range(7)]
+    assert replies[:5] == [agent.BAD_CODE] * 5 and replies[5] == agent.TOO_MANY_TRIES
+
+
+def test_unlink_goes_back_to_the_demo_brand(brain):
+    brain.say("agent1a", "link ABCD-2345")
+    assert brain.say("agent1a", "unlink").startswith("Unlinked")
+    assert brain.say("agent1a", "unlink") == agent.NOT_LINKED
+    brain.say("agent1a", POST)
+    assert brain.checked[-1][1] is None
+
+
+def test_a_post_that_starts_with_the_word_link_is_still_a_post(brain):
+    brain.say("agent1a", "Link in bio for the new serum, shop now before it sells out")
+    assert brain.checked and brain.checked[-1][1] is None
+
+
+def test_with_connections_off_everyone_gets_the_demo_brand(brain, monkeypatch):
+    def off(*a, **k):
+        raise agent.connect.NotEnabled
+
+    monkeypatch.setattr(agent.connect, "link_for", off)
+    brain.say("agent1a", POST)
+    assert brain.checked[-1][1] is None
+
+
+def test_code_shapes():
+    c = agent.connect.new_code()
+    assert (
+        len(c) == 9
+        and c[4] == "-"
+        and agent.connect.normalise_code(c.lower().replace("-", " ")) == c
+    )
+    assert agent.connect.normalise_code("short") == ""
+    assert agent.connect.digest("a") != agent.connect.digest("b")
