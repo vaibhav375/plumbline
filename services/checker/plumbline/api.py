@@ -20,7 +20,7 @@ from uagents_core.contrib.protocols.chat import ChatAcknowledgement, ChatMessage
 from uagents_core.envelope import Envelope
 from uagents_core.utils.messages import parse_envelope
 
-from plumbline import agent, audit, auth, connect, db, ops, review
+from plumbline import agent, audit, auth, connect, db, ops, review, watch
 from plumbline import health as guideline
 from plumbline.auth import ApiError, User
 from plumbline.config import Settings
@@ -972,3 +972,101 @@ def gate_content(content_id: str, org: GateOrg, text_sha256: str | None = None) 
     if not version:
         raise ApiError(404, "not_found", "No such content.")
     return _gate_answer(org, version, text_sha256)
+
+
+# ---- Watch: facts that moved under live posts, and live pages that drifted (Round 3, improvement 1) ----
+
+WATCHERS = {"reviewer", "compliance", "brand_owner", "accessibility", "auditor"}
+
+
+@app.exception_handler(watch.UnsafeUrl)
+def _unsafe_url(_request: Request, e: watch.UnsafeUrl) -> JSONResponse:
+    return _error(422, "unsafe_url", str(e))
+
+
+def _may_act_on(u: User, owner: str | None) -> bool:
+    return u.role in WATCHERS or (owner is not None and owner == u.id)
+
+
+@app.get("/v1/watch/overview")
+def watch_overview(u: CurrentUser) -> dict:
+    """Open tasks and registered pages. Reviewers and owners see the whole org (and the scan runs when
+    they open it); a writer sees only the tasks on their own posts."""
+    s = cfg()
+    everyone = u.role in WATCHERS
+    scanned = watch.scan(s, u.org_id, _today()) if everyone else None
+    owner = None if everyone else u.id
+    posts = [p for p in watch.live(s, u.org_id) if everyone or p["owner"] == u.id]
+    return {
+        "scanned": scanned,
+        "tasks": watch.tasks(s, u.org_id, "open", owner),
+        "closed": watch.tasks(s, u.org_id, "all", owner)[:50],
+        "urls": [x for x in watch.urls(s, u.org_id) if everyone or x["owner"] == u.id],
+        "posts": [
+            {
+                "version_id": p["version_id"],
+                "title": p["title"],
+                "n": p["n"],
+                "owner_name": p["owner_name"],
+            }
+            for p in posts
+        ],
+        "everyone": everyone,
+    }
+
+
+@app.post("/v1/watch/scan")
+def watch_scan(u: CurrentUser) -> dict:
+    if u.role not in WATCHERS:
+        raise ApiError(403, "forbidden", "Only reviewers and the brand team can run a scan.")
+    return watch.scan(cfg(), u.org_id, _today())
+
+
+@app.post("/v1/watch/tasks/{task_id}/resolve")
+def watch_resolve(
+    u: CurrentUser,
+    task_id: str,
+    status: Annotated[str, Body()],
+    note: Annotated[str | None, Body()] = None,
+) -> dict:
+    s = cfg()
+    try:
+        UUID(task_id)
+    except ValueError:
+        raise NOT_FOUND from None
+    if status not in ("done", "dismissed"):
+        raise ApiError(422, "bad_status", "Mark a task done or dismiss it.")
+    task = next((t for t in watch.tasks(s, u.org_id, "open") if t["id"] == task_id), None)
+    if not task or not _may_act_on(u, task["owner"]):
+        raise NOT_FOUND
+    if status == "dismissed" and not (note or "").strip():
+        raise ApiError(422, "reason_required", "Say why you're dismissing it.")
+    watch.resolve_task(s, u.org_id, task_id, u.id, status, (note or "").strip() or None)
+    return {"ok": True}
+
+
+@app.post("/v1/watch/urls")
+def watch_register(
+    u: CurrentUser, version_id: Annotated[str, Body()], url: Annotated[str, Body()]
+) -> dict:
+    """Register where an approved post is live, then read the page once."""
+    s = cfg()
+    post = next((p for p in watch.live(s, u.org_id) if p["version_id"] == version_id), None)
+    if not post or not _may_act_on(u, post["owner"]):
+        raise NOT_FOUND
+    url = url.strip()
+    watch.check_url_is_public(url)
+    watch.set_url(s, u.org_id, version_id, url, u.id)
+    return watch.check_registered_url(s, u.org_id, version_id)
+
+
+@app.post("/v1/watch/urls/{version_id}/check")
+def watch_check(u: CurrentUser, version_id: str) -> dict:
+    s = cfg()
+    post = next((p for p in watch.live(s, u.org_id) if p["version_id"] == version_id), None)
+    if not post or not _may_act_on(u, post["owner"]):
+        raise NOT_FOUND
+    try:
+        return watch.check_registered_url(s, u.org_id, version_id)
+    except LookupError:
+        raise NOT_FOUND from None
