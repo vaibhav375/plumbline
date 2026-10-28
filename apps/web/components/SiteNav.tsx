@@ -36,6 +36,7 @@ const GROUPS: { name: string; items: Item[] }[] = [
       { href: "/rules", label: "Rulebook", hint: "What the checker looks for", work: true },
       { href: "/facts", label: "Facts", hint: "Claims you can make, and their wording", work: true },
       { href: "/health", label: "Guideline health", hint: "Rules reviewers disagree with", work: true },
+      { href: "/watch", label: "Claim watch", hint: "Live posts whose facts changed", work: true },
       { href: "/connect", label: "Connect", hint: "Chat links and the publish gate", owner: true, work: true },
     ],
   },

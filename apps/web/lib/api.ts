@@ -326,3 +326,54 @@ export const connectApi = {
     ),
   revokeKey: (id: string) => request<{ revoked: number }>(`/v1/connect/gate-keys/${id}`, { method: "DELETE" }, () => {}),
 };
+
+// ---- Watch: facts that moved under live posts, and live pages that drifted ----
+
+export type WatchTask = {
+  id: string;
+  version_id: string;
+  title: string;
+  fact_id: string | null;
+  reason: "removed" | "expired" | "unverified" | "changed" | "drift";
+  detail: string;
+  replacement: string | null;
+  owner_name: string | null;
+  status: "open" | "done" | "dismissed";
+  created_at: string;
+  resolved_at: string | null;
+  note: string | null;
+};
+export type WatchUrl = {
+  version_id: string;
+  url: string;
+  title: string;
+  added_at: string;
+  last_checked_at: string | null;
+  last_result: { status: "ok" | "drift" | "unreachable"; checked?: number; missing?: string[]; error?: string } | null;
+};
+export type WatchOverview = {
+  scanned: { posts: number; needing_attention: number; new_tasks: number } | null;
+  tasks: WatchTask[];
+  closed: WatchTask[];
+  urls: WatchUrl[];
+  posts: { version_id: string; title: string; n: number; owner_name: string | null }[];
+  everyone: boolean;
+};
+export const watchApi = {
+  overview: (onWaking: (w: boolean) => void = () => {}) => request<WatchOverview>("/v1/watch/overview", {}, onWaking),
+  scan: () => request<{ posts: number; needing_attention: number; new_tasks: number }>("/v1/watch/scan", { method: "POST" }, () => {}),
+  resolve: (id: string, status: "done" | "dismissed", note?: string) =>
+    request<{ ok: boolean }>(
+      `/v1/watch/tasks/${id}/resolve`,
+      { method: "POST", headers: JSON_HEADERS, body: JSON.stringify({ status, note }) },
+      () => {},
+    ),
+  register: (versionId: string, url: string) =>
+    request<NonNullable<WatchUrl["last_result"]>>(
+      "/v1/watch/urls",
+      { method: "POST", headers: JSON_HEADERS, body: JSON.stringify({ version_id: versionId, url }) },
+      () => {},
+    ),
+  check: (versionId: string) =>
+    request<NonNullable<WatchUrl["last_result"]>>(`/v1/watch/urls/${versionId}/check`, { method: "POST" }, () => {}),
+};
