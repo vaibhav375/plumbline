@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import { IntervalChart, wilson } from "@/components/charts/IntervalChart";
 import { WakingBanner } from "@/components/WakingBanner";
-import { CheckError, guidelineHealth, type HealthResponse, type HealthRow } from "@/lib/api";
+import { Button } from "@/components/ui/button";
+import { CheckError, guidelineHealth, learnApi, type HealthResponse, type HealthRow } from "@/lib/api";
+
+import { ChangesStrip, ClarifyPanel, useRuleChanges } from "./RuleLearning";
 
 const pct = (x: number | null) => (x === null ? "–" : `${Math.round(x * 100)}%`);
 const ORIGIN: Record<string, string> = { employee: "Employees", agency: "Agencies", ai_tool: "AI tool users", freelancer: "Freelancers" };
@@ -26,9 +29,17 @@ export function HealthView() {
   const [data, setData] = useState<HealthResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [waking, setWaking] = useState(false);
-  useEffect(() => {
-    guidelineHealth(setWaking).then(setData, (e) => setError(e instanceof CheckError ? e.message : "Couldn't load guideline health."));
-  }, []);
+  const [open, setOpen] = useState<string | null>(null);
+  const [note, setNote] = useState<string | null>(null);
+  const { changes, reload } = useRuleChanges(data?.scope === "org");
+  const load = () => guidelineHealth(setWaking).then(setData, (e) => setError(e instanceof CheckError ? e.message : "Couldn't load guideline health."));
+  useEffect(() => { load(); }, []);
+  const refresh = () => { load(); reload(); };
+  const act = async (fn: () => Promise<unknown>) => {
+    setNote(null);
+    try { await fn(); refresh(); } catch (e) { setNote(e instanceof CheckError ? e.message : "That didn't work. Try again."); }
+  };
+  const editable = (id: string) => Boolean(data?.rules.find((r) => r.rule_id === id)?.can_edit);
   if (error) return <p role="alert" className="rounded-lg border border-blocking/40 bg-panel px-4 py-3 text-sm text-blocking">{error}</p>;
   if (!data) return <>{waking && <WakingBanner />}<p className="text-sm text-muted-foreground">Loading…</p></>;
 
@@ -53,6 +64,9 @@ export function HealthView() {
           the time. Under {data.min_decisions} decisions is too few to say either.
         </p>
       </section>
+
+      {note && <p role="alert" className="rounded-lg border border-blocking/40 bg-panel px-4 py-3 text-sm text-blocking">{note}</p>}
+      <ChangesStrip changes={changes} canUndo={editable} onUndo={(r) => act(() => learnApi.undo(r))} />
 
       {data.rules.some((r) => r.decisions > 0) && (
         <section aria-labelledby="agreement" className="relative overflow-hidden rounded-2xl bg-panel p-5 ring-1 ring-line">
@@ -101,7 +115,8 @@ export function HealthView() {
               {data.rules.map((r) => {
                 const s = status(r, data.min_decisions);
                 return (
-                  <tr key={r.rule_id} className="border-t align-top" data-rule={r.rule_id}>
+                  <Fragment key={r.rule_id}>
+                  <tr className="border-t align-top" data-rule={r.rule_id}>
                     <td className="min-w-56 px-3 py-2">
                       <span className="font-mono text-xs">{r.rule_id}</span>
                       {r.title && <p>{r.title}</p>}
@@ -119,8 +134,23 @@ export function HealthView() {
                     <td className="px-3 py-2 tabular-nums">{pct(r.wilson_lower)}</td>
                     <td className="px-3 py-2">
                       <span className={`whitespace-nowrap rounded border px-2 py-0.5 text-xs font-medium ${s.tone}`}>{s.label}</span>
+                      {r.pinned && <p className="mt-1 text-xs text-ash">Held at advisory by you</p>}
+                      {r.can_edit && (
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          {r.pinned && <Button size="sm" variant="outline" onClick={() => act(() => learnApi.release(r.rule_id))}>Let Plumbline decide again</Button>}
+                          {r.unclear && r.tier === "brand" && (
+                            <Button size="sm" variant="outline" aria-expanded={open === r.rule_id} onClick={() => setOpen(open === r.rule_id ? null : r.rule_id)}>
+                              Draft a clearer version
+                            </Button>
+                          )}
+                        </div>
+                      )}
                     </td>
                   </tr>
+                  {open === r.rule_id && (
+                    <tr><td colSpan={8} className="px-3 pb-4"><ClarifyPanel rule={r.rule_id} onDone={() => { setOpen(null); refresh(); }} /></td></tr>
+                  )}
+                  </Fragment>
                 );
               })}
             </tbody>

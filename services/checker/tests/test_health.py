@@ -92,6 +92,7 @@ def health_db(client, monkeypatch):  # noqa: F811
             True,
         ),
     )
+    monkeypatch.setattr(api.db, "pinned_rules", lambda s, t: ["TN-03"])
     return state
 
 
@@ -100,6 +101,7 @@ def test_health_api_for_reviewers(client, health_db):  # noqa: F811
     assert (body["scope"], body["unclear"], body["synthetic"]) == ("org", 1, True)
     assert body["by_origin"][0]["origin"] == "employee"
     assert [r["rule_id"] for r in body["rules"]] == ["TN-03", "TN-02"]
+    assert [r["pinned"] for r in body["rules"]] == [True, False]
 
 
 def test_creators_get_their_own_work_without_group_breakdown(client, health_db):  # noqa: F811

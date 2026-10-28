@@ -287,6 +287,8 @@ export type HealthRow = {
   wilson_lower: number | null;
   status: "ready" | "advisory" | "too_few" | "blocks";
   unclear: boolean;
+  can_edit: boolean;
+  pinned: boolean;
 };
 export type OriginRow = { origin: string; authors: number; versions: number; findings: number; blocking: number };
 export type HealthResponse = {
@@ -376,4 +378,48 @@ export const watchApi = {
     ),
   check: (versionId: string) =>
     request<NonNullable<WatchUrl["last_result"]>>(`/v1/watch/urls/${versionId}/check`, { method: "POST" }, () => {}),
+};
+
+// ---- Self-learning guidelines: automatic changes to rules, and drafted rewordings ----
+export type RuleChange = {
+  id: string;
+  rule_id: string;
+  kind: "graduate" | "demote" | "undo" | "unpin" | "clarify" | "revert";
+  why: string;
+  n: number | null;
+  upheld: number | null;
+  lower: number | null;
+  detail: { sample_decisions?: number };
+  at: string;
+};
+export type RuleWording = { title: string; instruction: string; examples_good: string[]; examples_bad: string[] };
+export type Score = { n: number; agree: number; rate: number | null };
+export type Draft = {
+  id: string;
+  old: RuleWording;
+  new: RuleWording;
+  held_out: { old: Score; new: Score };
+  written_from: { old: Score; new: Score };
+  redrafted: boolean;
+  helps: boolean;
+  evidence: { cases: number; disagreed: number; trained_on: number };
+};
+export const learnApi = {
+  changes: () => request<{ changes: RuleChange[]; pinned: string[] }>("/v1/rules/changes", {}, () => {}),
+  undo: (rule: string) => request<{ ok: true }>(`/v1/rules/${rule}/undo`, { method: "POST" }, () => {}),
+  release: (rule: string) => request<{ ok: true }>(`/v1/rules/${rule}/release`, { method: "POST" }, () => {}),
+  clarify: (rule: string) => request<Draft>(`/v1/rules/${rule}/clarify`, { method: "POST" }, () => {}),
+  accept: (id: string, wording: RuleWording) =>
+    request<{ ok: true }>(`/v1/clarifications/${id}/accept`, { method: "POST", headers: JSON_HEADERS, body: JSON.stringify(wording) }, () => {}),
+  reject: (id: string) => request<{ ok: true }>(`/v1/clarifications/${id}/reject`, { method: "POST" }, () => {}),
+  revert: (id: string) => request<{ ok: true }>(`/v1/clarifications/${id}/revert`, { method: "POST" }, () => {}),
+  drafts: (rule: string) => request<{ drafts: SavedDraft[] }>(`/v1/rules/${rule}/clarifications`, {}, () => {}),
+};
+export type SavedDraft = {
+  id: string;
+  status: "draft" | "accepted" | "rejected" | "reverted";
+  old_wording: RuleWording;
+  new_wording: RuleWording;
+  replay: { old: Score; new: Score };
+  created_at: string;
 };

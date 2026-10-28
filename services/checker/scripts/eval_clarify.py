@@ -7,12 +7,13 @@ Scoring rules are fixed in docs/clarify-eval.md.
 import json
 import os
 import subprocess
+import time
 from datetime import datetime
 from pathlib import Path
 
 from plumbline.config import Settings
 from plumbline.learn import Case, Wording, draft, replay
-from plumbline.llm import LLM, default_chain
+from plumbline.llm import LLM, LLMUnavailable, default_chain
 
 ROOT = Path(__file__).resolve().parents[3]
 OLD = Wording(
@@ -40,6 +41,19 @@ def cases() -> list[Case]:
 def main():
     s = Settings()
     llm = LLM(default_chain(s), lambda e: None)
+    call = llm.json
+
+    def paced(*a, **k):  # free-tier limits: wait and retry rather than lose the run
+        for wait in (20, 40, 60, 90, 0):
+            try:
+                time.sleep(3)
+                return call(*a, **k)
+            except LLMUnavailable:
+                if not wait:
+                    raise
+                time.sleep(wait)
+
+    llm.json = paced
     allc = cases()
     folds = [(allc[0::2], allc[1::2]), (allc[1::2], allc[0::2])]
     res = {"folds": []}

@@ -474,6 +474,11 @@ def guideline_health(u: CurrentUser, ctx: Annotated[OrgContext, Depends(org_cont
     rows, origins, synthetic = db.health(cfg(), u.token)
     assessed = guideline.assess(rows, {r.id: r for r in ctx.rules})
     org = u.role in REVIEW_ROLES
+    owner_of = {r.id: r.owner_function for r in ctx.rules}
+    pinned = set(db.pinned_rules(cfg(), u.token)) if org else set()
+    for r in assessed:  # only the rule's own function may undo or reword it (the database enforces it too)
+        r["can_edit"] = org and owner_of.get(r["rule_id"]) == RULE_OWNERS.get(u.role)
+        r["pinned"] = r["rule_id"] in pinned
     return {
         "scope": "org" if org else "mine",
         "synthetic": synthetic and org,  # seeded history belongs to synthetic authors, never to you
