@@ -49,3 +49,19 @@ responsibility).
 
 ## Disclosure
 The set was collected on 28 Oct 2026, inside the Round 3 window. It uses public regulator material only.
+
+## How it is scored (written before the first run, 28 Oct 2026)
+
+- Each ad's `ad_text` is checked once by the production pipeline (`run_check`) with Aurelle's rulebook as
+  an agency writer would see it, using the live model chain, nothing saved. The checker, rulebook and
+  prompts are **frozen at the commit recorded in the results**: nothing is tuned after seeing a result.
+- A finding **touches** a claim if its text span overlaps the claim's span in `ad_text`.
+- A claim is **caught** if it is touched by a finding that blocks publishing, or by a finding sent to a
+  person (needs human eyes). **Strict** recall counts blocking findings only; **lenient** recall also
+  counts advisory findings. The headline number is *caught*, the Round 2 form's "recall".
+- **Recall** = caught upheld claims ÷ upheld claims. The target is ≥ 80%. A claim-level miss is a miss
+  even if another claim in the same ad was caught.
+- Cleared (`not_upheld`) claims are reported separately: how many Plumbline flagged, which is expected
+  where it cannot see the advertiser's evidence.
+- Misses are listed in full with the claim and what Plumbline said instead. The result is published
+  whatever it is.
