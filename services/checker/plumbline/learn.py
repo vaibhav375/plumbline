@@ -120,13 +120,22 @@ def replay(w: Wording, cases: list[Case], llm: LLM) -> dict:
 
 
 def evaluate(old: Wording, cases: list[Case], llm: LLM) -> dict:
-    """Draft from the writing half; score old and new wording on the held-out half."""
+    """Draft from the writing half; score old and new wording on the held-out half. A draft that agrees with
+    the cases it was written from less often than the old wording does is redrafted once, then reported as
+    not helping."""
     train, held = split(cases)
-    new = draft(old, train, llm)
+    base = replay(old, train, llm)
+    new, again = draft(old, train, llm), False
+    on_train = replay(new, train, llm)
+    if on_train["agree"] < base["agree"]:
+        new, again = draft(old, train, llm), True
+        on_train = replay(new, train, llm)
     before, after = replay(old, held, llm), replay(new, held, llm)
     return {
         "new": new.model_dump(),
         "held_out": {"old": before, "new": after},
+        "written_from": {"old": base, "new": on_train},
+        "redrafted": again,
         "trained_on": len(train),
-        "helps": after["agree"] > before["agree"],
+        "helps": on_train["agree"] >= base["agree"] and after["agree"] > before["agree"],
     }

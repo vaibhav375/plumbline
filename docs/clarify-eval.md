@@ -38,3 +38,21 @@ This tests the rewording loop on real decisions; it does not claim the shipping 
 ## What would count as failing
 The draft does not help if new ≤ old on either run, or if the gain is within the old-vs-old noise. That result
 is reported as is, and the "accept" button stays an owner's decision either way (the screen shows both scores).
+
+## Run 1 (28 Oct 2026, 17:5x IST): the draft made the rule worse
+Held-out agreement over 84 claims: old wording 63 and 67 (the two replays differ by 4, the judge's own noise),
+**drafted wording 44**. Fold B's draft agreed with 14 of 42. Cause, from reading the drafts
+(`data/rulings/clarify_run1.json`): each half held only one or two "not upheld" claims, and the drafter invented
+exceptions that no case showed ("general, vague or qualitative benefits are allowed"). Regulators uphold many
+vague claims, so the judge stopped flagging them and recall on upheld claims fell from about 83% to about 70%
+(fold A) and 30% (fold B). The 100% on not-upheld claims (3 of 3) is the over-narrowing showing up, not
+good judgement.
+
+## Decision before run 2 (made before seeing any run-2 number)
+Product changes, not tuning to this set:
+1. The drafting prompt now says an exception may only be added where a "Not upheld" case shows it, and that
+   when such cases are few the draft should stay close to the old wording and sharpen it.
+2. `evaluate` scores the draft on the cases it was written from before offering it. If it agrees with those
+   less often than the old wording does, it drafts once more; if the second draft is no better, it is
+   reported as not helping.
+Scoring rules above are unchanged. Run 1 stays in the table.

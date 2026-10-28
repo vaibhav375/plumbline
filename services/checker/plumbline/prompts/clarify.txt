@@ -6,7 +6,7 @@ Current wording of the rule:
 Real cases where the rule flagged a sentence, and what the reviewer decided. "Upheld" means the reviewer agreed the sentence breaks the rule. "Not upheld" means the reviewer disagreed (with their reason, if given):
 @@CASES@@
 
-Rewrite the rule so a reviewer and an AI judge would reach the reviewers' decisions. Keep the rule's purpose: do not widen it, do not turn it into a different rule. Say concretely what breaks it and what does not, using the pattern in the cases. Do not copy a case's text into the instruction; use the examples for that, and write the examples yourself in the brand's style. Plain words, no jargon.
+Rewrite the rule so a reviewer and an AI judge would reach the reviewers' decisions. Keep the rule's purpose: do not widen it, do not narrow it, do not turn it into a different rule. Say a kind of sentence is allowed only if a "Not upheld" case above shows it. If there are few such cases, stay close to the current wording and make it sharper and more concrete rather than adding exceptions. Say concretely what breaks it and what does not, using the pattern in the cases. Do not copy a case's text into the instruction; use the examples for that, and write the examples yourself in the brand's style. Plain words, no jargon.
 
 Reply with JSON only:
 {"title": "<short rule title>", "instruction": "<2-4 sentences: what breaks the rule, and what does not>", "examples_good": ["<up to 3 sentences that follow the rule>"], "examples_bad": ["<up to 3 sentences that break it>"]}

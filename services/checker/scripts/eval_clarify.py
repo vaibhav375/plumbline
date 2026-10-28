@@ -45,7 +45,16 @@ def main():
     res = {"folds": []}
     for train, held in folds:
         new = draft(OLD, train, llm)
-        row = {"new_wording": new.model_dump(), "held_n": len(held)}
+        base, mine = replay(OLD, train, llm), replay(new, train, llm)
+        redrafted = mine["agree"] < base["agree"]
+        if redrafted:
+            new = draft(OLD, train, llm)
+        row = {
+            "new_wording": new.model_dump(),
+            "held_n": len(held),
+            "redrafted": redrafted,
+            "written_from": {"old": base, "first_draft": mine},
+        }
         for name, w in (("old_a", OLD), ("old_b", OLD), ("new", new)):
             up = replay(w, [c for c in held if c.should_flag], llm)
             down = replay(w, [c for c in held if not c.should_flag], llm)
