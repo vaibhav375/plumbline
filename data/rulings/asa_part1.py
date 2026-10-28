@@ -29,11 +29,11 @@ ASA = [
           dict(text="N1 DERMATOLOGIST RECOMMENDED BRAND IN THE UK", outcome=N, why="Robust survey evidence with a consistent lead over rivals.")]),
  dict(id="ASA-006", source="ASA", date="2025-09-17", advertiser="SJC&M Ltd (Scar Erase)", product="Scar Erase silicone scar sheets", medium="online listing",
   url="https://www.asa.org.uk/rulings/sjc-m-ltd-a25-1288314-sjc-m-ltd.html",
-  ad_text="ADVANCED MEDICAL-GRADE SCAR TREATMENT\nclinically proven to reduce the appearance of Keloid and Hypertrophic scars, whether old or new\nMINIMISE SCAR AS FAST AS 6 WEEKS\n86% REDUCTION IN SCAR TEXTURE\n84% REDUCTION IN SCAR COLOUR\n68% REDUCTION IN SCAR HEIGHT",
+  ad_text="ADVANCED MEDICAL-GRADE SCAR TREATMENT\nclinically proven to reduce the appearance of Keloid and Hypertrophic scars, whether old or new\nMINIMISE SCAR [sic] AS FAST AS 6 WEEKS\n86% REDUCTION IN SCAR TEXTURE\n84% REDUCTION IN SCAR COLOUR\n68% REDUCTION IN SCAR HEIGHT",
   claims=[dict(text="ADVANCED MEDICAL-GRADE SCAR TREATMENT", outcome=N, why="MHRA registration and conformity marking shown, so medical claims were permitted."),
           dict(text="clinically proven to reduce the appearance of Keloid and Hypertrophic scars, whether old or new", outcome=U, why="Studies inadequate, uncontrolled, small or a different format."),
           dict(text="86% REDUCTION IN SCAR TEXTURE", outcome=U, why="Not substantiated for the advertised product."),
           dict(text="84% REDUCTION IN SCAR COLOUR", outcome=U, why="Not substantiated for the advertised product."),
           dict(text="68% REDUCTION IN SCAR HEIGHT", outcome=U, why="Not substantiated for the advertised product."),
-          dict(text="MINIMISE SCAR AS FAST AS 6 WEEKS", outcome=U, why="Implied rapid results for all users; not substantiated or qualified.")]),
+          dict(text="MINIMISE SCAR [sic] AS FAST AS 6 WEEKS", outcome=U, why="Implied rapid results for all users; not substantiated or qualified.")]),
 ]
