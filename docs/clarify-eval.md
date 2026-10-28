@@ -56,3 +56,27 @@ Product changes, not tuning to this set:
    less often than the old wording does, it drafts once more; if the second draft is no better, it is
    reported as not helping.
 Scoring rules above are unchanged. Run 1 stays in the table.
+
+## Run 2 (28 Oct 2026, after the fix above)
+Held-out agreement over 84 claims: old wording **63 and 66** (two replays), drafted wording **65**
+(`data/rulings/clarify_run2.json`; fold A 31/42, fold B 34/42). Recall on upheld claims: old 32/41, 31/41 and
+31/41, 35/40 (A, B replays), drafted 30/41 and 33/40. Not-upheld claims: drafted 1/1 and 1/2, old 0/1 and 0/2.
+Neither draft was redrafted: both agreed with the cases they were written from at least as well as the old
+wording (35 vs 33 and 33 vs 31 of 42).
+
+## Result against the pre-registered rule
+**The draft did not help.** Run 1: 44 against 63/67 (worse). Run 2: 65 against 63/66 (the same). The rule
+required a gain larger than the old-vs-old difference (3 here) in both runs; there was no gain in either.
+
+What the two runs do support: the first version of the drafter harmed the rule when negatives were scarce, and
+the fix (exceptions only where a case shows one, plus the check against the cases it was written from) removed
+the harm. They do not show that a drafted wording improves agreement. The 3 not-upheld claims are too few to
+tell good judgement from "flag everything", and the judge's own run-to-run noise (up to 4 of 84) is as large
+as any difference seen.
+
+## What this changes in the product
+Nothing is claimed beyond this. Drafts are proposals: the screen always shows both scores on decisions the draft
+wasn't written from, labels a draft that didn't beat the current wording, and nothing changes until the rule
+owner accepts. The round 2 form's measure ("an accepted clarification must agree more often") is **not met on
+this data**; it should be re-run on real reviewer decisions once a brand has enough disagreements, which the
+generated demo history can't supply (its decisions are synthetic).

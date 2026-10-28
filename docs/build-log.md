@@ -1279,3 +1279,34 @@ items as live posts; they are filtered out. (3) Posts checked before this change
 they are only covered once re-checked.
 
 **Next:** the ASCI and UK ASA ruling set, the second brand by CSV, and the evaluation.
+
+## Ruling set and second brand (28 Oct)
+
+Documented in `docs/ruling-eval.md` and `docs/second-brand.md`. Ruling set: 41 ASA/ASCI rulings, 84 claims
+(81 upheld); recall on upheld claims 72/81 = 88.9% (target 80%), run 1 65/81 rate-limited, run 2 paced; 1 of 3
+cleared claims flagged. Kora loaded by CSV only: 27/30 planted problems caught, 0/10 clean posts blocked.
+Assumption that failed: the checker needed no change for a second brand. It did (a rulebook without CL-01/03/04/05
+crashed the claim step; fixed with a fallback and a test).
+
+## Improvement 3: self-learning guidelines (28 Oct)
+
+Design: `docs/superpowers/specs/2026-10-28-improvement-3-design.md`. Evaluation: `docs/clarify-eval.md`.
+
+**Built.** Migration 0015: a trigger on decisions moves a brand rule to blocking at Wilson lower bound ≥ 0.80
+on ≥ 10 decisions and back below 0.70 (only if it graduated by itself); every move is a `rule_changes` row on
+the audit chain, with how many decisions were generated sample history. Undo pins the rule at advisory until
+the owner releases it. Clarification drafts (`learn.py`): written from half the recorded decisions, scored
+against the old wording on the other half, never live until the owner accepts; accept and revert are audited.
+The Guideline health page has a changes strip, Undo, Release, and a draft panel with both scores.
+
+**Evidence.** Database tests 40 (7 new): graduation at 16/16, none under 10 decisions or the bound, mandatory
+rules untouched, demotion with a gap, undo not re-graduated until released, owner-only, a draft changes nothing
+until accepted and reverts, cases are only that org's. Checker 321 tests (7 new for drafting, replay, API errors).
+
+**Evaluation, honestly.** Drafting a clearer wording from the regulator rulings, scored on rulings it was not
+written from: run 1 made the rule worse (44/84 vs 63–67); after a fix decided before run 2, 65/84 vs 63–66,
+which is no gain. The Round 2 form's measure for clarifications is not met. Failed assumption: "a drafted
+rewording agrees more with recorded decisions." Swapped for: drafts are proposals shown with both scores, a
+draft that doesn't beat the old wording is labelled, the owner decides.
+
+**Not yet:** migration 0015 on production and a deploy (need approval); a live graduation demonstration.

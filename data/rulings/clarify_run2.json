@@ -1,0 +1,156 @@
+{
+ "folds": [
+  {
+   "new_wording": {
+    "title": "Regulated Efficacy Claims Require Proof",
+    "instruction": "Do not use phrases that promise specific medical, cosmetic, or physiological results (e.g., reducing wrinkles, curing acne, balancing hormones, or whitening skin) unless you have a matching scientific fact and compliance sign-off. General descriptions of ingredients, mechanisms, or sensory experiences are allowed if they do not promise a specific outcome. If a claim implies a change in the body or skin condition, it must be backed by evidence.",
+    "examples_good": [
+     "Contains niacinamide to help support skin barrier function.",
+     "Formulated with a unique blend of botanical extracts.",
+     "Provides a cooling sensation upon application."
+    ],
+    "examples_bad": [
+     "Clinically proven to reduce wrinkles in 4 weeks.",
+     "Helps balance hormones and soothes migraines.",
+     "Whitens teeth within 2 minutes."
+    ]
+   },
+   "held_n": 42,
+   "redrafted": false,
+   "written_from": {
+    "old": {
+     "n": 42,
+     "agree": 33,
+     "rate": 0.7857142857142857
+    },
+    "first_draft": {
+     "n": 42,
+     "agree": 35,
+     "rate": 0.8333333333333334
+    }
+   },
+   "old_a": {
+    "upheld": {
+     "n": 41,
+     "agree": 32,
+     "rate": 0.7804878048780488
+    },
+    "not_upheld": {
+     "n": 1,
+     "agree": 0,
+     "rate": 0.0
+    },
+    "agree": 32,
+    "n": 42
+   },
+   "old_b": {
+    "upheld": {
+     "n": 41,
+     "agree": 31,
+     "rate": 0.7560975609756098
+    },
+    "not_upheld": {
+     "n": 1,
+     "agree": 0,
+     "rate": 0.0
+    },
+    "agree": 31,
+    "n": 42
+   },
+   "new": {
+    "upheld": {
+     "n": 41,
+     "agree": 30,
+     "rate": 0.7317073170731707
+    },
+    "not_upheld": {
+     "n": 1,
+     "agree": 1,
+     "rate": 1.0
+    },
+    "agree": 31,
+    "n": 42
+   }
+  },
+  {
+   "new_wording": {
+    "title": "Regulated Efficacy Claims Require Proof",
+    "instruction": "Do not use phrases that promise specific medical, physiological, or comparative results (e.g., 'clinically proven,' 'cures,' 'reduces anxiety,' 'more effective than') unless you have the matching scientific fact and compliance sign-off on file. General descriptive benefits that do not promise a specific measurable outcome or medical cure are allowed. If a claim implies a specific change in the body or compares performance against competitors, it must be backed by verified evidence.",
+    "examples_good": [
+     "Helps hydrate dry skin for a smoother feel.",
+     "Contains natural botanical extracts for daily care.",
+     "Designed to support your morning routine."
+    ],
+    "examples_bad": [
+     "Clinically proven to reduce wrinkles in 2 weeks.",
+     "More effective than traditional toothpaste for whitening.",
+     "Cures acne and prevents future breakouts."
+    ]
+   },
+   "held_n": 42,
+   "redrafted": false,
+   "written_from": {
+    "old": {
+     "n": 42,
+     "agree": 31,
+     "rate": 0.7380952380952381
+    },
+    "first_draft": {
+     "n": 42,
+     "agree": 33,
+     "rate": 0.7857142857142857
+    }
+   },
+   "old_a": {
+    "upheld": {
+     "n": 40,
+     "agree": 31,
+     "rate": 0.775
+    },
+    "not_upheld": {
+     "n": 2,
+     "agree": 0,
+     "rate": 0.0
+    },
+    "agree": 31,
+    "n": 42
+   },
+   "old_b": {
+    "upheld": {
+     "n": 40,
+     "agree": 35,
+     "rate": 0.875
+    },
+    "not_upheld": {
+     "n": 2,
+     "agree": 0,
+     "rate": 0.0
+    },
+    "agree": 35,
+    "n": 42
+   },
+   "new": {
+    "upheld": {
+     "n": 40,
+     "agree": 33,
+     "rate": 0.825
+    },
+    "not_upheld": {
+     "n": 2,
+     "agree": 1,
+     "rate": 0.5
+    },
+    "agree": 34,
+    "n": 42
+   }
+  }
+ ],
+ "total": {
+  "old_a": 63,
+  "old_b": 66,
+  "new": 65,
+  "n": 84
+ },
+ "commit": "c0e6167",
+ "run_at": "2026-10-28 19:18 IST"
+}
