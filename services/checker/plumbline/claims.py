@@ -335,6 +335,13 @@ def verify_claim(
     """One claim through the §6.2 pseudocode, in order."""
     rules = {r.id: r for r in ctx.rules}
     rule = rules.get(KIND_RULE.get(claim.kind, DEFAULT_RULE)) or rules.get(DEFAULT_RULE)
+    if rule is None:
+        # Another brand's rulebook has its own rule ids (found by loading a second brand): cite its first
+        # rule in the "claim" category instead of the ids Aurelle's rulebook happens to use.
+        claim_rules = sorted((r for r in ctx.rules if r.category == "claim"), key=lambda r: r.id)
+        if not claim_rules:
+            raise ValueError("The rulebook needs at least one rule with category 'claim' for claim checks.")
+        rule = claim_rules[0]
     method = "code"
     fix = Fix(kind="none", note=NO_FIX)
     if fact is not None and fact.code_only:

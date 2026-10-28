@@ -1,0 +1,15 @@
+id,statement,value,unit,product,market,population,duration,owner,valid_from,valid_until,confidentiality,embargo_until,verified,aliases
+FACT-K01,"Kora Save pays 6.5% p.a. interest on balances up to ₹2,00,000",6.5,% p.a.,Kora Save,IN,,,Product,2026-01-01,2027-03-31,public,,true,Kora Save interest|savings interest rate
+FACT-K02,"Deposits with the partner bank are insured by DICGC up to ₹5,00,000 per depositor",500000,INR,Kora Save,IN,,,Compliance,2026-01-01,,public,,true,DICGC insured|deposit insurance
+FACT-K03,UPI payments on Kora are free of charge for consumers,0,INR,Kora Pay,IN,,,Product,2026-01-01,,public,,true,free UPI|no charges on UPI
+FACT-K04,"Kora Credit charges 14% to 36% APR, with a processing fee of up to 2% plus GST",36,% APR,Kora Credit,IN,,,Compliance,2026-01-01,2027-03-31,public,,true,Kora Credit APR|credit line interest
+FACT-K05,Kora has 2.4 million registered users (as of September 2026),2400000,users,,IN,,,Product,2026-01-01,2026-12-31,public,,true,2.4 million users|registered users
+FACT-K06,"KoraCard gives 1% cashback on online spends, capped at ₹500 a month",1,%,KoraCard,IN,,,Product,2026-01-01,2026-12-31,public,,true,KoraCard cashback|1% cashback
+FACT-K07,Kora Invest offers mutual funds from 12 fund houses; returns are not guaranteed,12,fund houses,Kora Invest,IN,,,Compliance,2026-01-01,,public,,true,mutual funds on Kora|Kora Invest funds
+FACT-K08,Kora is a technology platform and not a bank; banking services are provided by partner banks,,,,IN,,,Compliance,2026-01-01,,public,,true,Kora is not a bank|partner banks
+FACT-K09,"IMPS transfers on Kora are available up to ₹5,00,000 per transaction",500000,INR,Kora Pay,IN,,,Product,2026-01-01,,public,,true,IMPS limit|transfer limit
+FACT-K10,"Opening a Kora account takes under 5 minutes (in-house test, 500 sign-ups, 2026)",5,minutes,Kora Pay,IN,500 sign-ups,,Product,2026-01-01,,public,,true,account in 5 minutes|quick signup
+FACT-K11,Kora is ISO 27001 certified for information security,,,,IN,,,Security,2026-01-01,2027-06-30,public,,true,ISO 27001 certified|ISO certified
+FACT-K12,Refer a friend and each of you gets ₹200 after their first payment (ends 31 December 2026),200,INR,Kora Pay,IN,,,Product,2026-01-01,2026-12-31,public,,true,refer a friend|referral bonus ₹200
+FACT-K13,The zero joining fee offer on KoraCard ended on 30 September 2026,0,INR,KoraCard,IN,,,Product,2026-01-01,2026-09-30,public,,true,zero joining fee|no joining fee
+FACT-K14,"Kora Gold, a gold savings product, launches on 15 January 2027",,,Kora Gold,IN,,,Brand,2026-01-01,,embargoed,2027-01-15,true,Kora Gold|digital gold
