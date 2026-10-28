@@ -1222,3 +1222,34 @@ submitting tests again after the cleanup; audit chain verified.
 
 **Re-test:** checker 251/251; e2e 18/18 on getplumbline.xyz (16, then the 2 that submit, whose one new
 submission was deleted afterwards so the queue stays as set up).
+
+# Round 3
+
+## Improvement 2: each brand's own checks, in chat and before publishing (28 Oct)
+
+Design: `docs/superpowers/specs/2026-10-28-improvement-2-design.md`.
+
+**Built.** Migration 0013 adds link codes, chat links, gate keys and a gate log, closed to users and
+reached only through functions the narrow `plumbline_checker` role can call (no service key, no table
+access). Chat: a brand owner creates a one-time code (15 min, single use, stored hashed); `link CODE` in
+chat links an address to the org; that address is then checked against the org's own rulebook as an
+agency writer, with confidential findings withheld and nothing saved. The org always comes from the link
+row. Publish gate: `GET /v1/gate/versions/{id}` and `/contents/{id}` with a gate key answer go or not_yet
+with reasons; optional `text_sha256` proves the text is the approved text. A **Connect** page (brand
+owner only) manages codes, keys and shows the gate log.
+
+**Evidence.** Checker 281 tests (30 new: gate decisions, agent linking and rate limits, brand-owner-only
+management), database 26 (9 new: single-use and expiry, org isolation, agency-view parity, key scoping,
+no table access), e2e 19. Live, against production: no key → 401; creator → 403 on codes; gate says
+not_yet for a submitted version, not_yet for an approved version that still has open blocking findings,
+go for a clean approved post, go with the right hash, not_yet with edited text, 404 for an unknown id,
+401 after revoking the key; every call appears in the gate log.
+
+**Found by testing.** (1) Revoking a key or link failed in the browser: CORS allowed only GET and POST.
+Fixed (DELETE added) with a test. (2) The approved sample post has 6 open blocking findings (they were
+upheld, not overruled), so the gate refuses it; that is the stricter rule working, so a clean approved
+post was added to the queue as the "go" example. (3) An e2e failure that looked like a bug was the USB
+drive dropping mid-run.
+
+**Not yet verified live:** linking a real ASI:One address (needs the account owner to send
+`link CODE` to the agent).

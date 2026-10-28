@@ -52,6 +52,14 @@ review loop (15–19) · **M4** images and evaluation (20–21) · **M5** usabil
 | Role landing, 5 role cards, a 4-step tour, brand colours with checked contrast | §5 | 22 · M5 | Live |
 | Status page, request references on every error, waking and retry on cold starts, keep-alive | §6.7 | 6, 22, 23 · M1, M5 | Live |
 
+## Added in Round 3
+
+| Feature | Status |
+|---|---|
+| Link a chat address to your own brand with a one-time code; chat checks use that brand's rules and facts | Live (improvement 2) |
+| Publish gate API: go or not yet, with reasons and an optional approved-text hash | Live (improvement 2) |
+| Connect page for the brand owner: codes, linked addresses, gate keys, gate log | Live (improvement 2) |
+
 ## Not in Round 2
 
 Committed for Round 3 ([the three improvements](round3-improvements.md)): watching published posts when a
