@@ -7,9 +7,7 @@ Nothing is saved to the database: the rulebook is read as the demo agency writer
 """
 
 import json
-import re
 import subprocess
-import sys
 import time
 from collections import Counter
 from datetime import date
@@ -18,10 +16,10 @@ from pathlib import Path
 import httpx
 from rapidfuzz import fuzz
 
-from plumbline import api, auth, db
+from plumbline import auth, db
 from plumbline.config import Settings
 from plumbline.llm import LLM, default_chain
-from plumbline.models import Document, Intent
+from plumbline.models import Intent
 from plumbline.parsers import parse_upload
 from plumbline.pipeline import run_check
 
