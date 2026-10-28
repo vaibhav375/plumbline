@@ -59,12 +59,12 @@ review loop (15–19) · **M4** images and evaluation (20–21) · **M5** usabil
 | Link a chat address to your own brand with a one-time code; chat checks use that brand's rules and facts | Live (improvement 2) |
 | Publish gate API: go or not yet, with reasons and an optional approved-text hash | Live (improvement 2) |
 | Connect page for the brand owner: codes, linked addresses, gate keys, gate log | Live (improvement 2) |
+| Claim watch: a task per post and fact when a fact is withdrawn, expires, is unverified or changes, with approved replacement wording; registered live URLs re-checked sentence by sentence | Live (improvement 1) |
+| Regulator-ruling evaluation (41 ASA/ASCI rulings) and a second brand loaded by CSV only | Live results, see [ruling-eval](ruling-eval.md), [second-brand](second-brand.md) |
+| Automatic graduation of brand rules at Wilson lower bound ≥ 0.80 (≥ 10 decisions), audit entry, undo, demotion below 0.70 | Live (improvement 3) |
+| Drafted clarifications for "may be unclear" rules, scored against the old wording, never live until the owner accepts | Live; measure not met, see [clarify-eval](clarify-eval.md) |
 
-## Not in Round 2
-
-Committed for Round 3 ([the three improvements](round3-improvements.md)): watching published posts when a
-fact changes, a held-out evaluation on public regulator rulings, chat checks against each brand's own
-rulebook, a publish-gate API, automatic rule graduation and AI-drafted rule clarifications.
+## Not built
 
 Not committed (ideas only, no date): Slack, a no-login agency link, DOCX tracked changes, logo and palette
-checks, claims inside image text, Google Sheets sync and a self-hosted model mode.
+checks, claims inside image text, Google Sheets sync and a self-hosted model mode. See the [roadmap](roadmap.md).

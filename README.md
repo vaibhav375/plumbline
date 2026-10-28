@@ -11,7 +11,8 @@ one-call AI baseline with the whole brand book found 18 (55%).
 - **Checker API:** https://plumbline-checker.onrender.com/docs
 - **In ASI:One chat:** the Agentverse agent "Plumbline Brand Checker"
   (`agent1qdec79g6x8dfjkvklj2gr9gwr28ggrk5julydls9e00mrsxct6rxcym5p4p`)
-- **Round 2 PDF:** [docs/AtoZ_Plumbline_Round2.pdf](docs/AtoZ_Plumbline_Round2.pdf) (Round 2 progress, then the Round 1 plan unchanged)
+- **Round 3 PDF:** [docs/AtoZ_Plumbline_Round3.pdf](docs/AtoZ_Plumbline_Round3.pdf) (Round 3 and Round 2 progress, then the Round 1 plan unchanged)
+- **Testing details:** [docs/testing.md](docs/testing.md) · **Roadmap:** [docs/roadmap.md](docs/roadmap.md) · **Features:** [docs/features.md](docs/features.md)
 
 Demo runs on free model tiers using fictional data only; production uses paid no-training tiers or
 self-hosted Qwen. Aurelle Skin is a fictional brand.
@@ -44,7 +45,16 @@ guidelines make brands *and* endorsers liable for misleading claims, with penalt
   agency writer (confidential findings withheld), saves nothing, and allows 5 checks per sender per
   10 minutes.
 - **Improve the guidelines.** Guideline health shows which rules reviewers keep overruling and which
-  have earned the right to block (Wilson 95% lower bound of agreement ≥ 0.80).
+  have earned the right to block (Wilson 95% lower bound of agreement ≥ 0.80). A brand rule that reaches
+  that bound on at least 10 decisions moves to blocking by itself, with an audit entry and one-click undo
+  (undo pins it until the owner releases it). For a rule that "may be unclear", Plumbline drafts a clearer
+  wording, shows its score next to the old wording's, and changes nothing until the owner accepts.
+- **Watch published claims.** When a fact expires or changes, every approved post that relied on it gets an
+  update-or-withdraw task for its owner, with the approved replacement wording; registered live URLs are
+  re-checked against the approved text.
+- **Your brand in chat, and a publish gate.** A brand owner links a chat address with a one-time code so
+  ASI:One checks use that brand's own rules and facts; scheduling and CMS tools call a gate API that
+  answers "go" or "not yet" with reasons.
 
 ![Landing page: a sample ad with the contrast finding Plumbline raises on it](docs/screenshots/login.png)
 
@@ -104,23 +114,36 @@ the right words. The baseline is one model call per post with the whole brand bo
   and real quotes, just the wrong ones, so that metric can't tell them apart here; precision does.
 - Two of Plumbline's 8 false alarms are plain errors (an approved fact reported as unsupported on a
   clean post). Labels were frozen before the AI runs, so defensible extra findings also count against it.
-- Tests: 240 checker unit tests, 17 database tests (RLS, audit chain, second approver), 18 end-to-end
-  tests run against the live site. Each live run and measurement is in the [build log](docs/build-log.md).
+- Tests: 321 checker unit tests, 40 database tests (RLS, audit chain, second approver, link codes, gate keys,
+  graduation), 19 end-to-end tests run against the live site ([details](docs/testing.md)). Each live run and measurement is in the [build log](docs/build-log.md).
 - Speed on Render's free tier: text checks 1.8–3.6 s; image checks about 6 s (OCR alone is ~3.8 s on
   the shared CPU).
+
+### Round 3 results
+
+| Improvement | Measure | Result |
+|---|---|---|
+| 1 Claim watch + regulator rulings | Recall on upheld claims, 41 ASA/ASCI rulings (target ≥ 80%) | **72 of 81 = 88.9%** ([details](docs/ruling-eval.md)) |
+| 1 Second brand by CSV | Kora (fictional fintech): planted problems caught; clean posts blocked | 27 of 30; 0 of 10 ([details](docs/second-brand.md)) |
+| 3 Self-learning guidelines | Drafted wording vs old wording on rulings it was not written from (target: beats it) | **Not met**: 65 of 84 vs 63 and 66 ([details](docs/clarify-eval.md)) |
+| 1 Citations | 100 findings checked by the builder (target ≥ 95%) | see [testing](docs/testing.md) |
+| 1 and 2 Fix audit | 200 fixes checked by the builder (target 0 invented) | see [testing](docs/testing.md) |
 
 ## Limits
 
 - The dev set was written for this project, not drawn from real posts, and it is small, so the
-  intervals are wide. Round 3 adds a held-out set from public ASCI and UK ASA rulings, where the
-  regulator's verdict is the label.
+  intervals are wide. Round 3 added a held-out set from public ASCI and UK ASA rulings, where the
+  regulator's verdict is the label, and a second brand loaded by CSV.
 - No primary research or user study: the interviews, survey, raters, labellers and user tests planned in
   Round 1 need recruited participants, which a one-person team can't run in a hackathon. The evidence plan
   moved to sources anyone can verify instead
   ([how and why](docs/changes-from-round1.md#how-the-evidence-plan-changed-and-why)), and hypotheses
   H1–H6 were checked against published surveys ([desk research](docs/desk-research.md)).
 - Image checks miss the 5 s target on the free CPU; claims inside images aren't checked yet.
-- Guideline-health history is synthetic and labelled as such in the app.
+- Guideline-health history is synthetic and labelled as such in the app; automatic graduation counts it too and
+  records how many of its decisions were sample.
+- Drafted rule clarifications did not beat the old wording in the replay, so they are proposals for the owner,
+  not improvements we claim.
 - Free model tiers may use inputs for training, which is why the demo uses fictional data only.
 
 ## Run it

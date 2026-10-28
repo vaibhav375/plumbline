@@ -117,4 +117,5 @@ def main():
     print("pool:", len(pool))
 
 
-main()
+if __name__ == "__main__":
+    main()

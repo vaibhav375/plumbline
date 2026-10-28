@@ -2,7 +2,7 @@ SECRETS ?= /Volumes/Plumbline/secrets.env
 CHECKER = services/checker
 CHECKER_URL ?= https://plumbline-checker.onrender.com
 
-.PHONY: env types doctor test test-db db-push-test db-push seed lint dev-checker dev-web e2e eval pdf
+.PHONY: env types doctor test test-db db-push-test db-push seed lint dev-checker dev-web e2e eval pdf pdf3
 
 e2e:
 	pnpm -C apps/web exec playwright test
@@ -52,6 +52,9 @@ dev-checker:
 dev-web:
 	pnpm -C apps/web dev
 
-# Round 2 PDF: Round 1 plan + Round 2 progress section, printed by headless Chrome.
+# Round 3 PDF (pdf3) and Round 2 PDF (pdf): sections added to the unchanged Round 1 plan, printed by headless Chrome.
+pdf3:
+	node docs/round3/build_pdf.cjs
+
 pdf:
 	node docs/round2/build_pdf.cjs

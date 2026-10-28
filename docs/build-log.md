@@ -1309,4 +1309,7 @@ which is no gain. The Round 2 form's measure for clarifications is not met. Fail
 rewording agrees more with recorded decisions." Swapped for: drafts are proposals shown with both scores, a
 draft that doesn't beat the old wording is labelled, the owner decides.
 
-**Not yet:** migration 0015 on production and a deploy (need approval); a live graduation demonstration.
+**Deployed (28 Oct, with approval).** Migration 0015 applied to production, commit `1325be9` pushed; the live
+OpenAPI lists `/clarify`, `/v1/rules/changes` answers 401 without a sign-in, and the live guideline-health and
+status e2e tests pass. **Not yet seen live:** a graduation on production (none has crossed the bound since the
+deploy; graduation counts generated sample history too and records how many of its decisions were sample).

@@ -229,6 +229,9 @@ test("guideline health shows unclear rules and graduation status", async ({ page
   await expect(page.getByTestId("unclear-count")).toContainText(/\d+ rules? may be unclear/);
   const tn03 = page.locator('tr[data-rule="TN-03"]');
   await expect(tn03.getByText("May be unclear")).toBeVisible();
+  // Improvement 3: the owner can open the draft panel on an unclear brand rule (no model call is made here).
+  await tn03.getByRole("button", { name: "Draft a clearer version" }).click();
+  await expect(page.getByTestId("clarify-panel")).toContainText("Nothing changes until you accept");
   await expect(page.locator('tr[data-rule="TN-02"]').getByText("Ready to block")).toBeVisible();
   await expect(page.locator('tr[data-rule="GM07"]').getByText("Too few decisions (n < 10)")).toBeVisible();
   await expect(page.getByRole("heading", { name: "By origin" })).toBeVisible();
