@@ -207,8 +207,13 @@ def test_approved_wording_choice_does_not_depend_on_row_order(aurelle):
 def test_a_rulebook_with_its_own_claim_rule_ids_works(aurelle):
     # Found by loading a second brand: claims used to cite CL-01, CL-03, CL-04 and CL-05 by name.
     renamed = {"CL-01": "FN-C1", "CL-03": "FN-C3", "CL-04": "FN-C4", "CL-05": "FN-C5"}
-    # A brand whose claim rules all have their own ids (Aurelle's CL-02 would sort first, so it goes).
-    rules = [r.model_copy(update={"id": renamed.get(r.id, r.id)}) for r in aurelle.rules if r.id != "CL-02"]
+    # A brand whose claim rules all have their own ids: Aurelle's other claim rules (CL-02, CL-07) would
+    # sort first, so they are left out.
+    rules = [
+        r.model_copy(update={"id": renamed.get(r.id, r.id)})
+        for r in aurelle.rules
+        if r.category != "claim" or r.id in renamed
+    ]
     ctx = aurelle.model_copy(update={"rules": rules})
     findings, _, _ = run(ctx)
     claim_findings = [f for f in findings if f.category == "claim"]
