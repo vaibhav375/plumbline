@@ -150,9 +150,10 @@ def test_brand_voice_rules_skip_image_text(aurelle, worked_example):
     assert [f.quote for f in tn03] == ["NEW"]  # not GLOW / WEEKS from the banner
 
 
-def test_missing_cta_quotes_the_opening_sentence(aurelle):
+def test_missing_cta_quotes_the_closing_sentence(aurelle):
+    # Run 1 of the citation check: pinned on the opening words, the finding looked unrelated to them.
     found = _ids_and_quotes(aurelle, "Got my PR package today. Obsessed.")
-    assert ("CTA-01", "Got my PR package today") in found
+    assert ("CTA-01", "Obsessed") in found
 
 
 def test_double_space_quote_is_just_the_spaces(aurelle):
@@ -175,3 +176,17 @@ def test_standard_identifiers_are_not_numbers_needing_commas(aurelle):
     """Task 13: the approved footnote "Calculated per ISO 16128." was flagged by GM10."""
     assert ("GM10", "16128") not in _ids_and_quotes(aurelle, "Calculated per ISO 16128. Shop now.")
     assert ("GM10", "120000") in _ids_and_quotes(aurelle, "Over 120000 customers. Shop now.")
+
+
+def test_required_rule_can_anchor_on_the_end_of_the_post():
+    from plumbline.rules.load import load_seed_dir
+    from tests.conftest import SEED
+
+    ctx, _ = load_seed_dir(SEED)
+    cta = next(r for r in ctx.rules if r.id == "CTA-01")
+    assert cta.params["anchor"] == "end"
+    doc = Document(
+        format="text", text="It grows new hair. It is gentle on skin.", blocks=[], images=[]
+    )
+    found = by_rule(run_rules(doc, [cta], ctx.terms), "CTA-01")
+    assert [f.quote for f in found] == ["It is gentle on skin"]

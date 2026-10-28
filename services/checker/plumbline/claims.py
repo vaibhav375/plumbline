@@ -13,7 +13,7 @@ from pydantic import BaseModel, ValidationError
 from rapidfuzz import fuzz
 
 from plumbline.llm import LLM, LLMUnavailable
-from plumbline.models import Document, Fact, Finding, Fix, OrgContext, Span
+from plumbline.models import Document, Fact, Finding, Fix, OrgContext, Rule, Span
 from plumbline.normalize import quote_in, sentences
 from plumbline.privacy import mask_confidential, redact
 from plumbline.rules.engine import grade
@@ -320,6 +320,23 @@ def restricted_finding(fact: Fact, span: Span, quote: str) -> Finding:
     )
 
 
+def rule_for(claim: Claim, ctx: OrgContext) -> Rule:
+    """The claim rule an unverified claim cites."""
+    rules = {r.id: r for r in ctx.rules}
+    rule = rules.get(KIND_RULE.get(claim.kind, DEFAULT_RULE)) or rules.get(DEFAULT_RULE)
+    if rule is not None:
+        return rule
+    # Another brand's rulebook has its own rule ids (found by loading a second brand): cite the claim rule whose
+    # title names the claim's kind (a ranking claim cites "Rankings and superlatives..."), else its first one.
+    claim_rules = sorted((r for r in ctx.rules if r.category == "claim"), key=lambda r: r.id)
+    if not claim_rules:
+        raise ValueError(
+            "The rulebook needs at least one rule with category 'claim' for claim checks."
+        )
+    word = claim.kind if claim.kind in ("endorsement", "superlative", "environmental") else ""
+    return next((r for r in claim_rules if word and word in r.title.lower()), claim_rules[0])
+
+
 def verify_claim(
     claim: Claim,
     fact: Fact | None,
@@ -333,17 +350,7 @@ def verify_claim(
     redactor=lambda s: s,
 ) -> Finding:
     """One claim through the §6.2 pseudocode, in order."""
-    rules = {r.id: r for r in ctx.rules}
-    rule = rules.get(KIND_RULE.get(claim.kind, DEFAULT_RULE)) or rules.get(DEFAULT_RULE)
-    if rule is None:
-        # Another brand's rulebook has its own rule ids (found by loading a second brand): cite its first
-        # rule in the "claim" category instead of the ids Aurelle's rulebook happens to use.
-        claim_rules = sorted((r for r in ctx.rules if r.category == "claim"), key=lambda r: r.id)
-        if not claim_rules:
-            raise ValueError(
-                "The rulebook needs at least one rule with category 'claim' for claim checks."
-            )
-        rule = claim_rules[0]
+    rule = rule_for(claim, ctx)
     method = "code"
     fix = Fix(kind="none", note=NO_FIX)
     if fact is not None and fact.code_only:

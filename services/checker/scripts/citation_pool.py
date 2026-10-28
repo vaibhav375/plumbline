@@ -23,6 +23,8 @@ from plumbline.rules.load import load_seed_dir
 
 ROOT = Path(__file__).resolve().parents[3]
 PACE = float(os.environ.get("PACE", "0"))
+RUN = os.environ.get("RUN", "1")  # run 2 reads Aurelle from the seed files (same rules; production has the old CTA-01)
+SUFFIX = "" if RUN == "1" else f"_run{RUN}"
 
 
 def aurelle_ctx(s):
@@ -43,7 +45,7 @@ def main():
     sets = [
         (
             "ruling-set",
-            aurelle_ctx(s),
+            aurelle_ctx(s) if RUN == "1" else load_seed_dir(ROOT / "supabase/seed/aurelle", org_id="aurelle", version="v1")[0],
             "external_creator",
             [json.loads(x) for x in (ROOT / "data/rulings/rulings.jsonl").read_text().splitlines()],
         ),
@@ -113,7 +115,7 @@ def main():
                 )
             print(n, it["id"], len(pool), "findings so far")
     (ROOT / "data/citations").mkdir(exist_ok=True)
-    (ROOT / "data/citations/pool.json").write_text(json.dumps(pool, indent=1, ensure_ascii=False))
+    (ROOT / f"data/citations/pool{SUFFIX}.json").write_text(json.dumps(pool, indent=1, ensure_ascii=False))
     print("pool:", len(pool))
 
 

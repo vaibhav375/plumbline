@@ -21,7 +21,17 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 D = ROOT / "data/fixes"
-COLS = ["n", "set", "post", "kind", "original", "suggested", "approved_wording_available", "verdict", "note"]
+COLS = [
+    "n",
+    "set",
+    "post",
+    "kind",
+    "original",
+    "suggested",
+    "approved_wording_available",
+    "verdict",
+    "note",
+]
 
 
 def pool():
@@ -38,9 +48,18 @@ def pool():
 
     s = Settings()
     pace = float(os.environ.get("PACE", "0"))
-    rd = lambda p: [json.loads(x) for x in (ROOT / p).read_text().splitlines()]
+
+    def rd(p):
+        return [json.loads(x) for x in (ROOT / p).read_text().splitlines()]
+
     sets = [
-        ("ruling-set", aurelle_ctx(s), "external_creator", rd("data/rulings/rulings.jsonl"), "ad_text"),
+        (
+            "ruling-set",
+            aurelle_ctx(s),
+            "external_creator",
+            rd("data/rulings/rulings.jsonl"),
+            "ad_text",
+        ),
         (
             "kora",
             load_seed_dir(ROOT / "supabase/seed/korapay", org_id="korapay", version="v1")[0],
@@ -60,22 +79,39 @@ def pool():
             rep = None
             for a in (1, 2, 3):
                 try:
-                    rep = run_check(doc, ctx, Intent(region="IN"), role, True,
-                                    LLM(default_chain(s), lambda e: None), date.today())
+                    rep = run_check(
+                        doc,
+                        ctx,
+                        Intent(region="IN"),
+                        role,
+                        True,
+                        LLM(default_chain(s), lambda e: None),
+                        date.today(),
+                    )
                     break
                 except Exception:  # noqa: BLE001
                     time.sleep(8 * a)
             if rep is None or not rep.suggested_text:
                 continue
             old = [doc.text[x.start : x.end].strip() for x in sentences(doc.text)]
-            new = [x.strip() for x in rep.suggested_text.replace("\n", " \n").split(" \n") if x.strip()]
+            new = [
+                x.strip() for x in rep.suggested_text.replace("\n", " \n").split(" \n") if x.strip()
+            ]
             sm = difflib.SequenceMatcher(None, old, new, autojunk=False)
             for op, i1, i2, j1, j2 in sm.get_opcodes():
                 if op == "equal":
                     continue
                 o, w = " ".join(old[i1:i2]), " ".join(new[j1:j2])
-                out.append(dict(set=name, post=it["id"], kind="dropped" if not w else "changed",
-                                original=o, suggested=w, approved_wording_available=wordings))
+                out.append(
+                    dict(
+                        set=name,
+                        post=it["id"],
+                        kind="dropped" if not w else "changed",
+                        original=o,
+                        suggested=w,
+                        approved_wording_available=wordings,
+                    )
+                )
             print(n, it["id"], len(out), "fixes so far")
     D.mkdir(exist_ok=True)
     (D / "pool.json").write_text(json.dumps(out, indent=1, ensure_ascii=False))
@@ -101,7 +137,10 @@ def score():
     print(f"safe {y}, invented {n}, unmarked {blank}, of {len(v)}")
     if n:
         print("invented in rows:", [r["n"] for r in rows if r["verdict"].strip().lower() == "n"])
-    print("target: 0 invented, all 200 marked ->", "MET" if n == 0 and blank == 0 and len(v) >= 200 else "NOT YET")
+    print(
+        "target: 0 invented, all 200 marked ->",
+        "MET" if n == 0 and blank == 0 and len(v) >= 200 else "NOT YET",
+    )
 
 
 if __name__ == "__main__":

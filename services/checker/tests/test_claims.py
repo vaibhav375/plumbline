@@ -225,3 +225,28 @@ def test_a_rulebook_with_no_claim_rule_says_so(aurelle):
     ctx = aurelle.model_copy(update={"rules": [r for r in aurelle.rules if r.category != "claim"]})
     with pytest.raises(ValueError, match="category 'claim'"):
         run(ctx)
+
+
+def test_a_ranking_claim_cites_the_ranking_rule_in_another_brands_rulebook(aurelle):
+    from plumbline.claims import Claim, rule_for
+    from plumbline.models import Span
+
+    rules = [
+        r.model_copy(update={"id": i, "title": t})
+        for r, (i, t) in zip(  # noqa: B905
+            [r for r in aurelle.rules if r.category == "claim"][:3],
+            [
+                ("FN-C1", "Financial claims need a matching fact"),
+                ("FN-C2", "Regulator endorsement claims need evidence"),
+                ("FN-C3", "Rankings and superlatives need a source"),
+            ],
+        )
+    ]
+    ctx = aurelle.model_copy(update={"rules": rules})
+
+    def mk(kind):
+        return Claim(text="x", span=Span(start=0, end=1), kind=kind, numbers=[])
+
+    assert rule_for(mk("superlative"), ctx).id == "FN-C3"
+    assert rule_for(mk("endorsement"), ctx).id == "FN-C2"
+    assert rule_for(mk("timing"), ctx).id == "FN-C1"

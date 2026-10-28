@@ -11,6 +11,10 @@ import sys
 from pathlib import Path
 
 D = Path(__file__).resolve().parents[3] / "data/citations"
+import os
+
+RUN = os.environ.get("RUN", "1")
+SUF = "" if RUN == "1" else f"_run{RUN}"
 COLS = [
     "n",
     "set",
@@ -25,13 +29,13 @@ COLS = [
 ]
 
 if sys.argv[1:] == ["draw"]:
-    pool = json.loads((D / "pool.json").read_text())
-    rnd = random.Random(7)
+    pool = json.loads((D / f"pool{SUF}.json").read_text())
+    rnd = random.Random(7 if RUN == "1" else 8)
     pick = rnd.sample([x for x in pool if x["set"] == "ruling-set"], 70) + rnd.sample(
         [x for x in pool if x["set"] == "kora"], 30
     )
     rnd.shuffle(pick)
-    with open(D / "sheet.csv", "w", newline="") as f:
+    with open(D / f"sheet{SUF}.csv", "w", newline="") as f:
         w = csv.DictWriter(f, COLS)
         w.writeheader()
         for i, x in enumerate(pick, 1):
@@ -57,9 +61,9 @@ if sys.argv[1:] == ["draw"]:
                     "note": "",
                 }
             )
-    print("wrote", D / "sheet.csv")
+    print("wrote", D / f"sheet{SUF}.csv")
 else:
-    rows = list(csv.DictReader(open(D / "sheet.csv")))
+    rows = list(csv.DictReader(open(D / f"sheet{SUF}.csv")))
     v = [r["verdict"].strip().lower() for r in rows]
     y, n = v.count("y"), v.count("n")
     print(f"{y} correct, {n} wrong, {len(v) - y - n} unmarked of {len(v)}")

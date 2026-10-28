@@ -131,6 +131,10 @@ def _required(rule: Rule, doc: Document) -> list[Finding]:
     when = re.search(rule.params["when_regex"], text)
     if not when or re.search(rule.params["must_regex"], text):
         return []
+    if (
+        rule.params.get("anchor") == "end"
+    ):  # what's missing belongs at the end, not on the first words
+        when = list(re.finditer(rule.params["when_regex"], text))[-1]
     explanation = rule.params.get("message") or rule.title
     return [_finding(rule, when.group(), _span(when), explanation)]
 
