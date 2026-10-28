@@ -33,3 +33,11 @@ rulebook. Scoring is fixed in advance:
 - A **false alarm** is a clean post that gets a blocking finding or one sent to a person. Advisory notes on
   clean posts are reported separately.
 - The checker, rules and prompts are not changed after seeing results.
+
+## Run log
+- **Run 1** (28 Oct 18:22 IST, commit `e504548`): 27 of 30 issues caught; 0 of 10 clean posts blocked, but
+  9 of 10 clean posts carried advisory "TM-K1" notes. Cause: my own data error, not the engine: the term
+  list gave "KORA" as a wrong variant of the preferred name "Kora", and matching ignores case, so the
+  correct name flagged itself. Kept as `results_run1.json`.
+- **Run 2**: after removing that variant from `terms.csv`, nothing else changed (rules, facts, labels, code).
+  This was decided after seeing run 1, as a data fix, so both runs are published and run 1 is not hidden.
