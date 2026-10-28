@@ -65,3 +65,11 @@ The set was collected on 28 Oct 2026, inside the Round 3 window. It uses public 
   where it cannot see the advertiser's evidence.
 - Misses are listed in full with the claim and what Plumbline said instead. The result is published
   whatever it is.
+
+## Run log (decided in this order; the checker, rulebook and prompts are the same in both runs)
+- **Run 1** (28 Oct 17:17 IST, commit `d563614`): ads submitted back to back. 15 of 41 ads hit the free
+  model tiers' rate limits and ran with the AI checks unavailable or partial, which lowers recall for a
+  reason that is about quota, not about Plumbline's rules. Kept as `results_run1.json`.
+- **Run 2**: the same ads, the same code, paced at 12 s between ads so the AI checks run. Decided after
+  seeing that 15 ads were affected, **before** seeing any run-2 number. Both are published; the headline
+  is run 2, and run 1 shows what happens under rate limiting.

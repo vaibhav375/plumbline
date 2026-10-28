@@ -7,6 +7,7 @@ Nothing is saved to the database: the rulebook is read as the demo agency writer
 """
 
 import json
+import os
 import subprocess
 import time
 from collections import Counter
@@ -25,7 +26,8 @@ from plumbline.pipeline import run_check
 
 ROOT = Path(__file__).resolve().parents[3]
 RULINGS = ROOT / "data/rulings/rulings.jsonl"
-OUT = ROOT / "data/rulings/results.json"
+OUT = ROOT / os.environ.get("RESULTS", "data/rulings/results.json")
+PACE = float(os.environ.get("PACE", "0"))  # seconds between ads, to stay under the free model rate limits
 
 
 def claim_span(text: str, claim: str) -> tuple[int, int] | None:
@@ -61,6 +63,7 @@ def main() -> None:
     ads = [json.loads(line) for line in RULINGS.read_text().splitlines()]
     results, seen_models = [], Counter()
     for n, ad in enumerate(ads, 1):
+        time.sleep(PACE) if n > 1 else None
         doc = parse_upload("ad.txt", ad["ad_text"].encode(), 1)
         events = []
         llm = LLM(default_chain(s), events.append)
