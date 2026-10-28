@@ -227,3 +227,12 @@ def test_redirect_loops_and_errors_and_huge_bodies_are_contained():
     big = client(lambda r: httpx.Response(200, text="word " * 600_000))
     text = watch.fetch_page("https://example.com/", big, public)
     assert len(text) <= watch.MAX_BYTES
+
+
+def test_generated_demo_history_is_not_a_live_post(monkeypatch):
+    rows = [
+        {"title": "[synthetic] CL-03 sample 1", "claims_used": []},
+        {"title": "Real post", "claims_used": []},
+    ]
+    monkeypatch.setattr(watch, "_one", lambda *a: rows)
+    assert [p["title"] for p in watch.live(None, "org")] == ["Real post"]

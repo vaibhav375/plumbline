@@ -234,7 +234,9 @@ def drift_detail(result: dict) -> str:
 
 
 def live(s: Settings, org: str) -> list[dict]:
-    return _json(_one(s, "select public.watch_live(%s)", org))
+    """Live posts, minus the generated history that seeds the guideline-health demo."""
+    posts = _json(_one(s, "select public.watch_live(%s)", org))
+    return [p for p in posts if not p["title"].startswith("[synthetic]")]
 
 
 def facts_and_wordings(s: Settings, org: str) -> tuple[list[Fact], list[ApprovedWording]]:
