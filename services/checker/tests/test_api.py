@@ -668,3 +668,11 @@ def test_cors_allows_the_app_domains_and_nothing_else(client):
     assert allowed("https://plumbline-git-redesign-3-pes1ug23cs665s-projects.vercel.app")
     assert not allowed("https://getplumbline.xyz.evil.com")
     assert not allowed("https://notgetplumbline.xyz")
+
+
+def test_cors_allows_delete_for_revoking_links_and_keys(client):
+    r = client.options(
+        "/v1/connect/gate-keys/x",
+        headers={"Origin": "https://getplumbline.xyz", "Access-Control-Request-Method": "DELETE"},
+    )
+    assert r.status_code == 200 and "DELETE" in r.headers["access-control-allow-methods"]

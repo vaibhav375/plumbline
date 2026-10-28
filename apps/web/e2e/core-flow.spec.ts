@@ -347,3 +347,25 @@ test("checker down shows message", async ({ page }) => {
   await expect(page.getByRole("alert").filter({ hasText: /\S/ })).toHaveCount(0);
   expect(calls).toBe(2);
 });
+
+// Round 3, improvement 2: only the brand owner has the Connect page, and it makes a one-time code.
+test("the brand owner can create a link code and a gate key; others have no Connect page", async ({ page }) => {
+  await page.goto("/login");
+  await page.getByRole("button", { name: "Try as Creator" }).click();
+  await expect(page).toHaveURL(/\/check/, { timeout: 30_000 });
+  await expect(page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Connect" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Sign out" }).click();
+  await expect(page).toHaveURL(/\/login/);
+
+  await page.getByRole("button", { name: "Try as Brand owner" }).click();
+  await expect(page).toHaveURL(/\/health/, { timeout: 30_000 });
+  await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Connect" }).click();
+  await page.getByRole("button", { name: "Create a link code" }).click();
+  await expect(page.getByRole("status").filter({ hasText: /^[A-Z0-9]{4}-[A-Z0-9]{4}/ })).toBeVisible({ timeout: 90_000 });
+  await page.getByLabel("Name the tool").fill("e2e tool");
+  await page.getByRole("button", { name: "Create a gate key" }).click();
+  await expect(page.getByText(/plk_/).first()).toBeVisible({ timeout: 30_000 });
+  const row = page.getByRole("listitem").filter({ hasText: "e2e tool" });
+  await row.getByRole("button", { name: "Revoke" }).click();
+  await expect(row.getByText("Revoked")).toBeVisible({ timeout: 30_000 });
+});

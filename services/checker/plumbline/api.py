@@ -69,7 +69,7 @@ app.add_middleware(
         "CORS_ORIGIN_REGEX",
         r"https://plumbline[\w-]*\.vercel\.app|https://(www\.)?getplumbline\.xyz",
     ),
-    allow_methods=["GET", "POST"],
+    allow_methods=["GET", "POST", "DELETE"],
     allow_headers=["Authorization", "Content-Type", "X-Request-ID"],
     expose_headers=["X-Request-ID", "Server-Timing"],
 )
