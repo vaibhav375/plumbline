@@ -1,0 +1,2726 @@
+{
+ "summary": {
+  "commit": "0e4a8b1",
+  "run_at": "2026-10-28 17:26 IST",
+  "models": {
+   "groq/openai/gpt-oss-20b": 40,
+   "groq/qwen/qwen3.8-27b": 41,
+   "groq/openai/gpt-oss-120b": 2
+  },
+  "ads": 41,
+  "ads_run": 41,
+  "ads_failed": 0,
+  "ai_unavailable": 0,
+  "upheld_claims": 81,
+  "caught": 72,
+  "strict": 59,
+  "lenient": 78,
+  "cleared_claims": 3,
+  "cleared_flagged": 1,
+  "unlocated_claims": 0,
+  "by_source": {
+   "ASA": {
+    "upheld": 38,
+    "caught": 33
+   },
+   "ASCI": {
+    "upheld": 43,
+    "caught": 39
+   }
+  },
+  "by_issue": {
+   "comparison": {
+    "upheld": 4,
+    "caught": 4
+   },
+   "medicinal": {
+    "upheld": 10,
+    "caught": 8
+   },
+   "misleading-implication": {
+    "upheld": 6,
+    "caught": 5
+   },
+   "responsibility": {
+    "upheld": 1,
+    "caught": 1
+   },
+   "substantiation": {
+    "upheld": 60,
+    "caught": 54
+   }
+  },
+  "ads_with_a_catch": 37,
+  "median_ms": 1207
+ },
+ "results": [
+  {
+   "id": "ASA-001",
+   "source": "ASA",
+   "ms": 6962,
+   "ai_status": "ok",
+   "findings": 16,
+   "needs_human": 1,
+   "claims": [
+    {
+     "text": "clinically proven to reduce wrinkles in 4 weeks",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": null,
+       "quote": "CLINICALLY PROVEN"
+      },
+      {
+       "rule": "DL-REQ",
+       "fact": null,
+       "kind": "blocking",
+       "status": null,
+       "quote": "CLINICALLY"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "CLINICALLY"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "PROVEN"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "REDUCE"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "WRINKLES"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "WEEKS"
+      },
+      {
+       "rule": "TN-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "CLINICALLY PROVEN TO REDUCE WRINKLES IN 4 WEEKS"
+      },
+      {
+       "rule": "CL-01",
+       "fact": "FACT-013",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "CLINICALLY PROVEN TO REDUCE WRINKLES IN 4 WEEKS"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASA-002",
+   "source": "ASA",
+   "ms": 876,
+   "ai_status": "ok",
+   "findings": 5,
+   "needs_human": 2,
+   "claims": [
+    {
+     "text": "Clinically proven To Lift The Skin By 20%",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "DL-REQ",
+       "fact": null,
+       "kind": "blocking",
+       "status": null,
+       "quote": "Clinically"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Clinically proven To Lift The Skin By 20%"
+      }
+     ]
+    },
+    {
+     "text": "This protocol helps visibly lift and tighten the skin, reduce the appearance of deep wrinkles",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": "FACT-013",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "This protocol helps visibly lift and tighten the skin, reduce the appearance of "
+      }
+     ]
+    },
+    {
+     "text": "Visibly renew and rejuvenate the skin in 4 weeks",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Visibly renew and rejuvenate the skin in 4 weeks"
+      }
+     ]
+    },
+    {
+     "text": "Powered by exosomes which help boost and regenerate the skin barrier",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": "FACT-015",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "Powered by exosomes which help boost and regenerate the skin barrier"
+      }
+     ]
+    },
+    {
+     "text": "innovative microspicule delivery system which helps enhance the absorption of the active ingredients",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": false,
+     "strict": false,
+     "lenient": false,
+     "by": []
+    }
+   ]
+  },
+  {
+   "id": "ASA-003",
+   "source": "ASA",
+   "ms": 1297,
+   "ai_status": "ok",
+   "findings": 13,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "LOOK UP TO 5 YEARS YOUNGER",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "Eucerin LOOK UP TO 5 YEARS YOUNGER*"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "LOOK"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "YEARS"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "YOUNGER"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "LOOK UP TO 5 YEARS YOUNGER"
+      },
+      {
+       "rule": "TN-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "LOOK UP TO 5 YEARS YOUNGER*"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASA-004",
+   "source": "ASA",
+   "ms": 3312,
+   "ai_status": "ok",
+   "findings": 6,
+   "needs_human": 2,
+   "claims": [
+    {
+     "text": "clinically proven to reduce hyperpigmentation in 2 weeks",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": null,
+       "quote": "clinically proven"
+      },
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "Now with a 4% active concentration, clinically proven to reduce hyperpigmentatio"
+      },
+      {
+       "rule": "DL-REQ",
+       "fact": null,
+       "kind": "blocking",
+       "status": null,
+       "quote": "clinically"
+      },
+      {
+       "rule": "CL-01",
+       "fact": "FACT-013",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "clinically proven to reduce hyperpigmentation in 2 weeks"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASA-005",
+   "source": "ASA",
+   "ms": 1291,
+   "ai_status": "ok",
+   "findings": 18,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "A NEW MODE OF ACTION LIKE NEVER BEFORE",
+     "outcome": "not_upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": false,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "NEW"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "MODE"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "ACTION"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "LIKE"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "NEVER"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "BEFORE"
+      },
+      {
+       "rule": "TN-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "A NEW MODE OF ACTION LIKE NEVER BEFORE"
+      }
+     ]
+    },
+    {
+     "text": "N1 DERMATOLOGIST RECOMMENDED BRAND IN THE UK",
+     "outcome": "not_upheld",
+     "issue": "comparison",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "DERMATOLOGIST"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "RECOMMENDED"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "BRAND"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "THE"
+      },
+      {
+       "rule": "CL-05",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "N1 DERMATOLOGIST RECOMMENDED BRAND IN THE UK"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASA-006",
+   "source": "ASA",
+   "ms": 1784,
+   "ai_status": "ok",
+   "findings": 26,
+   "needs_human": 1,
+   "claims": [
+    {
+     "text": "ADVANCED MEDICAL-GRADE SCAR TREATMENT",
+     "outcome": "not_upheld",
+     "issue": "medicinal",
+     "located": true,
+     "caught": false,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "ADVANCED MEDICAL-GRADE SCAR TREATMENT"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "ADVANCED"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "MEDICAL"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "GRADE"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "SCAR"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "TREATMENT"
+      }
+     ]
+    },
+    {
+     "text": "clinically proven to reduce the appearance of Keloid and Hypertrophic scars, whether old or new",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": null,
+       "quote": "clinically proven"
+      },
+      {
+       "rule": "DL-REQ",
+       "fact": null,
+       "kind": "blocking",
+       "status": null,
+       "quote": "clinically"
+      },
+      {
+       "rule": "CL-01",
+       "fact": "FACT-013",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "clinically proven to reduce the appearance of Keloid"
+      }
+     ]
+    },
+    {
+     "text": "86% REDUCTION IN SCAR TEXTURE",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "REDUCTION"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "SCAR"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "TEXTURE"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "86% REDUCTION IN SCAR TEXTURE"
+      }
+     ]
+    },
+    {
+     "text": "84% REDUCTION IN SCAR COLOUR",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "REDUCTION"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "SCAR"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "COLOUR"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "84% REDUCTION IN SCAR COLOUR"
+      }
+     ]
+    },
+    {
+     "text": "68% REDUCTION IN SCAR HEIGHT",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "REDUCTION"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "SCAR"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "HEIGHT"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "68% REDUCTION IN SCAR HEIGHT"
+      }
+     ]
+    },
+    {
+     "text": "MINIMISE SCAR [sic] AS FAST AS 6 WEEKS",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "MINIMISE"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "SCAR"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "FAST"
+      },
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "WEEKS"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "MINIMISE SCAR [sic] AS FAST AS 6 WEEKS"
+      },
+      {
+       "rule": "TN-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "MINIMISE SCAR [sic] AS FAST AS 6 WEEKS"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASA-007",
+   "source": "ASA",
+   "ms": 821,
+   "ai_status": "ok",
+   "findings": 2,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "I've decided to finally go Wild",
+     "outcome": "upheld",
+     "issue": "misleading-implication",
+     "located": true,
+     "caught": false,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "As a breast cancer thriver I'm prioritising my health and I've decided to finall"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASA-008",
+   "source": "ASA",
+   "ms": 1820,
+   "ai_status": "ok",
+   "findings": 8,
+   "needs_human": 2,
+   "claims": [
+    {
+     "text": "Turns out most deodorants block your body from being able to sweat properly.",
+     "outcome": "upheld",
+     "issue": "comparison",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "Turns out most deodorants block your body from being able to sweat properly"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "most deodorants block your body from being able to sweat properly"
+      },
+      {
+       "rule": "TN-01",
+       "fact": null,
+       "kind": "human",
+       "status": null,
+       "quote": "Turns out most deodorants block your body from being able to sweat properly."
+      }
+     ]
+    },
+    {
+     "text": "Your pores get clogged with all the sweat and toxins that your body is supposed to release",
+     "outcome": "upheld",
+     "issue": "comparison",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Your pores get clogged with all the sweat and toxins that your body is supposed "
+      },
+      {
+       "rule": "TN-04",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "Your pores get clogged with all the sweat and toxins that your body is supposed "
+      }
+     ]
+    },
+    {
+     "text": "you can end up with itchy armpits, and rashes and body odour",
+     "outcome": "upheld",
+     "issue": "comparison",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "you can end up with itchy armpits, and rashes and body odour"
+      }
+     ]
+    },
+    {
+     "text": "there are various studies linking aluminium salts to some undesirable side effects on health",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "DL-REQ",
+       "fact": null,
+       "kind": "blocking",
+       "status": null,
+       "quote": "studies"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "there are various studies linking aluminium salts to some undesirable side effec"
+      },
+      {
+       "rule": "TN-01",
+       "fact": null,
+       "kind": "human",
+       "status": null,
+       "quote": "there are various studies linking aluminium salts to some undesirable side effec"
+      }
+     ]
+    },
+    {
+     "text": "upsetting some fine-tuned hormonal balances, for example within the endocrine system",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "upsetting some fine-tuned hormonal balances, for example within the endocrine sy"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASA-009",
+   "source": "ASA",
+   "ms": 523,
+   "ai_status": "ok",
+   "findings": 3,
+   "needs_human": 1,
+   "claims": [
+    {
+     "text": "Deeply clean your pores, remove blackheads, reduce excess oil",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "Deeply clean your pores, remove blackheads, reduce excess oil"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Deeply clean your pores"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "remove blackheads"
+      },
+      {
+       "rule": "CL-01",
+       "fact": "FACT-013",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "reduce excess oil"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASA-010",
+   "source": "ASA",
+   "ms": 933,
+   "ai_status": "ok",
+   "findings": 3,
+   "needs_human": 2,
+   "claims": [
+    {
+     "text": "Helps stimulate growth",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Helps stimulate growth"
+      }
+     ]
+    },
+    {
+     "text": "Helps reduce thinning",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": "FACT-013",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "Helps reduce thinning"
+      }
+     ]
+    },
+    {
+     "text": "Thicker hair goals",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": false,
+     "strict": false,
+     "lenient": false,
+     "by": []
+    }
+   ]
+  },
+  {
+   "id": "ASA-011",
+   "source": "ASA",
+   "ms": 1638,
+   "ai_status": "ok",
+   "findings": 7,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "Whiter teeth within 2 minutes, no more expensive whiter treatments are needed",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Whiter teeth within 2 minutes"
+      }
+     ]
+    },
+    {
+     "text": "More Effective Than Traditional Toothpaste",
+     "outcome": "upheld",
+     "issue": "comparison",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "More Effective Than Traditional Toothpaste"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASA-012",
+   "source": "ASA",
+   "ms": 1507,
+   "ai_status": "ok",
+   "findings": 5,
+   "needs_human": 2,
+   "claims": [
+    {
+     "text": "Non-hormonal menopause solution",
+     "outcome": "upheld",
+     "issue": "medicinal",
+     "located": true,
+     "caught": false,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "Non-hormonal menopause solution"
+      }
+     ]
+    },
+    {
+     "text": "magnesium helps manage and reduce hot flushes",
+     "outcome": "upheld",
+     "issue": "medicinal",
+     "located": true,
+     "caught": true,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": "FACT-013",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "magnesium helps manage and reduce hot flushes"
+      }
+     ]
+    },
+    {
+     "text": "helps balance hormones",
+     "outcome": "upheld",
+     "issue": "medicinal",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "helps balance hormones"
+      }
+     ]
+    },
+    {
+     "text": "Calms restless legs",
+     "outcome": "upheld",
+     "issue": "medicinal",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Calms restless legs"
+      }
+     ]
+    },
+    {
+     "text": "Soothes a migraine",
+     "outcome": "upheld",
+     "issue": "medicinal",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Soothes a migraine"
+      }
+     ]
+    },
+    {
+     "text": "Reduces anxiety",
+     "outcome": "upheld",
+     "issue": "medicinal",
+     "located": true,
+     "caught": true,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": "FACT-013",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "Reduces anxiety"
+      }
+     ]
+    },
+    {
+     "text": "tackling insomnia and encouraging more restful nights",
+     "outcome": "upheld",
+     "issue": "medicinal",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "tackling insomnia and encouraging more restful nights"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASA-013",
+   "source": "ASA",
+   "ms": 1519,
+   "ai_status": "ok",
+   "findings": 4,
+   "needs_human": 1,
+   "claims": [
+    {
+     "text": "clinically proven light therapy targeting acne",
+     "outcome": "upheld",
+     "issue": "medicinal",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "clinically proven light therapy targeting acne"
+      },
+      {
+       "rule": "DL-REQ",
+       "fact": null,
+       "kind": "blocking",
+       "status": null,
+       "quote": "clinically"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "clinically proven light therapy targeting acne"
+      }
+     ]
+    },
+    {
+     "text": "targeted solutions for acne, rosacea",
+     "outcome": "upheld",
+     "issue": "medicinal",
+     "located": true,
+     "caught": false,
+     "strict": false,
+     "lenient": false,
+     "by": []
+    },
+    {
+     "text": "Clinical studies have shown that specific wavelengths of LED light can reduce acne-causing bacteria",
+     "outcome": "upheld",
+     "issue": "medicinal",
+     "located": true,
+     "caught": true,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "TN-03",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "LED"
+      },
+      {
+       "rule": "CL-01",
+       "fact": "FACT-013",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "Clinical studies have shown that specific wavelengths of LED light can reduce ac"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASA-014",
+   "source": "ASA",
+   "ms": 1457,
+   "ai_status": "ok",
+   "findings": 4,
+   "needs_human": 1,
+   "claims": [
+    {
+     "text": "Clinically proven to reverse visible signs of sun damage.",
+     "outcome": "upheld",
+     "issue": "responsibility",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "DL-REQ",
+       "fact": null,
+       "kind": "blocking",
+       "status": null,
+       "quote": "Clinically"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Clinically proven to reverse visible signs of sun damage"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASA-015",
+   "source": "ASA",
+   "ms": 1680,
+   "ai_status": "ok",
+   "findings": 3,
+   "needs_human": 1,
+   "claims": [
+    {
+     "text": "if you use it regularly enough, it's gonna give you more long-term results.",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "if you use it regularly enough, it's gonna give you more long-term results"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "if you use it regularly enough, it's gonna give you more long-term results"
+      },
+      {
+       "rule": "TN-05",
+       "fact": null,
+       "kind": "human",
+       "status": null,
+       "quote": "it's gonna give you more long-term results"
+      }
+     ]
+    },
+    {
+     "text": "naturally improving collagen production",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "We can confirm that our Hyaluronic Lip Plumper creates long term plumping result"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-001",
+   "source": "ASCI",
+   "ms": 765,
+   "ai_status": "ok",
+   "findings": 1,
+   "needs_human": 1,
+   "claims": [
+    {
+     "text": "Keeps you up to 100% dandruff free",
+     "outcome": "upheld",
+     "issue": "misleading-implication",
+     "located": true,
+     "caught": true,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "Keeps you up to 100% dandruff free"
+      },
+      {
+       "rule": "CL-01",
+       "fact": "FACT-011",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "Keeps you up to 100% dandruff free"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-002",
+   "source": "ASCI",
+   "ms": 834,
+   "ai_status": "ok",
+   "findings": 2,
+   "needs_human": 1,
+   "claims": [
+    {
+     "text": "Dandruff free smooth baal, Rs 2 ka kamaal",
+     "outcome": "upheld",
+     "issue": "misleading-implication",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "Dandruff free smooth baal, Rs 2 ka kamaal"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Rs 2 ka kamaal"
+      },
+      {
+       "rule": "CL-01",
+       "fact": "FACT-011",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "Dandruff free smooth baal"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-003",
+   "source": "ASCI",
+   "ms": 1918,
+   "ai_status": "ok",
+   "findings": 3,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "That's Why Dentist Recommended",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": false,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "That's Why Dentist Recommended"
+      },
+      {
+       "rule": "TN-05",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "That's Why Dentist Recommended"
+      }
+     ]
+    },
+    {
+     "text": "Eight out of 10 dentists recommend Sensodyne for sensitive teeth",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Eight out of 10 dentists recommend Sensodyne for sensitive teeth"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-004",
+   "source": "ASCI",
+   "ms": 832,
+   "ai_status": "ok",
+   "findings": 2,
+   "needs_human": 1,
+   "claims": [
+    {
+     "text": "It reduces melanin formation and makes your skin fairer day by day",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-07",
+       "fact": null,
+       "kind": "blocking",
+       "status": null,
+       "quote": "fairer"
+      },
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "It reduces melanin formation and makes your skin fairer day by day"
+      },
+      {
+       "rule": "CL-01",
+       "fact": "FACT-013",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "It reduces melanin formation and makes your skin fairer day by day"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-005",
+   "source": "ASCI",
+   "ms": 719,
+   "ai_status": "ok",
+   "findings": 1,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "Hair Fall ka Sahi Solution",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": false,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "Hair Fall ka Sahi Solution"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-006",
+   "source": "ASCI",
+   "ms": 1484,
+   "ai_status": "ok",
+   "findings": 4,
+   "needs_human": 1,
+   "claims": [
+    {
+     "text": "The formulation is an enriched version of natural sebum, which instantly penetrates and plumps the skin",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "The formulation is an enriched version of natural sebum, which instantly penetra"
+      },
+      {
+       "rule": "CL-03",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "The formulation is an enriched version of natural sebum"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "instantly penetrates and plumps the skin"
+      },
+      {
+       "rule": "TN-05",
+       "fact": null,
+       "kind": "human",
+       "status": null,
+       "quote": "The formulation is an enriched version of natural sebum"
+      }
+     ]
+    },
+    {
+     "text": "This potent formula has powerful anti-ageing properties that visibly diminishes signs of ageing by eliminating fine lines and restoring firmness, leaving the skin firm, toned and more youthful",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "has powerful anti-ageing properties that visibly diminishes signs of ageing by e"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-007",
+   "source": "ASCI",
+   "ms": 637,
+   "ai_status": "ok",
+   "findings": 2,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "most effective and precious ingredients",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "most effective and precious ingredients"
+      },
+      {
+       "rule": "CL-04",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "most effective and precious ingredients"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-008",
+   "source": "ASCI",
+   "ms": 1480,
+   "ai_status": "ok",
+   "findings": 5,
+   "needs_human": 1,
+   "claims": [
+    {
+     "text": "Kumkumadikeram night cream is a highly effective night cream which contains powerful Ayurvedic preparations of Kumkumadikeram and Manikya (Ruby) Bhasma which helps to lighten pigmentation and clarify the skin",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "Kumkumadikeram night cream is a highly effective night cream which contains powe"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "highly effective night cream"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "helps to lighten pigmentation and clarify the skin"
+      },
+      {
+       "rule": "TN-01",
+       "fact": null,
+       "kind": "human",
+       "status": null,
+       "quote": "highly effective"
+      }
+     ]
+    },
+    {
+     "text": "ManikyaBhasma has miraculous skin rejuvenating properties",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "has miraculous skin rejuvenating properties"
+      },
+      {
+       "rule": "TN-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "miraculous"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-009",
+   "source": "ASCI",
+   "ms": 873,
+   "ai_status": "ok",
+   "findings": 3,
+   "needs_human": 1,
+   "claims": [
+    {
+     "text": "It regenerates cellular tissue and collagen and slows down skin ageing",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "It regenerates cellular tissue and collagen and slows down skin ageing"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "It regenerates cellular tissue and collagen and slows down skin ageing"
+      }
+     ]
+    },
+    {
+     "text": "Prevents wrinkle formation, removes dark patches and restores skin elasticity and firmness",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Prevents wrinkle formation, removes dark patches and restores skin elasticity an"
+      }
+     ]
+    },
+    {
+     "text": "Precious ingredients of this cream fight free radicles and prevent oxidative damage caused by UV rays and pollution",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": "FACT-011",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "Precious ingredients of this cream fight free radicles and prevent oxidative dam"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-010",
+   "source": "ASCI",
+   "ms": 2028,
+   "ai_status": "ok",
+   "findings": 2,
+   "needs_human": 1,
+   "claims": [
+    {
+     "text": "Enriched with botanical extracts and vitamins, this formulation offers powerful protection against free radicals",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "Enriched with botanical extracts and vitamins, this formulation offers powerful "
+      },
+      {
+       "rule": "CL-01",
+       "fact": "FACT-011",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "offers powerful protection against free radicals"
+      }
+     ]
+    },
+    {
+     "text": "Infused with natural extracts of herbs & roots, it gives perfect protection against ageing, dark spots, blemishes and skin darkening",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": "FACT-014",
+       "kind": "blocking",
+       "status": "contradicted",
+       "quote": "gives perfect protection against ageing, dark spots, blemishes and skin darkenin"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-011",
+   "source": "ASCI",
+   "ms": 1905,
+   "ai_status": "ok",
+   "findings": 6,
+   "needs_human": 2,
+   "claims": [
+    {
+     "text": "This great formula not only lightens the dark pigmentation but also removes cellulite and scars of the skin to make it radiant and glowing",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "This great formula not only lightens the dark pigmentation but also removes cell"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "lightens the dark pigmentation"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "removes cellulite and scars of the skin"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "make it radiant and glowing"
+      },
+      {
+       "rule": "TN-01",
+       "fact": null,
+       "kind": "human",
+       "status": null,
+       "quote": "This great formula not only lightens the dark pigmentation but also removes cell"
+      }
+     ]
+    },
+    {
+     "text": "Get a flawless and graceful skin of intimate areas by Namyaa Intimate Skin Whitening gel in just six to eight weeks",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-07",
+       "fact": null,
+       "kind": "blocking",
+       "status": null,
+       "quote": "Whitening"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Get a flawless and graceful skin of intimate areas by Namyaa Intimate Skin White"
+      },
+      {
+       "rule": "TN-01",
+       "fact": null,
+       "kind": "human",
+       "status": null,
+       "quote": "Get a flawless and graceful skin of intimate areas by Namyaa Intimate Skin White"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-012",
+   "source": "ASCI",
+   "ms": 620,
+   "ai_status": "ok",
+   "findings": 3,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "Glow and shine on face",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "Glow and shine on face"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Glow and shine on face"
+      }
+     ]
+    },
+    {
+     "text": "Effective from day one itself",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Effective from day one itself"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-013",
+   "source": "ASCI",
+   "ms": 1194,
+   "ai_status": "ok",
+   "findings": 2,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "Removes the shortest hair that salon wax cannot",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "Removes the shortest hair that salon wax cannot"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Removes the shortest hair that salon wax cannot"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-014",
+   "source": "ASCI",
+   "ms": 848,
+   "ai_status": "ok",
+   "findings": 1,
+   "needs_human": 2,
+   "claims": [
+    {
+     "text": "For pimple free skin 21 days formula",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "For pimple free skin 21 days formula"
+      },
+      {
+       "rule": "CL-01",
+       "fact": "FACT-011",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "For pimple free skin 21 days formula"
+      },
+      {
+       "rule": "CL-01",
+       "fact": "FACT-011",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "For pimple free skin"
+      }
+     ]
+    },
+    {
+     "text": "For pimple free skin",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "For pimple free skin 21 days formula"
+      },
+      {
+       "rule": "CL-01",
+       "fact": "FACT-011",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "For pimple free skin 21 days formula"
+      },
+      {
+       "rule": "CL-01",
+       "fact": "FACT-011",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "For pimple free skin"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-015",
+   "source": "ASCI",
+   "ms": 1207,
+   "ai_status": "ok",
+   "findings": 3,
+   "needs_human": 1,
+   "claims": [
+    {
+     "text": "India's most trusted brand",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "India's most trusted brand"
+      },
+      {
+       "rule": "TN-06",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "India's most trusted brand"
+      },
+      {
+       "rule": "CL-04",
+       "fact": "FACT-002",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "India's most trusted brand"
+      }
+     ]
+    },
+    {
+     "text": "Unlike any cream and oil based cosmetic products, this Ayurvedic Aloe Gel naturally protects your skin",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "this Ayurvedic Aloe Gel naturally protects your skin"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-016",
+   "source": "ASCI",
+   "ms": 867,
+   "ai_status": "ok",
+   "findings": 2,
+   "needs_human": 1,
+   "claims": [
+    {
+     "text": "gives you pimple-free pure skin",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "gives you pimple-free pure skin"
+      },
+      {
+       "rule": "CL-01",
+       "fact": "FACT-011",
+       "kind": "human",
+       "status": "needs_human",
+       "quote": "gives you pimple-free pure skin"
+      }
+     ]
+    },
+    {
+     "text": "Prevents pimples",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Prevents pimples"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-017",
+   "source": "ASCI",
+   "ms": 733,
+   "ai_status": "ok",
+   "findings": 1,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "Eh damaged baloonko nourish karkehairfallkamkare",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": false,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "Eh damaged baloonko nourish karkehairfallkamkare"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-018",
+   "source": "ASCI",
+   "ms": 574,
+   "ai_status": "ok",
+   "findings": 3,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "Anne French All Natural Apnao",
+     "outcome": "upheld",
+     "issue": "misleading-implication",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "Anne French All Natural Apnao"
+      },
+      {
+       "rule": "CL-03",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Anne French All Natural Apnao"
+      }
+     ]
+    },
+    {
+     "text": "2x softer skin",
+     "outcome": "upheld",
+     "issue": "misleading-implication",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "2x softer skin"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-019",
+   "source": "ASCI",
+   "ms": 2748,
+   "ai_status": "ok",
+   "findings": 6,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "A skin care treatment formulated with 5000 years of Ayurvedic wisdom from the granthas",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": false,
+     "strict": false,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "A skin care treatment formulated with 5000 years of Ayurvedic wisdom from the gr"
+      },
+      {
+       "rule": "GM10",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "5000"
+      },
+      {
+       "rule": "TM-012",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "skin care"
+      }
+     ]
+    },
+    {
+     "text": "The purifying properties of Turmeric (haldi) are known to enhance complexion",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "The purifying properties of Turmeric (haldi) are known to enhance complexion"
+      }
+     ]
+    },
+    {
+     "text": "Kumkumadi Tailam is known to cure marks",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-02",
+       "fact": null,
+       "kind": "blocking",
+       "status": null,
+       "quote": "cure"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Kumkumadi Tailam is known to cure marks"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-020",
+   "source": "ASCI",
+   "ms": 3509,
+   "ai_status": "ok",
+   "findings": 6,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "A fairness treatment formulated with 5000 years of Ayurvedic wisdom",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-07",
+       "fact": null,
+       "kind": "blocking",
+       "status": null,
+       "quote": "fairness"
+      },
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "A fairness treatment formulated with 5000 years of Ayurvedic wisdom"
+      },
+      {
+       "rule": "GM10",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "5000"
+      }
+     ]
+    },
+    {
+     "text": "The rich blend of Saffron and Kumkumadi Tailam is known to cure marks and lighten skin complexion",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-02",
+       "fact": null,
+       "kind": "blocking",
+       "status": null,
+       "quote": "cure"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "The rich blend of Saffron and Kumkumadi Tailam is known to cure marks and lighte"
+      },
+      {
+       "rule": "TN-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "cure marks"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-021",
+   "source": "ASCI",
+   "ms": 333,
+   "ai_status": "ok",
+   "findings": 2,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "100% tak Dandruff Jayega Aur Waapas Nahin Aayega",
+     "outcome": "upheld",
+     "issue": "misleading-implication",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "100% tak Dandruff Jayega Aur Waapas Nahin Aayega"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "100% tak Dandruff Jayega Aur"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-022",
+   "source": "ASCI",
+   "ms": 586,
+   "ai_status": "ok",
+   "findings": 2,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "grows new hair",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "grows new hair"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "grows new hair"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-023",
+   "source": "ASCI",
+   "ms": 575,
+   "ai_status": "ok",
+   "findings": 2,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "arrests hair fall and makes your hair thicker and stronger",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "arrests hair fall and makes your hair thicker and stronger"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "arrests hair fall and makes your hair thicker and stronger"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-024",
+   "source": "ASCI",
+   "ms": 747,
+   "ai_status": "ok",
+   "findings": 3,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "Protects you from all forms of sun damage like tanning, sun spots and premature ageing",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "Protects you from all forms of sun damage like tanning, sun spots and premature "
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Protects you from all forms of sun damage like tanning, sun spots and premature "
+      }
+     ]
+    },
+    {
+     "text": "Lightens skin by regulating skin darkening pigments",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "Lightens skin by regulating skin darkening pigments"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-025",
+   "source": "ASCI",
+   "ms": 1921,
+   "ai_status": "ok",
+   "findings": 6,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "Our Fair'e skin lightening gel and A'ffair skin lightening cream help in getting rid of dark spots and patches",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-07",
+       "fact": null,
+       "kind": "blocking",
+       "status": null,
+       "quote": "skin lightening"
+      },
+      {
+       "rule": "CL-07",
+       "fact": null,
+       "kind": "blocking",
+       "status": null,
+       "quote": "skin lightening"
+      },
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "Our Fair'e skin lightening gel and A'ffair skin lightening cream help in getting"
+      }
+     ]
+    },
+    {
+     "text": "The herbs present in them detoxify the blood and boost circulation to fade freckles and skin discolorations thus making the skin tone more even toned and giving it a lighter appearance",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "detoxify the blood"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "boost circulation to fade freckles and skin discolorations"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "making the skin tone more even toned and giving it a lighter appearance"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ASCI-026",
+   "source": "ASCI",
+   "ms": 2245,
+   "ai_status": "ok",
+   "findings": 2,
+   "needs_human": 0,
+   "claims": [
+    {
+     "text": "This rich gold pack is specially formulated with high percentage of 24 carat gold leaves which gives an instant shine and lustre to the facial skin",
+     "outcome": "upheld",
+     "issue": "substantiation",
+     "located": true,
+     "caught": true,
+     "strict": true,
+     "lenient": true,
+     "by": [
+      {
+       "rule": "CTA-01",
+       "fact": null,
+       "kind": "advisory",
+       "status": null,
+       "quote": "This rich gold pack is specially formulated with high percentage of 24 carat gol"
+      },
+      {
+       "rule": "CL-01",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported",
+       "quote": "high percentage of 24 carat gold leaves which gives an instant shine and lustre "
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

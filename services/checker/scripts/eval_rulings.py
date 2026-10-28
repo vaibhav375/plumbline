@@ -27,7 +27,9 @@ from plumbline.pipeline import run_check
 ROOT = Path(__file__).resolve().parents[3]
 RULINGS = ROOT / "data/rulings/rulings.jsonl"
 OUT = ROOT / os.environ.get("RESULTS", "data/rulings/results.json")
-PACE = float(os.environ.get("PACE", "0"))  # seconds between ads, to stay under the free model rate limits
+PACE = float(
+    os.environ.get("PACE", "0")
+)  # seconds between ads, to stay under the free model rate limits
 
 
 def claim_span(text: str, claim: str) -> tuple[int, int] | None:
