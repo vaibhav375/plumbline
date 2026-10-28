@@ -202,3 +202,20 @@ def test_approved_wording_choice_does_not_depend_on_row_order(aurelle):
     for ctx in (aurelle, reordered):
         findings, _, _ = run(ctx)
         assert by_quote(findings, "60%").fix.ref_id == "AW-014b"
+
+
+def test_a_rulebook_with_its_own_claim_rule_ids_works(aurelle):
+    # Found by loading a second brand: claims used to cite CL-01, CL-03, CL-04 and CL-05 by name.
+    renamed = {"CL-01": "FN-C1", "CL-03": "FN-C3", "CL-04": "FN-C4", "CL-05": "FN-C5"}
+    rules = [r.model_copy(update={"id": renamed.get(r.id, r.id)}) for r in aurelle.rules]
+    ctx = aurelle.model_copy(update={"rules": rules})
+    findings, _, _ = run(ctx)
+    claim_findings = [f for f in findings if f.category == "claim"]
+    assert claim_findings and all(f.rule_id.startswith("FN-C") for f in claim_findings)
+    assert not any(f.rule_id in renamed for f in claim_findings)
+
+
+def test_a_rulebook_with_no_claim_rule_says_so(aurelle):
+    ctx = aurelle.model_copy(update={"rules": [r for r in aurelle.rules if r.category != "claim"]})
+    with pytest.raises(ValueError, match="category 'claim'"):
+        run(ctx)

@@ -340,7 +340,9 @@ def verify_claim(
         # rule in the "claim" category instead of the ids Aurelle's rulebook happens to use.
         claim_rules = sorted((r for r in ctx.rules if r.category == "claim"), key=lambda r: r.id)
         if not claim_rules:
-            raise ValueError("The rulebook needs at least one rule with category 'claim' for claim checks.")
+            raise ValueError(
+                "The rulebook needs at least one rule with category 'claim' for claim checks."
+            )
         rule = claim_rules[0]
     method = "code"
     fix = Fix(kind="none", note=NO_FIX)

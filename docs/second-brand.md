@@ -24,7 +24,7 @@ cites the first rule in the `claim` category, and a rulebook with no claim rule 
 that fix, Kora needed no other change: the pipeline, validators, fixes, review and gate are unchanged.
 
 ## The test (`data/rulings` style, labels frozen before the run)
-`data/korapay/posts.jsonl`: 20 problem posts with 29 labelled issues, and 10 clean posts written to the
+`data/korapay/posts.jsonl`: 20 problem posts with 30 labelled issues, and 10 clean posts written to the
 rulebook. Scoring is fixed in advance:
 - An issue is **caught** if Plumbline raises the expected thing at that place: for a *claim* issue, a
   blocking finding or one sent to a person that overlaps the quoted words; for a *rule* issue, a finding
