@@ -50,6 +50,15 @@ def describe(kind: str, p: dict) -> str:
     if kind == "versions.update":
         frm, to = (str(p.get(k, "")).replace("_", " ") for k in ("from_status", "status"))
         return f"moved a version from {frm} to {to}"
+    if kind == "rule_changes.insert":
+        return {
+            "graduate": f"Plumbline made {p.get('rule_id')} blocking: {p.get('why')}",
+            "demote": f"Plumbline made {p.get('rule_id')} advisory again: {p.get('why')}",
+            "undo": f"undid the automatic graduation of {p.get('rule_id')}",
+            "unpin": f"let Plumbline decide again about {p.get('rule_id')}",
+            "clarify": f"accepted a clearer wording for {p.get('rule_id')}",
+            "revert": f"restored the earlier wording of {p.get('rule_id')}",
+        }.get(p.get("kind"), "changed a rule")
     if kind == "versions.insert":
         return f"saved version {p.get('n')}" + (" (private)" if p.get("private") else "")
     return kind

@@ -23,17 +23,25 @@ def decide(db, org, user, upheld, disagreed, rule_id="TN-90"):
         v = make_version(db, org, user)
         run = db.execute(
             "insert into check_runs (org_id, version_id, report_json, rulebook_version)"
-            " values (%s, %s, '{}', 'v1') returning id", (org, v)).fetchone()[0]
+            " values (%s, %s, '{}', 'v1') returning id",
+            (org, v),
+        ).fetchone()[0]
         f = db.execute(
             "insert into findings (org_id, run_id, rule_id, category, severity, advisory, quote)"
-            " values (%s, %s, %s, 'tone', 'minor', true, 'q') returning id", (org, run, rule_id)).fetchone()[0]
-        db.execute("insert into decisions (org_id, finding_id, actor, action, reason) values (%s, %s, %s, %s, 'r')",
-                   (org, f, user, action))
+            " values (%s, %s, %s, 'tone', 'minor', true, 'q') returning id",
+            (org, run, rule_id),
+        ).fetchone()[0]
+        db.execute(
+            "insert into decisions (org_id, finding_id, actor, action, reason) values (%s, %s, %s, %s, 'r')",
+            (org, f, user, action),
+        )
 
 
 def state(db, org):
-    return db.execute("select maturity, pinned, graduated_auto from rules where org_id = %s and id = 'TN-90'",
-                      (org,)).fetchone()
+    return db.execute(
+        "select maturity, pinned, graduated_auto from rules where org_id = %s and id = 'TN-90'",
+        (org,),
+    ).fetchone()
 
 
 def setup(db):
@@ -46,10 +54,20 @@ def test_a_rule_graduates_at_the_threshold_and_the_move_is_audited(db):
     rule(db, org)
     decide(db, org, rev, 12, 0)  # lower bound of 12/12 is 0.757: not enough
     assert state(db, org)[0] == "advisory"
-    decide(db, org, rev, 8, 0)  # it crossed at 16/16 (0.806): the trigger stops at the first crossing
+    decide(
+        db, org, rev, 8, 0
+    )  # it crossed at 16/16 (0.806): the trigger stops at the first crossing
     assert state(db, org) == ("blocking", False, True)
-    assert db.execute("select kind, n, upheld from rule_changes where org_id = %s", (org,)).fetchall() == [("graduate", 16, 16)]
-    assert db.execute("select count(*) from audit_events where org_id = %s and kind = 'rule_changes.insert'", (org,)).fetchone()[0] == 1
+    assert db.execute(
+        "select kind, n, upheld from rule_changes where org_id = %s", (org,)
+    ).fetchall() == [("graduate", 16, 16)]
+    assert (
+        db.execute(
+            "select count(*) from audit_events where org_id = %s and kind = 'rule_changes.insert'",
+            (org,),
+        ).fetchone()[0]
+        == 1
+    )
 
 
 def test_no_graduation_below_ten_decisions_or_below_the_bound_or_for_mandatory_rules(db):
@@ -63,7 +81,9 @@ def test_no_graduation_below_ten_decisions_or_below_the_bound_or_for_mandatory_r
     mu = make_user(db, m, "reviewer")
     rule(db, m, tier="mandatory", owner="compliance")
     decide(db, m, mu, 30, 0)
-    assert db.execute("select count(*) from rule_changes where org_id = %s", (m,)).fetchone()[0] == 0
+    assert (
+        db.execute("select count(*) from rule_changes where org_id = %s", (m,)).fetchone()[0] == 0
+    )
 
 
 def test_agreement_that_falls_demotes_an_automatic_graduation_with_a_gap(db):
@@ -75,7 +95,12 @@ def test_agreement_that_falls_demotes_an_automatic_graduation_with_a_gap(db):
     assert state(db, org)[0] == "blocking"
     decide(db, org, rev, 0, 12)  # 25/40 -> below
     assert state(db, org) == ("advisory", False, False)
-    assert [k for (k,) in db.execute("select kind from rule_changes where org_id = %s order by at", (org,))] == ["graduate", "demote"]
+    assert [
+        k
+        for (k,) in db.execute(
+            "select kind from rule_changes where org_id = %s order by at", (org,)
+        )
+    ] == ["graduate", "demote"]
 
 
 def test_undo_returns_to_advisory_pins_the_rule_and_it_is_not_graduated_again(db):
@@ -112,14 +137,28 @@ def test_a_draft_changes_nothing_until_accepted_and_can_be_reverted(db):
     rule(db, org)
     as_user(db, owner)
     new = '{"title": "Sound warm", "instruction": "new", "examples_good": ["a"], "examples_bad": ["b"]}'
-    cid = db.execute("select clarification_save('TN-90', %s::jsonb, '{}', '{}')", (new,)).fetchone()[0]
-    assert db.execute("select title, params->>'instruction' from rules where id = 'TN-90' and org_id = %s", (org,)).fetchone() == ("Be warm", "old")
+    cid = db.execute(
+        "select clarification_save('TN-90', %s::jsonb, '{}', '{}')", (new,)
+    ).fetchone()[0]
+    assert db.execute(
+        "select title, params->>'instruction' from rules where id = 'TN-90' and org_id = %s", (org,)
+    ).fetchone() == ("Be warm", "old")
     db.execute("select clarification_accept(%s, %s::jsonb)", (cid, new))
-    assert db.execute("select title, params->>'instruction', examples_bad from rules where id = 'TN-90' and org_id = %s", (org,)).fetchone() == ("Sound warm", "new", ["b"])
+    assert db.execute(
+        "select title, params->>'instruction', examples_bad from rules where id = 'TN-90' and org_id = %s",
+        (org,),
+    ).fetchone() == ("Sound warm", "new", ["b"])
     db.execute("select clarification_revert(%s)", (cid,))
-    assert db.execute("select title, params->>'instruction' from rules where id = 'TN-90' and org_id = %s", (org,)).fetchone() == ("Be warm", "old")
+    assert db.execute(
+        "select title, params->>'instruction' from rules where id = 'TN-90' and org_id = %s", (org,)
+    ).fetchone() == ("Be warm", "old")
     as_admin(db)
-    assert [k for (k,) in db.execute("select kind from rule_changes where org_id = %s order by at", (org,))] == ["clarify", "revert"]
+    assert [
+        k
+        for (k,) in db.execute(
+            "select kind from rule_changes where org_id = %s order by at", (org,)
+        )
+    ] == ["clarify", "revert"]
 
 
 def test_cases_are_only_this_orgs_public_decisions(db):

@@ -20,12 +20,12 @@ from uagents_core.contrib.protocols.chat import ChatAcknowledgement, ChatMessage
 from uagents_core.envelope import Envelope
 from uagents_core.utils.messages import parse_envelope
 
-from plumbline import agent, audit, auth, connect, db, ops, review, watch
+from plumbline import agent, audit, auth, connect, db, learn, ops, review, watch
 from plumbline import health as guideline
 from plumbline.auth import ApiError, User
 from plumbline.config import Settings
 from plumbline.fixes import apply_fixes
-from plumbline.llm import LLM, EgressEvent, default_chain
+from plumbline.llm import LLM, EgressEvent, LLMUnavailable, default_chain
 from plumbline.models import CheckReport, Document, Fix, Intent, OrgContext, ParseError
 from plumbline.parsers import parse_upload
 from plumbline.pipeline import run_check
@@ -482,6 +482,111 @@ def guideline_health(u: CurrentUser, ctx: Annotated[OrgContext, Depends(org_cont
         "rules": assessed,
         "by_origin": origins if org else None,
     }
+
+
+def _rpc(u: User, fn: str, args: dict | None = None):
+    """A rule-owner action. The database decides who may; its refusals become plain errors."""
+    try:
+        return db.rpc(cfg(), u.token, fn, args)
+    except db.RpcError as e:
+        if e.status in (401, 403) or "not allowed" in e.message:
+            raise ApiError(403, "forbidden", "Only the owner of this rule can do that.") from None
+        raise ApiError(409, "not_possible", e.message or "That can't be done now.") from None
+
+
+@app.get("/v1/rules/changes")
+def rule_changes(u: CurrentUser) -> dict:
+    """Automatic graduations and demotions, undos and rewordings, newest first. Reviewer roles only."""
+    if u.role not in REVIEW_ROLES:
+        raise ApiError(403, "forbidden", "Only reviewers can see rule changes.")
+    s = cfg()
+    pinned = [r for r in db.pinned_rules(s, u.token)]
+    return {"changes": db.rule_changes(s, u.token), "pinned": pinned}
+
+
+@app.post("/v1/rules/{rule_id}/undo")
+def rule_undo(u: CurrentUser, rule_id: str) -> dict:
+    """Undo an automatic graduation. The rule goes back to advisory and stays there until released."""
+    _rpc(u, "rule_undo", {"p_rule": rule_id})
+    return {"ok": True}
+
+
+@app.post("/v1/rules/{rule_id}/release")
+def rule_release(u: CurrentUser, rule_id: str) -> dict:
+    """Let Plumbline decide again about a rule whose graduation was undone."""
+    _rpc(u, "rule_unpin", {"p_rule": rule_id})
+    return {"ok": True}
+
+
+@app.get("/v1/rules/{rule_id}/clarifications")
+def rule_clarifications(u: CurrentUser, rule_id: str) -> dict:
+    if u.role not in REVIEW_ROLES:
+        raise ApiError(403, "forbidden", "Only reviewers can see drafts.")
+    return {"drafts": db.clarifications(cfg(), u.token, rule_id)}
+
+
+@app.post("/v1/rules/{rule_id}/clarify")
+def rule_clarify(
+    u: CurrentUser, rule_id: str, ctx: Annotated[OrgContext, Depends(org_context)]
+) -> dict:
+    """Draft a clearer wording for a rule reviewers disagree with, and score it against the old wording on
+    decisions it was not written from. Nothing changes until the rule owner accepts."""
+    s = cfg()
+    rule = next((r for r in ctx.rules if r.id == rule_id), None)
+    if rule is None:
+        raise NOT_FOUND
+    if rule.tier != "brand":
+        raise ApiError(409, "not_possible", "Only brand rules can be reworded here.")
+    rows = _rpc(u, "rule_cases", {"p_rule": rule_id}) or []
+    cases = learn.cases_from(rows)
+    disagreed = sum(not c.should_flag for c in cases)
+    if len(cases) < learn.MIN_CASES or disagreed < 3:
+        raise ApiError(
+            409,
+            "too_few",
+            f"This rule has {len(cases)} usable decisions ({disagreed} where reviewers disagreed). "
+            f"Drafting needs at least {learn.MIN_CASES} and 3 disagreements.",
+        )
+    events: list[EgressEvent] = []
+    try:
+        result = learn.evaluate(learn.wording_of(rule), cases, LLM(default_chain(s), events.append))
+    except LLMUnavailable:
+        raise ApiError(
+            503, "ai_unavailable", "The AI models are busy. Try again in a minute."
+        ) from None
+    evidence = {"cases": len(cases), "disagreed": disagreed, "trained_on": result["trained_on"]}
+    cid = _rpc(
+        u,
+        "clarification_save",
+        {
+            "p_rule": rule_id,
+            "p_new": result["new"],
+            "p_evidence": evidence,
+            "p_replay": result["held_out"],
+        },
+    )
+    return {"id": cid, "old": learn.wording_of(rule).model_dump()} | result | {"evidence": evidence}
+
+
+@app.post("/v1/clarifications/{draft_id}/accept")
+def clarification_accept(
+    u: CurrentUser, draft_id: UUID, wording: Annotated[learn.Wording, Body()]
+) -> dict:
+    """Accept the draft, optionally as the owner edited it. This is what changes the live rule."""
+    _rpc(u, "clarification_accept", {"p_id": str(draft_id), "p_wording": wording.model_dump()})
+    return {"ok": True}
+
+
+@app.post("/v1/clarifications/{draft_id}/reject")
+def clarification_reject(u: CurrentUser, draft_id: UUID) -> dict:
+    _rpc(u, "clarification_reject", {"p_id": str(draft_id)})
+    return {"ok": True}
+
+
+@app.post("/v1/clarifications/{draft_id}/revert")
+def clarification_revert(u: CurrentUser, draft_id: UUID) -> dict:
+    _rpc(u, "clarification_revert", {"p_id": str(draft_id)})
+    return {"ok": True}
 
 
 AUDIT_RECENT = 200

@@ -672,3 +672,40 @@ def escalations(s: Settings, token: str, record_ids: list[str]) -> list[dict]:
             action="eq.escalate",
             select="finding_id,reason",
         )
+
+
+def rpc(s: Settings, token: str, fn: str, args: dict | None = None):
+    """Call a database function as the signed-in caller (its own checks decide whether they may)."""
+    with client_for(s, token) as c:
+        r = c.post(f"/rpc/{fn}", json=args or {})
+        if r.status_code >= 400:
+            raise RpcError(r.status_code, (r.json() if r.content else {}).get("message", ""))
+        return r.json() if r.content else None
+
+
+class RpcError(Exception):
+    def __init__(self, status: int, message: str):
+        super().__init__(message)
+        self.status, self.message = status, message
+
+
+def rule_changes(s: Settings, token: str, limit: int = 50) -> list[dict]:
+    with client_for(s, token) as c:
+        return _get(c, "rule_changes", select="*", order="at.desc", limit=str(limit))
+
+
+def clarifications(s: Settings, token: str, rule_id: str) -> list[dict]:
+    with client_for(s, token) as c:
+        return _get(
+            c,
+            "rule_clarifications",
+            select="*",
+            rule_id=f"eq.{rule_id}",
+            order="created_at.desc",
+            limit="5",
+        )
+
+
+def pinned_rules(s: Settings, token: str) -> list[str]:
+    with client_for(s, token) as c:
+        return [r["id"] for r in _get(c, "rules", select="id", pinned="is.true")]
