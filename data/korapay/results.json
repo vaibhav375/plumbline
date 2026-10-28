@@ -1,0 +1,842 @@
+{
+ "summary": {
+  "commit": "c0f7d33",
+  "run_at": "2026-10-28 18:28 IST",
+  "posts": 30,
+  "run": 30,
+  "ai_not_ok": 0,
+  "issues": 30,
+  "caught": 27,
+  "caught_blocks": [
+   19,
+   22
+  ],
+  "caught_flag": [
+   8,
+   8
+  ],
+  "by_kind": {
+   "rule": [
+    20,
+    21
+   ],
+   "claim": [
+    7,
+    9
+   ]
+  },
+  "clean_posts": 10,
+  "false_alarms_blocking_or_human": 0,
+  "clean_with_any_finding": 0
+ },
+ "results": [
+  {
+   "id": "KP-01",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "rule",
+     "quote": "guaranteed returns",
+     "expect": "FN-C1",
+     "level": "blocks",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-C1",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      },
+      {
+       "rule": "FN-C1",
+       "fact": "FACT-K07",
+       "kind": "human",
+       "status": "needs_human"
+      }
+     ]
+    },
+    {
+     "kind": "claim",
+     "quote": "12% every month",
+     "expect": "FACT-K01",
+     "level": "blocks",
+     "note": "contradicts 6.5% p.a.",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-C1",
+       "fact": "FACT-K07",
+       "kind": "human",
+       "status": "needs_human"
+      }
+     ]
+    }
+   ],
+   "blocking_or_human": [
+    "FN-C1",
+    "FN-C1"
+   ],
+   "findings": 2
+  },
+  {
+   "id": "KP-02",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "rule",
+     "quote": "RBI approved",
+     "expect": "FN-C2",
+     "level": "blocks",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-C2",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      }
+     ]
+    },
+    {
+     "kind": "claim",
+     "quote": "in 2 minutes",
+     "expect": "FACT-K10",
+     "level": "blocks",
+     "note": "evidence says under 5 minutes, not 2",
+     "caught": false,
+     "by": []
+    }
+   ],
+   "blocking_or_human": [
+    "FN-C2",
+    "FN-C1"
+   ],
+   "findings": 2
+  },
+  {
+   "id": "KP-03",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "rule",
+     "quote": "India's most trusted",
+     "expect": "FN-C3",
+     "level": "blocks",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-C3",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      }
+     ]
+    }
+   ],
+   "blocking_or_human": [
+    "FN-C3",
+    "FN-C1"
+   ],
+   "findings": 2
+  },
+  {
+   "id": "KP-04",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "rule",
+     "quote": "100% secure",
+     "expect": "FN-C4",
+     "level": "blocks",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-C4",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      },
+      {
+       "rule": "FN-C4",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      }
+     ]
+    }
+   ],
+   "blocking_or_human": [
+    "FN-C4",
+    "FN-C4",
+    "FN-C1",
+    "FN-C1"
+   ],
+   "findings": 4
+  },
+  {
+   "id": "KP-05",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "rule",
+     "quote": "instant approval",
+     "expect": "FN-C5",
+     "level": "blocks",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-C5",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      },
+      {
+       "rule": "FN-C5",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      }
+     ]
+    },
+    {
+     "kind": "rule",
+     "quote": "no credit check",
+     "expect": "FN-C5",
+     "level": "blocks",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-C5",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      },
+      {
+       "rule": "FN-C5",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      }
+     ]
+    },
+    {
+     "kind": "rule",
+     "quote": "loan or credit offer without APR",
+     "expect": "FN-R2",
+     "level": "blocks",
+     "note": "",
+     "caught": false,
+     "by": []
+    }
+   ],
+   "blocking_or_human": [
+    "FN-C5",
+    "FN-C5",
+    "FN-C1",
+    "FN-C1",
+    "FN-T1"
+   ],
+   "findings": 5
+  },
+  {
+   "id": "KP-06",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "rule",
+     "quote": "investment without the market-risk disclaimer",
+     "expect": "FN-R1",
+     "level": "blocks",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-R1",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      }
+     ]
+    }
+   ],
+   "blocking_or_human": [
+    "FN-R1"
+   ],
+   "findings": 1
+  },
+  {
+   "id": "KP-07",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "claim",
+     "quote": "8% interest",
+     "expect": "FACT-K01",
+     "level": "blocks",
+     "note": "contradicts 6.5% p.a.",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-R3",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      }
+     ]
+    },
+    {
+     "kind": "rule",
+     "quote": "interest rate without 'p.a.'",
+     "expect": "FN-R3",
+     "level": "flag",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-R3",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      }
+     ]
+    }
+   ],
+   "blocking_or_human": [
+    "FN-R3"
+   ],
+   "findings": 1
+  },
+  {
+   "id": "KP-08",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "claim",
+     "quote": "₹500",
+     "expect": "FACT-K12",
+     "level": "blocks",
+     "note": "evidence says ₹200",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-C1",
+       "fact": "FACT-K12",
+       "kind": "blocking",
+       "status": "contradicted"
+      }
+     ]
+    },
+    {
+     "kind": "rule",
+     "quote": "offer without T&Cs",
+     "expect": "FN-R4",
+     "level": "flag",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-R4",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      }
+     ]
+    }
+   ],
+   "blocking_or_human": [
+    "FN-R4",
+    "FN-C1"
+   ],
+   "findings": 2
+  },
+  {
+   "id": "KP-09",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "claim",
+     "quote": "zero joining fee",
+     "expect": "FACT-K13",
+     "level": "blocks",
+     "note": "the offer ended 30 September 2026",
+     "caught": false,
+     "by": []
+    }
+   ],
+   "blocking_or_human": [],
+   "findings": 0
+  },
+  {
+   "id": "KP-10",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "rule",
+     "quote": "Kora Gold",
+     "expect": "FN-K1",
+     "level": "blocks",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-K1",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      }
+     ]
+    }
+   ],
+   "blocking_or_human": [
+    "FN-K1",
+    "FACT-K14"
+   ],
+   "findings": 2
+  },
+  {
+   "id": "KP-11",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "rule",
+     "quote": "Rs.",
+     "expect": "FN-S1",
+     "level": "flag",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-S1",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      }
+     ]
+    },
+    {
+     "kind": "rule",
+     "quote": "offer without T&Cs",
+     "expect": "FN-R4",
+     "level": "flag",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-R4",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      }
+     ]
+    }
+   ],
+   "blocking_or_human": [
+    "FN-R4",
+    "FN-S1",
+    "FN-C1",
+    "FN-C1"
+   ],
+   "findings": 5
+  },
+  {
+   "id": "KP-12",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "rule",
+     "quote": "gifted without disclosure",
+     "expect": "FN-R6",
+     "level": "blocks",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-R6",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      }
+     ]
+    }
+   ],
+   "blocking_or_human": [
+    "FN-R6"
+   ],
+   "findings": 1
+  },
+  {
+   "id": "KP-13",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "claim",
+     "quote": "5 million users",
+     "expect": "FACT-K05",
+     "level": "blocks",
+     "note": "evidence says 2.4 million",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-C1",
+       "fact": "FACT-K05",
+       "kind": "blocking",
+       "status": "contradicted"
+      }
+     ]
+    }
+   ],
+   "blocking_or_human": [
+    "FN-C1"
+   ],
+   "findings": 1
+  },
+  {
+   "id": "KP-14",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "claim",
+     "quote": "fully protected, up to any amount",
+     "expect": "FACT-K02",
+     "level": "blocks",
+     "note": "insured up to ₹5,00,000",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-C1",
+       "fact": "FACT-K01",
+       "kind": "human",
+       "status": "needs_human"
+      }
+     ]
+    },
+    {
+     "kind": "rule",
+     "quote": "deposits without the partner-bank statement",
+     "expect": "FN-R5",
+     "level": "flag",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-R5",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      }
+     ]
+    }
+   ],
+   "blocking_or_human": [
+    "FN-R5",
+    "FN-C1"
+   ],
+   "findings": 2
+  },
+  {
+   "id": "KP-15",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "claim",
+     "quote": "IMPS of any size",
+     "expect": "FACT-K09",
+     "level": "blocks",
+     "note": "limit is ₹5,00,000 per transaction",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-C1",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported"
+      }
+     ]
+    }
+   ],
+   "blocking_or_human": [
+    "FN-C1"
+   ],
+   "findings": 1
+  },
+  {
+   "id": "KP-16",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "claim",
+     "quote": "more than any bank",
+     "expect": "none",
+     "level": "blocks",
+     "note": "comparative claim with no fact",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-C1",
+       "fact": null,
+       "kind": "blocking",
+       "status": "unsupported"
+      }
+     ]
+    },
+    {
+     "kind": "rule",
+     "quote": "savings account without the partner-bank statement",
+     "expect": "FN-R5",
+     "level": "flag",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-R5",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      }
+     ]
+    }
+   ],
+   "blocking_or_human": [
+    "FN-R5",
+    "FN-C1"
+   ],
+   "findings": 2
+  },
+  {
+   "id": "KP-17",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "rule",
+     "quote": "Double your money",
+     "expect": "FN-C1",
+     "level": "blocks",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-C1",
+       "fact": "FACT-K07",
+       "kind": "blocking",
+       "status": "contradicted"
+      }
+     ]
+    },
+    {
+     "kind": "rule",
+     "quote": "investment without the market-risk disclaimer",
+     "expect": "FN-R1",
+     "level": "blocks",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-R1",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      }
+     ]
+    }
+   ],
+   "blocking_or_human": [
+    "FN-R1",
+    "FN-C1"
+   ],
+   "findings": 2
+  },
+  {
+   "id": "KP-18",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "rule",
+     "quote": "loan without APR",
+     "expect": "FN-R2",
+     "level": "blocks",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-R2",
+       "fact": null,
+       "kind": "blocking",
+       "status": null
+      }
+     ]
+    }
+   ],
+   "blocking_or_human": [
+    "FN-R2",
+    "FN-C1"
+   ],
+   "findings": 2
+  },
+  {
+   "id": "KP-19",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "rule",
+     "quote": "Don't miss out! Everyone is already saving with Kora. Act now or lose out.",
+     "expect": "FN-T1",
+     "level": "flag",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-T1",
+       "fact": null,
+       "kind": "other",
+       "status": null
+      },
+      {
+       "rule": "FN-T1",
+       "fact": null,
+       "kind": "other",
+       "status": null
+      },
+      {
+       "rule": "FN-T1",
+       "fact": null,
+       "kind": "other",
+       "status": null
+      }
+     ]
+    }
+   ],
+   "blocking_or_human": [],
+   "findings": 4
+  },
+  {
+   "id": "KP-20",
+   "clean": false,
+   "ai": "ok",
+   "issues": [
+    {
+     "kind": "rule",
+     "quote": "!!!",
+     "expect": "FN-T2",
+     "level": "flag",
+     "note": "",
+     "caught": true,
+     "by": [
+      {
+       "rule": "FN-T2",
+       "fact": null,
+       "kind": "other",
+       "status": null
+      }
+     ]
+    }
+   ],
+   "blocking_or_human": [],
+   "findings": 2
+  },
+  {
+   "id": "KC-01",
+   "clean": true,
+   "ai": "ok",
+   "issues": [],
+   "blocking_or_human": [],
+   "findings": 0
+  },
+  {
+   "id": "KC-02",
+   "clean": true,
+   "ai": "ok",
+   "issues": [],
+   "blocking_or_human": [],
+   "findings": 0
+  },
+  {
+   "id": "KC-03",
+   "clean": true,
+   "ai": "ok",
+   "issues": [],
+   "blocking_or_human": [],
+   "findings": 0
+  },
+  {
+   "id": "KC-04",
+   "clean": true,
+   "ai": "ok",
+   "issues": [],
+   "blocking_or_human": [],
+   "findings": 0
+  },
+  {
+   "id": "KC-05",
+   "clean": true,
+   "ai": "ok",
+   "issues": [],
+   "blocking_or_human": [],
+   "findings": 0
+  },
+  {
+   "id": "KC-06",
+   "clean": true,
+   "ai": "ok",
+   "issues": [],
+   "blocking_or_human": [],
+   "findings": 0
+  },
+  {
+   "id": "KC-07",
+   "clean": true,
+   "ai": "ok",
+   "issues": [],
+   "blocking_or_human": [],
+   "findings": 0
+  },
+  {
+   "id": "KC-08",
+   "clean": true,
+   "ai": "ok",
+   "issues": [],
+   "blocking_or_human": [],
+   "findings": 0
+  },
+  {
+   "id": "KC-09",
+   "clean": true,
+   "ai": "ok",
+   "issues": [],
+   "blocking_or_human": [],
+   "findings": 0
+  },
+  {
+   "id": "KC-10",
+   "clean": true,
+   "ai": "ok",
+   "issues": [],
+   "blocking_or_human": [],
+   "findings": 0
+  }
+ ]
+}

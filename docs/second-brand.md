@@ -41,3 +41,43 @@ rulebook. Scoring is fixed in advance:
   correct name flagged itself. Kept as `results_run1.json`.
 - **Run 2**: after removing that variant from `terms.csv`, nothing else changed (rules, facts, labels, code).
   This was decided after seeing run 1, as a data fix, so both runs are published and run 1 is not hidden.
+
+## Results (run 2; code `e504548`, terms fixed; raw: `data/korapay/results.json`, run 1: `results_run1.json`)
+
+| Measure | Result |
+|---|---|
+| Labelled issues caught | **27 of 30 = 90.0%** (run 1: also 27 of 30) |
+| Issues that must block: caught | 19 of 22 |
+| Issues that only need flagging (tone, style, offers): caught | 8 of 8 |
+| By kind: rule issues / claim issues | 20 of 21 / 7 of 9 |
+| Clean posts that were blocked or sent to a person | **0 of 10** |
+| Clean posts with any finding at all (run 2) | 0 of 10 (run 1: 9 of 10, all caused by the data error above) |
+| AI checks available | on all 30 posts |
+
+Both brands go through the same engine: Aurelle's 31 of 33 (Round 2 dev set) and 72 of 81 (regulator rulings),
+Kora's 27 of 30. These are different tests with different authors of the labels, so they are not one
+number; what they show together is that the engine is not tuned to one rulebook.
+
+### The 3 misses, in full
+1. **KP-05, "Need cash? Kora Credit gives instant approval, no credit check. Apply now."**, expected rule
+   FN-R2 (credit offers must state the APR). **Caught the two "instant approval" / "no credit check" issues
+   (FN-C5); missed the APR rule.** This one is partly my labelling error: FN-R2 triggers on the words
+   "loan", "credit line", "EMI" or "borrow", and this post says "Kora Credit" only, so the rule never
+   fired. The label stays as written (rewriting it after the run would be cheating); the cause is the rule's
+   trigger being too narrow, a rulebook fix a brand owner would make.
+2. **KP-02, "Open an account in 2 minutes."** The fact says "under 5 minutes". Plumbline judged the claim
+   *supported* and raised nothing on it. A regulator would ask for evidence of 2 minutes. This is a real
+   engine gap: the number check treats a time shorter than the evidence as consistent with "under N".
+   (It did catch the other issue in that post, "RBI approved".)
+3. **KP-09, "Join with zero joining fee on KoraCard."** The fact for this offer ended on 30 Sep 2026.
+   Plumbline found no claim in the sentence at all (code detection needs a number or a keyword, and the AI
+   extraction did not pick it up), so it never compared it with the expired fact. A real miss: "zero" /
+   "free" offers without a number are a known blind spot.
+
+### What this does and doesn't show
+- **Shows:** a brand from another sector, with different rules and facts, was loaded from four CSV files with
+  the same loader and checked by the same engine, with no clean post blocked and 9 in 10 issues caught.
+  Loading it found one real coupling (claim rule ids), fixed and tested.
+- **Doesn't show:** performance on real fintech ads: the 30 posts were written by the builder with an AI
+  assistant, with labels fixed before the run, so they are easier than ads written by others. This is
+  evidence the engine generalises, not a benchmark. The regulator-ruling run is the independent test.
