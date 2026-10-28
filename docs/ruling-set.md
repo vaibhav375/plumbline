@@ -15,7 +15,7 @@ ruling (`ad_text`), and for each challenged claim the regulator's decision (`uph
 a short reason, and an issue type (substantiation, comparison, medicinal, misleading implication,
 responsibility).
 
-**Current size:** 40 rulings (14 ASA, 26 ASCI), 82 claims: 79 upheld, 3 not upheld.
+**Current size:** 41 rulings (15 ASA, 26 ASCI), 84 claims: 81 upheld, 3 not upheld.
 
 ## How it was made
 1. Rulings were found by searching each regulator's site and press releases for personal-care and
@@ -29,7 +29,7 @@ responsibility).
    releases list only upheld complaints, so every ASCI claim is `upheld`; the not-upheld claims come
    from ASA rulings that decided issues one by one.
 4. `data/rulings/verify.py` re-reads every source (ASA pages, ASCI PDFs) and checks that each quoted
-   claim appears in it, ignoring case, spacing and punctuation. **All 82 claims pass.** It found one
+   claim appears in it, ignoring case, spacing and punctuation. **All 84 claims pass.** It found one
    mismatch while building (a "[sic]" the ruling prints), which was fixed in the data, not the check.
 5. Entries are stored as short quotations with the source link; the full rulings stay on the
    regulators' sites.

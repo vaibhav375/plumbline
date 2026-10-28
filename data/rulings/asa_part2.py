@@ -49,4 +49,9 @@ ASA2 = [
   url="https://www.asa.org.uk/rulings/the-boots-company-plc-g24-1242237-the-boots-company-plc.html",
   ad_text="Can't believe we didn't always use sunscreen.\nLet's not regret our sunny memories.\nClinically proven to reverse visible signs of sun damage. A world-first peptide technology.\nDon't regret just reverse.",
   claims=[dict(text="Clinically proven to reverse visible signs of sun damage.", outcome=U, why="Upheld as irresponsible: implied sunscreen can be skipped. Not an evidence ruling.", issue="responsibility")]),
+ dict(id="ASA-015", source="ASA", date="2023-11-22", advertiser="D&A Cosmetics Ltd (Plumpit!)", product="Plumpit! No Needles Lip Filler Kit (Hyaluronic Lip Plumper)", medium="influencer TikTok post",
+  url="https://www.asa.org.uk/rulings/d-a-cosmetics-ltd-g23-1201871-da-cosmetics-ltd.html",
+  ad_text="if you use it regularly enough, it's gonna give you more long-term results.\nWe can confirm that our Hyaluronic Lip Plumper creates long term plumping results by naturally improving collagen production",
+  claims=[dict(text="if you use it regularly enough, it's gonna give you more long-term results.", outcome=U, why="Testing ended after one month; no control group; different balm.", issue="substantiation"),
+          dict(text="naturally improving collagen production", outcome=U, why="Physiological claim with no adequate evidence.", issue="substantiation")]),
 ]
