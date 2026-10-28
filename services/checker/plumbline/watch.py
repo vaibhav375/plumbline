@@ -194,12 +194,26 @@ def _sentences(text: str) -> list[str]:
     return [p.strip() for p in parts if len(p.strip()) >= 20]
 
 
+_NUM = re.compile(r"\d+(?:[.,]\d+)?")
+
+
+def _present(sentence: str, low_page: str) -> bool:
+    """The sentence is on the page: a close fuzzy match whose numbers are exactly the same. A claim that
+    quietly went from 32% in 8 weeks to 60% in 2 weeks is one character-ish away in fuzzy terms, so
+    numbers are compared on their own."""
+    s = sentence.lower()
+    al = fuzz.partial_ratio_alignment(s, low_page)
+    if al is None or al.score < MATCH:
+        return False
+    window = low_page[al.dest_start : al.dest_end]
+    return sorted(_NUM.findall(s)) == sorted(_NUM.findall(window))
+
+
 def drift(approved: str, page: str) -> dict:
     """Approved sentences that are missing or altered on the page. Extra text on the page is ignored."""
     low = page.lower()
     sentences = _sentences(approved)
-    missing = [s for s in sentences if fuzz.partial_ratio(s.lower(), low) < MATCH]
-    return {"checked": len(sentences), "missing": missing}
+    return {"checked": len(sentences), "missing": [s for s in sentences if not _present(s, low)]}
 
 
 def page_result(approved: str, page_text: str) -> dict:
