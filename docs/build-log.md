@@ -1253,3 +1253,29 @@ drive dropping mid-run.
 
 **Not yet verified live:** linking a real ASI:One address (needs the account owner to send
 `link CODE` to the agent).
+
+## Improvement 1, part 1: claim watch (28 Oct)
+
+Design: `docs/superpowers/specs/2026-10-28-improvement-1-design.md`.
+
+**Built.** Check reports now record `claims_used` (each supported claim with its fact and a digest of that
+fact). Migration 0014 adds watch tasks and registered live pages (closed to users; narrow role only). The
+scan compares what each approved post relied on with the facts now and opens one task per post and fact for
+the most serious reason (withdrawn, expired, unverified, changed), assigned to the post's owner, with the
+approved replacement wording for a changed fact; a restricted fact is never named. A registered live URL is
+read with SSRF guards and compared with the approved text sentence by sentence; numbers are compared on
+their own. A Claim watch page shows tasks and pages.
+
+**Evidence.** Checker 312 tests (31 new), database 33 (7 new). Live: a freshly approved post recorded
+`FACT-010`; scan of 3 live posts gave 0 tasks; then `FACT-010`'s end date was set to 2026-10-01, and the next
+scan opened exactly one task, on the one post that used it ("The claim “up to 72 hours of hydration” relies
+on FACT-010, which expired on 2026-10-01", owner Creator Asha); a repeat scan opened none; the creator saw
+that one task; the date was restored to 2027-09-30 straight away and the task dismissed as a demonstration.
+Internal URLs (169.254.169.254) are refused with 422; a creator's scan attempt gets 403.
+
+**Found by testing.** (1) Fuzzy matching alone missed a changed number: "60% in 2 weeks" scored ≥ 90 against
+"32% in 8 weeks". Numbers are now compared separately. (2) The first scan listed 184 generated demo-history
+items as live posts; they are filtered out. (3) Posts checked before this change have no fact record, so
+they are only covered once re-checked.
+
+**Next:** the ASCI and UK ASA ruling set, the second brand by CSV, and the evaluation.
