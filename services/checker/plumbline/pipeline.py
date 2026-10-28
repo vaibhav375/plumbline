@@ -21,6 +21,7 @@ from plumbline.llm import LLM
 from plumbline.models import (
     DEFAULT_NOT_CHECKED,
     CheckReport,
+    ClaimUse,
     Coverage,
     Document,
     Finding,
@@ -215,6 +216,11 @@ def run_check(
         ]
 
     supported = [f for f in claim_findings if f.claim_status not in PROBLEM]
+    claims_used = [
+        ClaimUse(fact_id=f.fact_id, quote=f.quote, digest=facts[f.fact_id].digest)
+        for f in supported
+        if f.claim_status == "supported" and f.category != "confidential" and f.fact_id in facts
+    ]
     text, intent_result = suggested_version(
         doc, findings + supported, intent, rec, ctx.rules, ctx.terms, claims=claims, allow=allow
     )
@@ -241,6 +247,7 @@ def run_check(
         version_id=None,
         findings=findings,
         needs_human=needs_human,
+        claims_used=claims_used,
         dropped_count=len(dropped),
         coverage=coverage,
         suggested_text=text,

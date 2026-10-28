@@ -1,6 +1,7 @@
 """All shared pydantic types. Offsets are Python string indices (Unicode code points) into
 Document.text; the web converts them to UTF-16 before highlighting."""
 
+import hashlib
 from datetime import date
 from typing import Literal
 
@@ -128,6 +129,26 @@ class Fact(BaseModel):
     def code_only(self) -> bool:
         return self.confidentiality in {"confidential", "embargoed"}
 
+    @property
+    def digest(self) -> str:
+        """Fingerprint of what a claim can rely on: change any of these and a post that used the fact
+        needs another look (the claim watch compares it with the digest saved at check time)."""
+        parts = [
+            self.statement,
+            self.value,
+            self.unit,
+            self.product,
+            self.market,
+            self.population,
+            self.duration,
+            self.valid_from,
+            self.valid_until,
+            self.confidentiality,
+            self.embargo_until,
+            self.verified,
+        ]
+        return hashlib.sha256("|".join(str(p) for p in parts).encode()).hexdigest()[:16]
+
 
 class ApprovedWording(BaseModel):
     id: str
@@ -224,6 +245,14 @@ class IntentResult(BaseModel):
         return all(self.model_dump().values())
 
 
+class ClaimUse(BaseModel):
+    """A claim in the text that rests on a fact, and that fact as it was when the post was checked."""
+
+    fact_id: str
+    quote: str
+    digest: str
+
+
 class CheckReport(BaseModel):
     run_id: str
     version_id: str | None
@@ -232,6 +261,7 @@ class CheckReport(BaseModel):
     checked_text: str | None = None  # exactly the text the offsets point into
     findings: list[Finding]
     needs_human: list[Finding] = []
+    claims_used: list[ClaimUse] = []  # supported claims and their facts, for the claim watch
     dropped_count: int = 0
     coverage: Coverage
     suggested_text: str | None = None
