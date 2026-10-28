@@ -62,13 +62,15 @@ language sql immutable set search_path = '' as $$
 $$;
 
 -- Counts as the health page does: decisions on findings of non-private versions.
-create function public.rule_counts(p_org uuid, p_rule text, out upheld bigint, out n bigint)
+create function public.rule_counts(p_org uuid, p_rule text, out upheld bigint, out n bigint, out sample bigint)
 language sql stable security definer set search_path = '' as $$
   select count(*) filter (where dc.action in ('accept','edit','uphold')),
-         count(*)
+         count(*),
+         count(*) filter (where ct.title like '[synthetic]%')  -- seeded demo history, labelled as such
   from public.findings f
   join public.check_runs r on r.id = f.run_id
   join public.versions v on v.id = r.version_id and not v.private
+  join public.contents ct on ct.id = v.content_id
   join public.decisions dc on dc.finding_id = f.id
   where f.org_id = p_org and f.rule_id = p_rule
 $$;
@@ -91,17 +93,17 @@ begin
   if rl.maturity = 'advisory' and lb >= 0.80 then
     update public.rules set maturity = 'blocking', graduated_auto = true, updated_at = now()
       where org_id = rl.org_id and id = rl.id;
-    insert into public.rule_changes (org_id, rule_id, kind, from_value, to_value, why, n, upheld, lower)
+    insert into public.rule_changes (org_id, rule_id, kind, from_value, to_value, why, n, upheld, lower, detail)
       values (rl.org_id, rl.id, 'graduate', 'advisory', 'blocking',
         format('Reviewers upheld %s of %s decisions; we are 95%% sure they agree at least %s%% of the time.',
-          c.upheld, c.n, floor(lb * 100)), c.n, c.upheld, lb);
+          c.upheld, c.n, floor(lb * 100)), c.n, c.upheld, lb, jsonb_build_object('sample_decisions', c.sample));
   elsif rl.maturity = 'blocking' and rl.graduated_auto and lb < 0.70 then
     update public.rules set maturity = 'advisory', graduated_auto = false, updated_at = now()
       where org_id = rl.org_id and id = rl.id;
-    insert into public.rule_changes (org_id, rule_id, kind, from_value, to_value, why, n, upheld, lower)
+    insert into public.rule_changes (org_id, rule_id, kind, from_value, to_value, why, n, upheld, lower, detail)
       values (rl.org_id, rl.id, 'demote', 'blocking', 'advisory',
         format('Agreement fell: %s of %s decisions upheld, lower bound %s%%.', c.upheld, c.n, floor(lb * 100)),
-        c.n, c.upheld, lb);
+        c.n, c.upheld, lb, jsonb_build_object('sample_decisions', c.sample));
   end if;
   return null;
 end $$;
