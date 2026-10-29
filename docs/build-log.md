@@ -1325,3 +1325,11 @@ assumptions: "the missing-CTA finding can quote the first sentence" (replaced: c
 one-line ads); "the first claim rule is a safe fallback" (replaced by kind). Caveats: the two samples differ so
 part of the gain is chance; Aurelle's run-2 rules came from the seed files because production still has the old
 CTA-01; the 200-fix audit is 64 fixes because the test posts yield no more.
+
+## Fix audit (28 Oct)
+
+Details: `docs/fix-audit.md`. The test posts yield 49 fixes (a first count of 64 included 15 spacing-only differences
+from my text comparison, which were removed), not 200. 2 of 49 invented a claim ("serum" added; "by our partner
+bank" attached to a deposit claim): target of 0 not met. The builder would publish 17 of 34 changed rewrites as
+they stand. Failed assumptions: "the posts give 200 fixes" (replaced: 49, reported as is); "suggested versions never add
+claims" (2 do). Not fixed: a noun-guard on rewrites and the disclosure merge.

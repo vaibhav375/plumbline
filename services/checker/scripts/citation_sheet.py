@@ -6,13 +6,12 @@ python scripts/citation_sheet.py score    # reads the 'verdict' column: y = cita
 
 import csv
 import json
+import os
 import random
 import sys
 from pathlib import Path
 
 D = Path(__file__).resolve().parents[3] / "data/citations"
-import os
-
 RUN = os.environ.get("RUN", "1")
 SUF = "" if RUN == "1" else f"_run{RUN}"
 COLS = [

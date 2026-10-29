@@ -127,7 +127,7 @@ the right words. The baseline is one model call per post with the whole brand bo
 | 1 Second brand by CSV | Kora (fictional fintech): planted problems caught; clean posts blocked | 27 of 30; 0 of 10 ([details](docs/second-brand.md)) |
 | 3 Self-learning guidelines | Drafted wording vs old wording on rulings it was not written from (target: beats it) | **Not met**: 65 of 84 vs 63 and 66 ([details](docs/clarify-eval.md)) |
 | 1 Citations | 100 findings checked by the builder (target ≥ 95%) | run 1: 93; after two fixes, fresh sample: **98** ([details](docs/citation-check.md)) |
-| 1 and 2 Fix audit | the 64 fixes the test posts produce (target 0 invented) | pending the builder's check |
+| 1 and 2 Fix audit | the 49 fixes the test posts produce (target 0 invented) | **2 of 49 invented a claim: not met** ([details](docs/fix-audit.md)) |
 
 ## Limits
 

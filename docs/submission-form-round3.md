@@ -54,7 +54,7 @@ regulator-ruling, second-brand and clarification evaluations with both runs publ
 the claim watch (a fact expiry opened exactly one task) and SSRF refusal. Bugs the tests found are listed there.
 Citation check (100 findings, target ≥ 95%): run 1 scored 93 of 100 (not met); after two engine fixes, a fresh
 sample scored 98 of 100 (met; docs/citation-check.md; one person's judgment, verdicts drafted by the assistant and
-accepted by the builder). Fix audit (target 0 invented): @@FIXES@@
+accepted by the builder). Fix audit (target 0 invented): Target not met: 2 of the 49 fixes the test posts produce invented a claim (one adds a product type, one attributes deposit protection to the partner bank). The target said 200 fixes; the posts yield 49. Details in docs/fix-audit.md.
 
 ## Product roadmap
 docs/roadmap.md. Now: re-run the clarification measure on real reviewer decisions, widen the ruling set, close
@@ -62,6 +62,7 @@ the "shorter than the evidence" gap, link a live ASI:One address. Next: paid or 
 images, a Hindi and Hinglish evaluation, faster image checks. Later: recruited studies and integrations.
 
 ## What does not work yet
+- 2 of the 49 suggested fixes invented a claim (an added product noun; a disclosure merged into a deposit claim), and the builder would publish only 17 of 34 suggested rewrites unedited.
 - Drafted clarifications did not beat the old wording in the replay.
 - Guideline health and graduation use generated reviewer history, labelled in the app.
 - Both evaluation sets are small and labelled by regulators or the builder, not independent reviewers.

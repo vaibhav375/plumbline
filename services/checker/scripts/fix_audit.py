@@ -102,6 +102,8 @@ def pool():
                 if op == "equal":
                     continue
                 o, w = " ".join(old[i1:i2]), " ".join(new[j1:j2])
+                if o.split() == w.split():
+                    continue  # spacing-only difference from how the text was split, not a fix
                 out.append(
                     dict(
                         set=name,
@@ -121,12 +123,22 @@ def pool():
 def draw():
     p = json.loads((D / "pool.json").read_text())
     random.Random(11).shuffle(p)
-    p = p[:200]
+    p = [x for x in p if x["original"].split() != x["suggested"].split()][
+        :200
+    ]  # up to 200; fewer if the posts yield fewer
     with (D / "sheet.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, COLS)
         w.writeheader()
         for i, r in enumerate(p, 1):
-            w.writerow({**r, "n": i, "verdict": "y" if r["kind"] == "dropped" else "", "note": ""})
+            w.writerow(
+                {
+                    **r,
+                    "n": i,
+                    "orig_n": "",
+                    "verdict": "y" if r["kind"] == "dropped" else "",
+                    "note": "",
+                }
+            )
     print("wrote", len(p), "rows to", D / "sheet.csv")
 
 
@@ -138,9 +150,10 @@ def score():
     if n:
         print("invented in rows:", [r["n"] for r in rows if r["verdict"].strip().lower() == "n"])
     print(
-        "target: 0 invented, all 200 marked ->",
-        "MET" if n == 0 and blank == 0 and len(v) >= 200 else "NOT YET",
+        "target: 0 invented, every fix marked ->",
+        "MET" if n == 0 and blank == 0 else "NOT MET" if n else "NOT YET",
     )
+    print("note: the Round 2 target said 200 fixes; the test posts yield", len(v))
 
 
 if __name__ == "__main__":
