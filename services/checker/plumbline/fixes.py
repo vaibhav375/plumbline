@@ -131,6 +131,26 @@ def _as_sentence(wording: str) -> str:
     return (w[:1].upper() + w[1:]) + ("*" if star else "")
 
 
+# Words a rewrite may add without adding content: a call to action's verbs and plain function words.
+NEUTRAL = {
+    "shop", "now", "today", "discover", "explore", "order", "buy", "try", "book", "find", "download",
+    "open", "start", "join", "apply", "this", "that", "your", "with", "from", "them", "their", "they",
+    "will", "have", "been", "were", "about", "into", "also", "only", "just", "more", "what", "when",
+}  # fmt: skip
+
+
+def _new_content_words(new: str, old: str, names: set[str]) -> set[str]:
+    """Words of 4+ letters in `new` that `old` lacks, ignoring inflections, call-to-action verbs and names.
+    A rewrite may rearrange what the writer said; it may not bring in a noun or a statement of its own."""
+    seen = {w[:4] for w in re.findall(r"[a-z]+", old.lower())}
+    skip = {w for n in names for w in re.findall(r"[a-z]+", n.lower())}
+    return {
+        w
+        for w in re.findall(r"[a-z]{4,}", new.lower())
+        if w[:4] not in seen and w not in NEUTRAL and w not in skip
+    }
+
+
 def propose_rewrite(
     sentence: str,
     finding: Finding,
@@ -160,6 +180,8 @@ def propose_rewrite(
         return None
     if set(re.findall(r"\d+", new)) - set(re.findall(r"\d+", sentence)):
         return None  # a number the writer never wrote
+    if _new_content_words(new, sentence, set(product_names) | set(allow)):
+        return None  # a noun or statement the writer never wrote (fix audit run 1: "the serum", "by our partner bank")
 
     def kinds(t: str) -> set[str]:
         return {

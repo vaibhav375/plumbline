@@ -31,3 +31,18 @@ proposal the person edits, and nothing is applied without acceptance.
 ## Not done
 A rule that stops a rewrite adding nouns the original lacks (the first error) is not built. The second error comes from
 merging a required disclosure into a claim sentence and is not fixed either.
+
+## Run 2: decided before running (29 Oct 2026)
+Run 1's two errors had one cause: an AI rewrite brought in words of its own ("serum"; "by our partner bank, as Kora is
+not a bank"). The change, made once and not tuned further after seeing run 2:
+- A rewrite is now thrown away if it contains any word of 4+ letters that the original sentence lacks (ignoring
+  inflections, product names, and a short list of call-to-action verbs and plain function words:
+  `plumbline/fixes.py`, `_new_content_words`). A finding whose rewrite is thrown away stays for a person, as before.
+  Required disclosures therefore reach a post only as approved footnotes, never through an AI rewrite.
+- The sample adds the 40-post Round 2 dev set to the 41 ruling ads and 30 Kora posts, to get closer to 200 fixes.
+  Every fix those 111 posts produce is audited; nothing is dropped from the sheet to improve the number, and the
+  count is whatever it is (200 is not reachable by padding).
+- Same scoring: a fix is invented when the new sentence adds a claim, number or promise beyond the original and the
+  approved wording; the assistant drafts verdicts with reasons and the builder reviews every row; target 0 invented.
+- Run 1 stays published. If run 2 finds an invented claim, that is the result.
+- Side effect to report, not hide: the guard will also throw away good rewrites, so fewer sentences get an AI fix.

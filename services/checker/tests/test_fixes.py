@@ -342,3 +342,19 @@ def test_a_fix_that_ends_a_sentence_capitalises_only_the_seam():
         apply_fixes(text, fs, {"2"})
         == "Meet the serum!!! Made with 94% naturally derived ingredients, and lovely. small things stay as written."
     )
+
+
+def test_a_rewrite_may_not_add_content_words():
+    from plumbline.fixes import _new_content_words
+
+    old = "gives you pimple-free pure skin"
+    assert _new_content_words(
+        "Shop the serum that gives you pimple-free pure skin", old, set()
+    ) == {"serum"}
+    assert _new_content_words("Shop now: gives you pimple-free pure skin", old, set()) == set()
+    assert _new_content_words(
+        "Kora Save deposits are fully protected, by our partner bank, as Kora is not a bank.",
+        "Kora Save deposits are fully protected.",
+        {"Kora Save"},
+    ) == {"partner", "bank"}
+    assert _new_content_words("Gives you pimple-free pure skins", old, set()) == set()  # inflection

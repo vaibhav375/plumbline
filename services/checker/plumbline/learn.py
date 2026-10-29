@@ -77,15 +77,14 @@ def _wording_text(w: Wording) -> str:
     return "\n".join(out)
 
 
-def draft(old: Wording, train: list[Case], llm: LLM) -> Wording:
+def draft(old: Wording, train: list[Case], llm: LLM, template: str | None = None) -> Wording:
     lines = []
     for c in train:
         verdict = "Upheld" if c.should_flag else "Not upheld"
         why = f" (reviewer: {_safe(c.reason)})" if c.reason and not c.should_flag else ""
         lines.append(f"- {verdict}: “{_safe(c.quote)}”{why}")
     system = (
-        (PROMPTS / "clarify.txt")
-        .read_text(encoding="utf-8")
+        (template or (PROMPTS / "clarify.txt").read_text(encoding="utf-8"))
         .replace("@@WORDING@@", _wording_text(old))
         .replace("@@CASES@@", "\n".join(lines))
     )

@@ -80,3 +80,35 @@ wasn't written from, labels a draft that didn't beat the current wording, and no
 owner accepts. The round 2 form's measure ("an accepted clarification must agree more often") is **not met on
 this data**; it should be re-run on real reviewer decisions once a brand has enough disagreements, which the
 generated demo history can't supply (its decisions are synthetic).
+
+## Run 3: re-tuning the drafter, with a rollback (decided 29 Oct 2026, before any run 3 number)
+Question: can the drafting prompt be improved so a drafted wording beats the old wording, without fitting the prompt
+to the data it is judged on?
+
+**Split.** The 41 ads are split by position: even-numbered ads are the **tune set** (35 claims, 2 not upheld); odd-numbered
+ads are the **test set** (49 claims, 1 not upheld). No ad is in both. The test set is not looked at, run or discussed
+until the single test run below.
+
+**Variants** (committed with this file, `data/rulings/clarify_variants/`): V0 is the current prompt (`clarify.txt`,
+the one run 1 and run 2 used); V1 a decision rule ("breaks this rule when … unless …"); V2 a checklist built from
+what upheld and not-upheld cases differ in; V3 a minimal edit that only adds concrete markers. No other variants are
+tried and none is edited after the tune run.
+
+**Tune run** (`STAGE=tune`): each variant is scored with the product's method (draft from half the claims, score on
+the other half, swap) on the tune set only, next to the old wording scored twice. The winner is the variant with the
+most agreements; ties go to V0, so a tie means no change.
+
+**Test run** (`STAGE=test`, once): the winner and V0 are run on the test set with the same method, next to the old
+wording scored twice. A second test run is not allowed.
+
+**Decision rule, fixed now.** Adopt the winner only if, on the test set, its agreement is at least **3 more** than the
+best of V0, old-wording replay A and old-wording replay B (3 is the largest old-versus-old difference seen in runs 1
+and 2). Otherwise **roll back**: the product keeps V0, the code and prompt in the repository do not change, and the
+variants stay in the folder as a record. If the winner beat V0 by 3 or more on the tune set but not on the test set,
+that is reported as overfitting.
+
+**What this run cannot show.** There are only 3 not-upheld claims in all 84 (2 in the tune set, 1 in the test set).
+Agreement on this data mostly measures how many of the 81 upheld claims a wording flags, so a wording that simply flags
+more would score higher without being better. Agreement on the not-upheld claims is reported separately in the results,
+but with 1 to 2 cases it proves nothing either way. A fair test of clarifications needs real not-upheld decisions; this
+run can only say whether the prompt change helps on this data.

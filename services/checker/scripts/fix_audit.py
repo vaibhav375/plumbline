@@ -21,6 +21,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 D = ROOT / "data/fixes"
+RUN = os.environ.get("RUN", "1")
+SUF = "" if RUN == "1" else f"_run{RUN}"
 COLS = [
     "n",
     "set",
@@ -68,6 +70,8 @@ def pool():
             "text",
         ),
     ]
+    if RUN != "1":  # run 2 adds the 40-post dev set, which Round 2 used and run 1 left out
+        sets.append(("dev-set", sets[0][1], "external_creator", rd("data/golden/dev.jsonl"), "text"))
     out, n = [], 0
     for name, ctx, role, items, key in sets:
         code_only = {f.id for f in ctx.facts if f.code_only}
@@ -116,17 +120,17 @@ def pool():
                 )
             print(n, it["id"], len(out), "fixes so far")
     D.mkdir(exist_ok=True)
-    (D / "pool.json").write_text(json.dumps(out, indent=1, ensure_ascii=False))
+    (D / f"pool{SUF}.json").write_text(json.dumps(out, indent=1, ensure_ascii=False))
     print("pool:", len(out))
 
 
 def draw():
-    p = json.loads((D / "pool.json").read_text())
+    p = json.loads((D / f"pool{SUF}.json").read_text())
     random.Random(11).shuffle(p)
     p = [x for x in p if x["original"].split() != x["suggested"].split()][
         :200
     ]  # up to 200; fewer if the posts yield fewer
-    with (D / "sheet.csv").open("w", newline="", encoding="utf-8") as f:
+    with (D / f"sheet{SUF}.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, COLS)
         w.writeheader()
         for i, r in enumerate(p, 1):
@@ -139,11 +143,11 @@ def draw():
                     "note": "",
                 }
             )
-    print("wrote", len(p), "rows to", D / "sheet.csv")
+    print("wrote", len(p), "rows to", D / f"sheet{SUF}.csv")
 
 
 def score():
-    rows = list(csv.DictReader((D / "sheet.csv").open(encoding="utf-8")))
+    rows = list(csv.DictReader((D / f"sheet{SUF}.csv").open(encoding="utf-8")))
     v = [r["verdict"].strip().lower() for r in rows]
     y, n, blank = v.count("y"), v.count("n"), len(v) - v.count("y") - v.count("n")
     print(f"safe {y}, invented {n}, unmarked {blank}, of {len(v)}")
