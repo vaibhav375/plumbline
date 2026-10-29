@@ -1333,3 +1333,13 @@ from my text comparison, which were removed), not 200. 2 of 49 invented a claim 
 bank" attached to a deposit claim): target of 0 not met. The builder would publish 17 of 34 changed rewrites as
 they stand. Failed assumptions: "the posts give 200 fixes" (replaced: 49, reported as is); "suggested versions never add
 claims" (2 do). Not fixed: a noun-guard on rewrites and the disclosure merge.
+
+## Fix audit run 2 and clarification run 3 (29 Oct)
+
+Plans written first (docs/fix-audit.md, docs/clarify-eval.md). **Fix audit run 2:** a guard that throws away an AI rewrite
+adding words of its own removed run 1's two errors; 111 posts (adding the dev set) gave 73 fixes; the drafted verdicts have
+1 invented claim (a product name put in front of "skincare has a long history", which the guard allows because names are
+exempt). Not 0: target still not met, pending the builder's review. **Clarification run 3:** variants tuned on 35 claims
+(V1 33 vs current 29), then one run on 49 untouched claims: V1 37 vs current 36 (needed 43). Rolled back, labelled overfit.
+Failed assumption: "a better drafting prompt will beat the old wording." Replaced by: the data (3 not-upheld claims, judge
+noise of 6) can't show it; the product keeps drafts as proposals with both scores.

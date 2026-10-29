@@ -1,0 +1,182 @@
+{
+ "stage": "tune",
+ "n": 35,
+ "old_a": 26,
+ "old_b": 26,
+ "variants": [
+  {
+   "variant": "V0",
+   "agree": 29,
+   "n": 35,
+   "folds": [
+    {
+     "wording": {
+      "title": "Regulated Efficacy Claims Require Proof",
+      "instruction": "A claim breaks this rule if it asserts a specific, measurable, or absolute health, cosmetic, or therapeutic outcome (e.g., curing, preventing, reducing, or changing skin/teeth) without attached evidence and compliance sign-off. This includes vague but definitive promises like 'effective from day one' or 'perfect protection.' A claim is allowed only if it describes a general mode of action or difference (e.g., 'new mode of action') without promising a specific result, or if the required proof is present.",
+      "examples_good": [
+       "A new approach to skincare that works differently than traditional methods.",
+       "Contains ingredients known for their antioxidant properties.",
+       "Designed to help maintain skin hydration."
+      ],
+      "examples_bad": [
+       "Clinically proven to remove wrinkles in 7 days.",
+       "Prevents acne and clears blemishes instantly.",
+       "Guaranteed to whiten teeth in just one use."
+      ]
+     },
+     "agree": 13,
+     "n": 17
+    },
+    {
+     "wording": {
+      "title": "Regulated Efficacy Claims Require Proof",
+      "instruction": "Do not use phrases that promise specific medical, cosmetic, or physical results (such as curing conditions, changing appearance, or outperforming competitors) unless you have a matching factual basis and compliance sign-off. Claims based on robust, verifiable survey data or third-party rankings are allowed without this specific sign-off. Avoid vague or absolute promises of transformation, healing, or superiority that lack documented evidence.",
+      "examples_good": [
+       "Rated #1 by 90% of users in our 2023 customer survey.",
+       "Contains 5% niacinamide to support skin barrier function.",
+       "Recommended by dermatologists in the UK based on independent clinical trials."
+      ],
+      "examples_bad": [
+       "Removes all wrinkles in just 7 days.",
+       "More effective than any other toothpaste on the market.",
+       "Guaranteed to grow new hair and stop dandruff instantly."
+      ]
+     },
+     "agree": 16,
+     "n": 18
+    }
+   ]
+  },
+  {
+   "variant": "V1",
+   "agree": 33,
+   "n": 35,
+   "folds": [
+    {
+     "wording": {
+      "title": "Regulated Efficacy Claims Require Evidence and Sign-off",
+      "instruction": "A sentence breaks this rule when it makes a specific, measurable, or absolute claim about a product's ability to treat, cure, prevent, or alter a physical condition or appearance (such as reducing wrinkles, whitening teeth, or preventing acne) without providing the matching factual evidence and compliance sign-off. Unless the phrase is interpreted as a general description of difference or novelty rather than a superior or specific therapeutic outcome, and adequate evidence for that interpretation exists.",
+      "examples_good": [
+       "Features a unique texture unlike any other on the market.",
+       "Contains a new ingredient blend for a fresh feel.",
+       "Designed to offer a different approach to daily care."
+      ],
+      "examples_bad": [
+       "Clinically proven to eliminate dark spots in one week.",
+       "Prevents hair loss and restores full density.",
+       "Instantly whitens teeth by two shades."
+      ]
+     },
+     "agree": 16,
+     "n": 17
+    },
+    {
+     "wording": {
+      "title": "Regulated Efficacy Claims Require Evidence",
+      "instruction": "A sentence breaks this rule when it makes a specific claim about a product's ability to treat, prevent, or alter a physical condition or appearance (such as curing acne, lightening skin, or growing hair) without providing the specific factual evidence or compliance sign-off that validates that claim. Unless the claim is supported by robust, verifiable data (such as a cited survey or clinical study) that is explicitly referenced or attached to the copy, the sentence is non-compliant.",
+      "examples_good": [
+       "According to a 2023 clinical trial, 90% of users saw reduced redness in 4 weeks.",
+       "Rated #1 by 500+ dermatologists in the UK, based on 2024 survey data.",
+       "Contains 2% salicylic acid, a clinically proven ingredient for exfoliation."
+      ],
+      "examples_bad": [
+       "Clears up acne and reduces oiliness in just one week.",
+       "Instantly lightens dark spots and evens out skin tone.",
+       "Stops hair loss and promotes new growth naturally."
+      ]
+     },
+     "agree": 17,
+     "n": 18
+    }
+   ]
+  },
+  {
+   "variant": "V2",
+   "agree": 29,
+   "n": 35,
+   "folds": [
+    {
+     "wording": {
+      "title": "Regulated Efficacy Claims Require Evidence and Sign-off",
+      "instruction": "Identify any claim that asserts a specific, measurable, or comparative health, cosmetic, or therapeutic outcome (e.g., reducing wrinkles, curing marks, softening skin, preventing pimples). Such claims must be supported by a matching factual basis and explicit compliance sign-off. Do not flag general descriptors of novelty, mechanism, or difference (e.g., 'new mode of action') unless they imply a superior or specific regulated result.",
+      "examples_good": [
+       "A novel formulation designed to support skin hydration.",
+       "This product features a unique texture that feels smooth on the skin.",
+       "Contains ingredients known for their antioxidant properties."
+      ],
+      "examples_bad": [
+       "Clinically proven to eliminate acne in 7 days.",
+       "Reduces the appearance of fine lines and wrinkles instantly.",
+       "Guaranteed to whiten teeth without sensitivity."
+      ]
+     },
+     "agree": 13,
+     "n": 17
+    },
+    {
+     "wording": {
+      "title": "Regulated Efficacy Claims Require Evidence and Sign-off",
+      "instruction": "Identify any claim that promises a specific physical change, medical benefit, or comparative superiority (e.g., removing blemishes, lightening skin, growing hair, or being 'more effective' than competitors). Such claims must be supported by a matching factual basis and explicit compliance sign-off. Do not flag claims based on third-party endorsements or survey data, provided they are backed by robust, consistent evidence.",
+      "examples_good": [
+       "Rated #1 by 90% of users in a 2023 independent survey.",
+       "Contains 2% salicylic acid to help exfoliate skin.",
+       "Recommended by dermatologists for daily use."
+      ],
+      "examples_bad": [
+       "Removes all blackheads in just one week.",
+       "Lightens dark spots and evens skin tone instantly.",
+       "More effective than leading brand X for hair growth."
+      ]
+     },
+     "agree": 16,
+     "n": 18
+    }
+   ]
+  },
+  {
+   "variant": "V3",
+   "agree": 30,
+   "n": 35,
+   "folds": [
+    {
+     "wording": {
+      "title": "Regulated efficacy phrases need a matching fact and compliance sign-off",
+      "instruction": "Regulated efficacy phrases need a matching fact and compliance sign-off. This includes claims stating a specific result, a numerical value, a comparison, or a medical effect.",
+      "examples_good": [
+       "Contains 2% salicylic acid.",
+       "New formula with added vitamin E.",
+       "Available in three shades."
+      ],
+      "examples_bad": [
+       "Reduces fine lines in 7 days.",
+       "Twice as effective as leading brands.",
+       "Cures acne and prevents breakouts."
+      ]
+     },
+     "agree": 13,
+     "n": 17
+    },
+    {
+     "wording": {
+      "title": "Regulated efficacy phrases need a matching fact and compliance sign-off",
+      "instruction": "Regulated efficacy phrases need a matching fact and compliance sign-off. This includes claims of specific results (e.g., reduction, removal, growth), numerical outcomes (e.g., days, years), comparative superiority (e.g., more effective than), or medical/physiological effects (e.g., penetrates, regulates, lightens).",
+      "examples_good": [
+       "Rated #1 by 90% of users in a 2023 independent survey.",
+       "Contains 2% salicylic acid to help exfoliate skin.",
+       "Formulated with hyaluronic acid for hydration."
+      ],
+      "examples_bad": [
+       "Reduces wrinkles in just 7 days.",
+       "More effective than leading competitors.",
+       "Instantly plumps and firms the skin."
+      ]
+     },
+     "agree": 17,
+     "n": 18
+    }
+   ]
+  }
+ ],
+ "commit": "15aa6cb",
+ "run_at": "2026-10-29 21:16 IST"
+}

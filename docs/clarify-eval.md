@@ -112,3 +112,23 @@ Agreement on this data mostly measures how many of the 81 upheld claims a wordin
 more would score higher without being better. Agreement on the not-upheld claims is reported separately in the results,
 but with 1 to 2 cases it proves nothing either way. A fair test of clarifications needs real not-upheld decisions; this
 run can only say whether the prompt change helps on this data.
+
+## Run 3 results (29 Oct 2026, commit 15aa6cb): rolled back
+Raw: `data/rulings/clarify_run3_tune.json`, `clarify_run3_test.json`.
+
+| | Tune set (35 claims) | Test set (49 claims) |
+|---|---|---|
+| Old wording, replay A / B | 26 / 26 | 34 / 40 |
+| V0 (current prompt) | 29 | 36 |
+| V1 (decision rule), the tune winner | **33** | 37 |
+| V2 / V3 | 29 / 30 | not run |
+
+**Decision: roll back.** The rule needed V1 to reach at least 43 on the test set (the best of 36, 34 and 40, plus 3);
+it scored 37. V1 beat V0 by 4 on the tune set and by 1 on the test set, so the pre-registered label applies:
+**overfitting**: the tuned prompt's advantage did not carry to ads it was not tuned on. The product keeps V0; no
+shipping code or prompt changed. The variants and script stay in the repository as a record.
+
+What it also shows: the same old wording scored 34 on one replay and 40 on another over the same 49 claims, a swing
+of 6 from the judge alone, larger than any difference between a drafted wording and the old one in any of the three
+runs. With 3 not-upheld claims in the data this measure cannot separate a better wording from noise. The Round 2 form's
+clarification measure remains **not met**, and the way to meet it is real not-upheld decisions, not more prompt tuning.

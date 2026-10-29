@@ -1,0 +1,74 @@
+n,kind,draft,confidence,reason
+1,changed,y,sure,
+2,changed,n,judgment,"The rewrite put the product's name in front of 'skincare has a long and interesting history', so the sentence now says the product has that history. The original said no such thing."
+3,changed,y,sure,
+4,changed,y,judgment,"Broken sentence fragment, but nothing added."
+5,changed,y,judgment,'Click here' replaced by naming the product (rule CTA-02); no new claim.
+6,changed,y,sure,
+7,changed,y,judgment,"Leaves '.*' after dropping the claim: broken, nothing added."
+8,changed,y,sure,
+9,changed,y,judgment,'You can save with Kora' softens 'Everyone is already saving'; it is a mild new promise but follows from the original. 'or lose out' (urgency) is kept.
+10,changed,y,sure,
+11,changed,y,sure,
+12,changed,y,sure,
+13,dropped,y,sure,
+14,changed,y,sure,
+15,dropped,y,sure,
+16,dropped,y,sure,
+17,changed,y,sure,
+18,dropped,y,sure,
+19,changed,y,sure,
+20,changed,y,sure,
+21,dropped,y,sure,
+22,dropped,y,sure,
+23,changed,y,sure,
+24,dropped,y,sure,
+25,changed,y,sure,
+26,changed,y,judgment,Approved wording for the serum with its footnote; correct product.
+27,changed,y,sure,
+28,changed,y,sure,
+29,dropped,y,sure,
+30,changed,y,judgment,Same as row 26 (a duplicate sentence in the dev post).
+31,changed,y,sure,
+32,dropped,y,sure,
+33,dropped,y,sure,
+34,dropped,y,sure,
+35,changed,y,sure,
+36,changed,y,sure,
+37,dropped,y,sure,
+38,dropped,y,sure,
+39,changed,y,judgment,"Leaves a stray comma fragment: broken, nothing added."
+40,changed,y,sure,
+41,changed,y,sure,
+42,changed,y,sure,
+43,changed,y,sure,
+44,changed,y,sure,
+45,dropped,y,sure,
+46,dropped,y,sure,
+47,changed,y,sure,
+48,dropped,y,sure,
+49,changed,y,sure,
+50,changed,y,judgment,Approved wording for the user count with its footnote.
+51,changed,y,sure,
+52,changed,y,judgment,"Approved wording and its study footnote, but the ledger's 32% belongs to Aurelle's serum and this ad is for another product; an artifact of testing other brands' ads against Aurelle's ledger. By the stated criterion (approved wording is allowed) it counts safe."
+53,dropped,y,sure,
+54,dropped,y,sure,
+55,changed,y,sure,
+56,changed,y,judgment,"Approved wording and the market-risk footnote (required by FN-R1), added by code, not by an AI rewrite."
+57,dropped,y,sure,
+58,dropped,y,sure,
+59,changed,y,sure,
+60,dropped,y,sure,
+61,changed,y,sure,
+62,dropped,y,sure,
+63,changed,y,sure,
+64,changed,y,sure,
+65,dropped,y,sure,
+66,changed,y,sure,
+67,changed,y,judgment,"Garbled ('is a which', 'Shop ManikyaBhasma for its miraculous…'): nothing new claimed."
+68,changed,y,sure,
+69,changed,y,sure,
+70,changed,y,sure,
+71,changed,y,judgment,Term-list swap to the full approved product name.
+72,changed,y,judgment,The original is empty; the study footnote line was appended by code (required by DL-REQ).
+73,changed,y,sure,

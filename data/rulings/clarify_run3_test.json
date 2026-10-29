@@ -1,0 +1,96 @@
+{
+ "stage": "test",
+ "n": 49,
+ "old_a": 34,
+ "old_b": 40,
+ "variants": [
+  {
+   "variant": "V0",
+   "agree": 36,
+   "n": 49,
+   "folds": [
+    {
+     "wording": {
+      "title": "Regulated Efficacy Claims Require Proof",
+      "instruction": "Do not use specific medical, therapeutic, or quantitative efficacy claims (e.g., curing, treating, reducing by a percentage, or hormonal effects) unless the product has the required regulatory registration and the specific claim has been verified by compliance. General cosmetic descriptions of appearance or feel are allowed, but any statement implying a change in health, physiology, or measurable biological result is a violation if not backed by approved documentation.",
+      "examples_good": [
+       "Visibly smooths the appearance of fine lines.",
+       "Leaves skin feeling soft and hydrated.",
+       "Helps to cleanse impurities from the surface of the skin."
+      ],
+      "examples_bad": [
+       "Cures acne and prevents future breakouts.",
+       "Reduces wrinkle depth by 30% in two weeks.",
+       "Balances hormones to relieve menopause symptoms."
+      ]
+     },
+     "agree": 18,
+     "n": 24
+    },
+    {
+     "wording": {
+      "title": "Regulated Efficacy Claims Require Proof",
+      "instruction": "Do not use phrases that promise specific medical, cosmetic, or health outcomes (e.g., 'clinically proven,' 'reduces anxiety,' 'regenerates tissue,' 'removes scars') unless you have the specific supporting study and compliance sign-off on file. General descriptive language about ingredients or sensory experiences is allowed, but any claim that the product changes the body, fixes a condition, or delivers a measurable result is a violation if unsupported.",
+      "examples_good": [
+       "Contains shea butter to moisturize dry skin.",
+       "Has a refreshing mint scent.",
+       "Formulated with vitamin E."
+      ],
+      "examples_bad": [
+       "Clinically proven to reduce wrinkles in 2 weeks.",
+       "Helps manage hot flushes and calms restless legs.",
+       "Regenerates cellular tissue and slows down skin ageing."
+      ]
+     },
+     "agree": 18,
+     "n": 25
+    }
+   ]
+  },
+  {
+   "variant": "V1",
+   "agree": 37,
+   "n": 49,
+   "folds": [
+    {
+     "wording": {
+      "title": "Regulated Efficacy Claims Require Evidence and Sign-off",
+      "instruction": "A sentence breaks this rule when it makes a specific, measurable, or medical/therapeutic claim about a product's effect (such as curing, treating, reducing by a percentage, or altering biological functions) without providing the matching factual evidence and compliance sign-off. Unless the claim is backed by documented regulatory approval (such as MHRA registration) or verified clinical data that has been reviewed and approved by compliance.",
+      "examples_good": [
+       "Registered as a medical device, this device treats mild acne.",
+       "Clinical trials show a 15% reduction in wrinkle depth after 8 weeks.",
+       "Compliance-approved: This formula helps soothe dry skin."
+      ],
+      "examples_bad": [
+       "Cures baldness in just one week.",
+       "Reduces scar tissue by 50%.",
+       "Balances your hormones naturally."
+      ]
+     },
+     "agree": 17,
+     "n": 24
+    },
+    {
+     "wording": {
+      "title": "Regulated Efficacy Claims Require Evidence",
+      "instruction": "A sentence breaks this rule when it makes a specific claim about health, medical, or cosmetic efficacy (such as curing, reducing, preventing, or reversing a condition or symptom) without including a reference to a specific supporting study, data point, or explicit compliance sign-off. Unless the claim is purely descriptive of a sensory experience (e.g., 'feels soft') or a general ingredient benefit that does not imply a medical or structural change, the sentence must be backed by verifiable evidence.",
+      "examples_good": [
+       "According to a 2023 clinical trial, this serum reduced the appearance of fine lines by 20%.",
+       "This moisturizer contains hyaluronic acid, which helps hydrate the skin.",
+       "Compliance approved: This product is formulated to support scalp health."
+      ],
+      "examples_bad": [
+       "This cream cures acne and clears up dark spots in one week.",
+       "Take this supplement to lower your blood pressure naturally.",
+       "Our shampoo stops hair fall and promotes thicker growth."
+      ]
+     },
+     "agree": 20,
+     "n": 25
+    }
+   ]
+  }
+ ],
+ "commit": "15aa6cb",
+ "run_at": "2026-10-29 21:18 IST"
+}

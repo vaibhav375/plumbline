@@ -138,7 +138,6 @@ def draw():
                 {
                     **r,
                     "n": i,
-                    "orig_n": "",
                     "verdict": "y" if r["kind"] == "dropped" else "",
                     "note": "",
                 }
