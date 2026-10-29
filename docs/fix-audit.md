@@ -46,3 +46,19 @@ not a bank"). The change, made once and not tuned further after seeing run 2:
   approved wording; the assistant drafts verdicts with reasons and the builder reviews every row; target 0 invented.
 - Run 1 stays published. If run 2 finds an invented claim, that is the result.
 - Side effect to report, not hide: the guard will also throw away good rewrites, so fewer sentences get an AI fix.
+
+## Run 3: decided before running (29 Oct 2026)
+Run 2 had one invented claim (drafted verdict; the builder's review is separate): a rewrite for "lead with the main point"
+put the product name in front of "skincare has a long and interesting history", so the sentence said the product has that
+history. The guard let it through because product names were exempt. The change, made once:
+- A product name may be brought into a sentence by a rewrite only for the naming rules (`CTA-02`, terminology), where
+  that is the point ("click here" becomes the product's name). For every other rule a name the sentence lacks now counts
+  as new content and the rewrite is thrown away.
+
+**Sample.** All 111 posts of runs 1 and 2 were used to find these errors, so run 3 does not reuse them. It uses 48 new
+posts (24 Aurelle, 24 Kora) written by the assistant before the run (`data/fixes/posts_run3.jsonl`), with the usual
+mistakes of marketing copy (efficacy claims, invented numbers, missing "#ad", "click here", shouting, "Rs.", guaranteed
+returns, "no credit check"). No labels are needed: every fix those posts produce is audited. The posts are not tuned
+after seeing results and none is dropped.
+Scoring is unchanged (target 0 invented); run 1 and run 2 stay published, and if run 3 finds an invented claim that is the result.
+Caveat: the new posts are written by the same author as the guard, so they are no more independent than the dev set.

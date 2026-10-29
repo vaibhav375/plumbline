@@ -143,7 +143,9 @@ def _new_content_words(new: str, old: str, names: set[str]) -> set[str]:
     """Words of 4+ letters in `new` that `old` lacks, ignoring inflections, call-to-action verbs and names.
     A rewrite may rearrange what the writer said; it may not bring in a noun or a statement of its own."""
     seen = {w[:4] for w in re.findall(r"[a-z]+", old.lower())}
-    skip = {w for n in names for w in re.findall(r"[a-z]+", n.lower())}
+    skip = {
+        w for n in names for w in re.findall(r"[a-z]+", n.lower())
+    }  # names the rule may bring in
     return {
         w
         for w in re.findall(r"[a-z]{4,}", new.lower())
@@ -180,7 +182,12 @@ def propose_rewrite(
         return None
     if set(re.findall(r"\d+", new)) - set(re.findall(r"\d+", sentence)):
         return None  # a number the writer never wrote
-    if _new_content_words(new, sentence, set(product_names) | set(allow)):
+    # A product name may be brought into a sentence only by the rules whose job is naming ("click here" -> the product,
+    # preferred terms). Elsewhere it changes what the sentence says (fix audit run 2: "<product> skincare has a long history").
+    names_ok = (finding.rule_id or "").startswith(
+        ("CTA-02", "TM-")
+    ) or finding.category == "terminology"
+    if _new_content_words(new, sentence, (set(product_names) | set(allow)) if names_ok else set()):
         return None  # a noun or statement the writer never wrote (fix audit run 1: "the serum", "by our partner bank")
 
     def kinds(t: str) -> set[str]:

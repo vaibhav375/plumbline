@@ -358,3 +358,15 @@ def test_a_rewrite_may_not_add_content_words():
         {"Kora Save"},
     ) == {"partner", "bank"}
     assert _new_content_words("Gives you pimple-free pure skins", old, set()) == set()  # inflection
+
+
+def test_a_rewrite_may_bring_in_a_product_name_only_for_naming_rules():
+    from plumbline.fixes import _new_content_words
+
+    old = "Skincare has a long and interesting history."
+    new = "Hyaluronic Water Gel skincare has a long and interesting history."
+    assert _new_content_words(new, old, {"Hyaluronic Water Gel"}) == set()  # allowed set passed in
+    assert _new_content_words(new, old, set()) == {
+        "hyaluronic",
+        "water",
+    }  # not passed in for other rules

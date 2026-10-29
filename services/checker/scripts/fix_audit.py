@@ -70,8 +70,24 @@ def pool():
             "text",
         ),
     ]
-    if RUN != "1":  # run 2 adds the 40-post dev set, which Round 2 used and run 1 left out
-        sets.append(("dev-set", sets[0][1], "external_creator", rd("data/golden/dev.jsonl"), "text"))
+    if (
+        RUN == "3"
+    ):  # run 3: 48 new posts written before the run, never used to build or tune anything
+        new = rd("data/fixes/posts_run3.jsonl")
+        sets = [
+            (
+                "new-aurelle",
+                sets[0][1],
+                "external_creator",
+                [x for x in new if x["brand"] == "aurelle"],
+                "text",
+            ),
+            ("new-kora", sets[1][1], "creator", [x for x in new if x["brand"] == "kora"], "text"),
+        ]
+    elif RUN != "1":  # run 2 adds the 40-post dev set, which Round 2 used and run 1 left out
+        sets.append(
+            ("dev-set", sets[0][1], "external_creator", rd("data/golden/dev.jsonl"), "text")
+        )
     out, n = [], 0
     for name, ctx, role, items, key in sets:
         code_only = {f.id for f in ctx.facts if f.code_only}
