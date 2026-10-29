@@ -35,7 +35,7 @@ Round 2 ended with 251 / 17 / 18. Round 3 added 72 checker tests, 23 database te
 | Second brand by CSV (improvement 1) | Kora, a fictional fintech app; 20 problem posts, 10 clean | 27 of 30 issues caught; 0 of 10 clean posts blocked | none | [second-brand.md](second-brand.md) |
 | Clarification replay (improvement 3) | the 84 ruling claims, scored on claims the draft was not written from | drafted wording 65 of 84 vs old wording 63 and 66 | draft beats old wording: **not met** | [clarify-eval.md](clarify-eval.md) |
 | Citation check (improvement 1) | 100 findings drawn from the two sets above, twice | run 1: 93 of 100; after two engine fixes, fresh sample run 2: **98 of 100** | ≥ 95% correct: run 1 not met, run 2 met | [citation-check.md](citation-check.md) |
-| Fix audit (improvements 1 and 2) | every fix from the same posts: 49, not 200 | **2 of 49 invented a claim**; the builder preferred the suggestion over the original on 17 of 34 changed sentences | 0 invented: **not met** | [fix-audit.md](fix-audit.md) |
+| Fix audit (improvements 1 and 2) | every fix from three runs of the test posts: 49, 73 and 43 (not 200) | run 1: **2 of 49 invented a claim**; run 2 (after a guard): **1 of 73**; run 3 (after a second fix, 48 new posts): **0 of 43**. The builder preferred the suggestion over the original on 17 of 34 changed sentences in run 1 | 0 invented: not met in runs 1 and 2, **met in run 3** | [fix-audit.md](fix-audit.md) |
 
 ## Bugs the tests found (and what changed)
 

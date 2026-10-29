@@ -13,7 +13,7 @@ sentences that differed from the original only in spacing, from how I split the 
 removed. Padding to 200 by duplicating or inventing posts was not done.
 
 ## Result
-**2 of 49 fixes invented a claim. Target (0 invented): not met.**
+**Run 1: 2 of 49 fixes invented a claim. Target (0 invented): not met.** (Run 2 and run 3 follow below.)
 - A suggestion for "gives you pimple-free pure skin / Prevents pimples" added "Shop the **serum** that…": a product type the
   original never states.
 - A suggestion for a Kora Save deposit claim added "by our partner bank" to "fully protected, up to any amount",
@@ -62,3 +62,23 @@ returns, "no credit check"). No labels are needed: every fix those posts produce
 after seeing results and none is dropped.
 Scoring is unchanged (target 0 invented); run 1 and run 2 stay published, and if run 3 finds an invented claim that is the result.
 Caveat: the new posts are written by the same author as the guard, so they are no more independent than the dev set.
+
+## Run 2 and run 3 results (29 Oct 2026)
+Verdicts for both runs were drafted by the assistant with a reason per row and agreed by the builder (`data/fixes/sheet_run2.csv`,
+`sheet_run3.csv`); one person's judgment, not an independent check.
+
+| Run | Code | Posts | Fixes | Invented | Target (0) |
+|---|---|---|---|---|---|
+| 1 | original | 71 | 49 | 2 | not met |
+| 2 | + rewrites may not add words | 111 (adds the dev set) | 73 | 1 | not met |
+| 3 | + product names only for naming rules | 48 new | 43 | **0** | **met** |
+
+- **Run 2's one error:** the "lead with the main point" rule's rewrite put the product name in front of "skincare has a long
+  and interesting history", so the sentence said the product has that history. Fixed for run 3.
+- **Limits of run 3's 0:** the posts were written by the assistant, the same author as the guard; 43 fixes is small; the guard
+  also throws away good rewrites, and many outputs are still broken sentences ("Gifted by Kora:. Open Kora.", "Why not start?").
+  They add no claims and are shown as proposals the person edits; the builder preferred the suggestion on only half of the
+  run-1 changed sentences.
+- **Fixes with approved wording from another product** (run 2, row 52) count as safe under the criterion, because approved
+  wording is allowed, but come from testing other brands' ads against Aurelle's ledger.
+- **Never 200:** each run audited every fix its posts produced; 200 was not reachable without padding.

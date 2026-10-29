@@ -54,7 +54,7 @@ regulator-ruling, second-brand and clarification evaluations with both runs publ
 the claim watch (a fact expiry opened exactly one task) and SSRF refusal. Bugs the tests found are listed there.
 Citation check (100 findings, target ≥ 95%): run 1 scored 93 of 100 (not met); after two engine fixes, a fresh
 sample scored 98 of 100 (met; docs/citation-check.md; one person's judgment, verdicts drafted by the assistant and
-accepted by the builder). Fix audit (target 0 invented): Target not met: 2 of the 49 fixes the test posts produce invented a claim (one adds a product type, one attributes deposit protection to the partner bank). The target said 200 fixes; the posts yield 49. Details in docs/fix-audit.md.
+accepted by the builder). Fix audit (target 0 invented): Three runs, each after a fix: run 1 had 2 invented in 49 fixes; run 2 (111 posts) 1 in 73; run 3 (48 new posts) 0 in 43, so the target is met on the last run only. The Round 2 target said 200 fixes; the test posts yield far fewer. Run 3 used new posts written by the same author as the guard, and many safe outputs are still broken sentences. Details in docs/fix-audit.md.
 
 ## Product roadmap
 docs/roadmap.md. Now: re-run the clarification measure on real reviewer decisions, widen the ruling set, close

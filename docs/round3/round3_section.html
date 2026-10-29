@@ -24,7 +24,7 @@ Fictional data only; free model tiers.
 <li><b>Drafted clarifications did not help.</b> Run 1 made the rule worse (44 of 84 against 63–67) by inventing exceptions from too few negative cases. A fix decided before run 2 removed the harm (65 of 84), but not a gain. Both runs are published (docs/clarify-eval.md). So drafts are proposals: the screen shows both scores, labels a draft that did not beat the current wording, and the owner decides.</li>
 <li><b>The engine was not fully brand-agnostic.</b> Loading Kora found a rulebook without the ids CL-01/03/04/05 crashing the claim step; fixed with a fallback and a test.</li>
 <li><b>Free-tier rate limits cost recall.</b> Run 1 on the rulings scored 80.2% with 15 of 41 ads missing the AI checks; run 2, paced, scored 88.9%. Under heavy simultaneous use, expect the lower figure.</li>
-<li><b>Fix audit: 2 of 49 fixes invented a claim.</b> A rewrite added the product type "serum", and a disclosure merged into a deposit claim attributed the protection to the partner bank (docs/fix-audit.md). The builder would also publish only 17 of 34 suggested rewrites as they stand, so suggestions stay proposals.</li>
+<li><b>Fix audit: 2 of 49, then 1 of 73, then 0 of 43.</b> Run 1: a rewrite added the product type "serum" and a disclosure merged into a deposit claim attributed the protection to the partner bank. A guard against rewrites adding words fixed both; run 2 found a product name inserted where it changed the meaning; run 3, after closing that, found none on 48 new posts. Run 3's posts were written by the same author as the guard, and many safe outputs are still broken sentences (the builder would publish only 17 of 34 run-1 rewrites as they stand), so suggestions stay proposals (docs/fix-audit.md).</li>
 <li><b>Caveat on graduation.</b> It counts the same decisions as the health page, including generated sample history; each graduation records how many of its decisions were sample.</li>
 </ul>
 
@@ -41,7 +41,7 @@ Fictional data only; free model tiers.
 <table>
   <tr><th>Check</th><th>Target</th><th>Status</th></tr>
   <tr><td>100 findings' citations (70 ruling-set, 30 Kora)</td><td>≥ 95% correct</td><td>@@CITATIONS@@</td></tr>
-  <tr><td>All 49 fixes the test posts produce (the Round 2 target said 200)</td><td>0 invented claims</td><td>@@FIXES@@</td></tr>
+  <tr><td>Every fix in three runs: 49, 73 and 43 (the Round 2 target said 200)</td><td>0 invented claims</td><td>@@FIXES@@</td></tr>
 </table>
 </div>
 

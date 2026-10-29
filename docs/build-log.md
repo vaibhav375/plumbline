@@ -1343,3 +1343,7 @@ exempt). Not 0: target still not met, pending the builder's review. **Clarificat
 (V1 33 vs current 29), then one run on 49 untouched claims: V1 37 vs current 36 (needed 43). Rolled back, labelled overfit.
 Failed assumption: "a better drafting prompt will beat the old wording." Replaced by: the data (3 not-upheld claims, judge
 noise of 6) can't show it; the product keeps drafts as proposals with both scores.
+
+**Fix audit, final (29 Oct).** Scored with the builder's agreement: run 2 72 safe / 1 invented of 73 (not met); run 3 on 48 new
+posts 43 safe / 0 invented (met). Failed assumption: "forbidding new words fixes rewrites" (product names slipped through);
+replaced by names allowed only for naming rules. Caveats in docs/fix-audit.md.
