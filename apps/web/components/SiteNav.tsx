@@ -105,6 +105,11 @@ export function SiteNav({ profile }: { profile: Profile }) {
           ) : (
             <Link href="/login" className="hidden rounded-full bg-bone px-4 py-2 font-display text-xs font-bold uppercase text-carbon xl:block">Try it</Link>
           )}
+          {profile && (
+            <div className="xl:hidden">
+              <SignOutButton label="Switch role" />
+            </div>
+          )}
           <button type="button" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="site-menu"
             className="font-display text-lg font-bold uppercase tracking-[-0.03em] text-bone xl:hidden">
             {open ? "Close" : "Menu"}
