@@ -42,7 +42,9 @@ and undo, and drafted rule clarifications that the owner accepts or rejects.
    (Kora, fictional fintech) loaded by CSV only: 27 of 30 planted issues caught, 0 of 10 clean posts blocked.
 2. **Each brand's own checks, in chat and before publishing:** one-time link codes tie an ASI:One address to a
    brand; a publish-gate API answers go or not yet with reasons. Automated tests: the gate refuses open blocking
-   findings and passes approved clean posts; a linked address never receives another brand's rules or facts.
+   findings and passes approved clean posts; a linked address never receives another brand's rules or facts. Fix audit
+   (0 invented claims): run 1 found 2 in 49 fixes, run 2 found 1 in 73, run 3 on 48 new posts found 0 in 43. A live
+   ASI:One link is pending: ASI:One was down for maintenance on 29 Oct.
 3. **Self-learning guidelines:** rules graduate to blocking at Wilson lower bound ≥ 0.80 (≥ 10 decisions) with an
    audit entry and undo. Drafted clarifications are proposals scored against the old wording.
    **That measure is not met:** the draft agreed with 65 of 84 rulings against 63 and 66 for the old wording.
