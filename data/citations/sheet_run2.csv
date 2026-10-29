@@ -1,0 +1,245 @@
+n,set,post,post_text,quote,cites,rule_or_fact_text,checker_said,verdict,note
+1,ruling-set,ASCI-018,"Anne French All Natural Apnao
+2x softer skin",2x softer skin,CTA-01,Every post has one clear call to action (Aurelle Brand Book v1.3 §5.1 Calls to action),"[advisory] Add one clear call to action, for example ""Shop the Vitamin C Brightening Serum"".",y,"Missing-CTA rule. The ad is one line, so the closing sentence is the whole ad; the fix can't narrow it. Counted y under your run-1 policy that post-level rules are fine."
+2,ruling-set,ASA-008,"Turns out most deodorants block your body from being able to sweat properly.
+Your pores get clogged with all the sweat and toxins that your body is supposed to release
+you can end up with itchy armpits, and rashes and body odour
+there are various studies linking aluminium salts to some undesirable side effects on health
+upsetting some fine-tuned hormonal balances, for example within the endocrine system",Turns out most deodorants block your body from being able to sweat properly.,TN-01,"Tone is warm and energetic, never hype or pressure (Aurelle Brand Book v1.3 §3.1 Voice)","[advisory] This sentence relies on fear-mongering and exaggerated negative claims about competitors, which violates the rule against hype or pressure.",y,Fear-based wording under the tone rule: a stretch but defensible.
+3,ruling-set,ASA-012,"Non-hormonal menopause solution
+magnesium helps manage and reduce hot flushes
+helps balance hormones
+Calms restless legs
+Soothes a migraine
+Reduces anxiety
+tackling insomnia and encouraging more restful nights",tackling insomnia and encouraging more restful nights,CTA-01,Every post has one clear call to action (Aurelle Brand Book v1.3 §5.1 Calls to action),"[advisory] Add one clear call to action, for example ""Shop the Vitamin C Brightening Serum"".",y,"Missing-CTA rule. The ad is one line, so the closing sentence is the whole ad; the fix can't narrow it. Counted y under your run-1 policy that post-level rules are fine."
+4,ruling-set,ASCI-011,"This great formula not only lightens the dark pigmentation but also removes cellulite and scars of the skin to make it radiant and glowing
+Get a flawless and graceful skin of intimate areas by Namyaa Intimate Skin Whitening gel in just six to eight weeks",Whitening,CL-07,No fairness or skin-lightening claims (ASCI guidelines for skin lightening and fairness products),[blocking] No fairness or skin-lightening claims,y,
+5,kora,KP-14,"Kora Save deposits are fully protected, up to any amount. Open Kora.",deposits,FN-R5,Savings wording needs the partner-bank statement (RBI guidance on fintech and bank partnerships (clear disclosure of the regulated entity)),[blocking] Say that Kora is not a bank and that banking services are provided by the partner bank.,y,'deposits' is thin but is savings wording the partner-bank rule covers.
+6,ruling-set,ASA-001,"SKIN TECH THAT'S LIGHT YEARS AHEAD
+CLINICALLY PROVEN TO REDUCE WRINKLES IN 4 WEEKS",CLINICALLY PROVEN TO REDUCE WRINKLES IN 4 WEEKS,CL-01 · FACT-013,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation)) | Niacinamide 10% Clarifying Serum reduced visible pores by 18% in 4 weeks (in-house study, 40 participants)",[needs a person] Needs human eyes: the closest fact (FACT-013) is only a 71% match. Plumbline won't guess.,y,
+7,ruling-set,ASA-011,"The fastest way to get whiter teeth without spending a fortune
+Whiter teeth within 2 minutes, no more expensive whiter treatments are needed
+8 shades whiter
+Easily remove coffee or small stains on teeth with just one application daily
+More Effective Than Traditional Toothpaste
+Brighten teeth",Brighten teeth,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,
+8,ruling-set,ASCI-012,"Glow and shine on face
+Effective from day one itself",Effective from day one itself,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,
+9,ruling-set,ASA-005,"MELASYL FIGHT HYPERPIGMENTATION. A NEW MODE OF ACTION LIKE NEVER BEFORE
+Intercepts excess melanin at a different stage of its production
+N1 DERMATOLOGIST RECOMMENDED BRAND IN THE UK*",Intercepts excess melanin at a different stage of its production,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,
+10,kora,KP-11,Rs. 200 off your first bill. Offer ends soon. Download Kora.,Rs. 200 off your first bill,FN-C1,"Return, interest and other financial claims need a matching fact (SEBI advertisement code for mutual funds and ASCI Code Chapter I (no assured returns))",[blocking] No fact in the ledger supports this claim.,y,A discount amount is a financial claim.
+11,ruling-set,ASA-001,"SKIN TECH THAT'S LIGHT YEARS AHEAD
+CLINICALLY PROVEN TO REDUCE WRINKLES IN 4 WEEKS",SKIN TECH THAT'S LIGHT YEARS AHEAD,TN-01,"Tone is warm and energetic, never hype or pressure (Aurelle Brand Book v1.3 §3.1 Voice)",[advisory] This phrase uses exaggerated hype and superlatives that violate the rule against hype or pressure.,y,
+12,ruling-set,ASA-006,"ADVANCED MEDICAL-GRADE SCAR TREATMENT
+clinically proven to reduce the appearance of Keloid and Hypertrophic scars, whether old or new
+MINIMISE SCAR [sic] AS FAST AS 6 WEEKS
+86% REDUCTION IN SCAR TEXTURE
+84% REDUCTION IN SCAR COLOUR
+68% REDUCTION IN SCAR HEIGHT",TREATMENT,TN-03,Avoid all-caps words (brand name and standard acronyms excepted) (Aurelle Brand Book v1.3 §3.2 Capitals),[advisory] Avoid all-caps words (brand name and standard acronyms excepted),y,
+13,ruling-set,ASCI-011,"This great formula not only lightens the dark pigmentation but also removes cellulite and scars of the skin to make it radiant and glowing
+Get a flawless and graceful skin of intimate areas by Namyaa Intimate Skin Whitening gel in just six to eight weeks",This great formula not only lightens the dark pigmentation but also removes cellulite and scars of the skin to make it radiant and glowing,TN-01,"Tone is warm and energetic, never hype or pressure (Aurelle Brand Book v1.3 §3.1 Voice)","[needs a person] The claim that the product removes cellulite and scars is an exaggerated promise that breaks the rule against hype. (second model disagreed: The quoted text does not violate the tone rule; it merely makes a claim, not a tone issue.)",y,Exaggerated promise under the tone rule; CL-01 would also fit.
+14,ruling-set,ASA-004,"Now with a 4% active concentration, clinically proven to reduce hyperpigmentation in 2 weeks.
+99% agree skin is glowing.
+No wonder it's the UK's number one.",clinically proven,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] Regulated efficacy phrases need a matching fact and compliance sign-off,y,
+15,ruling-set,ASCI-020,"A fairness treatment formulated with 5000 years of Ayurvedic wisdom
+The rich blend of Saffron and Kumkumadi Tailam is known to cure marks and lighten skin complexion",cure,CL-02,"No medical or therapeutic claims for cosmetics (Drugs and Cosmetics Act, 1940 (cosmetic vs drug claims))",[blocking] No medical or therapeutic claims for cosmetics,y,
+16,kora,KP-18,Kora Credit loans up to ₹5 lakh at low interest. Apply now.,loans,FN-R2,Credit offers must state the APR (RBI digital lending directions (key fact statement and all-in cost)),[blocking] State the APR (and any processing fee) wherever a loan or credit line is offered.,y,
+17,ruling-set,ASCI-010,"Enriched with botanical extracts and vitamins, this formulation offers powerful protection against free radicals
+Infused with natural extracts of herbs & roots, it gives perfect protection against ageing, dark spots, blemishes and skin darkening",offers powerful protection against free radicals,CL-01 · FACT-011,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation)) | Hyaluronic Water Gel is oil-free and non-comedogenic",[needs a person] Needs human eyes: the closest fact (FACT-011) is only a 67% match. Plumbline won't guess.,y,
+18,kora,KP-11,Rs. 200 off your first bill. Offer ends soon. Download Kora.,Offer,FN-R4,"Cashback, referral and reward offers need T&Cs (Kora Compliance Policy 6.1 (promotions))",[blocking] Offers must say 'T&Cs apply' and link to the terms.,y,'Offer' is thin but the rule is about offers needing T&Cs.
+19,kora,KP-20,Kora Credit: 14% to 36% APR!!! Download Kora now.,!!!,FN-T2,At most one exclamation mark (Kora Brand Voice v1.0 3.2),"[advisory] At most one exclamation mark: found 3, the limit is 1.",y,
+20,ruling-set,ASA-001,"SKIN TECH THAT'S LIGHT YEARS AHEAD
+CLINICALLY PROVEN TO REDUCE WRINKLES IN 4 WEEKS",LIGHT,TN-03,Avoid all-caps words (brand name and standard acronyms excepted) (Aurelle Brand Book v1.3 §3.2 Capitals),[advisory] Avoid all-caps words (brand name and standard acronyms excepted),y,
+21,kora,KP-04,"100% secure UPI payments, zero fraud. Send money with Kora.",100% secure UPI payments,FN-C1,"Return, interest and other financial claims need a matching fact (SEBI advertisement code for mutual funds and ASCI Code Chapter I (no assured returns))",[blocking] No fact in the ledger supports this claim.,y,A security claim cited under the generic financial-claims rule; FN-C4 would fit better.
+22,kora,KP-05,"Need cash? Kora Credit gives instant approval, no credit check. Apply now.",no credit check,FN-C5,No promises of loan approval (RBI digital lending directions (fair practices) and ASCI Code Chapter I),[blocking] No promises of loan approval,y,
+23,ruling-set,ASA-003,"Eucerin LOOK UP TO 5 YEARS YOUNGER*
+RECOMMENDED BY DERMATOLOGISTS
+CLINICALLY PROVEN",LOOK,TN-03,Avoid all-caps words (brand name and standard acronyms excepted) (Aurelle Brand Book v1.3 §3.2 Capitals),[advisory] Avoid all-caps words (brand name and standard acronyms excepted),y,
+24,ruling-set,ASA-001,"SKIN TECH THAT'S LIGHT YEARS AHEAD
+CLINICALLY PROVEN TO REDUCE WRINKLES IN 4 WEEKS",AHEAD,TN-03,Avoid all-caps words (brand name and standard acronyms excepted) (Aurelle Brand Book v1.3 §3.2 Capitals),[advisory] Avoid all-caps words (brand name and standard acronyms excepted),y,
+25,kora,KP-05,"Need cash? Kora Credit gives instant approval, no credit check. Apply now.",no credit check,FN-C1,"Return, interest and other financial claims need a matching fact (SEBI advertisement code for mutual funds and ASCI Code Chapter I (no assured returns))",[blocking] No fact in the ledger supports this claim.,y,A loan-approval promise under the generic financial rule; FN-C5 fits better (row 22).
+26,kora,KP-11,Rs. 200 off your first bill. Offer ends soon. Download Kora.,Offer ends soon.,FN-T1,"Tone is calm and plain, never fear or urgency about money (Kora Brand Voice v1.0 3.1)","[advisory] This phrase creates urgency pressure, which violates the rule against using fear or urgency about money.",y,
+27,ruling-set,ASA-001,"SKIN TECH THAT'S LIGHT YEARS AHEAD
+CLINICALLY PROVEN TO REDUCE WRINKLES IN 4 WEEKS",WRINKLES,TN-03,Avoid all-caps words (brand name and standard acronyms excepted) (Aurelle Brand Book v1.3 §3.2 Capitals),[advisory] Avoid all-caps words (brand name and standard acronyms excepted),y,
+28,ruling-set,ASA-008,"Turns out most deodorants block your body from being able to sweat properly.
+Your pores get clogged with all the sweat and toxins that your body is supposed to release
+you can end up with itchy armpits, and rashes and body odour
+there are various studies linking aluminium salts to some undesirable side effects on health
+upsetting some fine-tuned hormonal balances, for example within the endocrine system","upsetting some fine-tuned hormonal balances, for example within the endocrine system",CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,"A health-effect claim needing a fact; CL-01 is about efficacy phrases, so loose."
+29,ruling-set,ASCI-014,"For pimple free skin 21 days formula
+For pimple free skin",For pimple free skin,CL-01 · FACT-011,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation)) | Hyaluronic Water Gel is oil-free and non-comedogenic",[needs a person] Needs human eyes: the closest fact (FACT-011) is only a 67% match. Plumbline won't guess.,y,
+30,kora,KP-05,"Need cash? Kora Credit gives instant approval, no credit check. Apply now.",gives instant approval,FN-C1,"Return, interest and other financial claims need a matching fact (SEBI advertisement code for mutual funds and ASCI Code Chapter I (no assured returns))",[blocking] No fact in the ledger supports this claim.,y,Same as row 25.
+31,ruling-set,ASA-003,"Eucerin LOOK UP TO 5 YEARS YOUNGER*
+RECOMMENDED BY DERMATOLOGISTS
+CLINICALLY PROVEN",RECOMMENDED,TN-03,Avoid all-caps words (brand name and standard acronyms excepted) (Aurelle Brand Book v1.3 §3.2 Capitals),[advisory] Avoid all-caps words (brand name and standard acronyms excepted),y,
+32,ruling-set,ASA-006,"ADVANCED MEDICAL-GRADE SCAR TREATMENT
+clinically proven to reduce the appearance of Keloid and Hypertrophic scars, whether old or new
+MINIMISE SCAR [sic] AS FAST AS 6 WEEKS
+86% REDUCTION IN SCAR TEXTURE
+84% REDUCTION IN SCAR COLOUR
+68% REDUCTION IN SCAR HEIGHT",68% REDUCTION IN SCAR HEIGHT,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,
+33,ruling-set,ASA-001,"SKIN TECH THAT'S LIGHT YEARS AHEAD
+CLINICALLY PROVEN TO REDUCE WRINKLES IN 4 WEEKS",PROVEN,TN-03,Avoid all-caps words (brand name and standard acronyms excepted) (Aurelle Brand Book v1.3 §3.2 Capitals),[advisory] Avoid all-caps words (brand name and standard acronyms excepted),y,
+34,ruling-set,ASA-014,"Can't believe we didn't always use sunscreen.
+Let's not regret our sunny memories.
+Clinically proven to reverse visible signs of sun damage. A world-first peptide technology.
+Don't regret just reverse.",Clinically,DL-REQ,A study or percentage claim needs its study footnote (Aurelle Brand Book v1.3 §7.2 Disclaimers (DL-02)),"[blocking] Study and percentage claims need the footnote DL-02: ""*In-house study, 48 participants, 2026.""",y,
+35,ruling-set,ASA-008,"Turns out most deodorants block your body from being able to sweat properly.
+Your pores get clogged with all the sweat and toxins that your body is supposed to release
+you can end up with itchy armpits, and rashes and body odour
+there are various studies linking aluminium salts to some undesirable side effects on health
+upsetting some fine-tuned hormonal balances, for example within the endocrine system",there are various studies linking aluminium salts to some undesirable side effects on health,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,Same text and reasoning as row 28.
+36,kora,KP-11,Rs. 200 off your first bill. Offer ends soon. Download Kora.,Rs.,FN-S1,"Write amounts with the ₹ symbol, not Rs. or INR (Kora Style Guide 2.1)","[blocking] Write amounts with the ₹ symbol, not Rs. or INR",y,
+37,ruling-set,ASA-004,"Now with a 4% active concentration, clinically proven to reduce hyperpigmentation in 2 weeks.
+99% agree skin is glowing.
+No wonder it's the UK's number one.",clinically,DL-REQ,A study or percentage claim needs its study footnote (Aurelle Brand Book v1.3 §7.2 Disclaimers (DL-02)),"[blocking] Study and percentage claims need the footnote DL-02: ""*In-house study, 48 participants, 2026.""",y,
+38,kora,KP-20,Kora Credit: 14% to 36% APR!!! Download Kora now.,14% to 36% APR!!!,FN-T1,"Tone is calm and plain, never fear or urgency about money (Kora Brand Voice v1.0 3.1)",[advisory] The use of multiple exclamation marks creates an urgent and alarmist tone that violates the requirement for a calm and plain style.,n,"The flagged words are '!!!'; the exclamation rule FN-T2 fits (as in row 19), not the urgency rule FN-T1."
+39,ruling-set,ASA-005,"MELASYL FIGHT HYPERPIGMENTATION. A NEW MODE OF ACTION LIKE NEVER BEFORE
+Intercepts excess melanin at a different stage of its production
+N1 DERMATOLOGIST RECOMMENDED BRAND IN THE UK*",MELASYL FIGHT HYPERPIGMENTATION,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,
+40,ruling-set,ASCI-001,Keeps you up to 100% dandruff free,Keeps you up to 100% dandruff free,CTA-01,Every post has one clear call to action (Aurelle Brand Book v1.3 §5.1 Calls to action),"[advisory] Add one clear call to action, for example ""Shop the Vitamin C Brightening Serum"".",y,"Missing-CTA rule. The ad is one line, so the closing sentence is the whole ad; the fix can't narrow it. Counted y under your run-1 policy that post-level rules are fine."
+41,kora,KP-16,Our savings account earns you more than any bank. Open Kora.,savings account,FN-R5,Savings wording needs the partner-bank statement (RBI guidance on fintech and bank partnerships (clear disclosure of the regulated entity)),[blocking] Say that Kora is not a bank and that banking services are provided by the partner bank.,y,
+42,kora,KP-18,Kora Credit loans up to ₹5 lakh at low interest. Apply now.,loans up to ₹5 lakh at low interest,FN-C1,"Return, interest and other financial claims need a matching fact (SEBI advertisement code for mutual funds and ASCI Code Chapter I (no assured returns))",[blocking] No fact in the ledger supports this claim.,y,
+43,ruling-set,ASA-008,"Turns out most deodorants block your body from being able to sweat properly.
+Your pores get clogged with all the sweat and toxins that your body is supposed to release
+you can end up with itchy armpits, and rashes and body odour
+there are various studies linking aluminium salts to some undesirable side effects on health
+upsetting some fine-tuned hormonal balances, for example within the endocrine system",there are various studies linking aluminium salts to some undesirable side effects on health,TN-01,"Tone is warm and energetic, never hype or pressure (Aurelle Brand Book v1.3 §3.1 Voice)","[advisory] This statement uses fear-based language regarding health risks, which is not warm or energetic and creates unnecessary pressure.",y,Fear-based health wording under the tone rule: defensible.
+44,ruling-set,ASA-002,"Targets Fine Lines & Wrinkles. Clinically proven To Lift The Skin By 20%
+This protocol helps visibly lift and tighten the skin, reduce the appearance of deep wrinkles
+Visibly renew and rejuvenate the skin in 4 weeks
+Powered by exosomes which help boost and regenerate the skin barrier
+innovative microspicule delivery system which helps enhance the absorption of the active ingredients","This protocol helps visibly lift and tighten the skin, reduce the appearance of deep wrinkles",CL-01 · FACT-013,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation)) | Niacinamide 10% Clarifying Serum reduced visible pores by 18% in 4 weeks (in-house study, 40 participants)",[needs a person] Needs human eyes: the closest fact (FACT-013) is only a 71% match. Plumbline won't guess.,y,
+45,ruling-set,ASA-011,"The fastest way to get whiter teeth without spending a fortune
+Whiter teeth within 2 minutes, no more expensive whiter treatments are needed
+8 shades whiter
+Easily remove coffee or small stains on teeth with just one application daily
+More Effective Than Traditional Toothpaste
+Brighten teeth",8 shades whiter,CL-01 · FACT-027,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation)) | Tinted Lip Balm comes in 6 shades","[blocking] The fact states there are 6 shades, while the claim asserts 8 shades. (FACT-027: Tinted Lip Balm comes in 6 shades)",y,
+46,ruling-set,ASCI-008,"Kumkumadikeram night cream is a highly effective night cream which contains powerful Ayurvedic preparations of Kumkumadikeram and Manikya (Ruby) Bhasma which helps to lighten pigmentation and clarify the skin
+ManikyaBhasma has miraculous skin rejuvenating properties",highly effective night cream,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,
+47,ruling-set,ASA-002,"Targets Fine Lines & Wrinkles. Clinically proven To Lift The Skin By 20%
+This protocol helps visibly lift and tighten the skin, reduce the appearance of deep wrinkles
+Visibly renew and rejuvenate the skin in 4 weeks
+Powered by exosomes which help boost and regenerate the skin barrier
+innovative microspicule delivery system which helps enhance the absorption of the active ingredients",Powered by exosomes which help boost and regenerate the skin barrier,CL-01 · FACT-015,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation)) | Ceramide Barrier Cream improved skin barrier function in 2 weeks (TEWL study, 32 participants)",[needs a person] Needs human eyes: the closest fact (FACT-015) is only a 69% match. Plumbline won't guess.,y,
+48,kora,KP-17,Double your money with Kora Invest in a year. Start a SIP.,Invest,FN-R1,Investment mentions need the market-risk disclaimer (SEBI mutual fund advertisement code (standard risk warning)),"[blocking] Add: Mutual fund investments are subject to market risks, read all scheme related documents carefully.",y,
+49,ruling-set,ASA-006,"ADVANCED MEDICAL-GRADE SCAR TREATMENT
+clinically proven to reduce the appearance of Keloid and Hypertrophic scars, whether old or new
+MINIMISE SCAR [sic] AS FAST AS 6 WEEKS
+86% REDUCTION IN SCAR TEXTURE
+84% REDUCTION IN SCAR COLOUR
+68% REDUCTION IN SCAR HEIGHT",REDUCTION,TN-03,Avoid all-caps words (brand name and standard acronyms excepted) (Aurelle Brand Book v1.3 §3.2 Capitals),[advisory] Avoid all-caps words (brand name and standard acronyms excepted),y,
+50,kora,KP-03,Kora is India's most trusted payments app. Download Kora now.,Kora is India's most trusted payments app,FN-C3,Rankings and superlatives need a source (ASCI Code Chapter I (substantiation of superlatives)),[blocking] No fact in the ledger supports this claim.,y,
+51,ruling-set,ASCI-005,Hair Fall ka Sahi Solution,Hair Fall ka Sahi Solution,CTA-01,Every post has one clear call to action (Aurelle Brand Book v1.3 §5.1 Calls to action),"[advisory] Add one clear call to action, for example ""Shop the Vitamin C Brightening Serum"".",y,"Missing-CTA rule. The ad is one line, so the closing sentence is the whole ad; the fix can't narrow it. Counted y under your run-1 policy that post-level rules are fine."
+52,ruling-set,ASCI-024,"Protects you from all forms of sun damage like tanning, sun spots and premature ageing
+Lightens skin by regulating skin darkening pigments",Lightens skin by regulating skin darkening pigments,CTA-01,Every post has one clear call to action (Aurelle Brand Book v1.3 §5.1 Calls to action),"[advisory] Add one clear call to action, for example ""Shop the Vitamin C Brightening Serum"".",y,"Missing-CTA rule. The ad is one line, so the closing sentence is the whole ad; the fix can't narrow it. Counted y under your run-1 policy that post-level rules are fine."
+53,kora,KP-02,RBI approved savings with Kora Save. Open an account in 2 minutes.,RBI approved,FN-C2,Regulator or bank endorsement claims need evidence (Kora Compliance Policy 4.2 (no implied regulator endorsement)),[blocking] Regulator or bank endorsement claims need evidence,y,
+54,ruling-set,ASCI-016,"gives you pimple-free pure skin
+Prevents pimples",Prevents pimples,CTA-01,Every post has one clear call to action (Aurelle Brand Book v1.3 §5.1 Calls to action),"[advisory] Add one clear call to action, for example ""Shop the Vitamin C Brightening Serum"".",y,"Missing-CTA rule. The ad is one line, so the closing sentence is the whole ad; the fix can't narrow it. Counted y under your run-1 policy that post-level rules are fine."
+55,ruling-set,ASCI-015,"India's most trusted brand
+Unlike any cream and oil based cosmetic products, this Ayurvedic Aloe Gel naturally protects your skin",India's most trusted brand,TN-06,Lead with the main point (Aurelle Brand Book v1.3 §3.3 Structure (GM02)),"[advisory] The first sentence does not state the product or the main message, violating the rule to lead with the main point.",y,"The first sentence is a superlative, not the product: fits 'lead with the main point'."
+56,ruling-set,ASA-014,"Can't believe we didn't always use sunscreen.
+Let's not regret our sunny memories.
+Clinically proven to reverse visible signs of sun damage. A world-first peptide technology.
+Don't regret just reverse.",Let's not regret our sunny memories.,TN-01,"Tone is warm and energetic, never hype or pressure (Aurelle Brand Book v1.3 §3.1 Voice)","[needs a person] This sentence relies on fear of regret and negative emotional pressure, which violates the rule against hype or pressure. (second model disagreed: The sentence encourages a positive reflection without hype or pressure, aligning with a warm, energetic tone.)",y,Fear-of-regret pressure under the tone rule: defensible.
+57,kora,KP-15,Send money by IMPS of any size with zero charges. Try Kora.,Send money by IMPS of any size with zero charges,FN-C1,"Return, interest and other financial claims need a matching fact (SEBI advertisement code for mutual funds and ASCI Code Chapter I (no assured returns))",[blocking] No fact in the ledger supports this claim.,y,A charges claim is a financial claim.
+58,ruling-set,ASA-013,"clinically proven light therapy targeting acne
+targeted solutions for acne, rosacea
+Clinical studies have shown that specific wavelengths of LED light can reduce acne-causing bacteria",clinically proven light therapy targeting acne,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,
+59,ruling-set,ASA-006,"ADVANCED MEDICAL-GRADE SCAR TREATMENT
+clinically proven to reduce the appearance of Keloid and Hypertrophic scars, whether old or new
+MINIMISE SCAR [sic] AS FAST AS 6 WEEKS
+86% REDUCTION IN SCAR TEXTURE
+84% REDUCTION IN SCAR COLOUR
+68% REDUCTION IN SCAR HEIGHT",clinically,DL-REQ,A study or percentage claim needs its study footnote (Aurelle Brand Book v1.3 §7.2 Disclaimers (DL-02)),"[blocking] Study and percentage claims need the footnote DL-02: ""*In-house study, 48 participants, 2026.""",y,
+60,ruling-set,ASA-009,"Deeply clean your pores, remove blackheads, reduce excess oil",remove blackheads,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,
+61,ruling-set,ASA-013,"clinically proven light therapy targeting acne
+targeted solutions for acne, rosacea
+Clinical studies have shown that specific wavelengths of LED light can reduce acne-causing bacteria",LED,TN-03,Avoid all-caps words (brand name and standard acronyms excepted) (Aurelle Brand Book v1.3 §3.2 Capitals),[advisory] Avoid all-caps words (brand name and standard acronyms excepted),n,LED is a standard acronym; TN-03 excepts those.
+62,ruling-set,ASA-012,"Non-hormonal menopause solution
+magnesium helps manage and reduce hot flushes
+helps balance hormones
+Calms restless legs
+Soothes a migraine
+Reduces anxiety
+tackling insomnia and encouraging more restful nights",tackling insomnia and encouraging more restful nights,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,A health claim under the efficacy rule.
+63,kora,KP-05,"Need cash? Kora Credit gives instant approval, no credit check. Apply now.",instant approval,FN-C5,No promises of loan approval (RBI digital lending directions (fair practices) and ASCI Code Chapter I),[blocking] No promises of loan approval,y,
+64,ruling-set,ASA-009,"Deeply clean your pores, remove blackheads, reduce excess oil",Deeply clean your pores,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,A cosmetic efficacy phrase.
+65,ruling-set,ASCI-002,"Dandruff free smooth baal, Rs 2 ka kamaal",Dandruff free smooth baal,CL-01 · FACT-011,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation)) | Hyaluronic Water Gel is oil-free and non-comedogenic",[needs a person] Needs human eyes: the closest fact (FACT-011) is only a 67% match. Plumbline won't guess.,y,
+66,ruling-set,ASA-005,"MELASYL FIGHT HYPERPIGMENTATION. A NEW MODE OF ACTION LIKE NEVER BEFORE
+Intercepts excess melanin at a different stage of its production
+N1 DERMATOLOGIST RECOMMENDED BRAND IN THE UK*",ACTION,TN-03,Avoid all-caps words (brand name and standard acronyms excepted) (Aurelle Brand Book v1.3 §3.2 Capitals),[advisory] Avoid all-caps words (brand name and standard acronyms excepted),y,
+67,ruling-set,ASA-005,"MELASYL FIGHT HYPERPIGMENTATION. A NEW MODE OF ACTION LIKE NEVER BEFORE
+Intercepts excess melanin at a different stage of its production
+N1 DERMATOLOGIST RECOMMENDED BRAND IN THE UK*",DERMATOLOGIST,TN-03,Avoid all-caps words (brand name and standard acronyms excepted) (Aurelle Brand Book v1.3 §3.2 Capitals),[advisory] Avoid all-caps words (brand name and standard acronyms excepted),y,
+68,ruling-set,ASA-003,"Eucerin LOOK UP TO 5 YEARS YOUNGER*
+RECOMMENDED BY DERMATOLOGISTS
+CLINICALLY PROVEN",CLINICALLY,TN-03,Avoid all-caps words (brand name and standard acronyms excepted) (Aurelle Brand Book v1.3 §3.2 Capitals),[advisory] Avoid all-caps words (brand name and standard acronyms excepted),y,
+69,ruling-set,ASA-003,"Eucerin LOOK UP TO 5 YEARS YOUNGER*
+RECOMMENDED BY DERMATOLOGISTS
+CLINICALLY PROVEN",LOOK UP TO 5 YEARS YOUNGER*,TN-01,"Tone is warm and energetic, never hype or pressure (Aurelle Brand Book v1.3 §3.1 Voice)",[advisory] The all-caps formatting and the promise of a dramatic age reversal create a hype-driven tone that violates the warm and energetic standard.,y,
+70,ruling-set,ASCI-020,"A fairness treatment formulated with 5000 years of Ayurvedic wisdom
+The rich blend of Saffron and Kumkumadi Tailam is known to cure marks and lighten skin complexion",The rich blend of Saffron and Kumkumadi Tailam is known to cure marks and lighten skin complexion,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))","[blocking] No fact in the ledger supports this claim. The fact only states that the oil contains saffron among other herbs, but does not mention any effect on marks or skin complexion, nor does it identify PERSON_1.",y,
+71,kora,KP-01,Kora Save gives guaranteed returns of 12% every month. Download Kora today.,guaranteed returns,FN-C1,"Return, interest and other financial claims need a matching fact (SEBI advertisement code for mutual funds and ASCI Code Chapter I (no assured returns))","[blocking] Return, interest and other financial claims need a matching fact",y,
+72,kora,KP-04,"100% secure UPI payments, zero fraud. Send money with Kora.",zero fraud,FN-C4,Security claims must be specific (Kora Compliance Policy 4.4 (security claims)),[blocking] Security claims must be specific,y,
+73,ruling-set,ASCI-007,most effective and precious ingredients,most effective and precious ingredients,CTA-01,Every post has one clear call to action (Aurelle Brand Book v1.3 §5.1 Calls to action),"[advisory] Add one clear call to action, for example ""Shop the Vitamin C Brightening Serum"".",y,"Missing-CTA rule. The ad is one line, so the closing sentence is the whole ad; the fix can't narrow it. Counted y under your run-1 policy that post-level rules are fine."
+74,kora,KP-16,Our savings account earns you more than any bank. Open Kora.,earns you more than any bank,FN-C3,Rankings and superlatives need a source (ASCI Code Chapter I (substantiation of superlatives)),[blocking] No fact in the ledger supports this claim.,y,
+75,ruling-set,ASCI-009,"It regenerates cellular tissue and collagen and slows down skin ageing
+Prevents wrinkle formation, removes dark patches and restores skin elasticity and firmness
+Precious ingredients of this cream fight free radicles and prevent oxidative damage caused by UV rays and pollution",Precious ingredients of this cream fight free radicles and prevent oxidative damage caused by UV rays and pollution,CL-01 · FACT-011,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation)) | Hyaluronic Water Gel is oil-free and non-comedogenic",[needs a person] Needs human eyes: the closest fact (FACT-011) is only a 67% match. Plumbline won't guess.,y,
+76,ruling-set,ASA-013,"clinically proven light therapy targeting acne
+targeted solutions for acne, rosacea
+Clinical studies have shown that specific wavelengths of LED light can reduce acne-causing bacteria",clinically,DL-REQ,A study or percentage claim needs its study footnote (Aurelle Brand Book v1.3 §7.2 Disclaimers (DL-02)),"[blocking] Study and percentage claims need the footnote DL-02: ""*In-house study, 48 participants, 2026.""",y,
+77,ruling-set,ASCI-012,"Glow and shine on face
+Effective from day one itself",Glow and shine on face,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,A mild efficacy phrase.
+78,ruling-set,ASCI-004,It reduces melanin formation and makes your skin fairer day by day,It reduces melanin formation and makes your skin fairer day by day,CL-01 · FACT-013,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation)) | Niacinamide 10% Clarifying Serum reduced visible pores by 18% in 4 weeks (in-house study, 40 participants)",[needs a person] Needs human eyes: the closest fact (FACT-013) is only a 71% match. Plumbline won't guess.,y,
+79,kora,KP-04,"100% secure UPI payments, zero fraud. Send money with Kora.",zero fraud,FN-C1,"Return, interest and other financial claims need a matching fact (SEBI advertisement code for mutual funds and ASCI Code Chapter I (no assured returns))",[blocking] No fact in the ledger supports this claim.,y,"Same as row 21: FN-C4 would fit better, and row 72 cites it for the same words."
+80,kora,KP-12,Gifted by Kora: I tried Kora Save for a month and loved it. Open Kora.,Gifted,FN-R6,Paid or gifted creator posts must disclose the partnership (ASCI guidelines for influencer advertising in digital media (2021)),[blocking] Add #ad or 'Paid partnership' at the start of the caption.,y,
+81,ruling-set,ASCI-025,"Our Fair'e skin lightening gel and A'ffair skin lightening cream help in getting rid of dark spots and patches
+The herbs present in them detoxify the blood and boost circulation to fade freckles and skin discolorations thus making the skin tone more even toned and giving it a lighter appearance",making the skin tone more even toned and giving it a lighter appearance,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,
+82,kora,KP-02,RBI approved savings with Kora Save. Open an account in 2 minutes.,RBI approved savings with Kora Save,FN-C2 · FACT-K01,"Regulator or bank endorsement claims need evidence (Kora Compliance Policy 4.2 (no implied regulator endorsement)) | Kora Save pays 6.5% p.a. interest on balances up to ₹2,00,000",[needs a person] Needs human eyes: the closest fact (FACT-K01) is only a 67% match. Plumbline won't guess.,y,
+83,ruling-set,ASA-008,"Turns out most deodorants block your body from being able to sweat properly.
+Your pores get clogged with all the sweat and toxins that your body is supposed to release
+you can end up with itchy armpits, and rashes and body odour
+there are various studies linking aluminium salts to some undesirable side effects on health
+upsetting some fine-tuned hormonal balances, for example within the endocrine system",Your pores get clogged with all the sweat and toxins that your body is supposed to release,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,
+84,kora,KP-13,Kora has 5 million users. Join them and download Kora.,Kora has 5 million users,FN-C1 · FACT-K05,"Return, interest and other financial claims need a matching fact (SEBI advertisement code for mutual funds and ASCI Code Chapter I (no assured returns)) | Kora has 2.4 million registered users (as of September 2026)","[blocking] The fact states 2.4 million users, which is less than the claimed 5 million. (FACT-K05: Kora has 2.4 million registered users (as of September 2026))",y,
+85,kora,KP-19,Don't miss out! Everyone is already saving with Kora. Act now or lose out.,Everyone is already saving with Kora.,FN-T1,"Tone is calm and plain, never fear or urgency about money (Kora Brand Voice v1.0 3.1)","[advisory] This statement uses social pressure and implies the reader is falling behind, which is not allowed.",y,
+86,ruling-set,ASA-013,"clinically proven light therapy targeting acne
+targeted solutions for acne, rosacea
+Clinical studies have shown that specific wavelengths of LED light can reduce acne-causing bacteria",Clinical studies have shown that specific wavelengths of LED light can reduce acne-causing bacteria,CTA-01,Every post has one clear call to action (Aurelle Brand Book v1.3 §5.1 Calls to action),"[advisory] Add one clear call to action, for example ""Shop the Vitamin C Brightening Serum"".",y,"Missing-CTA rule. The ad is one line, so the closing sentence is the whole ad; the fix can't narrow it. Counted y under your run-1 policy that post-level rules are fine."
+87,ruling-set,ASCI-020,"A fairness treatment formulated with 5000 years of Ayurvedic wisdom
+The rich blend of Saffron and Kumkumadi Tailam is known to cure marks and lighten skin complexion",cure marks,TN-01,"Tone is warm and energetic, never hype or pressure (Aurelle Brand Book v1.3 §3.1 Voice)",[advisory] The word 'cure' is an exaggerated medical promise that violates the rule against hype and unrealistic claims.,y,'cure' is exaggerated; CL-01/CL-02 would fit better.
+88,ruling-set,ASA-003,"Eucerin LOOK UP TO 5 YEARS YOUNGER*
+RECOMMENDED BY DERMATOLOGISTS
+CLINICALLY PROVEN",LOOK UP TO 5 YEARS YOUNGER,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,
+89,kora,KP-14,"Kora Save deposits are fully protected, up to any amount. Open Kora.","Kora Save deposits are fully protected, up to any amount",FN-C1 · FACT-K01,"Return, interest and other financial claims need a matching fact (SEBI advertisement code for mutual funds and ASCI Code Chapter I (no assured returns)) | Kora Save pays 6.5% p.a. interest on balances up to ₹2,00,000",[needs a person] Needs human eyes: the closest fact (FACT-K01) is only a 67% match. Plumbline won't guess.,y,
+90,ruling-set,ASCI-004,It reduces melanin formation and makes your skin fairer day by day,fairer,CL-07,No fairness or skin-lightening claims (ASCI guidelines for skin lightening and fairness products),[blocking] No fairness or skin-lightening claims,y,
+91,ruling-set,ASCI-009,"It regenerates cellular tissue and collagen and slows down skin ageing
+Prevents wrinkle formation, removes dark patches and restores skin elasticity and firmness
+Precious ingredients of this cream fight free radicles and prevent oxidative damage caused by UV rays and pollution",It regenerates cellular tissue and collagen and slows down skin ageing,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,
+92,ruling-set,ASCI-019,"A skin care treatment formulated with 5000 years of Ayurvedic wisdom from the granthas
+The purifying properties of Turmeric (haldi) are known to enhance complexion
+Kumkumadi Tailam is known to cure marks",The purifying properties of Turmeric (haldi) are known to enhance complexion,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,
+93,kora,KP-08,Refer a friend and get a bonus of ₹500 each. Open Kora.,bonus,FN-R4,"Cashback, referral and reward offers need T&Cs (Kora Compliance Policy 6.1 (promotions))",[blocking] Offers must say 'T&Cs apply' and link to the terms.,y,
+94,ruling-set,ASCI-025,"Our Fair'e skin lightening gel and A'ffair skin lightening cream help in getting rid of dark spots and patches
+The herbs present in them detoxify the blood and boost circulation to fade freckles and skin discolorations thus making the skin tone more even toned and giving it a lighter appearance",detoxify the blood,CL-01,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation))",[blocking] No fact in the ledger supports this claim.,y,
+95,ruling-set,ASA-014,"Can't believe we didn't always use sunscreen.
+Let's not regret our sunny memories.
+Clinically proven to reverse visible signs of sun damage. A world-first peptide technology.
+Don't regret just reverse.",A world-first peptide technology,CL-04,"No unqualified superlatives or rankings (ASCI Code, Chapter I.4 (claims of superiority))",[blocking] No fact in the ledger supports this claim.,y,
+96,kora,KP-08,Refer a friend and get a bonus of ₹500 each. Open Kora.,Refer a friend and get a bonus of ₹500 each,FN-C1 · FACT-K12,"Return, interest and other financial claims need a matching fact (SEBI advertisement code for mutual funds and ASCI Code Chapter I (no assured returns)) | Refer a friend and each of you gets ₹200 after their first payment (ends 31 December 2026)","[blocking] The fact states a ₹200 bonus per person, not ₹500. (FACT-K12: Refer a friend and each of you gets ₹200 after their first payment (ends 31 December 2026))",y,
+97,ruling-set,ASA-006,"ADVANCED MEDICAL-GRADE SCAR TREATMENT
+clinically proven to reduce the appearance of Keloid and Hypertrophic scars, whether old or new
+MINIMISE SCAR [sic] AS FAST AS 6 WEEKS
+86% REDUCTION IN SCAR TEXTURE
+84% REDUCTION IN SCAR COLOUR
+68% REDUCTION IN SCAR HEIGHT",GRADE,TN-03,Avoid all-caps words (brand name and standard acronyms excepted) (Aurelle Brand Book v1.3 §3.2 Capitals),[advisory] Avoid all-caps words (brand name and standard acronyms excepted),y,
+98,ruling-set,ASA-005,"MELASYL FIGHT HYPERPIGMENTATION. A NEW MODE OF ACTION LIKE NEVER BEFORE
+Intercepts excess melanin at a different stage of its production
+N1 DERMATOLOGIST RECOMMENDED BRAND IN THE UK*",N1 DERMATOLOGIST RECOMMENDED BRAND IN THE UK,CL-05,"Endorsement claims need evidence in the fact ledger (ASCI Code, Chapter I.1 (substantiation of claims))",[blocking] No fact in the ledger supports this claim.,y,
+99,ruling-set,ASA-009,"Deeply clean your pores, remove blackheads, reduce excess oil",reduce excess oil,CL-01 · FACT-013,"Regulated efficacy phrases need a matching fact and compliance sign-off (ASCI Code, Chapter I (truthful and honest representation)) | Niacinamide 10% Clarifying Serum reduced visible pores by 18% in 4 weeks (in-house study, 40 participants)",[needs a person] Needs human eyes: the closest fact (FACT-013) is only a 71% match. Plumbline won't guess.,y,
+100,ruling-set,ASCI-023,arrests hair fall and makes your hair thicker and stronger,arrests hair fall and makes your hair thicker and stronger,CTA-01,Every post has one clear call to action (Aurelle Brand Book v1.3 §5.1 Calls to action),"[advisory] Add one clear call to action, for example ""Shop the Vitamin C Brightening Serum"".",y,"Missing-CTA rule. The ad is one line, so the closing sentence is the whole ad; the fix can't narrow it. Counted y under your run-1 policy that post-level rules are fine."

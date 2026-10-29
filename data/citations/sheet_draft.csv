@@ -1,0 +1,101 @@
+n,quote,cites,draft,confidence,reason
+1,Dandruff free smooth baal,CL-01 · FACT-011,y,sure,
+2,Caffeine Stimulating Scalp Treatment helps to stimulate hair growth and reduce s,CL-01 · FACT-013,y,sure,
+3,RECOMMENDED BY DERMATOLOGISTS,CL-05,y,sure,
+4,deposits,FN-R5,y,judgment,"'deposits' is thin on its own, but it is savings wording the partner-bank rule covers."
+5,"This protocol helps visibly lift and tighten the skin, reduce the appearance of ",CL-01 · FACT-013,y,sure,
+6,Offer,FN-R4,y,judgment,"'Offer' alone is thin, but the rule is about offers needing T&Cs."
+7,BEFORE,TN-03,y,sure,
+8,making the skin tone more even toned and giving it a lighter appearance,CL-01,y,sure,
+9,Don't miss out!,FN-T1,y,sure,
+10,Precious ingredients of this cream fight free radicles and prevent oxidative dam,CL-01 · FACT-011,y,sure,
+11,guaranteed returns of 12% every month,FN-C1 · FACT-K07,y,sure,Guaranteed monthly returns are a financial claim; the closest fact is a weak match and goes to a person.
+12,grows new hair,CTA-01,n,judgment,"Missing-CTA rule is about the whole post, but it is pinned on unrelated words. If you accept post-level rules, switch to y."
+13,helps to lighten pigmentation and clarify the skin,CL-01,y,sure,
+14,Kora has 5 million users,FN-C1 · FACT-K05,y,sure,
+15,2x softer skin,CL-01,y,sure,
+16,CLINICALLY,TN-03,y,sure,
+17,no credit check,FN-C1,y,judgment,'no credit check' is a financial promise needing a fact (FN-R2/FN-C5 fit too).
+18,"Protects you from all forms of sun damage like tanning, sun spots and premature ",CTA-01,n,judgment,"Missing-CTA rule is about the whole post, but it is pinned on unrelated words. If you accept post-level rules, switch to y."
+19,Clinical studies have shown that specific wavelengths of LED light can reduce ac,CL-01 · FACT-013,y,sure,
+20,Your pores get clogged with all the sweat and toxins that your body is supposed ,CL-01,y,sure,
+21,LOOK UP TO 5 YEARS YOUNGER*,TN-01,y,sure,
+22,"Now with a 4% active concentration, clinically proven to reduce hyperpigmentatio",CTA-01,n,judgment,"Missing-CTA rule is about the whole post, but it is pinned on unrelated words. If you accept post-level rules, switch to y."
+23,COLOUR,TN-03,y,sure,
+24,Powered by exosomes which help boost and regenerate the skin barrier,CL-01 · FACT-015,y,sure,
+25,Kumkumadi Tailam is known to cure marks,CL-01,y,sure,
+26,no credit check,FN-C5,y,judgment,'no credit check' is a loan-approval promise.
+27,Eh damaged baloonko nourish karkehairfallkamkare,CTA-01,n,judgment,"Missing-CTA rule is about the whole post, but it is pinned on unrelated words. If you accept post-level rules, switch to y."
+28,WRINKLES,TN-03,y,sure,
+29,helps balance hormones,CL-01,y,sure,
+30,Gifted,FN-R6,y,sure,
+31,N1 DERMATOLOGIST RECOMMENDED BRAND IN THE UK,CL-05,y,sure,
+32,CLINICALLY PROVEN TO REDUCE WRINKLES IN 4 WEEKS,TN-01,y,judgment,"Hype wording, though CL-01 would also fit."
+33,Rs. 200 off your first bill,FN-C1,y,judgment,A discount amount is a financial claim needing a matching fact.
+34,Refer a friend and get a bonus of ₹500 each,FN-C1 · FACT-K12,y,sure,
+35,cure marks,TN-01,y,judgment,"'cure' is exaggerated; CL-01 would fit better, but TN-01 holds."
+36,Targets Fine Lines & Wrinkles,CTA-01,n,judgment,"Missing-CTA rule is about the whole post, but it is pinned on unrelated words. If you accept post-level rules, switch to y."
+37,Invest,FN-R1,y,sure,
+38,HYPERPIGMENTATION,TN-03,y,sure,
+39,Rs 2 ka kamaal,CL-01,n,judgment,"'Rs 2 ka kamaal' is a price boast, not an efficacy phrase (CL-01)."
+40,Kora Gold,FN-K1,y,sure,
+41,SCAR,TN-03,y,sure,
+42,More Effective Than Traditional Toothpaste,CL-01,y,sure,
+43,it's gonna give you more long-term results,TN-05,n,sure,"The quoted sentence is already active ('it's gonna give you'), so the active-voice rule doesn't apply."
+44,MELASYL,TN-03,y,judgment,"MELASYL is a third-party product name, but the rule's exception covers only Aurelle's own brand name."
+45,make it radiant and glowing,CL-01,y,judgment,'radiant and glowing' is a mild efficacy phrase.
+46,"Kora Save deposits are fully protected, up to any amount",FN-C1 · FACT-K01,y,sure,
+47,Clinically,DL-REQ,y,sure,
+48,studies,DL-REQ,y,sure,
+49,Offer ends soon.,FN-T1,y,sure,
+50,That's Why Dentist Recommended,CTA-01,n,judgment,"Missing-CTA rule is about the whole post, but it is pinned on unrelated words. If you accept post-level rules, switch to y."
+51,DERMATOLOGISTS,TN-03,y,sure,
+52,Overnight treatment,CL-01,n,judgment,"'Overnight treatment' names a product use, not a regulated efficacy phrase."
+53,BRAND,TN-03,y,sure,
+54,savings account,FN-R5,y,sure,
+55,LIKE,TN-03,y,sure,
+56,LED,TN-03,n,sure,LED is a standard acronym; the rule excepts those.
+57,Lightens skin by regulating skin darkening pigments,CL-01,y,sure,
+58,India's most trusted,FN-C3,y,sure,
+59,It regenerates cellular tissue and collagen and slows down skin ageing,CTA-01,n,judgment,"Missing-CTA rule is about the whole post, but it is pinned on unrelated words. If you accept post-level rules, switch to y."
+60,Everyone is already saving with Kora.,FN-T1,y,sure,
+61,Keeps you up to 100% dandruff free,CL-01 · FACT-011,y,sure,
+62,Helps stimulate growth,CL-01,y,sure,
+63,RECOMMENDED,TN-03,y,sure,
+64,Effective from day one itself,CL-01,y,sure,
+65,RBI approved savings with Kora Save,FN-C1 · FACT-K01,y,judgment,"FN-C2 (regulator endorsement) would fit better, but it is a financial claim with no matching fact."
+66,Invest,FN-R1,y,sure,
+67,It reduces melanin formation and makes your skin fairer day by day,CL-01 · FACT-013,y,sure,
+68,loans up to ₹5 lakh at low interest,FN-C1,y,sure,
+69,Turns out most deodorants block your body from being able to sweat properly,CTA-01,n,judgment,"Missing-CTA rule is about the whole post, but it is pinned on unrelated words. If you accept post-level rules, switch to y."
+70,It reduces melanin formation and makes your skin fairer day by day,CTA-01,n,judgment,"Missing-CTA rule is about the whole post, but it is pinned on unrelated words. If you accept post-level rules, switch to y."
+71,fairer,CL-07,y,sure,
+72,The fastest way to get whiter teeth without spending a fortune,CTA-01,n,judgment,"Missing-CTA rule is about the whole post, but it is pinned on unrelated words. If you accept post-level rules, switch to y."
+73,RBI approved,FN-C2,y,sure,
+74,miraculous,TN-01,y,sure,
+75,Offer ends soon,FN-C1,n,judgment,"'Offer ends soon' is urgency, not a financial claim needing a fact (FN-T1 would fit)."
+76,Act now or lose out.,FN-T1,y,sure,
+77,CLINICALLY,TN-03,y,sure,
+78,"Dandruff free smooth baal, Rs 2 ka kamaal",CTA-01,n,judgment,"Missing-CTA rule is about the whole post, but it is pinned on unrelated words. If you accept post-level rules, switch to y."
+79,REDUCTION,TN-03,y,sure,
+80,Anne French All Natural Apnao,CL-03,y,sure,
+81,there are various studies linking aluminium salts to some undesirable side effec,TN-01,y,judgment,Fear-based health wording is not warm or energetic; a stretch but defensible.
+82,That's Why Dentist Recommended,TN-05,y,judgment,The phrase is passive-style and the rule asks for active voice.
+83,LOOK,TN-03,y,sure,
+84,REDUCE,TN-03,y,sure,
+85,CLINICALLY PROVEN TO REDUCE WRINKLES IN 4 WEEKS,CL-01 · FACT-013,y,sure,
+86,!!!,FN-T2,y,sure,
+87,Don't miss out,FN-S2,n,judgment,"Missing-CTA rule is about the whole post, but it is pinned on unrelated words. If you accept post-level rules, switch to y."
+88,WEEKS,TN-03,y,sure,
+89,We can confirm that our Hyaluronic Lip Plumper creates long term plumping result,CL-01,y,sure,
+90,bonus,FN-R4,y,sure,
+91,8% interest,FN-R3,y,sure,
+92,instant approval,FN-C5,y,sure,
+93,Kumkumadikeram night cream is a highly effective night cream which contains powe,CTA-01,n,judgment,"Missing-CTA rule is about the whole post, but it is pinned on unrelated words. If you accept post-level rules, switch to y."
+94,detoxify the blood,CL-01,y,sure,
+95,SKIN TECH THAT'S LIGHT YEARS AHEAD,TN-01,y,sure,
+96,Eucerin LOOK UP TO 5 YEARS YOUNGER*,CTA-01,n,judgment,"Missing-CTA rule is about the whole post, but it is pinned on unrelated words. If you accept post-level rules, switch to y."
+97,The purifying properties of Turmeric (haldi) are known to enhance complexion,CL-01,y,sure,
+98,Kora is India's most trusted payments app,FN-C1,n,judgment,"A 'most trusted' superlative fits FN-C3 (as in row 58), not the matching-fact rule FN-C1."
+99,"if you use it regularly enough, it's gonna give you more long-term results",CL-01,y,sure,
+100,14% to 36% APR!!!,FN-T1,n,judgment,"The words flagged are the '!!!'; the rule that fits is FN-T2 (exclamation marks), not FN-T1."

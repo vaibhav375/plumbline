@@ -114,7 +114,7 @@ the right words. The baseline is one model call per post with the whole brand bo
   and real quotes, just the wrong ones, so that metric can't tell them apart here; precision does.
 - Two of Plumbline's 8 false alarms are plain errors (an approved fact reported as unsupported on a
   clean post). Labels were frozen before the AI runs, so defensible extra findings also count against it.
-- Tests: 321 checker unit tests, 40 database tests (RLS, audit chain, second approver, link codes, gate keys,
+- Tests: 323 checker unit tests, 40 database tests (RLS, audit chain, second approver, link codes, gate keys,
   graduation), 19 end-to-end tests run against the live site ([details](docs/testing.md)). Each live run and measurement is in the [build log](docs/build-log.md).
 - Speed on Render's free tier: text checks 1.8–3.6 s; image checks about 6 s (OCR alone is ~3.8 s on
   the shared CPU).
@@ -126,8 +126,8 @@ the right words. The baseline is one model call per post with the whole brand bo
 | 1 Claim watch + regulator rulings | Recall on upheld claims, 41 ASA/ASCI rulings (target ≥ 80%) | **72 of 81 = 88.9%** ([details](docs/ruling-eval.md)) |
 | 1 Second brand by CSV | Kora (fictional fintech): planted problems caught; clean posts blocked | 27 of 30; 0 of 10 ([details](docs/second-brand.md)) |
 | 3 Self-learning guidelines | Drafted wording vs old wording on rulings it was not written from (target: beats it) | **Not met**: 65 of 84 vs 63 and 66 ([details](docs/clarify-eval.md)) |
-| 1 Citations | 100 findings checked by the builder (target ≥ 95%) | see [testing](docs/testing.md) |
-| 1 and 2 Fix audit | 200 fixes checked by the builder (target 0 invented) | see [testing](docs/testing.md) |
+| 1 Citations | 100 findings checked by the builder (target ≥ 95%) | run 1: 93; after two fixes, fresh sample: **98** ([details](docs/citation-check.md)) |
+| 1 and 2 Fix audit | the 64 fixes the test posts produce (target 0 invented) | pending the builder's check |
 
 ## Limits
 

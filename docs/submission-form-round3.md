@@ -52,7 +52,9 @@ and undo, and drafted rule clarifications that the owner accepts or rejects.
 docs/testing.md. 321 checker unit tests, 40 database tests, 19 end-to-end tests on the live site; the
 regulator-ruling, second-brand and clarification evaluations with both runs published; live checks of the gate,
 the claim watch (a fact expiry opened exactly one task) and SSRF refusal. Bugs the tests found are listed there.
-Citation check (100 findings, target ≥ 95%) and fix audit (200 fixes, target 0 invented): @@STATUS@@
+Citation check (100 findings, target ≥ 95%): run 1 scored 93 of 100 (not met); after two engine fixes, a fresh
+sample scored 98 of 100 (met; docs/citation-check.md; one person's judgment, verdicts drafted by the assistant and
+accepted by the builder). Fix audit (target 0 invented): @@FIXES@@
 
 ## Product roadmap
 docs/roadmap.md. Now: re-run the clarification measure on real reviewer decisions, widen the ruling set, close

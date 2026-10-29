@@ -1313,3 +1313,15 @@ draft that doesn't beat the old wording is labelled, the owner decides.
 OpenAPI lists `/clarify`, `/v1/rules/changes` answers 401 without a sign-in, and the live guideline-health and
 status e2e tests pass. **Not yet seen live:** a graduation on production (none has crossed the bound since the
 deploy; graduation counts generated sample history too and records how many of its decisions were sample).
+
+## Citation check, two runs (28 Oct)
+
+Details and verdicts: `docs/citation-check.md`. Run 1 on 100 random findings: 93 of 100 correct (target 95%, not met;
+79 if whole-post rules were counted wrong). Causes found: a missing-call-to-action finding pinned on arbitrary first
+words, and, for any brand without Aurelle's rule ids, every claim citing the alphabetically first claim rule.
+Fixed both in the engine (`anchor: "end"` for required rules; the claim rule is chosen by the claim's kind), with
+two tests (323 total), after writing down the plan. Run 2 on a fresh 100: 98 of 100 (target met). Failed
+assumptions: "the missing-CTA finding can quote the first sentence" (replaced: closing sentence; does not help
+one-line ads); "the first claim rule is a safe fallback" (replaced by kind). Caveats: the two samples differ so
+part of the gain is chance; Aurelle's run-2 rules came from the seed files because production still has the old
+CTA-01; the 200-fix audit is 64 fixes because the test posts yield no more.

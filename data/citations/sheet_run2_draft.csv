@@ -1,0 +1,101 @@
+n,quote,cites,draft,confidence,reason
+1,2x softer skin,CTA-01,y,cta,"Missing-CTA rule. The ad is one line, so the closing sentence is the whole ad; the fix can't narrow it. Counted y under your run-1 policy that post-level rules are fine."
+2,Turns out most deodorants block your body from being able to sweat properly.,TN-01,y,judgment,Fear-based wording under the tone rule: a stretch but defensible.
+3,tackling insomnia and encouraging more restful nights,CTA-01,y,cta,"Missing-CTA rule. The ad is one line, so the closing sentence is the whole ad; the fix can't narrow it. Counted y under your run-1 policy that post-level rules are fine."
+4,Whitening,CL-07,y,sure,
+5,deposits,FN-R5,y,judgment,'deposits' is thin but is savings wording the partner-bank rule covers.
+6,CLINICALLY PROVEN TO REDUCE WRINKLES IN 4 WEEKS,CL-01 · FACT-013,y,sure,
+7,Brighten teeth,CL-01,y,sure,
+8,Effective from day one itself,CL-01,y,sure,
+9,Intercepts excess melanin at a different stage of its production,CL-01,y,sure,
+10,Rs. 200 off your first bill,FN-C1,y,judgment,A discount amount is a financial claim.
+11,SKIN TECH THAT'S LIGHT YEARS AHEAD,TN-01,y,sure,
+12,TREATMENT,TN-03,y,sure,
+13,This great formula not only lightens the dark pigmentation but also removes cell,TN-01,y,judgment,Exaggerated promise under the tone rule; CL-01 would also fit.
+14,clinically proven,CL-01,y,sure,
+15,cure,CL-02,y,sure,
+16,loans,FN-R2,y,sure,
+17,offers powerful protection against free radicals,CL-01 · FACT-011,y,sure,
+18,Offer,FN-R4,y,judgment,'Offer' is thin but the rule is about offers needing T&Cs.
+19,!!!,FN-T2,y,sure,
+20,LIGHT,TN-03,y,sure,
+21,100% secure UPI payments,FN-C1,y,judgment,A security claim cited under the generic financial-claims rule; FN-C4 would fit better.
+22,no credit check,FN-C5,y,sure,
+23,LOOK,TN-03,y,sure,
+24,AHEAD,TN-03,y,sure,
+25,no credit check,FN-C1,y,judgment,A loan-approval promise under the generic financial rule; FN-C5 fits better (row 22).
+26,Offer ends soon.,FN-T1,y,sure,
+27,WRINKLES,TN-03,y,sure,
+28,"upsetting some fine-tuned hormonal balances, for example within the endocrine sy",CL-01,y,judgment,"A health-effect claim needing a fact; CL-01 is about efficacy phrases, so loose."
+29,For pimple free skin,CL-01 · FACT-011,y,sure,
+30,gives instant approval,FN-C1,y,judgment,Same as row 25.
+31,RECOMMENDED,TN-03,y,sure,
+32,68% REDUCTION IN SCAR HEIGHT,CL-01,y,sure,
+33,PROVEN,TN-03,y,sure,
+34,Clinically,DL-REQ,y,sure,
+35,there are various studies linking aluminium salts to some undesirable side effec,CL-01,y,judgment,Same text and reasoning as row 28.
+36,Rs.,FN-S1,y,sure,
+37,clinically,DL-REQ,y,sure,
+38,14% to 36% APR!!!,FN-T1,n,judgment,"The flagged words are '!!!'; the exclamation rule FN-T2 fits (as in row 19), not the urgency rule FN-T1."
+39,MELASYL FIGHT HYPERPIGMENTATION,CL-01,y,sure,
+40,Keeps you up to 100% dandruff free,CTA-01,y,cta,"Missing-CTA rule. The ad is one line, so the closing sentence is the whole ad; the fix can't narrow it. Counted y under your run-1 policy that post-level rules are fine."
+41,savings account,FN-R5,y,sure,
+42,loans up to ₹5 lakh at low interest,FN-C1,y,sure,
+43,there are various studies linking aluminium salts to some undesirable side effec,TN-01,y,judgment,Fear-based health wording under the tone rule: defensible.
+44,"This protocol helps visibly lift and tighten the skin, reduce the appearance of ",CL-01 · FACT-013,y,sure,
+45,8 shades whiter,CL-01 · FACT-027,y,sure,
+46,highly effective night cream,CL-01,y,sure,
+47,Powered by exosomes which help boost and regenerate the skin barrier,CL-01 · FACT-015,y,sure,
+48,Invest,FN-R1,y,sure,
+49,REDUCTION,TN-03,y,sure,
+50,Kora is India's most trusted payments app,FN-C3,y,sure,
+51,Hair Fall ka Sahi Solution,CTA-01,y,cta,"Missing-CTA rule. The ad is one line, so the closing sentence is the whole ad; the fix can't narrow it. Counted y under your run-1 policy that post-level rules are fine."
+52,Lightens skin by regulating skin darkening pigments,CTA-01,y,cta,"Missing-CTA rule. The ad is one line, so the closing sentence is the whole ad; the fix can't narrow it. Counted y under your run-1 policy that post-level rules are fine."
+53,RBI approved,FN-C2,y,sure,
+54,Prevents pimples,CTA-01,y,cta,"Missing-CTA rule. The ad is one line, so the closing sentence is the whole ad; the fix can't narrow it. Counted y under your run-1 policy that post-level rules are fine."
+55,India's most trusted brand,TN-06,y,judgment,"The first sentence is a superlative, not the product: fits 'lead with the main point'."
+56,Let's not regret our sunny memories.,TN-01,y,judgment,Fear-of-regret pressure under the tone rule: defensible.
+57,Send money by IMPS of any size with zero charges,FN-C1,y,judgment,A charges claim is a financial claim.
+58,clinically proven light therapy targeting acne,CL-01,y,sure,
+59,clinically,DL-REQ,y,sure,
+60,remove blackheads,CL-01,y,sure,
+61,LED,TN-03,n,sure,LED is a standard acronym; TN-03 excepts those.
+62,tackling insomnia and encouraging more restful nights,CL-01,y,judgment,A health claim under the efficacy rule.
+63,instant approval,FN-C5,y,sure,
+64,Deeply clean your pores,CL-01,y,judgment,A cosmetic efficacy phrase.
+65,Dandruff free smooth baal,CL-01 · FACT-011,y,sure,
+66,ACTION,TN-03,y,sure,
+67,DERMATOLOGIST,TN-03,y,sure,
+68,CLINICALLY,TN-03,y,sure,
+69,LOOK UP TO 5 YEARS YOUNGER*,TN-01,y,sure,
+70,The rich blend of Saffron and Kumkumadi Tailam is known to cure marks and lighte,CL-01,y,sure,
+71,guaranteed returns,FN-C1,y,sure,
+72,zero fraud,FN-C4,y,sure,
+73,most effective and precious ingredients,CTA-01,y,cta,"Missing-CTA rule. The ad is one line, so the closing sentence is the whole ad; the fix can't narrow it. Counted y under your run-1 policy that post-level rules are fine."
+74,earns you more than any bank,FN-C3,y,sure,
+75,Precious ingredients of this cream fight free radicles and prevent oxidative dam,CL-01 · FACT-011,y,sure,
+76,clinically,DL-REQ,y,sure,
+77,Glow and shine on face,CL-01,y,judgment,A mild efficacy phrase.
+78,It reduces melanin formation and makes your skin fairer day by day,CL-01 · FACT-013,y,sure,
+79,zero fraud,FN-C1,y,judgment,"Same as row 21: FN-C4 would fit better, and row 72 cites it for the same words."
+80,Gifted,FN-R6,y,sure,
+81,making the skin tone more even toned and giving it a lighter appearance,CL-01,y,sure,
+82,RBI approved savings with Kora Save,FN-C2 · FACT-K01,y,sure,
+83,Your pores get clogged with all the sweat and toxins that your body is supposed ,CL-01,y,sure,
+84,Kora has 5 million users,FN-C1 · FACT-K05,y,sure,
+85,Everyone is already saving with Kora.,FN-T1,y,sure,
+86,Clinical studies have shown that specific wavelengths of LED light can reduce ac,CTA-01,y,cta,"Missing-CTA rule. The ad is one line, so the closing sentence is the whole ad; the fix can't narrow it. Counted y under your run-1 policy that post-level rules are fine."
+87,cure marks,TN-01,y,judgment,'cure' is exaggerated; CL-01/CL-02 would fit better.
+88,LOOK UP TO 5 YEARS YOUNGER,CL-01,y,sure,
+89,"Kora Save deposits are fully protected, up to any amount",FN-C1 · FACT-K01,y,sure,
+90,fairer,CL-07,y,sure,
+91,It regenerates cellular tissue and collagen and slows down skin ageing,CL-01,y,sure,
+92,The purifying properties of Turmeric (haldi) are known to enhance complexion,CL-01,y,sure,
+93,bonus,FN-R4,y,sure,
+94,detoxify the blood,CL-01,y,sure,
+95,A world-first peptide technology,CL-04,y,sure,
+96,Refer a friend and get a bonus of ₹500 each,FN-C1 · FACT-K12,y,sure,
+97,GRADE,TN-03,y,sure,
+98,N1 DERMATOLOGIST RECOMMENDED BRAND IN THE UK,CL-05,y,sure,
+99,reduce excess oil,CL-01 · FACT-013,y,sure,
+100,arrests hair fall and makes your hair thicker and stronger,CTA-01,y,cta,"Missing-CTA rule. The ad is one line, so the closing sentence is the whole ad; the fix can't narrow it. Counted y under your run-1 policy that post-level rules are fine."

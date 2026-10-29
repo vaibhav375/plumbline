@@ -7,11 +7,11 @@ Results on real runs are in the [build log](build-log.md) under the task named; 
 
 | Layer | Count | What it covers | Command |
 |---|---|---|---|
-| Checker unit tests | 321 | rule engine, claims, validators, privacy masking, fixes and the intent lock, audit chain code, gate decisions, chat linking and rate limits, claim-watch scans (SSRF guards, changed numbers), clarification drafting and replay, API errors | `make test` |
+| Checker unit tests | 323 | rule engine, claims, validators, privacy masking, fixes and the intent lock, audit chain code, gate decisions, chat linking and rate limits, claim-watch scans (SSRF guards, changed numbers), clarification drafting and replay, API errors | `make test` |
 | Database tests | 40 | run against a separate test Supabase project: row-level security for every role, hash-chained audit log, second approver, narrow checker role (no table access), link codes (single use, expiry), gate keys, claim-watch tasks, automatic graduation | `make test-db` |
 | End-to-end tests | 19 | Playwright against the live site: role landing, check, fix and re-check, submit, review, audit verify, rulebook and fact ledger, guideline health, status, Connect page | `BASE_URL=https://getplumbline.xyz pnpm exec playwright test` |
 
-Round 2 ended with 251 / 17 / 18. Round 3 added 70 checker tests, 23 database tests and 1 end-to-end test.
+Round 2 ended with 251 / 17 / 18. Round 3 added 72 checker tests, 23 database tests and 1 end-to-end test.
 
 ## Round 3 behaviours, checked on production
 
@@ -34,8 +34,8 @@ Round 2 ended with 251 / 17 / 18. Round 3 added 70 checker tests, 23 database te
 | Regulator rulings (improvement 1) | 41 ASA and ASCI rulings, 84 claims, 81 upheld | 72 of 81 upheld claims caught = **88.9%** (run 1, rate-limited: 65 of 81) | ≥ 80% **met** | [ruling-eval.md](ruling-eval.md) |
 | Second brand by CSV (improvement 1) | Kora, a fictional fintech app; 20 problem posts, 10 clean | 27 of 30 issues caught; 0 of 10 clean posts blocked | none | [second-brand.md](second-brand.md) |
 | Clarification replay (improvement 3) | the 84 ruling claims, scored on claims the draft was not written from | drafted wording 65 of 84 vs old wording 63 and 66 | draft beats old wording: **not met** | [clarify-eval.md](clarify-eval.md) |
-| Citation check (improvement 1) | 100 findings drawn from the two sets above | _pending: filled in by the builder_ | ≥ 95% correct | `data/citations/sheet.csv` |
-| Fix audit (improvements 1 and 2) | 200 fixes drawn from the same posts | _pending: filled in by the builder_ | 0 invented claims | `data/fixes/sheet.csv` |
+| Citation check (improvement 1) | 100 findings drawn from the two sets above, twice | run 1: 93 of 100; after two engine fixes, fresh sample run 2: **98 of 100** | ≥ 95% correct: run 1 not met, run 2 met | [citation-check.md](citation-check.md) |
+| Fix audit (improvements 1 and 2) | every fix from the same posts: 64, not 200 | _pending: filled in by the builder_ | 0 invented claims | `data/fixes/sheet.csv` |
 
 ## Bugs the tests found (and what changed)
 
