@@ -59,7 +59,7 @@ sample scored 98 of 100 (met; docs/citation-check.md; one person's judgment, ver
 accepted by the builder). Fix audit (target 0 invented): Three runs, each after a fix: run 1 had 2 invented in 49 fixes; run 2 (111 posts) 1 in 73; run 3 (48 new posts) 0 in 43; run 4, the 200-fix audit the target asked for (279 posts), 0 invented in 200, with 4 cross-product rows (approved wording on a different product) counted safe by the stated criterion and 4 of 200 if counted invented. Verdicts were drafted with AI assistance and agreed row by row by the builder; posts written by the same author as the guard; many safe outputs are still awkward sentences. Details in docs/fix-audit.md.
 
 ## Product roadmap
-docs/roadmap.md. Now: re-run the clarification measure on real reviewer decisions, widen the ruling set, close
+docs/roadmap.md. Now: add the missing acronyms (DIY, LED, FDA and others) to TN-03's list, then re-run the clarification measure, widen the ruling set, close
 the "shorter than the evidence" gap, link a live ASI:One address. Next: paid or self-hosted models, claims in
 images, a Hindi and Hinglish evaluation, faster image checks. Later: recruited studies and integrations.
 
