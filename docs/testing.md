@@ -23,6 +23,7 @@ Round 2 ended with 251 / 17 / 18. Round 3 added 72 checker tests, 23 database te
 | 2 Publish gate | submitted version; approved version with open blocking findings; clean approved post | not_yet; not_yet; go |
 | 2 Publish gate | right text hash / edited text / unknown id | go / not_yet / 404 |
 | 2 Chat linking | one-time code reused or expired; address linked to org A asks for org B's rules | refused (database tests); the org always comes from the link row |
+| 2 Live ASI:One chat | on ASI:One, 30 Oct: `link <fresh code>`, a post with a 60% / 2-week claim, `unlink` | linked to the brand; 2 blocking (DL-REQ footnote; CL-01 against FACT-014 with approved wording AW-014b) and 1 advisory (TN-01), cited; back to the demo brand | met; first attempt failed on the leading @address, fixed in 88e0df7 | docs/screenshots/asi-*.webp |
 | 3 Graduation | rule at 16 of 16 agreeing decisions (lower bound 0.806) | moves to blocking, one audit row; none under 10 decisions or under the bound; mandatory rules untouched |
 | 3 Live graduation | production, 30 Oct: GM10 graduated on one real decision, 18 of 18 upheld (12 are sample decisions), lower bound 0.824, then Undo | graduated with audit text "includes 12 sample decisions", then back to advisory and pinned | mechanism demonstrated live, not real-reviewer agreement | [build-log.md](build-log.md) |
 | 3 Undo | undo a graduation | rule returns to advisory and stays pinned until the owner releases it |
