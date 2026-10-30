@@ -96,3 +96,12 @@ run 3** (commit `f775d73`), so this is an audit of the engine as shipped, not a 
   Target: 0 invented in 200. If run 4 finds an invented claim, that is the result and run 3's 0 stays alongside it.
 - **Reported separately:** how many fixes come from the 120 new posts alone, and how many invented ones are in that part.
 - Same caveats: one author for guard and posts; a rewrite dropped by the guard leaves the finding for a person.
+
+## Run 4 results (30 Oct 2026)
+Drawn as decided: 200 of the 220 fixes from 279 posts (the 159 earlier posts plus 120 new ones), seed 11, same code as run 3 (no change since f775d73).
+- **Result: 0 invented of 200, every fix marked, target met** (`RUN=4 python3 scripts/fix_audit.py score`: safe 200, invented 0, unmarked 0).
+- **Mix:** 147 changed sentences and 53 dropped ones. By reason: 97 drop or shorten text with nothing added; 53 dropped sentences (safe by construction); 24 case, term, spacing or call-to-action changes; 11 add a required disclosure only; 11 replace a claim with its approved wording and footnote; 4 are cross-product (below).
+- **Four cross-product rows (17, 96, 113, 185):** approved wording was put on a different product or scope (for example 72-hour hydration wording on a lip balm sentence). They meet the stated criterion (no claim beyond the original or approved wording) and are counted safe, but they are real weaknesses: the fix tool picks approved wording by topic, not by product. Counting them as invented would give 4 of 200; counting them safe gives 0 of 200. Both numbers are published.
+- **Who marked them:** the verdicts were drafted with AI assistance and then read and agreed row by row by the builder, so this is a builder-checked audit, not an independent one. The 120 new posts were written by the same author as the earlier ones.
+- **Not reported separately:** a clean "new posts only" subset. Post ids overlap between the sets in the sheet, so a subset count would not be reliable; we do not claim one.
+- **Still true:** many safe outputs are broken or awkward sentences (the earlier builder preference finding stands), so suggestions stay proposals.

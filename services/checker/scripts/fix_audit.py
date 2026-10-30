@@ -84,6 +84,19 @@ def pool():
             ),
             ("new-kora", sets[1][1], "creator", [x for x in new if x["brand"] == "kora"], "text"),
         ]
+    elif RUN == "4":  # run 4: every post we have, final engine, to reach 200 fixes (audit only, no tuning)
+        new = rd("data/fixes/posts_run3.jsonl") + rd("data/fixes/posts_run4.jsonl")
+        sets.append(("dev-set", sets[0][1], "external_creator", rd("data/golden/dev.jsonl"), "text"))
+        sets += [
+            (
+                "new-aurelle",
+                sets[0][1],
+                "external_creator",
+                [x for x in new if x["brand"] == "aurelle"],
+                "text",
+            ),
+            ("new-kora", sets[1][1], "creator", [x for x in new if x["brand"] == "kora"], "text"),
+        ]
     elif RUN != "1":  # run 2 adds the 40-post dev set, which Round 2 used and run 1 left out
         sets.append(
             ("dev-set", sets[0][1], "external_creator", rd("data/golden/dev.jsonl"), "text")

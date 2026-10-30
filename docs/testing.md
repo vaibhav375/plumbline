@@ -8,7 +8,7 @@ Results on real runs are in the [build log](build-log.md) under the task named; 
 | Layer | Count | What it covers | Command |
 |---|---|---|---|
 | Checker unit tests | 323 | rule engine, claims, validators, privacy masking, fixes and the intent lock, audit chain code, gate decisions, chat linking and rate limits, claim-watch scans (SSRF guards, changed numbers), clarification drafting and replay, API errors | `make test` |
-| Database tests | 40 | run against a separate test Supabase project: row-level security for every role, hash-chained audit log, second approver, narrow checker role (no table access), link codes (single use, expiry), gate keys, claim-watch tasks, automatic graduation | `make test-db` |
+| Database tests | 42 | run against a separate test Supabase project: row-level security for every role, hash-chained audit log, second approver, narrow checker role (no table access), link codes (single use, expiry), gate keys, claim-watch tasks, automatic graduation | `make test-db` |
 | End-to-end tests | 19 | Playwright against the live site: role landing, check, fix and re-check, submit, review, audit verify, rulebook and fact ledger, guideline health, status, Connect page | `BASE_URL=https://getplumbline.xyz pnpm exec playwright test` |
 
 Round 2 ended with 251 / 17 / 18. Round 3 added 72 checker tests, 23 database tests and 1 end-to-end test.
@@ -24,6 +24,7 @@ Round 2 ended with 251 / 17 / 18. Round 3 added 72 checker tests, 23 database te
 | 2 Publish gate | right text hash / edited text / unknown id | go / not_yet / 404 |
 | 2 Chat linking | one-time code reused or expired; address linked to org A asks for org B's rules | refused (database tests); the org always comes from the link row |
 | 3 Graduation | rule at 16 of 16 agreeing decisions (lower bound 0.806) | moves to blocking, one audit row; none under 10 decisions or under the bound; mandatory rules untouched |
+| 3 Live graduation | production, 30 Oct: GM10 graduated on one real decision, 18 of 18 upheld (12 are sample decisions), lower bound 0.824, then Undo | graduated with audit text "includes 12 sample decisions", then back to advisory and pinned | mechanism demonstrated live, not real-reviewer agreement | [build-log.md](build-log.md) |
 | 3 Undo | undo a graduation | rule returns to advisory and stays pinned until the owner releases it |
 
 ## Measured evaluations
@@ -33,9 +34,10 @@ Round 2 ended with 251 / 17 / 18. Round 3 added 72 checker tests, 23 database te
 | Round 2 dev set | 40 posts written for the project | 31 of 33 problems found (94%); 1 of 10 clean posts falsely alarmed | none | [README](../README.md) |
 | Regulator rulings (improvement 1) | 41 ASA and ASCI rulings, 84 claims, 81 upheld | 72 of 81 upheld claims caught = **88.9%** (run 1, rate-limited: 65 of 81) | ≥ 80% **met** | [ruling-eval.md](ruling-eval.md) |
 | Second brand by CSV (improvement 1) | Kora, a fictional fintech app; 20 problem posts, 10 clean | 27 of 30 issues caught; 0 of 10 clean posts blocked | none | [second-brand.md](second-brand.md) |
+| Clarification replay on live decisions (improvement 3) | TN-03: 28 decisions recorded on the live app (18 upheld, 10 overruled), product draft screen run 3 times | old 17 of 24, new 17 of 24 on all three runs | draft beats old wording: **not met** | [clarify-eval.md](clarify-eval.md) |
 | Clarification replay (improvement 3) | the 84 ruling claims, scored on claims the draft was not written from | drafted wording 65 of 84 vs old wording 63 and 66 | draft beats old wording: **not met** | [clarify-eval.md](clarify-eval.md) |
 | Citation check (improvement 1) | 100 findings drawn from the two sets above, twice | run 1: 93 of 100; after two engine fixes, fresh sample run 2: **98 of 100** | ≥ 95% correct: run 1 not met, run 2 met | [citation-check.md](citation-check.md) |
-| Fix audit (improvements 1 and 2) | every fix from three runs of the test posts: 49, 73 and 43 (not 200) | run 1: **2 of 49 invented a claim**; run 2 (after a guard): **1 of 73**; run 3 (after a second fix, 48 new posts): **0 of 43**. The builder preferred the suggestion over the original on 17 of 34 changed sentences in run 1 | 0 invented: not met in runs 1 and 2, **met in run 3** | [fix-audit.md](fix-audit.md) |
+| Fix audit (improvements 1 and 2) | every fix from runs 1-3 (49, 73, 43) and a 200-fix draw in run 4 | run 1: **2 of 49 invented a claim**; run 2 (after a guard): **1 of 73**; run 3 (after a second fix, 48 new posts): **0 of 43**; run 4 (279 posts, the full 200 fixes): **0 of 200**, with 4 cross-product rows counted safe (4 of 200 if counted invented). The builder preferred the suggestion over the original on 17 of 34 changed sentences in run 1 | 0 invented: not met in runs 1 and 2, **met in runs 3 and 4** (run 4 is the 200-fix audit) | [fix-audit.md](fix-audit.md) |
 
 ## Bugs the tests found (and what changed)
 
