@@ -171,3 +171,17 @@ advisory. If it does not graduate, that is the result and the cause is investiga
 **Why, as far as we can tell.** The drafted wording restates the exception ("standard acronyms like DIY or GMP") that the old wording already had in words; the disagreement is that the code pattern's acronym list is incomplete (DIY, LED, FDA are not on it), which no rewording of the sentence can fix. The drafted examples are also awkward ("You must SERUM your skin"). The fix this points to is adding the missing acronyms to the rule's list, which is a rule edit, not a clearer sentence. Not done here.
 
 **Caveats.** 20 of TN-03's decisions are sample decisions (the health page says so); the 24 held-out decisions mix sample and real ones. Our 28 are one person's decisions through demo accounts. With this few decisions only a visible gain could have shown; a tie is what the evidence says. The Round 2 measure for improvement 3's clarification half therefore stays **not met**; graduation with audit and undo is met in tests and demonstrated live (mechanism demo, see build-log Task 23).
+
+## Run 5: TN-01 on live decisions (decided 30 Oct 2026, before any post was submitted)
+Run 4 on TN-03 tied (17 of 24, three runs) because the rule's code pattern, not its wording, caused the overrules. TN-01
+("Tone is warm and energetic, never hype or pressure") is judged by an AI from its wording, so a clearer wording can
+change the result. This run tests that once.
+- **Posts and decision rule:** `data/rulings/tn01_posts.md`, written before submission: 6 pressure posts, 6 warm posts; every
+  TN-01 finding that appears is decided by the rule in that file (uphold pressure, overrule warm), none skipped.
+- **Decisions:** one person's decisions through the demo Creator and Reviewer accounts, each decided once and checked in the
+  database; TN-01 already holds sample decisions, which the health page labels and the replay also uses.
+- **Measure:** the product's "Draft a clearer version" screen on TN-01, run three times, each draft rejected afterwards.
+  The draft counts as helping only if the new wording agrees with reviewers on more held-out decisions than the old on all
+  three runs.
+- **Failing:** if any run ties or loses, the Round 2 measure stays **not met**, reported as is. Only one attempt on this
+  rule is made; no posts are added or rewritten after seeing results.
