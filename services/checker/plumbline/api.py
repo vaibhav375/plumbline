@@ -476,7 +476,9 @@ def guideline_health(u: CurrentUser, ctx: Annotated[OrgContext, Depends(org_cont
     org = u.role in REVIEW_ROLES
     owner_of = {r.id: r.owner_function for r in ctx.rules}
     pinned = set(db.pinned_rules(cfg(), u.token)) if org else set()
-    for r in assessed:  # only the rule's own function may undo or reword it (the database enforces it too)
+    for r in (
+        assessed
+    ):  # only the rule's own function may undo or reword it (the database enforces it too)
         r["can_edit"] = org and owner_of.get(r["rule_id"]) == RULE_OWNERS.get(u.role)
         r["pinned"] = r["rule_id"] in pinned
     return {
