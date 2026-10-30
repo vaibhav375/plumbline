@@ -230,3 +230,11 @@ def test_code_shapes():
     )
     assert agent.connect.normalise_code("short") == ""
     assert agent.connect.digest("a") != agent.connect.digest("b")
+
+
+def test_a_leading_at_address_is_ignored_as_asi_one_adds_it(brain):
+    at = "@agent1qdec79g6x8dfjkvklj2gr9gwr28ggrk5julydls9e00mrsxct6rxcym5p4p"
+    assert "Linked to Acme Foods" in brain.say("agent1a", f"{at} link ABCD-2345")
+    brain.say("agent1a", f"{at} {POST}")
+    assert brain.checked[-1] == (POST, "org-A")
+    assert "Unlinked" in brain.say("agent1a", f"{at} unlink")

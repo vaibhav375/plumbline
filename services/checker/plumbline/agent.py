@@ -150,6 +150,8 @@ def handle(
     """What to say back to one message. A linked address is checked against its own brand (the org comes
     only from the link row, never from the message); anyone else against the demo brand."""
     text = text.strip()
+    while text.startswith("@"):  # ASI:One puts the agent's own @address in front of what the user typed
+        text = text.partition(" ")[2].strip()
     first, _, rest = text.partition(" ")
     word = first.lower()
     words = len(text.split())

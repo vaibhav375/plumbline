@@ -1381,3 +1381,7 @@ to count the latest decision per finding, and the sample decisions excluded or s
 ### Task 23, part 3: TN-03 clarification replay on live decisions (30 Oct 2026)
 28 decisions recorded (18 upheld, 10 overruled), none duplicated (checked by distinct finding in the database). Three runs of the product's draft screen: 17/24 old vs 17/24 new each time. **Not met**, reported as pre-registered (docs/clarify-eval.md, Run 4 results).
 **Evaluation.** Assumption that failed: "real not-upheld decisions will let a rewording beat the old wording". They did not, because the real cause of the overrules is an incomplete acronym list in the rule's pattern, not unclear prose. Swapped to: say so, and name the rule-list edit as the roadmap fix instead of claiming a prose gain.
+
+### Task 24: first live ASI:One round trip (30 Oct 2026)
+The Plumbline Brand Checker agent now answers inside ASI:One (reply visible in the chat; before, ASI:One showed "Reasoning…" with no reply). The first command, `@agent1q… link 9HK4-RUY5`, returned the help text instead of linking: ASI:One puts the agent's own @address in front of the user's text, so `link` was no longer the first word. Fix: `handle()` drops leading @-words before parsing; one new test (18 agent tests pass). The code was not consumed by the failed attempt.
+**Evaluation.** Failed assumption: "the message text we receive is exactly what the user typed". Swapped to: strip a leading @address. Still to verify live after the deploy: link, check a post, unlink from ASI:One.
