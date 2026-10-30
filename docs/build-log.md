@@ -1387,3 +1387,8 @@ The Plumbline Brand Checker agent now answers inside ASI:One (reply visible in t
 **Evaluation.** Failed assumption: "the message text we receive is exactly what the user typed". Swapped to: strip a leading @address. Still to verify live after the deploy: link, check a post, unlink from ASI:One.
 
 **Result (30 Oct 2026, 7:41-7:42 PM IST).** After the deploy (health reports 88e0df7) a fresh code linked the address to Aurelle Skin, a post got a cited check against the brand's rules, and unlink worked. Screenshots in docs/screenshots/asi-*.webp. The earlier code had expired. Known cosmetic bug: ASI:One hides the `<code>` placeholder in our demo-brand hint.
+
+### Task 25: TN-03 acronym list fixed (30 Oct 2026)
+The overrules in the clarification test came from the rule's own pattern, which flagged real acronyms. DIY, LED, AHA, BHA, GMP, BPA, SLS, FDA, PETA and TEWL were added to TN-03's exception list in production (with the owner's approval) and in `supabase/seed/aurelle/rules.csv`.
+**Evidence (read-only, before the change, on the 50 recorded TN-03 decisions, latest per finding):** the new pattern stops all 10 overruled acronym flags and keeps all 24 upheld shouted-word flags; the 9 other overrules (sample history) and 5 dismissals still fire, so they have other causes.
+**Evaluation.** Met: the cause named in the clarification write-up is removed at its source. Not shown: a lower overrule rate over time on live traffic, which needs new decisions. Assumption confirmed: the fix was a rule edit, not a rewording.
