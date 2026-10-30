@@ -154,3 +154,20 @@ Rule GM10 ("Numbers over three digits get commas", brand tier, advisory). One po
 submitted; all 16 findings are upheld. 16 of 16 gives a Wilson lower bound of 0.806 (≥ 0.80, ≥ 10 decisions), so the
 database trigger should graduate it to blocking with an audit event. Then **Undo** is used and the state returns to
 advisory. If it does not graduate, that is the result and the cause is investigated and reported.
+
+### Run 4 results (30 Oct 2026, afternoon IST)
+**Decisions recorded on the live app** (demo Reviewer, 28 findings on four pre-written posts, each decided once, checked in the database): 18 shouted words **upheld**, 10 real acronyms (DIY, LED, AHA, BHA, GMP, BPA, SLS, FDA, PETA, TEWL) **overruled** with a reason. TN-03 after this: 24 upheld, 19 overruled, 5 dismissed, agreement 50%, lower bound 36%, "may be unclear".
+
+**The product's "Draft a clearer version" screen, run three times, each draft rejected afterwards (rule unchanged):**
+
+| Run | Drafted wording | Old wording agrees | New wording agrees |
+|---|---|---|---|
+| 1 | "Avoid Shouted Words" (single words in caps unless standard acronyms or brand names) | 17 of 24 | 17 of 24 |
+| 2 | Same title, longer text with the same exception | 17 of 24 | 17 of 24 |
+| 3 | Same as run 1 | 17 of 24 | 17 of 24 |
+
+**Verdict (rule fixed in advance): not met.** The new wording never scored higher than the old on any run. The screen itself says "The new wording did not agree with reviewers more often than the current one."
+
+**Why, as far as we can tell.** The drafted wording restates the exception ("standard acronyms like DIY or GMP") that the old wording already had in words; the disagreement is that the code pattern's acronym list is incomplete (DIY, LED, FDA are not on it), which no rewording of the sentence can fix. The drafted examples are also awkward ("You must SERUM your skin"). The fix this points to is adding the missing acronyms to the rule's list, which is a rule edit, not a clearer sentence. Not done here.
+
+**Caveats.** 20 of TN-03's decisions are sample decisions (the health page says so); the 24 held-out decisions mix sample and real ones. Our 28 are one person's decisions through demo accounts. With this few decisions only a visible gain could have shown; a tie is what the evidence says. The Round 2 measure for improvement 3's clarification half therefore stays **not met**; graduation with audit and undo is met in tests and demonstrated live (mechanism demo, see build-log Task 23).
