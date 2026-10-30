@@ -185,3 +185,18 @@ change the result. This run tests that once.
   three runs.
 - **Failing:** if any run ties or loses, the Round 2 measure stays **not met**, reported as is. Only one attempt on this
   rule is made; no posts are added or rewritten after seeing results.
+
+### Run 5 results (30 Oct 2026, evening IST)
+**What happened to the plan.** 12 posts were submitted (6 pressure, 6 warm), no post added or rewritten. The checker raised **10 TN-01 findings, all on the pressure posts**; the six warm posts raised none. By the rule in `data/rulings/tn01_posts.md` all 10 were **upheld**, so this run recorded **no new overrule**. Each was decided once (10 decisions, 10 distinct findings, checked in the database). TN-01 went from 9 upheld / 6 overruled / 3 dismissed to 19 / 6 / 3 (68% agreement, lower bound 49%).
+
+**One deviation, disclosed.** Those upholds moved TN-01 out of "may be unclear", so the health page no longer offered "Draft a clearer version" for it. The same drafting endpoint the screen calls (`POST /v1/rules/TN-01/clarify`) was called three times from the brand owner's demo session instead; it only needs 8 decisions and 3 disagreements, which TN-01 has. All three drafts were rejected afterwards; TN-01's wording is unchanged.
+
+| Run | Drafted title | Old wording agrees | New wording agrees (14 held-out decisions) |
+|---|---|---|---|
+| 1 | "No Urgency or FOMO Pressure" | 8 of 14 | 8 of 14 |
+| 2 | "No Urgency or FOMO Pressure" | 8 of 14 | 8 of 14 |
+| 3 | "Warm & Energetic Tone – No Hype or Pressure" | 9 of 14 | 8 of 14 |
+
+**Verdict (rule fixed in advance): not met.** The new wording never scored higher than the old; in run 3 it scored lower.
+
+**Why this attempt could not have shown a win.** Our 10 new decisions are all upholds, so they add no disagreement for a rewording to explain; the 9 disagreements the replay uses are earlier sample decisions. A fair test needs real overrules on a rule whose wording is ambiguous, and here the AI judge flagged only clearly pressuring phrases. This is the third rule or set on which the draft has tied or lost (84 ruling claims, TN-03, TN-01), so the measure stays **not met**.

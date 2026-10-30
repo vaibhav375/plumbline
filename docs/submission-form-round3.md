@@ -48,7 +48,7 @@ and undo, and drafted rule clarifications that the owner accepts or rejects.
 3. **Self-learning guidelines:** rules graduate to blocking at Wilson lower bound ≥ 0.80 (≥ 10 decisions) with an
    audit entry and undo. Drafted clarifications are proposals scored against the old wording.
    **That measure is not met:** the draft agreed with 65 of 84 rulings against 63 and 66 for the old wording.
-   The product shows both scores and leaves the decision to the owner.
+   The product shows both scores and leaves the decision to the owner. Re-tried on 30 Oct on live decisions for two more rules (TN-03: 17 vs 17 of 24, three runs; TN-01: 8 vs 8, 8 vs 8, old 9 vs new 8 of 14): not met, so the owner still decides.
 
 ## Testing details
 docs/testing.md. 321 checker unit tests, 40 database tests, 19 end-to-end tests on the live site; the
@@ -65,7 +65,7 @@ images, a Hindi and Hinglish evaluation, faster image checks. Later: recruited s
 
 ## What does not work yet
 - 2 of the 49 suggested fixes invented a claim (an added product noun; a disclosure merged into a deposit claim), and the builder would publish only 17 of 34 suggested rewrites unedited.
-- Drafted clarifications did not beat the old wording in the replay, nor on 28 new live decisions on TN-03 (17 of 24 each, three runs): the real cause was an incomplete acronym list, which no rewording fixes.
+- Drafted clarifications did not beat the old wording in the replay, nor on 28 new live decisions on TN-03 (17 of 24 each, three runs): the real cause was an incomplete acronym list, which no rewording fixes. A second attempt on TN-01 (12 posts, 10 new decisions, all upholds, pre-registered) gave 8 vs 8, 8 vs 8 and old 9 vs new 8 of 14: still not met.
 - Guideline health and graduation use generated reviewer history, labelled in the app.
 - Both evaluation sets are small and labelled by regulators or the builder, not independent reviewers.
 - The number check accepts "2 minutes" against "under 5 minutes" (found on Kora).
