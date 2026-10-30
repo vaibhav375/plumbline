@@ -167,7 +167,7 @@ POST = "Clinically proven to fade dark spots by 60% in just 2 weeks, shop now."
 def test_unlinked_senders_get_the_demo_brand_and_a_hint(brain):
     reply = brain.say("agent1a", POST)
     assert brain.checked == [(POST, None)]
-    assert "Checked against the demo brand" in reply and "link <code>" in reply
+    assert "Checked against the demo brand" in reply and "link ABCD-2345" in reply
 
 
 def test_linking_then_checking_runs_against_that_org_only(brain):

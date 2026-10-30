@@ -46,8 +46,8 @@ BAD_CODE = (
 TOO_MANY_TRIES = "Too many link attempts. Try again in a few minutes."
 NOT_LINKED = "You're not linked to a brand, so I check against the demo brand."
 DEMO_NOTE = (
-    "Checked against the demo brand (Aurelle Skin). To use your own brand, send: link <code> "
-    "(a brand owner creates one in Plumbline > Connect)."
+    "Checked against the demo brand (Aurelle Skin). To use your own brand, send: link ABCD-2345 "
+    "(use the code a brand owner creates in Plumbline > Connect)."
 )
 
 _sent: dict[str, deque[float]] = defaultdict(deque)

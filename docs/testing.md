@@ -7,7 +7,7 @@ Results on real runs are in the [build log](build-log.md) under the task named; 
 
 | Layer | Count | What it covers | Command |
 |---|---|---|---|
-| Checker unit tests | 323 | rule engine, claims, validators, privacy masking, fixes and the intent lock, audit chain code, gate decisions, chat linking and rate limits, claim-watch scans (SSRF guards, changed numbers), clarification drafting and replay, API errors | `make test` |
+| Checker unit tests | 326 | rule engine, claims, validators, privacy masking, fixes and the intent lock, audit chain code, gate decisions, chat linking and rate limits, claim-watch scans (SSRF guards, changed numbers), clarification drafting and replay, API errors | `make test` |
 | Database tests | 42 | run against a separate test Supabase project: row-level security for every role, hash-chained audit log, second approver, narrow checker role (no table access), link codes (single use, expiry), gate keys, claim-watch tasks, automatic graduation | `make test-db` |
 | End-to-end tests | 19 | Playwright against the live site: role landing, check, fix and re-check, submit, review, audit verify, rulebook and fact ledger, guideline health, status, Connect page | `BASE_URL=https://getplumbline.xyz pnpm exec playwright test` |
 
