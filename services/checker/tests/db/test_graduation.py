@@ -170,3 +170,37 @@ def test_cases_are_only_this_orgs_public_decisions(db):
     decide(db, b, ub, 5, 0)
     as_user(db, ua)
     assert len(db.execute("select * from rule_cases('TN-90')").fetchall()) == 3
+
+
+def test_a_finding_counts_once_however_often_it_is_decided(db):
+    """Migration 0016: re-clicking Uphold on one finding must not add agreement again."""
+    org, rev = setup(db)
+    rule(db, org)
+    decide(db, org, rev, 9, 0)  # nine findings, one decision each
+    f = db.execute(
+        "select f.id from findings f where f.org_id = %s order by f.id limit 1", (org,)
+    ).fetchone()[0]
+    for _ in range(20):  # the bug: the same finding upheld again and again
+        db.execute(
+            "insert into decisions (org_id, finding_id, actor, action, reason) values (%s, %s, %s, 'uphold', 'r')",
+            (org, f, rev),
+        )
+    assert state(db, org)[0] == "advisory"  # still 9 decisions, not 29
+    assert db.execute("select n, upheld from rule_counts(%s, 'TN-90')", (org,)).fetchone() == (9, 9)
+    as_user(db, rev)
+    assert db.execute("select upheld from rule_health where rule_id = 'TN-90'").fetchone()[0] == 9
+    assert db.execute("select count(*) from rule_cases('TN-90')").fetchone()[0] == 9
+    as_admin(db)
+
+
+def test_the_latest_decision_wins_when_a_reviewer_changes_their_mind(db):
+    org, rev = setup(db)
+    rule(db, org)
+    decide(db, org, rev, 1, 0)
+    f = db.execute("select id from findings where org_id = %s", (org,)).fetchone()[0]
+    db.execute(
+        "insert into decisions (org_id, finding_id, actor, action, reason, at)"
+        " values (%s, %s, %s, 'overrule', 'changed my mind', now() + interval '1 minute')",
+        (org, f, rev),
+    )
+    assert db.execute("select upheld, n from rule_counts(%s, 'TN-90')", (org,)).fetchone() == (0, 1)

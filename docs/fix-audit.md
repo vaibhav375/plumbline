@@ -82,3 +82,17 @@ Verdicts for both runs were drafted by the assistant with a reason per row and a
 - **Fixes with approved wording from another product** (run 2, row 52) count as safe under the criterion, because approved
   wording is allowed, but come from testing other brands' ads against Aurelle's ledger.
 - **Never 200:** each run audited every fix its posts produced; 200 was not reachable without padding.
+
+## Run 4: decided before running (30 Oct 2026)
+Goal: reach the 200 fixes the Round 2 form asked for, with the final code, by auditing more posts. **No code change since
+run 3** (commit `f775d73`), so this is an audit of the engine as shipped, not a new tuning round.
+- **Posts:** every post we have: the 41 ruling ads, 30 Kora posts, 40 dev posts, the 48 run-3 posts, plus **120 new posts**
+  (60 Aurelle, 60 Kora) written by the assistant before the run (`data/fixes/posts_run4.jsonl`; written before any run 4
+  output was seen; none dropped afterwards). 279 posts in all. Earlier posts were used to find run 1 and run 2 errors, so
+  run 4's number is not a clean held-out test for them; the 120 new posts are.
+- **Fixes:** every sentence the suggested version changes or drops (spacing-only differences excluded). Up to 200 are drawn
+  at random (seed 11) for the sheet; if fewer exist, all are audited and the count is reported as it is.
+- **Scoring:** unchanged. Verdicts drafted by the assistant with a reason per row, every row reviewed by the builder.
+  Target: 0 invented in 200. If run 4 finds an invented claim, that is the result and run 3's 0 stays alongside it.
+- **Reported separately:** how many fixes come from the 120 new posts alone, and how many invented ones are in that part.
+- Same caveats: one author for guard and posts; a rewrite dropped by the guard leaves the finding for a person.

@@ -132,3 +132,25 @@ What it also shows: the same old wording scored 34 on one replay and 40 on anoth
 of 6 from the judge alone, larger than any difference between a drafted wording and the old one in any of the three
 runs. With 3 not-upheld claims in the data this measure cannot separate a better wording from noise. The Round 2 form's
 clarification measure remains **not met**, and the way to meet it is real not-upheld decisions, not more prompt tuning.
+
+## Run 4: real reviewer decisions (decided 30 Oct 2026, before any decision was recorded)
+The note under run 3 said the way to meet the Round 2 measure was real not-upheld decisions, not more prompt tuning.
+This run records some on the live app and replays them. Nothing in the drafting prompt or code changes.
+- **Rule:** TN-03, "Avoid all-caps words (brand name and standard acronyms excepted)". Its code pattern excepts a short
+  list (SPF, UV, ISO, …) and flags other 3+ letter all-caps words, so reviewers meet two kinds of flag: shouted words
+  ("AMAZING") and real acronyms the list lacks ("DIY", "LED", "AHA", "BHA", "FDA", "GMP", "BPA", "SLS"…).
+- **Decisions:** posts written beforehand (`data/rulings/tn03_demo_posts.md`) are submitted as the demo Creator and decided
+  as the demo Reviewer in the live app: the shouted words are **upheld**, the acronyms **overruled** with a reason.
+  These are one person's decisions through demo accounts, made for this test, not independent reviewers' history.
+- **Measure:** the product's own screen, "Draft a clearer version" on the guideline-health page: it drafts from part of
+  the decisions and scores old and new wording on the rest. The product's screen is run three times; all three
+  scores are published, and the draft counts as helping only if the new wording scores higher than the old on all
+  three runs and by more than the old-vs-old difference.
+- **Failing:** anything else, reported as is. With about 20 decisions this can show a gain or a tie; it cannot show a
+  small effect. If the screen shows no gain, the Round 2 measure stays **not met**.
+
+## Live graduation demo (same day, same approval)
+Rule GM10 ("Numbers over three digits get commas", brand tier, advisory). One post with 16 numbers lacking commas is
+submitted; all 16 findings are upheld. 16 of 16 gives a Wilson lower bound of 0.806 (≥ 0.80, ≥ 10 decisions), so the
+database trigger should graduate it to blocking with an audit event. Then **Undo** is used and the state returns to
+advisory. If it does not graduate, that is the result and the cause is investigated and reported.

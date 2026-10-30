@@ -1347,3 +1347,33 @@ noise of 6) can't show it; the product keeps drafts as proposals with both score
 **Fix audit, final (29 Oct).** Scored with the builder's agreement: run 2 72 safe / 1 invented of 73 (not met); run 3 on 48 new
 posts 43 safe / 0 invented (met). Failed assumption: "forbidding new words fixes rewrites" (product names slipped through);
 replaced by names allowed only for naming rules. Caveats in docs/fix-audit.md.
+
+## Task 23: live graduation demo and real decisions (30 Oct 2026, with the builder's approval)
+**What happened, as it happened.** As the demo Creator I submitted five posts (a 17-number GM10 post, two shouted-word TN-03 posts,
+two acronym TN-03 posts). As the demo Reviewer I began upholding the 17 GM10 findings with a script driving the app's own buttons.
+**My script had a bug:** a decided finding card keeps its Uphold/Overrule buttons (a reviewer may change their mind), so the loop
+re-decided the first finding (“1299”) about 20 times instead of moving on. I stopped when the page showed the same card repeatedly
+upheld; no further decisions were made.
+**Effects, all visible in the live audit log:**
+- GM10 **graduated to blocking at 4:36 AM IST** with "16 of 16 upheld, includes 12 sample decisions": the 12 generated demo
+  decisions already on the rule plus 4 of my duplicates on one finding. So the mechanism fired live with an audit entry, but the
+  evidence was not 16 independent real decisions. The brand owner then used **Undo** (4:37 AM): "Graduation undone", GM10 is advisory again.
+- About 20 duplicate "upheld" decision rows sit on one GM10 finding. The audit log is append-only and hash-chained, so they stay.
+- **Product flaw found:** the `rule_health` view counts every decision row, not the latest per finding, so re-clicking (or a
+  reviewer changing their mind) inflates agreement. Not yet fixed; a fix is a migration that counts the latest decision per finding.
+- The guideline-health page already mixes 12+ sample decisions into rules such as GM10 and TN-03 (labelled "includes sample
+  decisions"), so the clarification test on the product screen cannot claim to rest on real decisions only.
+**Not done:** no TN-03 decisions were recorded, so the run 4 clarification test (docs/clarify-eval.md) has not run.
+**Evaluation / assumption swap:** assumed "16 upholds of one post = clean graduation demo" and that the review page moves on after a
+decision. Wrong on both: decisions can be repeated, and the health counts include sample history. The demo needs the view fixed
+to count the latest decision per finding, and the sample decisions excluded or shown separately, before it can be called a real-data demonstration.
+
+### Task 23, part 2: counts fixed, graduation demo redone (30 Oct 2026)
+
+**Fix.** Migration 0016 makes `rule_health`, `rule_counts` and `rule_cases` count each finding once, by its latest decision (view `latest_decisions`). Two new database tests (20 repeated upholds count once; the latest decision wins). DB suite: 42 passed. Applied to the test project first, then to production with approval.
+
+**Evidence after the fix (production, read from `rule_counts`).** GM10: 33 decision rows collapsed to 16 findings (16 upheld, 12 of them sample decisions, so 4 real). The earlier graduation at 16 of 16 had therefore been reached on 12 sample + 4 real findings, not on the duplicates; the duplicates only inflated the displayed flags.
+
+**Redo.** The reviewer undo had pinned GM10, so the brand owner released it ("Let Plumbline decide again"), the reviewer made one decision on a new finding ("2499", upheld with a reason), and GM10 graduated on that single decision: 18 of 18 upheld, Wilson lower bound 0.824, 12 sample decisions included (shown on the page as "includes 12 sample decisions"). The brand owner then used Undo; GM10 is advisory and pinned again. Decisions kept. Audit trail in `rule_changes`: graduate, undo, unpin, graduate, undo.
+
+**Evaluation.** Met: automatic graduation with evidence text, sample-decision label, and one-click undo works on production. Not clean: 12 of the 18 decisions are sample decisions, so this demonstrates the mechanism, not agreement learned from real reviewers. Assumption swapped: "undo only needs one click to re-test" was wrong, undo pins the rule and release is a separate brand-owner step; that is intended behaviour and is now documented.
